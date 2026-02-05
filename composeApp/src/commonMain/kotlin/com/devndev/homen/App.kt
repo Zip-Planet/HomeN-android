@@ -1,48 +1,32 @@
 package com.devndev.homen
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.safeContentPadding
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import org.jetbrains.compose.resources.painterResource
-
-import homen.composeapp.generated.resources.Res
-import homen.composeapp.generated.resources.compose_multiplatform
+import androidx.compose.runtime.Composable
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.devndev.homen.ui.intro.navigation.IntroNav
+import com.devndev.homen.ui.main.navigation.MainNav
+import com.devndev.homen.ui.navigation.AppRoute
 
 @Composable
-@Preview
-fun App() {
+fun HomeNApp() {
     MaterialTheme {
-        var showContent by remember { mutableStateOf(false) }
-        Column(
-            modifier = Modifier
-                .background(MaterialTheme.colorScheme.primaryContainer)
-                .safeContentPadding()
-                .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
+        val rootNavController = rememberNavController()
+
+        NavHost(
+            navController = rootNavController,
+            startDestination = AppRoute.Intro.route
         ) {
-            Button(onClick = { showContent = !showContent }) {
-                Text("Click me!")
+            composable(AppRoute.Intro.route) {
+                IntroNav(onNavigateToMain = {
+                    rootNavController.navigate("main") {
+                        popUpTo("intro") { inclusive = true }
+                    }
+                })
             }
-            AnimatedVisibility(showContent) {
-                val greeting = remember { Greeting().greet() }
-                Column(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                ) {
-                    Image(painterResource(Res.drawable.compose_multiplatform), null)
-                    Text("Compose: $greeting")
-                }
+            composable(AppRoute.Main.route) {
+                MainNav()
             }
         }
     }
