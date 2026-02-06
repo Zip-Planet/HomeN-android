@@ -1,6 +1,5 @@
 package com.devndev.homen
 
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -8,10 +7,11 @@ import androidx.navigation.compose.rememberNavController
 import com.devndev.homen.ui.intro.navigation.IntroNav
 import com.devndev.homen.ui.main.navigation.MainNav
 import com.devndev.homen.ui.navigation.AppRoute
+import com.devndev.homen.ui.theme.HomeNTheme
 
 @Composable
 fun HomeNApp() {
-    MaterialTheme {
+    HomeNTheme {
         val rootNavController = rememberNavController()
 
         NavHost(
@@ -20,8 +20,8 @@ fun HomeNApp() {
         ) {
             composable(AppRoute.Intro.route) {
                 IntroNav(onNavigateToMain = {
-                    rootNavController.navigate("main") {
-                        popUpTo("intro") { inclusive = true }
+                    rootNavController.navigate(AppRoute.Main.route) {
+                        popUpTo(AppRoute.Intro.route) { inclusive = true }
                     }
                 })
             }
