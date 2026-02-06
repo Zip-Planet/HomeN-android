@@ -18,7 +18,7 @@ fun SplashScreen(onCheckToken: (isValid: Boolean) -> Unit) {
         delay(2000)
         // 랜덤으로 토큰 유효성 결정
         val isValidToken = Random.nextBoolean()
-        onCheckToken(isValidToken)
+        onCheckToken(false)
     }
     Column(
         modifier = Modifier.fillMaxSize(),

@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">홈엔</string>
+    <string name="app_logo">Home/n</string>
+    <string name="login_screen_msg">작은 집안일도 공평하게</string>
+    <string name="terms_of_service">이용약관</string>
+    <string name="privacy_policy">개인정보처리방침</string>
 </resources>

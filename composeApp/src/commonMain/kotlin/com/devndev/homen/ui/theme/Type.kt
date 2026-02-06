@@ -7,45 +7,54 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.em
-import androidx.compose.ui.unit.sp
 import homen.composeapp.generated.resources.Res
 import homen.composeapp.generated.resources.suit_variable
 import org.jetbrains.compose.resources.Font
 
 @Immutable
 data class HomeNTypography(
+    val suitLight: TextStyle,
     val suitRegular: TextStyle,
     val suitMedium: TextStyle,
     val suitBold: TextStyle,
-    val suitExtraBold: TextStyle
+    val suitExtraBold: TextStyle,
+    val suitHeavy: TextStyle
 )
 
 @Composable
 fun getTypography(): HomeNTypography {
     val suitFamily = FontFamily(
-        Font(Res.font.suit_variable, FontWeight.Normal)
+        Font(Res.font.suit_variable, FontWeight.W300),
+        Font(Res.font.suit_variable, FontWeight.W400),
+        Font(Res.font.suit_variable, FontWeight.W500),
+        Font(Res.font.suit_variable, FontWeight.W700),
+        Font(Res.font.suit_variable, FontWeight.W800),
+        Font(Res.font.suit_variable, FontWeight.W900)
     )
 
     val baseStyle = TextStyle(
         fontFamily = suitFamily,
-        fontSize = 24.sp,
         lineHeight = 1.32.em,
         letterSpacing = (-0.02).em
     )
 
     return HomeNTypography(
+        suitLight = baseStyle.copy(fontWeight = FontWeight.W300),
         suitRegular = baseStyle.copy(fontWeight = FontWeight.W400),
         suitMedium = baseStyle.copy(fontWeight = FontWeight.W500),
         suitBold = baseStyle.copy(fontWeight = FontWeight.W700),
-        suitExtraBold = baseStyle.copy(fontWeight = FontWeight.W800)
+        suitExtraBold = baseStyle.copy(fontWeight = FontWeight.W800),
+        suitHeavy = baseStyle.copy(fontWeight = FontWeight.W900)
     )
 }
 
 val LocalHomeNTypography = staticCompositionLocalOf {
     HomeNTypography(
+        suitLight = TextStyle.Default,
         suitRegular = TextStyle.Default,
         suitMedium = TextStyle.Default,
         suitBold = TextStyle.Default,
-        suitExtraBold = TextStyle.Default
+        suitExtraBold = TextStyle.Default,
+        suitHeavy = TextStyle.Default
     )
 }
