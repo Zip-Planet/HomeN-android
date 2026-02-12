@@ -1,7 +1,8 @@
 package com.devndev.homen
 
-interface Platform {
-    val name: String
-}
+expect fun getPlatform(): OsType
 
-expect fun getPlatform(): Platform
+enum class OsType {
+    ANDROID,
+    IOS
+}
