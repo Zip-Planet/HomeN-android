@@ -20,13 +20,14 @@ fun HomeNScreen(
     topBar: @Composable () -> Unit = {},
     bottomBar: @Composable () -> Unit = {},
     isLoading: Boolean = false,
-    content: @Composable (PaddingValues) -> Unit
+    containerColor: Color,
+    content: @Composable (PaddingValues) -> Unit,
 ) {
     Scaffold(
         modifier = modifier,
         topBar = topBar,
         bottomBar = bottomBar,
-        containerColor = Color.White,
+        containerColor = containerColor,
         contentWindowInsets = WindowInsets.safeDrawing
     ) { paddingValues ->
         Box(

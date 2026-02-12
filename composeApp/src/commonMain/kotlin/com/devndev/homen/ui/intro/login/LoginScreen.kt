@@ -38,7 +38,9 @@ import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun LoginScreen(onNavigateToMain: () -> Unit) {
-    HomeNScreen {
+    HomeNScreen(
+        containerColor = Color.White
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
