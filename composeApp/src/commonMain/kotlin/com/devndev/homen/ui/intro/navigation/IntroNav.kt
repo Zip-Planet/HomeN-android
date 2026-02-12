@@ -1,17 +1,18 @@
 package com.devndev.homen.ui.intro.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.devndev.homen.ui.intro.login.LoginScreen
+import com.devndev.homen.ui.intro.register.RegisterScreen
 import com.devndev.homen.ui.intro.splash.SplashScreen
-import com.devndev.homen.ui.navigation.AppRoute
-import com.devndev.homen.ui.intro.navigation.IntroRoute
+import com.devndev.homen.ui.theme.BackgroundGray
 
 @Composable
 fun IntroNav(
-    onNavigateToMain: () -> Unit
+    onNaveToMain: () -> Unit
 ) {
     val introNavController = rememberNavController()
 
@@ -26,7 +27,7 @@ fun IntroNav(
         composable(IntroRoute.Splash.route) {
             SplashScreen { isValidToken ->
                 if (isValidToken) {
-                    onNavigateToMain()
+                    onNaveToMain()
                 } else {
                     introNavController.navigate(IntroRoute.Login.route) {
                         popUpTo(IntroRoute.Splash.route) { inclusive = true }
@@ -34,8 +35,20 @@ fun IntroNav(
                 }
             }
         }
+
         composable(IntroRoute.Login.route) {
-            LoginScreen(onNavigateToMain = onNavigateToMain)
+            LoginScreen(
+                onNavToMain = onNaveToMain,
+                onNavToRegister = {
+                    introNavController.navigate(IntroRoute.Register.route)
+                }
+            )
+        }
+
+        composable(IntroRoute.Register.route) {
+            RegisterScreen(
+                onNavBack = { introNavController.popBackStack() }
+            )
         }
     }
 }

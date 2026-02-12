@@ -1,5 +1,6 @@
 package com.devndev.homen.ui.component
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
@@ -25,25 +26,30 @@ fun HomeNScreen(
     containerColor: Color = BackgroundGray,
     content: @Composable (PaddingValues) -> Unit,
 ) {
-    Scaffold(
-        modifier = modifier.statusBarsPadding(),
-        topBar = topBar,
-        bottomBar = bottomBar,
-        containerColor = containerColor,
-        contentWindowInsets = WindowInsets.safeDrawing
-    ) { paddingValues ->
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-        ) {
-            content(paddingValues)
+    Box(
+        modifier = modifier.fillMaxSize()
+            .background(containerColor)
+    ) {
+        Scaffold(
+            modifier = modifier.statusBarsPadding(),
+            topBar = topBar,
+            bottomBar = bottomBar,
+            containerColor = containerColor,
+            contentWindowInsets = WindowInsets.safeDrawing
+        ) { paddingValues ->
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
+            ) {
+                content(paddingValues)
 
-            if (isLoading) {
-                CircularProgressIndicator(
-                    modifier = Modifier.align(Alignment.Center),
-                    color = MaterialTheme.colorScheme.primary
-                )
+                if (isLoading) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.align(Alignment.Center),
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
             }
         }
     }

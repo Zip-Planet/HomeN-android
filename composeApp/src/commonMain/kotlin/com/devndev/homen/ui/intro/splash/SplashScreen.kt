@@ -80,86 +80,83 @@ fun SplashScreen(onCheckToken: (isValid: Boolean) -> Unit) {
         }
     }
 
-    HomeNScreen(
-        containerColor = Color.White
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White)
+            .padding(top = 210.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Column(
+        Image(
+            painter = painterResource(Res.drawable.homen_logo),
+            contentDescription = "HomeN Logo",
+            modifier = Modifier.height(85.dp).width(75.dp)
+        )
+
+        Spacer(modifier = Modifier.height(9.dp))
+
+        Text(
+            text = stringResource(Res.string.app_logo),
+            style = HomeNTheme.typography.suitHeavy,
+            fontSize = 17.sp
+        )
+
+        Spacer(modifier = Modifier.height(23.dp))
+
+        // 수직선
+        Box(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(top = 210.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+                .width(1.dp)
+                .height(animatedHeight.value.dp)
+                .background(color = MaterialTheme.colorScheme.onBackground)
+        )
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(20.dp),
+            contentAlignment = Alignment.Center
         ) {
-            Image(
-                painter = painterResource(Res.drawable.homen_logo),
-                contentDescription = "HomeN Logo",
-                modifier = Modifier.height(85.dp).width(75.dp)
-            )
-
-            Spacer(modifier = Modifier.height(9.dp))
-
-            Text(
-                text = stringResource(Res.string.app_logo),
-                style = HomeNTheme.typography.suitHeavy,
-                fontSize = 17.sp
-            )
-
-            Spacer(modifier = Modifier.height(23.dp))
-
-            // 수직선
-            Box(
-                modifier = Modifier
-                    .width(1.dp)
-                    .height(animatedHeight.value.dp)
-                    .background(color = MaterialTheme.colorScheme.onBackground)
-            )
-
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(20.dp),
-                contentAlignment = Alignment.Center
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(
+                    horizontalSpacing,
+                    Alignment.Start
+                ),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(
-                        horizontalSpacing,
-                        Alignment.Start
-                    ),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    words.forEachIndexed { index, word ->
-                        val wordAlpha = remember { Animatable(0f) }
-                        val wordOffset = remember { Animatable(30f) }
+                words.forEachIndexed { index, word ->
+                    val wordAlpha = remember { Animatable(0f) }
+                    val wordOffset = remember { Animatable(30f) }
 
-                        LaunchedEffect(animProgress.value) {
-                            if (animProgress.value > 0f) {
-                                // 단어별 시차(Delay)를 주며 위로 이동
-                                delay(index * 100L)
-                                launch {
-                                    wordAlpha.animateTo(1f, tween(400))
-                                }
-                                launch {
-                                    wordOffset.animateTo(0f, tween(400, easing = EaseOutBack))
-                                }
+                    LaunchedEffect(animProgress.value) {
+                        if (animProgress.value > 0f) {
+                            // 단어별 시차(Delay)를 주며 위로 이동
+                            delay(index * 100L)
+                            launch {
+                                wordAlpha.animateTo(1f, tween(400))
+                            }
+                            launch {
+                                wordOffset.animateTo(0f, tween(400, easing = EaseOutBack))
+                            }
 
-                                // 마지막 단어까지 올라왔다면 간격 벌리기 시작
-                                if (index == words.size - 1) {
-                                    delay(400) // 마지막 글자가 다 올라올 때까지 대기
-                                    isAllWordsUp = true
-                                }
+                            // 마지막 단어까지 올라왔다면 간격 벌리기 시작
+                            if (index == words.size - 1) {
+                                delay(400) // 마지막 글자가 다 올라올 때까지 대기
+                                isAllWordsUp = true
                             }
                         }
-
-                        Text(
-                            text = word,
-                            style = HomeNTheme.typography.suitMedium,
-                            fontSize = 15.sp,
-                            modifier = Modifier
-                                .graphicsLayer {
-                                    alpha = wordAlpha.value
-                                    translationY = wordOffset.value.dp.toPx()
-                                }
-                        )
                     }
+
+                    Text(
+                        text = word,
+                        style = HomeNTheme.typography.suitMedium,
+                        fontSize = 15.sp,
+                        modifier = Modifier
+                            .graphicsLayer {
+                                alpha = wordAlpha.value
+                                translationY = wordOffset.value.dp.toPx()
+                            }
+                    )
                 }
             }
         }

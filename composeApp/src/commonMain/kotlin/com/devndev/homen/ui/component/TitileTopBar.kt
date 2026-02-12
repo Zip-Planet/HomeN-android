@@ -1,9 +1,9 @@
 package com.devndev.homen.ui.component
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -34,7 +34,7 @@ fun TitleTopBar(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 27.dp, start = 12.dp, bottom = 8.dp, end = 12.dp),
+                .padding(top = 27.dp, start = 17.dp, bottom = 8.dp, end = 17.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -42,7 +42,12 @@ fun TitleTopBar(
                 Icon(
                     painter = painterResource(Res.drawable.back_arrow),
                     contentDescription = "back",
-                    modifier = Modifier.height(9.5.dp).width(13.dp)
+                    modifier = Modifier
+                        .height(9.5.dp)
+                        .width(13.dp)
+                        .clickable {
+                            onBackClick()
+                        }
                 )
             }
             Text(
