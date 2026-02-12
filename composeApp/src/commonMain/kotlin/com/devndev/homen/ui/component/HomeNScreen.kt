@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import com.devndev.homen.ui.theme.BackgroundGray
 
 @Composable
 fun HomeNScreen(
@@ -20,7 +21,7 @@ fun HomeNScreen(
     topBar: @Composable () -> Unit = {},
     bottomBar: @Composable () -> Unit = {},
     isLoading: Boolean = false,
-    containerColor: Color,
+    containerColor: Color = BackgroundGray,
     content: @Composable (PaddingValues) -> Unit,
 ) {
     Scaffold(
