@@ -7,7 +7,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.devndev.homen.ui.component.HomeNScreen
 import com.devndev.homen.ui.component.MainBottomBar
-import com.devndev.homen.ui.theme.BackgroundGray
 
 @Composable
 fun MainNav() {
@@ -24,7 +23,9 @@ fun MainNav() {
             modifier = Modifier.padding(paddingValues)
         ) {
             homeNav()
-            listNav()
+            boardNav()
+            assignmentNav()
+            presentNav()
             myPageNav()
         }
     }

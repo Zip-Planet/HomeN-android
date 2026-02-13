@@ -4,8 +4,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.devndev.homen.ui.main.list.ListScreen
 
-fun NavGraphBuilder.listNav() {
-    composable(BottomNavItem.Board.route) {
+fun NavGraphBuilder.presentNav() {
+    composable(BottomNavItem.Present.route) {
         ListScreen()
     }
 }

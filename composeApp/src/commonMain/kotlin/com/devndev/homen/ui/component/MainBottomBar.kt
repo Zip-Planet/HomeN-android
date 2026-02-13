@@ -49,11 +49,10 @@ fun MainBottomBar(navController: NavController) {
         color = Color.White
     ) {
         Column {
-            // 최상단 경계선 추가
             HorizontalDivider(
                 modifier = Modifier.fillMaxWidth(),
                 thickness = 0.2.dp,
-                color = Color.Black // 은은한 구분선
+                color = Color.Black
             )
             
             Row(
