@@ -1,18 +1,19 @@
 package com.devndev.homen.ui.intro.navigation
 
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.devndev.homen.ui.intro.login.LoginScreen
 import com.devndev.homen.ui.intro.register.RegisterScreen
 import com.devndev.homen.ui.intro.splash.SplashScreen
-import com.devndev.homen.ui.theme.BackgroundGray
 
 @Composable
 fun IntroNav(
-    onNaveToMain: () -> Unit
+    onNavToMain: () -> Unit
 ) {
     val introNavController = rememberNavController()
 
@@ -27,7 +28,7 @@ fun IntroNav(
         composable(IntroRoute.Splash.route) {
             SplashScreen { isValidToken ->
                 if (isValidToken) {
-                    onNaveToMain()
+                    onNavToMain()
                 } else {
                     introNavController.navigate(IntroRoute.Login.route) {
                         popUpTo(IntroRoute.Splash.route) { inclusive = true }
@@ -38,15 +39,30 @@ fun IntroNav(
 
         composable(IntroRoute.Login.route) {
             LoginScreen(
-                onNavToMain = onNaveToMain,
+                onNavToMain = onNavToMain,
                 onNavToRegister = {
                     introNavController.navigate(IntroRoute.Register.route)
                 }
             )
         }
 
-        composable(IntroRoute.Register.route) {
+        composable(
+            IntroRoute.Register.route,
+            enterTransition = {
+                slideInHorizontally(
+                    initialOffsetX = { fullWidth -> fullWidth },
+                    animationSpec = tween(500)
+                )
+            },
+            popExitTransition = {
+                slideOutHorizontally(
+                    targetOffsetX = { fullWidth -> fullWidth },
+                    animationSpec = tween(500)
+                )
+            }
+        ) {
             RegisterScreen(
+                onNavToMain = onNavToMain,
                 onNavBack = { introNavController.popBackStack() }
             )
         }

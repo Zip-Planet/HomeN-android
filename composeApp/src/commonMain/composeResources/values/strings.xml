@@ -3,6 +3,7 @@
     <!-- Common -->
     <string name="app_name">홈엔</string>
     <string name="app_logo">Home/n</string>
+    <string name="next_button">다음</string>
 
     <!-- Splash 화면 -->
     <string name="login_screen_msg">작은 집안일도 공평하게</string>
@@ -13,6 +14,7 @@
 
     <!-- Register 화면 -->
     <string name="profile_setting_title">프로필 설정</string>
-
-
+    <string name="nickname_msg">홈엔에 처음 오셨군요\n닉네임을 만들어볼까요?</string>
+    <string name="nickname_hint">특수문자 제외 한글, 영어만 입력해 주세요</string>
+    <string name="select_avatar_msg">아바타를 선택해주세요</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.devndev.homen.ui.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
@@ -15,6 +16,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalFocusManager
 import com.devndev.homen.ui.theme.BackgroundGray
 
 @Composable
@@ -26,6 +29,8 @@ fun HomeNScreen(
     containerColor: Color = BackgroundGray,
     content: @Composable (PaddingValues) -> Unit,
 ) {
+    val focusManager = LocalFocusManager.current
+
     Box(
         modifier = modifier.fillMaxSize()
             .background(containerColor)
@@ -41,6 +46,11 @@ fun HomeNScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(paddingValues)
+                    .pointerInput(Unit) {
+                        detectTapGestures(onTap = {
+                            focusManager.clearFocus()
+                        })
+                    },
             ) {
                 content(paddingValues)
 
