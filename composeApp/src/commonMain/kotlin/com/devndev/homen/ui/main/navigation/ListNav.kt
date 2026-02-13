@@ -5,7 +5,7 @@ import androidx.navigation.compose.composable
 import com.devndev.homen.ui.main.list.ListScreen
 
 fun NavGraphBuilder.listNav() {
-    composable(BottomNavItem.List.route) {
+    composable(BottomNavItem.Board.route) {
         ListScreen()
     }
 }
