@@ -1,5 +1,8 @@
 package com.devndev.homen.ui.intro.navigation
 
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -43,7 +46,21 @@ fun IntroNav(
             )
         }
 
-        composable(IntroRoute.Register.route) {
+        composable(
+            IntroRoute.Register.route,
+            enterTransition = {
+                slideInHorizontally(
+                    initialOffsetX = { fullWidth -> fullWidth },
+                    animationSpec = tween(500)
+                )
+            },
+            popExitTransition = {
+                slideOutHorizontally(
+                    targetOffsetX = { fullWidth -> fullWidth },
+                    animationSpec = tween(500)
+                )
+            }
+        ) {
             RegisterScreen(
                 onNavToMain = onNavToMain,
                 onNavBack = { introNavController.popBackStack() }
