@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.HorizontalDivider
@@ -24,6 +25,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.devndev.homen.OsType
+import com.devndev.homen.getPlatform
 import com.devndev.homen.ui.main.navigation.BottomNavItem
 import com.devndev.homen.ui.theme.HomeNTheme
 import com.devndev.homen.ui.theme.LightGray
@@ -43,21 +46,25 @@ fun MainBottomBar(navController: NavController) {
     val currentRoute = navBackStackEntry?.destination?.route
 
     Surface(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(80.dp), 
+        modifier = Modifier.fillMaxWidth(),
         color = Color.White
     ) {
-        Column {
+        Column(
+            modifier = Modifier
+                .run {
+                    if (getPlatform() != OsType.IOS) navigationBarsPadding() else this
+                }
+        ) {
             HorizontalDivider(
                 modifier = Modifier.fillMaxWidth(),
-                thickness = 0.2.dp,
-                color = Color.Black
+                thickness = 0.5.dp,
+                color = LightGray.copy(alpha = 0.5f)
             )
             
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .height(80.dp) // 실제 아이콘 영역 높이 고정
                     .padding(top = 10.dp),
                 horizontalArrangement = Arrangement.SpaceAround,
                 verticalAlignment = Alignment.CenterVertically
