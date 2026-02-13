@@ -19,7 +19,7 @@ fun HomeNApp() {
             startDestination = AppRoute.Intro.route
         ) {
             composable(AppRoute.Intro.route) {
-                IntroNav(onNaveToMain = {
+                IntroNav(onNavToMain = {
                     rootNavController.navigate(AppRoute.Main.route) {
                         popUpTo(AppRoute.Intro.route) { inclusive = true }
                     }
