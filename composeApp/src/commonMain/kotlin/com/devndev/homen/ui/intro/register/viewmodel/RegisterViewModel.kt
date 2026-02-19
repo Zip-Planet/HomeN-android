@@ -1,46 +1,51 @@
 package com.devndev.homen.ui.intro.register.viewmodel
 
-import androidx.lifecycle.ViewModel
-import com.devndev.homen.ui.intro.register.RegisterStep
-import com.devndev.homen.ui.intro.register.RegisterUiState
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
+import com.devndev.homen.core.common.base.BaseViewModel
 
-class RegisterViewModel : ViewModel() {
-    private val _uiState = MutableStateFlow(RegisterUiState())
-    val uiState = _uiState.asStateFlow()
+class RegisterViewModel : BaseViewModel<RegisterContract.Event, RegisterContract.State, RegisterContract.Effect>() {
 
-    fun onNicknameChanged(newNickname: String) {
-        _uiState.update { it.copy(nickname = newNickname) }
+    override fun setInitialState() = RegisterContract.State()
+
+    override fun handleEvents(event: RegisterContract.Event) {
+        when (event) {
+            is RegisterContract.Event.OnNicknameChanged -> {
+                setState { copy(nickname = event.nickname) }
+            }
+            is RegisterContract.Event.OnAvatarSelected -> {
+                setState { copy(selectedAvatarIndex = event.index) }
+            }
+            RegisterContract.Event.OnNextClick -> {
+                onNextStep()
+            }
+            RegisterContract.Event.OnBackClick -> {
+                onBackPressed()
+            }
+        }
     }
 
-    fun onAvatarSelected(index: Int?) {
-        _uiState.update { it.copy(selectedAvatarIndex = index) }
-    }
-
-    fun onNextStep(onNavToMain: () -> Unit) {
-        val currentState = _uiState.value
+    private fun onNextStep() {
+        val currentState = viewState.value
         when (currentState.currentStep) {
             RegisterStep.NICKNAME -> {
                 if (currentState.nickname.isNotEmpty()) {
-                    _uiState.update { it.copy(currentStep = RegisterStep.AVATAR) }
+                    setState { copy(currentStep = RegisterStep.AVATAR) }
                 }
             }
             RegisterStep.AVATAR -> {
                 if (currentState.selectedAvatarIndex != null) {
-                    // 가입 완료 로직 후 메인 이동
-                    onNavToMain()
+                    setEffect { RegisterContract.Effect.NavigateToMain }
+                    // TODO 회원가입
                 }
             }
         }
     }
 
-    fun onBackPressed(onNavBack: () -> Unit) {
-        if (_uiState.value.currentStep == RegisterStep.AVATAR) {
-            _uiState.update { it.copy(currentStep = RegisterStep.NICKNAME) }
+    private fun onBackPressed() {
+        if (viewState.value.currentStep == RegisterStep.AVATAR) {
+            setState { copy(currentStep = RegisterStep.NICKNAME) }
+            setState { copy(selectedAvatarIndex = null) }
         } else {
-            onNavBack()
+            setEffect { RegisterContract.Effect.PopBackStack }
         }
     }
 }
