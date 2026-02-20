@@ -29,6 +29,8 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.compose.uiToolingPreview)
             implementation(libs.androidx.activity.compose)
+            // Koin Android
+            implementation(libs.koin.android)
         }
         commonMain.dependencies {
             // Core Modules
@@ -47,6 +49,11 @@ kotlin {
             
             // Navigation
             implementation(libs.androidx.navigation.compose)
+
+            // Koin Multiplatform
+            implementation(libs.koin.core)
+            implementation(libs.koin.compose)
+            implementation(libs.koin.compose.viewmodel)
 
             implementation(libs.compose.components.resources)
         }
