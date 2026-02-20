@@ -16,3 +16,8 @@ fun initKoin(appDeclaration: KoinAppDeclaration = {}) = startKoin {
         viewModelModule
     )
 }
+
+/**
+ * iOS(Swift)에서 파라미터 없이 간편하게 호출하기 위한 함수
+ */
+fun doInitKoin() = initKoin { }
