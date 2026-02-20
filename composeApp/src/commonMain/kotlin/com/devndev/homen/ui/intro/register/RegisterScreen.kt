@@ -31,7 +31,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.devndev.homen.ui.component.HomeNButton
 import com.devndev.homen.ui.component.HomeNScreen
 import com.devndev.homen.ui.component.TitleTopBar
@@ -55,12 +54,13 @@ import homen.composeapp.generated.resources.zombie_avatar
 import kotlinx.coroutines.flow.collectLatest
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun RegisterScreen(
     onNavBack: () -> Unit,
     onNavToMain: () -> Unit,
-    viewModel: RegisterViewModel = viewModel { RegisterViewModel() }
+    viewModel: RegisterViewModel = koinViewModel()
 ) {
     val uiState by viewModel.viewState
     val maxChar = 8
