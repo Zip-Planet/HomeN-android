@@ -19,8 +19,7 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            // Domain logic dependencies
-        }
+            implementation(libs.koin.core)        }
     }
 }
 
