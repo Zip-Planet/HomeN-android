@@ -30,6 +30,7 @@ kotlin {
         iosTarget.binaries.framework {
             baseName = "ComposeApp"
             isStatic = true
+            export(project(":core:domain"))
         }
     }
     
@@ -41,7 +42,7 @@ kotlin {
             implementation(libs.kakao.user.v2)
         }
         commonMain.dependencies {
-            implementation(project(":core:domain"))
+            api(project(":core:domain"))
             implementation(project(":core:data"))
             implementation(project(":core:common"))
 
