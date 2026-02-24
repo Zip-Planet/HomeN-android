@@ -1,11 +1,12 @@
 package com.devndev.homen.core.domain.di
 
+import com.devndev.homen.core.domain.usecase.auth.SocialLoginUseCase
+import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
-
 
 /**
  * 도메인 레이어의 비즈니스 로직(UseCase) 의존성
  */
 val useCaseModule = module {
-    // factory { GetUserUseCase(get()) }
+    factoryOf(::SocialLoginUseCase)
 }

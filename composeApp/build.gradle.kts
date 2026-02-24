@@ -1,5 +1,13 @@
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.util.Properties
+
+val localProperties = Properties().apply {
+    val localPropertiesFile = rootProject.file("local.properties")
+    if (localPropertiesFile.exists()) {
+        localPropertiesFile.inputStream().use { load(it) }
+    }
+}
+val kakaoAppKey = localProperties.getProperty("kakao.native.app.key") ?: ""
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -22,6 +30,7 @@ kotlin {
         iosTarget.binaries.framework {
             baseName = "ComposeApp"
             isStatic = true
+            export(project(":core:domain"))
         }
     }
     
@@ -29,12 +38,11 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.compose.uiToolingPreview)
             implementation(libs.androidx.activity.compose)
-            // Koin Android
             implementation(libs.koin.android)
+            implementation(libs.kakao.user.v2)
         }
         commonMain.dependencies {
-            // Core Modules
-            implementation(project(":core:domain"))
+            api(project(":core:domain"))
             implementation(project(":core:data"))
             implementation(project(":core:common"))
 
@@ -43,22 +51,12 @@ kotlin {
             implementation(libs.compose.material3)
             implementation(libs.compose.ui)
             implementation(libs.compose.components.resources)
-            implementation(libs.compose.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
-            
-            // Navigation
             implementation(libs.androidx.navigation.compose)
-
-            // Koin Multiplatform
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
             implementation(libs.koin.compose.viewmodel)
-
-            implementation(libs.compose.components.resources)
-        }
-        commonTest.dependencies {
-            implementation(libs.kotlin.test)
         }
     }
 }
@@ -73,7 +71,16 @@ android {
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
+
+        // Manifest와 Kotlin 코드에서 사용할 변수 설정
+        manifestPlaceholders["kakaoAppKey"] = kakaoAppKey
+        buildConfigField("String", "KAKAO_APP_KEY", "\"$kakaoAppKey\"")
     }
+
+    buildFeatures {
+        buildConfig = true
+    }
+
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"

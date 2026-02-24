@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		1E7D08592F4D51DC00DB00B9 /* KakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = 1E7D08582F4D51DC00DB00B9 /* KakaoSDKUser */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		52D038A48FD30DC7FF0D20C8 /* HomeN.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HomeN.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -41,6 +45,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1E7D08592F4D51DC00DB00B9 /* KakaoSDKUser in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -85,6 +90,7 @@
 			);
 			name = iosApp;
 			packageProductDependencies = (
+				1E7D08582F4D51DC00DB00B9 /* KakaoSDKUser */,
 			);
 			productName = iosApp;
 			productReference = 52D038A48FD30DC7FF0D20C8 /* HomeN.app */;
@@ -115,6 +121,7 @@
 			mainGroup = 03E4BA903A96D02198E0901C;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
+				1E7D08572F4D51DC00DB00B9 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = C1BC3C676F5213D87C271129 /* Products */;
@@ -229,6 +236,8 @@
 		};
 		81DC00D409AFCF027BD43AEC /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 1318AAFD1C3E3F95AE7F327C /* iosApp */;
+			baseConfigurationReferenceRelativePath = Secrets.xcconfig;
 			buildSettings = {
 				ARCHS = arm64;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -372,6 +381,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		1E7D08572F4D51DC00DB00B9 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kakao/kakao-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.27.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		1E7D08582F4D51DC00DB00B9 /* KakaoSDKUser */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1E7D08572F4D51DC00DB00B9 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDKUser;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = D6FE376AC41DE97AE4C1386E /* Project object */;
 }

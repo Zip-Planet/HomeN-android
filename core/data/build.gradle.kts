@@ -22,6 +22,11 @@ kotlin {
             implementation(project(":core:domain"))
             implementation(project(":core:common"))
             implementation(libs.koin.core)
+            implementation(libs.kotlinx.coroutines.core)
+        }
+
+        androidMain.dependencies {
+            implementation(libs.kakao.user.v2)
         }
     }
 }
