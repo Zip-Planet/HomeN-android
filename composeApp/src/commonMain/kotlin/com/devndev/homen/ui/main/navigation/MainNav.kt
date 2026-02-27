@@ -7,6 +7,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.devndev.homen.ui.component.HomeNScreen
 import com.devndev.homen.ui.component.MainBottomBar
+import com.devndev.homen.ui.main.assignment.navigation.assignmentNav
+import com.devndev.homen.ui.main.board.navigation.boardNav
+import com.devndev.homen.ui.main.home.navigation.homeNav
+import com.devndev.homen.ui.main.mypage.navigation.myPageNav
+import com.devndev.homen.ui.main.present.navigation.presentNav
 
 @Composable
 fun MainNav() {
