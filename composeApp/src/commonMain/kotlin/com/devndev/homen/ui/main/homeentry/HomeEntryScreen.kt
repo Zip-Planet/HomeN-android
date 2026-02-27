@@ -79,7 +79,12 @@ fun HomeEntryScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = 24.dp, start = 17.dp, end = 17.dp),
+                .padding(
+                    top = 24.dp,
+                    start = HomeNTheme.dimensions.horizontalPadding,
+                    end = HomeNTheme.dimensions.horizontalPadding,
+                    bottom = HomeNTheme.dimensions.bottomPadding
+                ),
         ) {
             Text(
                 text = stringResource(Res.string.home_entry_guide_title),
@@ -96,7 +101,6 @@ fun HomeEntryScreen(
                 fontSize = 14.sp,
                 color = Color.Black
             )
-
 
             Spacer(modifier = Modifier.height(20.dp))
 
@@ -138,7 +142,13 @@ fun HomeEntryScreen(
                 } else {
                     HomeNButton(
                         text = stringResource(Res.string.next_button),
-                        onClick = {},
+                        onClick = {
+                            if (selectedOption == 1) {
+                                viewModel.setEvent(HomeEntryContract.Event.OnCreateHomeClick)
+                            } else if (selectedOption == 2) {
+                                viewModel.setEvent(HomeEntryContract.Event.OnJoinHomeClick)
+                            }
+                        },
                         enabled = true
                     )
                 }

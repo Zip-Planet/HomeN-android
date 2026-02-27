@@ -34,7 +34,12 @@ fun TitleTopBar(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 27.dp, start = 17.dp, bottom = 8.dp, end = 17.dp),
+                .padding(
+                    top = 27.dp,
+                    start = HomeNTheme.dimensions.horizontalPadding,
+                    bottom = 8.dp,
+                    end = HomeNTheme.dimensions.horizontalPadding
+                ),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {

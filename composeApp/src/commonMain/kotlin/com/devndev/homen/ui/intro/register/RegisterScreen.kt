@@ -85,7 +85,11 @@ fun RegisterScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(start = 17.dp, end = 17.dp, bottom = 34.dp)
+                .padding(
+                    start = HomeNTheme.dimensions.horizontalPadding,
+                    end = HomeNTheme.dimensions.horizontalPadding,
+                    bottom = HomeNTheme.dimensions.bottomPadding
+                )
         ) {
             // 닉네임 입력 섹션
             Column(
