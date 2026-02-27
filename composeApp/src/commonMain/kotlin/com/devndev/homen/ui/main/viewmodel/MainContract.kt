@@ -1,0 +1,21 @@
+package com.devndev.homen.ui.main.viewmodel
+
+import com.devndev.homen.core.common.base.ViewEvent
+import com.devndev.homen.core.common.base.ViewSideEffect
+import com.devndev.homen.core.common.base.ViewState
+
+class MainContract {
+
+    sealed class Event : ViewEvent {
+        data class OnHomeEntryComplete(val hasHome: Boolean) : Event()
+    }
+
+    data class State(
+        val hasHome: Boolean = false,
+        val isLoading: Boolean = false
+    ) : ViewState
+
+    sealed class Effect : ViewSideEffect {
+        // 필요 시 내비게이션이나 알림 효과 추가
+    }
+}
