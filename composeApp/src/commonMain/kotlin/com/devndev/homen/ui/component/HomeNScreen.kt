@@ -57,7 +57,7 @@ fun HomeNScreen(
                 if (isLoading) {
                     CircularProgressIndicator(
                         modifier = Modifier.align(Alignment.Center),
-                        color = MaterialTheme.colorScheme.primary
+                        color = Color.Black
                     )
                 }
             }
