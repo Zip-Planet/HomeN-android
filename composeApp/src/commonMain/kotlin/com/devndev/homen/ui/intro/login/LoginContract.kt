@@ -17,7 +17,7 @@ class LoginContract {
     ) : ViewState
 
     sealed class Effect : ViewSideEffect {
-        data class NavigateToMain(val token: String) : Effect()
-        data object NavigateToRegister : Effect()
+        data object NavigateToMain : Effect()
+        data class NavigateToRegister(val token: String) : Effect()
     }
 }
