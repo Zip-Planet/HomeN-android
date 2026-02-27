@@ -18,22 +18,40 @@ class LoginViewModel(private val socialLoginUseCase: SocialLoginUseCase) :
                 loginWithKakao()
             }
             LoginContract.Event.OnAppleLoginClick -> {
-                // TODO: 애플 로그인 구현
+                loginWithApple()
             }
         }
     }
 
     private fun loginWithKakao() {
         viewModelScope.launch {
+            setState { copy(isLoading = true) }
+
             when (val result = socialLoginUseCase.loginWithKakao()) {
                 is SocialAuthResult.Success -> {
                     setEffect { LoginContract.Effect.NavigateToMain(result.data.accessToken) }
                 }
-                is SocialAuthResult.UserCancelled -> {
-                }
-                is SocialAuthResult.Error -> {
+                is SocialAuthResult.UserCancelled, is SocialAuthResult.Error -> {
+
                 }
             }
+            setState { copy(isLoading = false) }
+        }
+    }
+
+    private fun loginWithApple() {
+        viewModelScope.launch {
+            setState { copy(isLoading = true) }
+
+            when (val result = socialLoginUseCase.loginWithApple()) {
+                is SocialAuthResult.Success -> {
+                    setEffect { LoginContract.Effect.NavigateToMain(result.data.idToken) }
+                }
+                is SocialAuthResult.UserCancelled, is SocialAuthResult.Error -> {
+
+                }
+            }
+            setState { copy(isLoading = false) }
         }
     }
 }
