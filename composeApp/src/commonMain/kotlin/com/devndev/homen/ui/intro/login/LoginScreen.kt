@@ -70,7 +70,12 @@ fun LoginScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = 150.dp),
+                .padding(
+                    top = 150.dp,
+                    start = HomeNTheme.dimensions.horizontalPadding,
+                    end = HomeNTheme.dimensions.horizontalPadding,
+                    bottom = HomeNTheme.dimensions.bottomPadding
+                ),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Image(
@@ -139,7 +144,6 @@ fun LoginScreen(
                 modifier = Modifier
                     .height(52.dp)
                     .fillMaxWidth()
-                    .padding(horizontal = 17.dp)
                     .background(color = KaKao, shape = RoundedCornerShape(15.dp))
                     .clickable {
                         viewModel.setEvent(LoginContract.Event.OnKakaoLoginClick)
@@ -154,15 +158,12 @@ fun LoginScreen(
                     modifier = Modifier
                         .height(52.dp)
                         .fillMaxWidth()
-                        .padding(horizontal = 17.dp)
                         .background(color = Color.Black, shape = RoundedCornerShape(15.dp))
                         .clickable { 
                             viewModel.setEvent(LoginContract.Event.OnAppleLoginClick)
                         }
                 )
             }
-
-            Spacer(modifier = Modifier.height(31.dp))
         }
     }
 }

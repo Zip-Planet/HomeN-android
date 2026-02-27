@@ -8,6 +8,10 @@ object HomeNTheme {
     val typography: HomeNTypography
         @Composable
         get() = LocalHomeNTypography.current
+        
+    val dimensions: HomeNDimensions
+        @Composable
+        get() = LocalDimensions.current
 }
 
 @Composable
@@ -15,9 +19,11 @@ fun HomeNTheme(
     content: @Composable () -> Unit
 ) {
     val typography = getTypography()
+    val dimensions = HomeNDimensions()
 
     CompositionLocalProvider(
-        LocalHomeNTypography provides typography
+        LocalHomeNTypography provides typography,
+        LocalDimensions provides dimensions
     ) {
         MaterialTheme(
             content = content
