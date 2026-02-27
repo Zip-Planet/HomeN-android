@@ -2,6 +2,7 @@ package com.devndev.homen.di
 
 import com.devndev.homen.core.data.di.dataModule
 import com.devndev.homen.core.domain.auth.SocialAuthenticator
+import com.devndev.homen.core.domain.auth.model.AppleUser
 import com.devndev.homen.core.domain.auth.model.KakaoUser
 import com.devndev.homen.core.domain.di.domainModule
 import org.koin.core.context.startKoin
@@ -22,10 +23,13 @@ fun initKoin(appDeclaration: KoinAppDeclaration = {}) = startKoin {
 
 /**
  * iOS 전용 초기화 브릿지
- *
  */
-fun doInitKoin(kakaoAuthenticator: SocialAuthenticator<KakaoUser>) = initKoin {
+fun doInitKoin(
+    kakaoAuthenticator: SocialAuthenticator<KakaoUser>,
+    appleAuthenticator: SocialAuthenticator<AppleUser>
+) = initKoin {
     modules(module {
         single { kakaoAuthenticator }
+        single { appleAuthenticator }
     })
 }
