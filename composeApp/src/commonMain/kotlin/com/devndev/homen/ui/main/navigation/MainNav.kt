@@ -2,14 +2,15 @@ package com.devndev.homen.ui.main.navigation
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.devndev.homen.ui.component.HomeNScreen
 import com.devndev.homen.ui.component.MainBottomBar
 import com.devndev.homen.ui.main.assignment.navigation.assignmentNav
 import com.devndev.homen.ui.main.board.navigation.boardNav
@@ -36,18 +37,18 @@ fun MainNav(
 
     val isHomeEntryRoute = currentRoute?.startsWith("entry_") == true
 
-    HomeNScreen(
+    Scaffold(
         bottomBar = {
-            if (!isHomeEntryRoute) {
+            if (uiState.hasHome && !isHomeEntryRoute) {
                 MainBottomBar(navController = mainNavController)
             }
-        }
+        },
+        containerColor = Color.Transparent
     ) { paddingValues ->
         NavHost(
             navController = mainNavController,
             startDestination = startDestination,
-            modifier = Modifier.padding(paddingValues)
-//            modifier = Modifier.padding(if (uiState.hasHome && !isHomeEntryRoute) paddingValues else PaddingValues(0.dp))
+            modifier = Modifier.padding(if (uiState.hasHome && !isHomeEntryRoute) paddingValues else PaddingValues(0.dp))
         ) {
             homeEntryNav(
                 navController = mainNavController,
