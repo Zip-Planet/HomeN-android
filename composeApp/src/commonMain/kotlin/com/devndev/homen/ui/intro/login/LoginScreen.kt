@@ -9,10 +9,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,6 +31,7 @@ import com.devndev.homen.getPlatform
 import com.devndev.homen.ui.component.HomeNScreen
 import com.devndev.homen.ui.intro.login.viewmodel.LoginViewModel
 import com.devndev.homen.ui.theme.HomeNTheme
+import com.devndev.homen.ui.theme.KaKao
 import homen.composeapp.generated.resources.Res
 import homen.composeapp.generated.resources.apple_login_btn
 import homen.composeapp.generated.resources.app_logo
@@ -134,8 +137,11 @@ fun LoginScreen(
                 painter = painterResource(Res.drawable.kako_login_btn),
                 contentDescription = "Kakao Login",
                 modifier = Modifier
-                    .size(width = 326.dp, height = 52.dp)
-                    .clickable { 
+                    .height(52.dp)
+                    .fillMaxWidth()
+                    .padding(horizontal = 17.dp)
+                    .background(color = KaKao, shape = RoundedCornerShape(15.dp))
+                    .clickable {
                         viewModel.setEvent(LoginContract.Event.OnKakaoLoginClick)
                     }
             )
@@ -146,7 +152,10 @@ fun LoginScreen(
                     painter = painterResource(Res.drawable.apple_login_btn),
                     contentDescription = "Apple Login",
                     modifier = Modifier
-                        .size(width = 326.dp, height = 52.dp)
+                        .height(52.dp)
+                        .fillMaxWidth()
+                        .padding(horizontal = 17.dp)
+                        .background(color = Color.Black, shape = RoundedCornerShape(15.dp))
                         .clickable { 
                             viewModel.setEvent(LoginContract.Event.OnAppleLoginClick)
                         }
