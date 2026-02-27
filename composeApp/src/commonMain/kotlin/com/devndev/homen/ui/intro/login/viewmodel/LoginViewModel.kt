@@ -29,7 +29,7 @@ class LoginViewModel(private val socialLoginUseCase: SocialLoginUseCase) :
 
             when (val result = socialLoginUseCase.loginWithKakao()) {
                 is SocialAuthResult.Success -> {
-                    setEffect { LoginContract.Effect.NavigateToMain(result.data.accessToken) }
+                    setEffect { LoginContract.Effect.NavigateToRegister(result.data.accessToken) }
                 }
                 is SocialAuthResult.UserCancelled, is SocialAuthResult.Error -> {
 
@@ -45,7 +45,7 @@ class LoginViewModel(private val socialLoginUseCase: SocialLoginUseCase) :
 
             when (val result = socialLoginUseCase.loginWithApple()) {
                 is SocialAuthResult.Success -> {
-                    setEffect { LoginContract.Effect.NavigateToMain(result.data.idToken) }
+                    setEffect { LoginContract.Effect.NavigateToRegister(result.data.idToken) }
                 }
                 is SocialAuthResult.UserCancelled, is SocialAuthResult.Error -> {
 
