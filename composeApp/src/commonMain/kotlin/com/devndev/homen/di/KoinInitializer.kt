@@ -6,6 +6,7 @@ import com.devndev.homen.core.domain.auth.model.AppleUser
 import com.devndev.homen.core.domain.auth.model.KakaoUser
 import com.devndev.homen.core.domain.di.domainModule
 import org.koin.core.context.startKoin
+import org.koin.core.qualifier.named
 import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.module
 
@@ -29,7 +30,7 @@ fun doInitKoin(
     appleAuthenticator: SocialAuthenticator<AppleUser>
 ) = initKoin {
     modules(module {
-        single { kakaoAuthenticator }
-        single { appleAuthenticator }
+        single(named("kakao")) { kakaoAuthenticator }
+        single(named("apple")) { appleAuthenticator }
     })
 }
