@@ -1,0 +1,7 @@
+package com.devndev.homen.ui.component
+
+import androidx.compose.runtime.Composable
+
+@Composable
+actual fun BackHandler(enabled: Boolean, onBack: () -> Unit) {
+}
