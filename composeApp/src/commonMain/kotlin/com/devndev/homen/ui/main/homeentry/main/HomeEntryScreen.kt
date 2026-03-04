@@ -1,4 +1,4 @@
-package com.devndev.homen.ui.main.homeentry
+package com.devndev.homen.ui.main.homeentry.main
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -30,8 +30,8 @@ import androidx.compose.ui.unit.sp
 import com.devndev.homen.ui.component.HomeNButton
 import com.devndev.homen.ui.component.HomeNScreen
 import com.devndev.homen.ui.component.TitleTopBar
-import com.devndev.homen.ui.main.homeentry.viewmodel.HomeEntryContract
-import com.devndev.homen.ui.main.homeentry.viewmodel.HomeEntryViewModel
+import com.devndev.homen.ui.main.homeentry.main.viewmodel.HomeEntryContract
+import com.devndev.homen.ui.main.homeentry.main.viewmodel.HomeEntryViewModel
 import com.devndev.homen.ui.theme.HomeNTheme
 import homen.composeapp.generated.resources.Res
 import homen.composeapp.generated.resources.create_btn_msg

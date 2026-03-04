@@ -3,7 +3,8 @@ package com.devndev.homen.ui.main.homeentry.navigation
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
-import com.devndev.homen.ui.main.homeentry.HomeEntryScreen
+import com.devndev.homen.ui.main.homeentry.join.CodeEnterScreen
+import com.devndev.homen.ui.main.homeentry.main.HomeEntryScreen
 
 fun NavGraphBuilder.homeEntryNav(
     navController: NavHostController,
@@ -21,6 +22,9 @@ fun NavGraphBuilder.homeEntryNav(
     }
 
     composable(HomeEntryRoute.Join.route) {
-        // TODO: JoinHomeScreen 구현 예정
+        CodeEnterScreen(
+            onNavToMain = onNavToMain,
+            onBackClick = { navController.popBackStack() }
+        )
     }
 }
