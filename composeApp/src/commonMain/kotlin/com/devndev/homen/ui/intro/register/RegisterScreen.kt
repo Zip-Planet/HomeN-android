@@ -31,6 +31,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.devndev.homen.ui.component.BackHandler
 import com.devndev.homen.ui.component.HomeNButton
 import com.devndev.homen.ui.component.HomeNScreen
 import com.devndev.homen.ui.component.TitleTopBar
@@ -64,6 +65,10 @@ fun RegisterScreen(
 ) {
     val uiState by viewModel.viewState
     val maxChar = 8
+
+    BackHandler {
+        viewModel.setEvent(RegisterContract.Event.OnBackClick)
+    }
 
     LaunchedEffect(viewModel.effect) {
         viewModel.effect.collectLatest { effect ->
