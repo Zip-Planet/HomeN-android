@@ -1,6 +1,7 @@
 package com.devndev.homen.ui.component
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -40,7 +42,7 @@ fun TitleTopBar(
                     bottom = 8.dp,
                     end = HomeNTheme.dimensions.horizontalPadding
                 ),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             if (isBackVisible) {
@@ -48,9 +50,12 @@ fun TitleTopBar(
                     painter = painterResource(Res.drawable.back_arrow),
                     contentDescription = "back",
                     modifier = Modifier
-                        .height(9.5.dp)
-                        .width(13.dp)
-                        .clickable {
+                        .width(20.dp)
+                        .height(15.dp)
+                        .clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null
+                        ) {
                             onBackClick()
                         }
                 )
