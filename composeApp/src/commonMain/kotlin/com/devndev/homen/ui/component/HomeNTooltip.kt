@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.devndev.homen.ui.theme.HomeNTheme
 import homen.composeapp.generated.resources.Res
@@ -55,8 +56,8 @@ fun HomeNTooltip(
             .background(color = Color.White, shape = bubbleShape)
     ) {
         Column(
-            modifier = Modifier.padding(15.dp),
-            verticalArrangement = Arrangement.spacedBy(1.dp)
+            modifier = Modifier.padding(start = 15.dp, end = 47.dp, top = 15.dp, bottom = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(2.dp)
         ) {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(3.dp),
@@ -99,7 +100,7 @@ fun HomeNTooltip(
 
                         Text(
                             text = message,
-                            style = HomeNTheme.typography.suitRegular,
+                            style = HomeNTheme.typography.suitRegular.copy(lineHeight = 1.5.em),
                             fontSize = 12.sp,
                             lineHeight = 18.sp,
                             color = Color.Black,

@@ -9,12 +9,14 @@ class CodeEnterContract {
         data class OnCodeChanged(val code: String) : Event()
         data object OnJoinClick : Event()
         data object OnBackClick : Event()
+        data class OnTooltipToggle(val show: Boolean) : Event()
     }
 
     data class State(
         val code: String = "",
         val isLoading: Boolean = false,
-        val isError: Boolean = false
+        val isError: Boolean = false,
+        val showTooltip: Boolean = true
     ) : ViewState
 
     sealed class Effect : ViewSideEffect {

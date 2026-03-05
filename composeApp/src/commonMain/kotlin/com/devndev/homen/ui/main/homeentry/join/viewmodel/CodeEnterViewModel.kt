@@ -18,6 +18,10 @@ class CodeEnterViewModel : BaseViewModel<CodeEnterContract.Event, CodeEnterContr
             CodeEnterContract.Event.OnBackClick -> {
                 setEffect { CodeEnterContract.Effect.PopBackStack }
             }
+
+            is CodeEnterContract.Event.OnTooltipToggle -> {
+                setState { copy(showTooltip = event.show) }
+            }
         }
     }
 }
