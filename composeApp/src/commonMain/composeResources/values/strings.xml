@@ -35,4 +35,11 @@
     <string name = "created_date">생성일</string>
     <string name = "invite_code">초대코드</string>
     <string name = "confirm_home_member_list_count">n명의 구성원</string>
+    <string name = "enter_homen_btn">Home/n 시작하기</string>
+    <string name = "join_done_title">s 입장 완료</string>
+    <string name = "join_done_subtitle">Home/n 에서 집안일을 N분의 1로 나눠보세요</string>
+    <string name = "join_done_msg1">지난 데이터를 기반으로 공평하게 집안일을 분담해요</string>
+    <string name = "join_done_msg2">이번주 집안일과 진행률을 한눈에 확인해요</string>
+    <string name = "join_done_msg3">말로 길게 설명하지 마세요, 집안일을 간편하게 조율해요</string>
+
 </resources>

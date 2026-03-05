@@ -6,6 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.devndev.homen.ui.main.homeentry.join.CodeEnterScreen
 import com.devndev.homen.ui.main.homeentry.joinconfirm.JoinConfirmScreen
+import com.devndev.homen.ui.main.homeentry.joindone.JoinDoneScreen
 import com.devndev.homen.ui.main.homeentry.main.HomeEntryScreen
 
 fun NavGraphBuilder.homeEntryNav(
@@ -13,10 +14,10 @@ fun NavGraphBuilder.homeEntryNav(
     onNavToMain: () -> Unit
 ) {
     composable(HomeEntryRoute.Selection.route) {
-         HomeEntryScreen(
-             onNavToCreation = { navController.navigate(HomeEntryRoute.Create.route) },
-             onNavToCodeEnter = { navController.navigate(HomeEntryRoute.JoinGraph.route) }
-         )
+        HomeEntryScreen(
+            onNavToCreation = { navController.navigate(HomeEntryRoute.Create.route) },
+            onNavToCodeEnter = { navController.navigate(HomeEntryRoute.JoinGraph.route) }
+        )
     }
 
     composable(HomeEntryRoute.Create.route) {
@@ -36,13 +37,19 @@ fun NavGraphBuilder.homeEntryNav(
 
         composable(HomeEntryRoute.JoinConfirm.route) {
             JoinConfirmScreen(
-                onNavToDone = { navController.navigate(HomeEntryRoute.JoinDone.route) },
+                onNavToDone = {
+                    navController.navigate(HomeEntryRoute.JoinDone.route) {
+                        popUpTo(HomeEntryRoute.JoinGraph.route) {
+                            inclusive = true
+                        }
+                    }
+                },
                 onBackClick = { navController.popBackStack() }
             )
         }
 
         composable(HomeEntryRoute.JoinDone.route) {
-            // JoinDoneScreen(onNavToMain = onNavToMain)
+            JoinDoneScreen(onNavToHome = onNavToMain)
         }
     }
 }
