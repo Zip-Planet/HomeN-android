@@ -9,3 +9,5 @@ val ButtonGray = Color(0xFFE0E3EA)
 val LightGray = Color(0xFFB2B2B2)
 
 val KaKao = Color(0xFFFEE500)
+
+val Blue2 = Color(0xFF5270FE)

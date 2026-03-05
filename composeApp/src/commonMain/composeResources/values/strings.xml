@@ -30,4 +30,9 @@
     <string name = "join_code_tooltip_title">초대코드는 어디서 받나요?</string>
     <string name = "join_code_tooltip_msg1">그룹 관리자가 초대코드를 공유해요</string>
     <string name = "join_code_tooltip_msg2">초대 링크를 받았다면 자동으로 입력돼요</string>
+    <string name = "confirm_home_title">초대받은 집 정보를 확인하세요</string>
+    <string name = "confirm_home_member_count">n명이 살고 있어요</string>
+    <string name = "created_date">생성일</string>
+    <string name = "invite_code">초대코드</string>
+    <string name = "confirm_home_member_list_count">n명의 구성원</string>
 </resources>

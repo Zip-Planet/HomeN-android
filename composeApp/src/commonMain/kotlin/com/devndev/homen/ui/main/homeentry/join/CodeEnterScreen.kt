@@ -83,7 +83,7 @@ fun CodeEnterScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(
-                    top = 42.dp,
+                    top = HomeNTheme.dimensions.topPadding,
                     start = HomeNTheme.dimensions.horizontalPadding,
                     end = HomeNTheme.dimensions.horizontalPadding,
                     bottom = HomeNTheme.dimensions.bottomPadding

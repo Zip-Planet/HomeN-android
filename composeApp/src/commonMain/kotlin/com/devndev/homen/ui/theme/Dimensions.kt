@@ -10,6 +10,7 @@ import com.devndev.homen.getPlatform
  * 플랫폼별 패딩 정의
  */
 data class HomeNDimensions(
+    val topPadding: Dp = 42.dp,
     val horizontalPadding: Dp = 17.dp,
     val bottomPadding: Dp = if (getPlatform() == OsType.IOS) 0.dp else 34.dp
 )
