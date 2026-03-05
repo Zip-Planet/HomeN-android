@@ -2,6 +2,7 @@ package com.devndev.homen.di
 
 import com.devndev.homen.ui.intro.login.viewmodel.LoginViewModel
 import com.devndev.homen.ui.intro.register.viewmodel.RegisterViewModel
+import com.devndev.homen.ui.main.homeentry.joinconfirm.viewmodel.JoinConfirmViewModel
 import com.devndev.homen.ui.main.homeentry.join.viewmodel.CodeEnterViewModel
 import com.devndev.homen.ui.main.homeentry.main.viewmodel.HomeEntryViewModel
 import com.devndev.homen.ui.main.viewmodel.MainViewModel
@@ -17,4 +18,5 @@ val viewModelModule = module {
     viewModelOf(::MainViewModel)
     viewModelOf(::HomeEntryViewModel)
     viewModelOf(::CodeEnterViewModel)
+    viewModelOf(::JoinConfirmViewModel)
 }

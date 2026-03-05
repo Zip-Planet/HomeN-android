@@ -52,7 +52,7 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun HomeEntryScreen(
     onNavToCreation: () -> Unit,
-    onNavToJoin: () -> Unit,
+    onNavToCodeEnter: () -> Unit,
     viewModel: HomeEntryViewModel = koinViewModel()
 ) {
     val uiState by viewModel.viewState
@@ -62,7 +62,7 @@ fun HomeEntryScreen(
         viewModel.effect.collectLatest { effect ->
             when (effect) {
                 is HomeEntryContract.Effect.NavigateToCreateHome -> onNavToCreation()
-                is HomeEntryContract.Effect.NavigateToJoinHome -> onNavToJoin()
+                is HomeEntryContract.Effect.NavigateToJoinHome -> onNavToCodeEnter()
             }
         }
     }
