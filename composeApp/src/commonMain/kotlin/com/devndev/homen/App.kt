@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.devndev.homen.ui.component.NavTransitions
 import com.devndev.homen.ui.intro.navigation.IntroNav
 import com.devndev.homen.ui.main.navigation.MainNav
 import com.devndev.homen.ui.navigation.AppRoute
@@ -18,7 +19,13 @@ fun HomeNApp() {
             navController = rootNavController,
             startDestination = AppRoute.Intro.route
         ) {
-            composable(AppRoute.Intro.route) {
+            composable(
+                AppRoute.Intro.route,
+                enterTransition = NavTransitions.enterTransition,
+                exitTransition = NavTransitions.exitTransition,
+                popEnterTransition = NavTransitions.popEnterTransition,
+                popExitTransition = NavTransitions.popExitTransition
+            ) {
                 IntroNav(onNavToMain = {
                     rootNavController.navigate(AppRoute.Main.route) {
                         popUpTo(AppRoute.Intro.route) { inclusive = true }
