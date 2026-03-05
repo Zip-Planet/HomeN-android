@@ -16,6 +16,7 @@ data class HomeNTypography(
     val suitLight: TextStyle,
     val suitRegular: TextStyle,
     val suitMedium: TextStyle,
+    val suitSemiBold: TextStyle,
     val suitBold: TextStyle,
     val suitExtraBold: TextStyle,
     val suitHeavy: TextStyle
@@ -27,6 +28,7 @@ fun getTypography(): HomeNTypography {
         Font(Res.font.suit_variable, FontWeight.W300),
         Font(Res.font.suit_variable, FontWeight.W400),
         Font(Res.font.suit_variable, FontWeight.W500),
+        Font(Res.font.suit_variable, FontWeight.W600),
         Font(Res.font.suit_variable, FontWeight.W700),
         Font(Res.font.suit_variable, FontWeight.W800),
         Font(Res.font.suit_variable, FontWeight.W900)
@@ -42,6 +44,7 @@ fun getTypography(): HomeNTypography {
         suitLight = baseStyle.copy(fontWeight = FontWeight.W300),
         suitRegular = baseStyle.copy(fontWeight = FontWeight.W400),
         suitMedium = baseStyle.copy(fontWeight = FontWeight.W500),
+        suitSemiBold = baseStyle.copy(fontWeight = FontWeight.W600),
         suitBold = baseStyle.copy(fontWeight = FontWeight.W700),
         suitExtraBold = baseStyle.copy(fontWeight = FontWeight.W800),
         suitHeavy = baseStyle.copy(fontWeight = FontWeight.W900)
@@ -53,6 +56,7 @@ val LocalHomeNTypography = staticCompositionLocalOf {
         suitLight = TextStyle.Default,
         suitRegular = TextStyle.Default,
         suitMedium = TextStyle.Default,
+        suitSemiBold = TextStyle.Default,
         suitBold = TextStyle.Default,
         suitExtraBold = TextStyle.Default,
         suitHeavy = TextStyle.Default
