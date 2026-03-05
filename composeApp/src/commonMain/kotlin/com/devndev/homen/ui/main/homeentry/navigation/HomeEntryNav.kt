@@ -3,7 +3,8 @@ package com.devndev.homen.ui.main.homeentry.navigation
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
-import androidx.navigation.navigation
+import androidx.navigation.compose.navigation
+import com.devndev.homen.ui.component.NavTransitions
 import com.devndev.homen.ui.main.homeentry.join.CodeEnterScreen
 import com.devndev.homen.ui.main.homeentry.joinconfirm.JoinConfirmScreen
 import com.devndev.homen.ui.main.homeentry.joindone.JoinDoneScreen
@@ -14,10 +15,10 @@ fun NavGraphBuilder.homeEntryNav(
     onNavToMain: () -> Unit
 ) {
     composable(HomeEntryRoute.Selection.route) {
-        HomeEntryScreen(
-            onNavToCreation = { navController.navigate(HomeEntryRoute.Create.route) },
-            onNavToCodeEnter = { navController.navigate(HomeEntryRoute.JoinGraph.route) }
-        )
+         HomeEntryScreen(
+             onNavToCreation = { navController.navigate(HomeEntryRoute.Create.route) },
+             onNavToCodeEnter = { navController.navigate(HomeEntryRoute.JoinGraph.route) }
+         )
     }
 
     composable(HomeEntryRoute.Create.route) {
@@ -26,7 +27,11 @@ fun NavGraphBuilder.homeEntryNav(
 
     navigation(
         startDestination = HomeEntryRoute.CodeEnter.route,
-        route = HomeEntryRoute.JoinGraph.route
+        route = HomeEntryRoute.JoinGraph.route,
+        enterTransition = NavTransitions.enterTransition,
+        exitTransition = NavTransitions.exitTransition,
+        popEnterTransition = NavTransitions.popEnterTransition,
+        popExitTransition = NavTransitions.popExitTransition
     ) {
         composable(HomeEntryRoute.CodeEnter.route) {
             CodeEnterScreen(
@@ -49,7 +54,9 @@ fun NavGraphBuilder.homeEntryNav(
         }
 
         composable(HomeEntryRoute.JoinDone.route) {
-            JoinDoneScreen(onNavToHome = onNavToMain)
+            JoinDoneScreen(
+                onNavToHome = onNavToMain
+            )
         }
     }
 }
