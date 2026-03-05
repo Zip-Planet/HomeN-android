@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.devndev.homen.ui.component.NavTransitions
 import com.devndev.homen.ui.intro.login.LoginScreen
 import com.devndev.homen.ui.intro.register.RegisterScreen
 import com.devndev.homen.ui.intro.splash.SplashScreen
@@ -48,18 +49,10 @@ fun IntroNav(
 
         composable(
             IntroRoute.Register.route,
-            enterTransition = {
-                slideInHorizontally(
-                    initialOffsetX = { fullWidth -> fullWidth },
-                    animationSpec = tween(500)
-                )
-            },
-            popExitTransition = {
-                slideOutHorizontally(
-                    targetOffsetX = { fullWidth -> fullWidth },
-                    animationSpec = tween(500)
-                )
-            }
+            enterTransition = NavTransitions.enterTransition,
+            exitTransition = NavTransitions.exitTransition,
+            popEnterTransition = NavTransitions.popEnterTransition,
+            popExitTransition = NavTransitions.popExitTransition
         ) {
             RegisterScreen(
                 onNavToMain = onNavToMain,
