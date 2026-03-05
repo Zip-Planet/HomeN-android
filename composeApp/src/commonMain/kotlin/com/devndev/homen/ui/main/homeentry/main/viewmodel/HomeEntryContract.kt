@@ -1,4 +1,4 @@
-package com.devndev.homen.ui.main.homeentry.viewmodel
+package com.devndev.homen.ui.main.homeentry.main.viewmodel
 
 import com.devndev.homen.core.common.base.ViewEvent
 import com.devndev.homen.core.common.base.ViewSideEffect

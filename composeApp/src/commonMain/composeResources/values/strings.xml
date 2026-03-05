@@ -25,4 +25,9 @@
     <string name = "home_entry_guide_msg">새 집을 생성하거나, 초대받은 집에 참여하세요</string>
     <string name = "create_btn_msg">집 생성하기</string>
     <string name = "join_btn_msg">초대코드로 참여하기</string>
+    <string name = "join_code_title">초대코드를 입력하세요</string>
+    <string name = "join_code_msg">초대받은 집의 6자리 코드를 입력해주세요</string>
+    <string name = "join_code_tooltip_title">초대코드는 어디서 받나요?</string>
+    <string name = "join_code_tooltip_msg1">그룹 관리자가 초대코드를 공유해요</string>
+    <string name = "join_code_tooltip_msg2">초대 링크를 받았다면 자동으로 입력돼요</string>
 </resources>
