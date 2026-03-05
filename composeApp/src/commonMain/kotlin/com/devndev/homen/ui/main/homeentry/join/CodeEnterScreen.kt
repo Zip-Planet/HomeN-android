@@ -55,7 +55,7 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun CodeEnterScreen(
-    onNavToMain: () -> Unit,
+    onNavToConfirm: () -> Unit,
     onBackClick: () -> Unit,
     viewModel: CodeEnterViewModel = koinViewModel()
 ) {
@@ -64,7 +64,7 @@ fun CodeEnterScreen(
     LaunchedEffect(viewModel.effect) {
         viewModel.effect.collectLatest { effect ->
             when (effect) {
-                is CodeEnterContract.Effect.NavigateToMain -> onNavToMain()
+                is CodeEnterContract.Effect.NavigateToMain -> onNavToConfirm()
                 is CodeEnterContract.Effect.PopBackStack -> onBackClick()
             }
         }
@@ -83,7 +83,7 @@ fun CodeEnterScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(
-                    top = 42.dp,
+                    top = HomeNTheme.dimensions.topPadding,
                     start = HomeNTheme.dimensions.horizontalPadding,
                     end = HomeNTheme.dimensions.horizontalPadding,
                     bottom = HomeNTheme.dimensions.bottomPadding

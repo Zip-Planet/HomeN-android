@@ -50,8 +50,8 @@ fun HomeNTooltip(
             .shadow(
                 elevation = 20.dp,
                 shape = bubbleShape,
-                ambientColor = Color.Black.copy(alpha = 0.1f),
-                spotColor = Color.Black.copy(alpha = 0.1f)
+                ambientColor = Color.Black.copy(alpha = 0.5f),
+                spotColor = Color.Black.copy(alpha = 0.5f)
             )
             .background(color = Color.White, shape = bubbleShape)
     ) {
