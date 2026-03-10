@@ -15,8 +15,8 @@ import com.devndev.homen.ui.component.MainBottomBar
 import com.devndev.homen.ui.main.assignment.navigation.assignmentNav
 import com.devndev.homen.ui.main.board.navigation.boardNav
 import com.devndev.homen.ui.main.home.navigation.homeNav
-import com.devndev.homen.ui.main.homeentry.navigation.HomeEntryRoute
-import com.devndev.homen.ui.main.homeentry.navigation.homeEntryNav
+import com.devndev.homen.ui.main.homeintro.navigation.HomeIntroRoute
+import com.devndev.homen.ui.main.homeintro.navigation.homeIntroNav
 import com.devndev.homen.ui.main.mypage.navigation.myPageNav
 import com.devndev.homen.ui.main.present.navigation.presentNav
 import com.devndev.homen.ui.main.viewmodel.MainContract
@@ -33,13 +33,13 @@ fun MainNav(
 
     val uiState by viewModel.viewState
 
-    val startDestination = if (uiState.hasHome) BottomNavItem.Home.route else HomeEntryRoute.Selection.route
+    val startDestination = if (uiState.hasHome) BottomNavItem.Home.route else HomeIntroRoute.Selection.route
 
-    val isHomeEntryRoute = currentRoute?.startsWith("entry_") == true
+    val isHomeIntroRoute = currentRoute?.startsWith("intro_") == true
 
     Scaffold(
         bottomBar = {
-            if (uiState.hasHome && !isHomeEntryRoute) {
+            if (uiState.hasHome && !isHomeIntroRoute) {
                 MainBottomBar(navController = mainNavController)
             }
         },
@@ -48,14 +48,14 @@ fun MainNav(
         NavHost(
             navController = mainNavController,
             startDestination = startDestination,
-            modifier = Modifier.padding(if (uiState.hasHome && !isHomeEntryRoute) paddingValues else PaddingValues(0.dp))
+            modifier = Modifier.padding(if (uiState.hasHome && !isHomeIntroRoute) paddingValues else PaddingValues(0.dp))
         ) {
-            homeEntryNav(
+            homeIntroNav(
                 navController = mainNavController,
                 onNavToMain = {
                     viewModel.setEvent(MainContract.Event.OnHomeEntryComplete(hasHome = true))
                     mainNavController.navigate(BottomNavItem.Home.route) {
-                        popUpTo(HomeEntryRoute.Selection.route) { inclusive = true }
+                        popUpTo(HomeIntroRoute.Selection.route) { inclusive = true }
                     }
                 }
             )

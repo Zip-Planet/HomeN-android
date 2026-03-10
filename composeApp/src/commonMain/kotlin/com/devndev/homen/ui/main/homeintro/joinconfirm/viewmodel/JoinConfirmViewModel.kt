@@ -1,4 +1,4 @@
-package com.devndev.homen.ui.main.homeentry.joinconfirm.viewmodel
+package com.devndev.homen.ui.main.homeintro.joinconfirm.viewmodel
 
 import com.devndev.homen.core.common.base.BaseViewModel
 

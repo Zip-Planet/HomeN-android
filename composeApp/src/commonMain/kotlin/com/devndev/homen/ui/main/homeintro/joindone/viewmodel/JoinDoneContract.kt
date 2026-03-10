@@ -1,13 +1,12 @@
-package com.devndev.homen.ui.main.homeentry.main.viewmodel
+package com.devndev.homen.ui.main.homeintro.joindone.viewmodel
 
 import com.devndev.homen.core.common.base.ViewEvent
 import com.devndev.homen.core.common.base.ViewSideEffect
 import com.devndev.homen.core.common.base.ViewState
 
-class HomeEntryContract {
+class JoinDoneContract {
     sealed class Event : ViewEvent {
-        data object OnCreateHomeClick : Event()
-        data object OnJoinHomeClick : Event()
+        data object OnConfirmClick : Event()
     }
 
     data class State(
@@ -15,7 +14,6 @@ class HomeEntryContract {
     ) : ViewState
 
     sealed class Effect : ViewSideEffect {
-        data object NavigateToCreateHome : Effect()
-        data object NavigateToJoinHome : Effect()
+        data object NavigateToHome : Effect()
     }
 }
