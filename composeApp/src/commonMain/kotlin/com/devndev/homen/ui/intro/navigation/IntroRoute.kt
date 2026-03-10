@@ -1,7 +1,15 @@
 package com.devndev.homen.ui.intro.navigation
 
-sealed class IntroRoute(val route: String) {
-    data object Splash : IntroRoute("splash")
-    data object Login : IntroRoute("login")
-    data object Register : IntroRoute("register")
+import kotlinx.serialization.Serializable
+
+@Serializable
+sealed interface IntroRoute {
+    @Serializable
+    data object Splash : IntroRoute
+    
+    @Serializable
+    data object Login : IntroRoute
+    
+    @Serializable
+    data object Register : IntroRoute
 }
