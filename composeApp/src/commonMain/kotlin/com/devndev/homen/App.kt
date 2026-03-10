@@ -17,22 +17,21 @@ fun HomeNApp() {
 
         NavHost(
             navController = rootNavController,
-            startDestination = AppRoute.Intro.route
+            startDestination = AppRoute.Intro
         ) {
-            composable(
-                AppRoute.Intro.route,
+            composable<AppRoute.Intro>(
                 enterTransition = NavTransitions.enterTransition,
                 exitTransition = NavTransitions.exitTransition,
                 popEnterTransition = NavTransitions.popEnterTransition,
                 popExitTransition = NavTransitions.popExitTransition
             ) {
                 IntroNav(onNavToMain = {
-                    rootNavController.navigate(AppRoute.Main.route) {
-                        popUpTo(AppRoute.Intro.route) { inclusive = true }
+                    rootNavController.navigate(AppRoute.Main) {
+                        popUpTo<AppRoute.Intro> { inclusive = true }
                     }
                 })
             }
-            composable(AppRoute.Main.route) {
+            composable<AppRoute.Main> {
                 MainNav()
             }
         }
