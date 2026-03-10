@@ -14,46 +14,43 @@ fun NavGraphBuilder.homeIntroNav(
     navController: NavHostController,
     onNavToMain: () -> Unit
 ) {
-    composable(HomeIntroRoute.Selection.route) {
+    composable<HomeIntroRoute.Selection> {
          HomeIntroScreen(
-             onNavToCreation = { navController.navigate(HomeIntroRoute.Create.route) },
-             onNavToCodeEnter = { navController.navigate(HomeIntroRoute.JoinGraph.route) }
+             onNavToCreation = { navController.navigate(HomeIntroRoute.Create) },
+             onNavToCodeEnter = { navController.navigate(HomeIntroRoute.JoinGraph) }
          )
     }
 
-    composable(HomeIntroRoute.Create.route) {
+    composable<HomeIntroRoute.Create> {
         // TODO: CreateHomeScreen 구현 예정
     }
 
-    navigation(
-        startDestination = HomeIntroRoute.CodeEnter.route,
-        route = HomeIntroRoute.JoinGraph.route,
+    navigation<HomeIntroRoute.JoinGraph>(
+        startDestination = HomeIntroRoute.CodeEnter,
         enterTransition = NavTransitions.enterTransition,
         exitTransition = NavTransitions.exitTransition,
         popEnterTransition = NavTransitions.popEnterTransition,
         popExitTransition = NavTransitions.popExitTransition
     ) {
-        composable(HomeIntroRoute.CodeEnter.route) {
+        composable<HomeIntroRoute.CodeEnter> {
             CodeEnterScreen(
-                onNavToConfirm = { navController.navigate(HomeIntroRoute.JoinConfirm.route) },
+                onNavToConfirm = { navController.navigate(HomeIntroRoute.JoinConfirm) },
                 onBackClick = { navController.popBackStack() }
             )
         }
 
-        composable(HomeIntroRoute.JoinConfirm.route) {
+        composable<HomeIntroRoute.JoinConfirm> {
             JoinConfirmScreen(
                 onNavToDone = {
-                    navController.navigate(HomeIntroRoute.JoinDone.route) {
-                        popUpTo(HomeIntroRoute.JoinGraph.route) {
-                            inclusive = true
-                        }
+                    navController.navigate(HomeIntroRoute.JoinDone) {
+                        popUpTo<HomeIntroRoute.JoinGraph> { inclusive = true }
                     }
                 },
                 onBackClick = { navController.popBackStack() }
             )
         }
 
-        composable(HomeIntroRoute.JoinDone.route) {
+        composable<HomeIntroRoute.JoinDone> {
             JoinDoneScreen(
                 onNavToHome = onNavToMain
             )

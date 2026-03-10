@@ -6,7 +6,7 @@ import com.devndev.homen.ui.main.list.ListScreen
 import com.devndev.homen.ui.main.navigation.BottomNavItem
 
 fun NavGraphBuilder.boardNav() {
-    composable(BottomNavItem.Board.route) {
+    composable<BottomNavItem.Board> {
         ListScreen()
     }
 }

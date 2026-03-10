@@ -6,7 +6,7 @@ import com.devndev.homen.ui.main.mypage.MyPageScreen
 import com.devndev.homen.ui.main.navigation.BottomNavItem
 
 fun NavGraphBuilder.myPageNav() {
-    composable(BottomNavItem.MyPage.route) {
+    composable<BottomNavItem.MyPage> {
         MyPageScreen()
     }
 }

@@ -14,6 +14,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.kotlinSerialization) // 직렬화 플러그인 추가
 }
 
 kotlin {
@@ -51,13 +52,14 @@ kotlin {
             implementation(libs.compose.material3)
             implementation(libs.compose.ui)
             implementation(libs.compose.components.resources)
-            implementation(libs.compose.components.uiToolingPreview) // 공통 프리뷰 의존성 추가
+            implementation(libs.compose.components.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
             implementation(libs.androidx.navigation.compose)
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
             implementation(libs.koin.compose.viewmodel)
+            implementation(libs.kotlinx.serialization.json) // JSON 라이브러리 보장
         }
     }
 }
@@ -73,7 +75,6 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        // Manifest와 Kotlin 코드에서 사용할 변수 설정
         manifestPlaceholders["kakaoAppKey"] = kakaoAppKey
         buildConfigField("String", "KAKAO_APP_KEY", "\"$kakaoAppKey\"")
     }

@@ -6,16 +6,44 @@ import homen.composeapp.generated.resources.clipboard_icon
 import homen.composeapp.generated.resources.home_icon
 import homen.composeapp.generated.resources.my_icon
 import homen.composeapp.generated.resources.present_icon
+import kotlinx.serialization.Serializable
 import org.jetbrains.compose.resources.DrawableResource
 
-sealed class BottomNavItem(
-    val title: String,
-    val route: String,
-    val icon: DrawableResource
-) {
-    data object Home : BottomNavItem("홈", "home", Res.drawable.home_icon)
-    data object Board : BottomNavItem("보드", "board", Res.drawable.clipboard_icon)
-    data object Assignment : BottomNavItem("분담", "assignment", Res.drawable.chart_icon)
-    data object Present: BottomNavItem("선물", "present", Res.drawable.present_icon)
-    data object MyPage : BottomNavItem("마이", "mypage", Res.drawable.my_icon)
+/**
+ * 바텀 네비게이션 아이템 및 경로 정의
+ */
+@Serializable
+sealed class BottomNavItem {
+    abstract val title: String
+    abstract val icon: DrawableResource
+
+    @Serializable
+    data object Home : BottomNavItem() {
+        override val title: String = "홈"
+        override val icon: DrawableResource = Res.drawable.home_icon
+    }
+
+    @Serializable
+    data object Board : BottomNavItem() {
+        override val title: String = "보드"
+        override val icon: DrawableResource = Res.drawable.clipboard_icon
+    }
+
+    @Serializable
+    data object Assignment : BottomNavItem() {
+        override val title: String = "분담"
+        override val icon: DrawableResource = Res.drawable.chart_icon
+    }
+
+    @Serializable
+    data object Present : BottomNavItem() {
+        override val title: String = "리워드"
+        override val icon: DrawableResource = Res.drawable.present_icon
+    }
+
+    @Serializable
+    data object MyPage : BottomNavItem() {
+        override val title: String = "마이"
+        override val icon: DrawableResource = Res.drawable.my_icon
+    }
 }

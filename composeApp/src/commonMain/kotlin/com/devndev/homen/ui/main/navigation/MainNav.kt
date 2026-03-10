@@ -8,6 +8,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -29,13 +30,15 @@ fun MainNav(
 ) {
     val mainNavController = rememberNavController()
     val navBackStackEntry by mainNavController.currentBackStackEntryAsState()
-    val currentRoute = navBackStackEntry?.destination?.route
+    val currentDestination = navBackStackEntry?.destination
 
     val uiState by viewModel.viewState
 
-    val startDestination = if (uiState.hasHome) BottomNavItem.Home.route else HomeIntroRoute.Selection.route
+    val startDestination: Any = if (uiState.hasHome) BottomNavItem.Home else HomeIntroRoute.Selection
 
-    val isHomeIntroRoute = currentRoute?.startsWith("intro_") == true
+    val isHomeIntroRoute = currentDestination?.hasRoute<HomeIntroRoute.Selection>() == true ||
+            currentDestination?.hasRoute<HomeIntroRoute.JoinGraph>() == true ||
+            currentDestination?.hasRoute<HomeIntroRoute.Create>() == true
 
     Scaffold(
         bottomBar = {
@@ -54,8 +57,8 @@ fun MainNav(
                 navController = mainNavController,
                 onNavToMain = {
                     viewModel.setEvent(MainContract.Event.OnHomeEntryComplete(hasHome = true))
-                    mainNavController.navigate(BottomNavItem.Home.route) {
-                        popUpTo(HomeIntroRoute.Selection.route) { inclusive = true }
+                    mainNavController.navigate(BottomNavItem.Home) {
+                        popUpTo<HomeIntroRoute.Selection> { inclusive = true }
                     }
                 }
             )

@@ -1,6 +1,12 @@
 package com.devndev.homen.ui.navigation
 
-sealed class AppRoute(val route: String) {
-    data object Intro : AppRoute("Intro")
-    data object Main : AppRoute("main")
+import kotlinx.serialization.Serializable
+
+@Serializable
+sealed interface AppRoute {
+    @Serializable
+    data object Intro : AppRoute
+    
+    @Serializable
+    data object Main : AppRoute
 }
