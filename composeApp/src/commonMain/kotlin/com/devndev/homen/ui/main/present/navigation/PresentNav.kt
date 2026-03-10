@@ -6,7 +6,7 @@ import com.devndev.homen.ui.main.home.HomeScreen
 import com.devndev.homen.ui.main.navigation.BottomNavItem
 
 fun NavGraphBuilder.presentNav() {
-    composable(BottomNavItem.Present.route) {
+    composable<BottomNavItem.Present> {
         HomeScreen()
     }
 }

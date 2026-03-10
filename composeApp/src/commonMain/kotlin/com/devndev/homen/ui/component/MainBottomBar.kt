@@ -24,6 +24,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.NavDestination.Companion.hasRoute
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.devndev.homen.OsType
 import com.devndev.homen.getPlatform
@@ -43,7 +45,7 @@ fun MainBottomBar(navController: NavController) {
     )
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentRoute = navBackStackEntry?.destination?.route
+    val currentDestination = navBackStackEntry?.destination
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
@@ -64,13 +66,13 @@ fun MainBottomBar(navController: NavController) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(80.dp) // 실제 아이콘 영역 높이 고정
+                    .height(80.dp)
                     .padding(top = 10.dp),
                 horizontalArrangement = Arrangement.SpaceAround,
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 items.forEach { item ->
-                    val isSelected = currentRoute == item.route
+                    val isSelected = currentDestination?.hasRoute(item::class) == true
                     
                     Column(
                         modifier = Modifier
@@ -79,10 +81,10 @@ fun MainBottomBar(navController: NavController) {
                                 interactionSource = remember { MutableInteractionSource() },
                                 indication = null, 
                                 onClick = {
-                                    if (currentRoute != item.route) {
-                                        navController.navigate(item.route) {
-                                            navController.graph.startDestinationRoute?.let { route ->
-                                                popUpTo(route) { saveState = true }
+                                    if (!isSelected) {
+                                        navController.navigate(item) {
+                                            popUpTo(navController.graph.findStartDestination().id) {
+                                                saveState = true
                                             }
                                             launchSingleTop = true
                                             restoreState = true
