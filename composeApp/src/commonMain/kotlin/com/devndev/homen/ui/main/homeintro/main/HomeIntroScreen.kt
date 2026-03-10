@@ -1,4 +1,4 @@
-package com.devndev.homen.ui.main.homeentry.main
+package com.devndev.homen.ui.main.homeintro.main
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -30,8 +30,8 @@ import androidx.compose.ui.unit.sp
 import com.devndev.homen.ui.component.HomeNButton
 import com.devndev.homen.ui.component.HomeNScreen
 import com.devndev.homen.ui.component.TitleTopBar
-import com.devndev.homen.ui.main.homeentry.main.viewmodel.HomeEntryContract
-import com.devndev.homen.ui.main.homeentry.main.viewmodel.HomeEntryViewModel
+import com.devndev.homen.ui.main.homeintro.main.viewmodel.HomeIntroContract
+import com.devndev.homen.ui.main.homeintro.main.viewmodel.HomeIntroViewModel
 import com.devndev.homen.ui.theme.HomeNTheme
 import homen.composeapp.generated.resources.Res
 import homen.composeapp.generated.resources.create_btn_msg
@@ -50,10 +50,10 @@ import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun HomeEntryScreen(
+fun HomeIntroScreen(
     onNavToCreation: () -> Unit,
     onNavToCodeEnter: () -> Unit,
-    viewModel: HomeEntryViewModel = koinViewModel()
+    viewModel: HomeIntroViewModel = koinViewModel()
 ) {
     val uiState by viewModel.viewState
     var selectedOption by remember { mutableStateOf(0) }
@@ -61,8 +61,8 @@ fun HomeEntryScreen(
     LaunchedEffect(viewModel.effect) {
         viewModel.effect.collectLatest { effect ->
             when (effect) {
-                is HomeEntryContract.Effect.NavigateToCreateHome -> onNavToCreation()
-                is HomeEntryContract.Effect.NavigateToJoinHome -> onNavToCodeEnter()
+                is HomeIntroContract.Effect.NavigateToCreateHome -> onNavToCreation()
+                is HomeIntroContract.Effect.NavigateToJoinHome -> onNavToCodeEnter()
             }
         }
     }
@@ -144,9 +144,9 @@ fun HomeEntryScreen(
                         text = stringResource(Res.string.next_button),
                         onClick = {
                             if (selectedOption == 1) {
-                                viewModel.setEvent(HomeEntryContract.Event.OnCreateHomeClick)
+                                viewModel.setEvent(HomeIntroContract.Event.OnCreateHomeClick)
                             } else if (selectedOption == 2) {
-                                viewModel.setEvent(HomeEntryContract.Event.OnJoinHomeClick)
+                                viewModel.setEvent(HomeIntroContract.Event.OnJoinHomeClick)
                             }
                         },
                         enabled = true

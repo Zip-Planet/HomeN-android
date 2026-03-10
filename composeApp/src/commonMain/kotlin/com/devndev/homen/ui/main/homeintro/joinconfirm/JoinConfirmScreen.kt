@@ -1,4 +1,4 @@
-package com.devndev.homen.ui.main.homeentry.joinconfirm
+package com.devndev.homen.ui.main.homeintro.joinconfirm
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -28,8 +28,8 @@ import com.devndev.homen.core.domain.model.home.User
 import com.devndev.homen.ui.component.HomeNButton
 import com.devndev.homen.ui.component.HomeNScreen
 import com.devndev.homen.ui.component.TitleTopBar
-import com.devndev.homen.ui.main.homeentry.joinconfirm.viewmodel.JoinConfirmContract
-import com.devndev.homen.ui.main.homeentry.joinconfirm.viewmodel.JoinConfirmViewModel
+import com.devndev.homen.ui.main.homeintro.joinconfirm.viewmodel.JoinConfirmContract
+import com.devndev.homen.ui.main.homeintro.joinconfirm.viewmodel.JoinConfirmViewModel
 import com.devndev.homen.ui.theme.BackgroundGray
 import com.devndev.homen.ui.theme.Blue2
 import com.devndev.homen.ui.theme.HomeNTheme

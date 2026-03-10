@@ -1,4 +1,4 @@
-package com.devndev.homen.ui.main.homeentry.join
+package com.devndev.homen.ui.main.homeintro.join
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -36,8 +36,8 @@ import com.devndev.homen.ui.component.HomeNButton
 import com.devndev.homen.ui.component.HomeNScreen
 import com.devndev.homen.ui.component.HomeNTooltip
 import com.devndev.homen.ui.component.TitleTopBar
-import com.devndev.homen.ui.main.homeentry.join.viewmodel.CodeEnterContract
-import com.devndev.homen.ui.main.homeentry.join.viewmodel.CodeEnterViewModel
+import com.devndev.homen.ui.main.homeintro.join.viewmodel.CodeEnterContract
+import com.devndev.homen.ui.main.homeintro.join.viewmodel.CodeEnterViewModel
 import com.devndev.homen.ui.theme.HomeNTheme
 import homen.composeapp.generated.resources.Res
 import homen.composeapp.generated.resources.home_entry_title

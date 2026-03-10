@@ -1,4 +1,4 @@
-package com.devndev.homen.ui.main.homeentry.join.viewmodel
+package com.devndev.homen.ui.main.homeintro.join.viewmodel
 
 import com.devndev.homen.core.common.base.BaseViewModel
 

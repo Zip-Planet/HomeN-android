@@ -1,4 +1,4 @@
-package com.devndev.homen.ui.main.homeentry.joindone
+package com.devndev.homen.ui.main.homeintro.joindone
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -23,8 +23,8 @@ import com.devndev.homen.OsType
 import com.devndev.homen.getPlatform
 import com.devndev.homen.ui.component.HomeNButton
 import com.devndev.homen.ui.component.HomeNScreen
-import com.devndev.homen.ui.main.homeentry.joindone.viewmodel.JoinDoneContract
-import com.devndev.homen.ui.main.homeentry.joindone.viewmodel.JoinDoneViewModel
+import com.devndev.homen.ui.main.homeintro.joindone.viewmodel.JoinDoneContract
+import com.devndev.homen.ui.main.homeintro.joindone.viewmodel.JoinDoneViewModel
 import com.devndev.homen.ui.theme.DarkGray
 import com.devndev.homen.ui.theme.HomeNTheme
 import homen.composeapp.generated.resources.Res
