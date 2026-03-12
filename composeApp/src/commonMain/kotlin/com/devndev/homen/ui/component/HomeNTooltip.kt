@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -20,11 +21,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
+import com.devndev.homen.ui.main.homeintro.join.viewmodel.CodeEnterContract
 import com.devndev.homen.ui.theme.HomeNTheme
 import homen.composeapp.generated.resources.Res
 import homen.composeapp.generated.resources.light_bulb
@@ -126,6 +129,29 @@ fun HomeNTooltip(
                     onCloseClick()
                 },
             tint = Color.Black
+        )
+    }
+}
+
+@Composable
+fun TooltipButton(
+    onClick: () -> Unit
+) {
+    Box(
+        modifier = Modifier
+            .size(25.dp)
+            .clip(CircleShape)
+            .background(Color.Black)
+            .clickable {
+                onClick()
+            },
+        contentAlignment = Alignment.Center
+    ) {
+        Icon(
+            painter = painterResource(Res.drawable.light_bulb),
+            contentDescription = null,
+            modifier = Modifier.size(15.dp),
+            tint = Color.White
         )
     }
 }
