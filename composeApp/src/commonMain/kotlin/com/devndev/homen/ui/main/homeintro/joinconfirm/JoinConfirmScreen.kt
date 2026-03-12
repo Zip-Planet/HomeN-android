@@ -82,7 +82,7 @@ fun JoinConfirmScreen(
         },
         isLoading = uiState.isLoading
     ) {
-        Column(
+        Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(
@@ -92,153 +92,162 @@ fun JoinConfirmScreen(
                     bottom = HomeNTheme.dimensions.bottomPadding
                 )
         ) {
-            Text(
-                text = stringResource(Res.string.confirm_home_title),
-                style = HomeNTheme.typography.suitBold,
-                fontSize = 18.sp,
-                color = Color.Black
-            )
-
-            Spacer(modifier = Modifier.height(35.dp))
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(6.dp)
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
             ) {
-                Box(
-                    modifier = Modifier
-                        .size(36.dp)
-                        .clip(CircleShape)
-                        .background(Color.White)
-                ) {
-                    // TODO 집 아이콘 설정
-                    Icon(
-                        painter = painterResource(Res.drawable.home1_small_icon),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .size(24.dp)
-                            .align(Alignment.Center),
-                        tint = Color.Unspecified
-                    )
-                }
-
                 Text(
-                    text = "골든빌401",
-                    style = HomeNTheme.typography.suitExtraBold,
+                    text = stringResource(Res.string.confirm_home_title),
+                    style = HomeNTheme.typography.suitBold,
                     fontSize = 18.sp,
                     color = Color.Black
                 )
 
-                Text(
-                    text = stringResource(Res.string.confirm_home_member_count).replace("n", "3"),
-                    style = HomeNTheme.typography.suitRegular,
-                    fontSize = 12.sp,
-                    color = Color.Black
-                )
-            }
+                Spacer(modifier = Modifier.height(35.dp))
 
-            Spacer(modifier = Modifier.height(4.dp))
-
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(9.dp)
-            ) {
-                Row(
-                    modifier = Modifier
-                        .background(color = Color.White, shape = RoundedCornerShape(28.dp))
-                        .padding(vertical = 5.dp, horizontal = 6.dp),
-                    horizontalArrangement = Arrangement.spacedBy(3.dp)
-                ) {
-                    Text(
-                        text = stringResource(Res.string.created_date),
-                        style = HomeNTheme.typography.suitRegular,
-                        fontSize = 12.sp,
-                        color = Color.Black
-                    )
-
-                    Text(
-                        text = "·",
-                        style = HomeNTheme.typography.suitBold,
-                        fontSize = 12.sp,
-                        color = Color.Black
-                    )
-
-                    Text(
-                        text = "2026년 1월 2일",
-                        style = HomeNTheme.typography.suitBold,
-                        fontSize = 12.sp,
-                        color = Color.Black
-                    )
-                }
-
-                Row(
-                    modifier = Modifier
-                        .background(color = Color.White, shape = RoundedCornerShape(28.dp))
-                        .padding(vertical = 5.dp, horizontal = 6.dp),
-                    horizontalArrangement = Arrangement.spacedBy(3.dp)
-                ) {
-                    Text(
-                        text = stringResource(Res.string.invite_code),
-                        style = HomeNTheme.typography.suitRegular,
-                        fontSize = 12.sp,
-                        color = Color.Black
-                    )
-
-                    Text(
-                        text = "·",
-                        style = HomeNTheme.typography.suitBold,
-                        fontSize = 12.sp,
-                        color = Color.Black
-                    )
-
-                    Text(
-                        text = "ABC123",
-                        style = HomeNTheme.typography.suitBold,
-                        fontSize = 12.sp,
-                        color = Color.Black
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(15.dp))
-
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(color = Color.White, shape = RoundedCornerShape(10.dp))
-                    .padding(vertical = 20.dp, horizontal = 15.dp),
-                verticalArrangement = Arrangement.spacedBy(15.dp)
-            ) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(6.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(6.dp)
                 ) {
-                    Icon(
-                        painter = painterResource(Res.drawable.user_plus),
-                        contentDescription = null,
-                        modifier = Modifier.size(15.dp),
-                    )
-                    
+                    Box(
+                        modifier = Modifier
+                            .size(36.dp)
+                            .clip(CircleShape)
+                            .background(Color.White)
+                    ) {
+                        // TODO 집 아이콘 설정
+                        Icon(
+                            painter = painterResource(Res.drawable.home1_small_icon),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(24.dp)
+                                .align(Alignment.Center),
+                            tint = Color.Unspecified
+                        )
+                    }
+
                     Text(
-                        text = stringResource(Res.string.confirm_home_member_list_count).replace("n", "3"),
-                        style = HomeNTheme.typography.suitBold,
-                        fontSize = 14.sp,
+                        text = "골든빌401",
+                        style = HomeNTheme.typography.suitExtraBold,
+                        fontSize = 18.sp,
+                        color = Color.Black
+                    )
+
+                    Text(
+                        text = stringResource(Res.string.confirm_home_member_count).replace(
+                            "n",
+                            "3"
+                        ),
+                        style = HomeNTheme.typography.suitRegular,
+                        fontSize = 12.sp,
                         color = Color.Black
                     )
                 }
 
-                tempMembers.sortedByDescending { it.isManager }.forEach {
-                    UserSimpleInfo(it)
+                Spacer(modifier = Modifier.height(4.dp))
+
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(9.dp)
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .background(color = Color.White, shape = RoundedCornerShape(28.dp))
+                            .padding(vertical = 5.dp, horizontal = 6.dp),
+                        horizontalArrangement = Arrangement.spacedBy(3.dp)
+                    ) {
+                        Text(
+                            text = stringResource(Res.string.created_date),
+                            style = HomeNTheme.typography.suitRegular,
+                            fontSize = 12.sp,
+                            color = Color.Black
+                        )
+
+                        Text(
+                            text = "·",
+                            style = HomeNTheme.typography.suitBold,
+                            fontSize = 12.sp,
+                            color = Color.Black
+                        )
+
+                        Text(
+                            text = "2026년 1월 2일",
+                            style = HomeNTheme.typography.suitBold,
+                            fontSize = 12.sp,
+                            color = Color.Black
+                        )
+                    }
+
+                    Row(
+                        modifier = Modifier
+                            .background(color = Color.White, shape = RoundedCornerShape(28.dp))
+                            .padding(vertical = 5.dp, horizontal = 6.dp),
+                        horizontalArrangement = Arrangement.spacedBy(3.dp)
+                    ) {
+                        Text(
+                            text = stringResource(Res.string.invite_code),
+                            style = HomeNTheme.typography.suitRegular,
+                            fontSize = 12.sp,
+                            color = Color.Black
+                        )
+
+                        Text(
+                            text = "·",
+                            style = HomeNTheme.typography.suitBold,
+                            fontSize = 12.sp,
+                            color = Color.Black
+                        )
+
+                        Text(
+                            text = "ABC123",
+                            style = HomeNTheme.typography.suitBold,
+                            fontSize = 12.sp,
+                            color = Color.Black
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(15.dp))
+
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(color = Color.White, shape = RoundedCornerShape(10.dp))
+                        .padding(vertical = 20.dp, horizontal = 15.dp),
+                    verticalArrangement = Arrangement.spacedBy(15.dp)
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(6.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            painter = painterResource(Res.drawable.user_plus),
+                            contentDescription = null,
+                            modifier = Modifier.size(15.dp),
+                        )
+
+                        Text(
+                            text = stringResource(Res.string.confirm_home_member_list_count).replace(
+                                "n",
+                                "3"
+                            ),
+                            style = HomeNTheme.typography.suitBold,
+                            fontSize = 14.sp,
+                            color = Color.Black
+                        )
+                    }
+
+                    tempMembers.sortedByDescending { it.isManager }.forEach {
+                        UserSimpleInfo(it)
+                    }
                 }
             }
-            
-            Spacer(modifier = Modifier.weight(1f))
-
             HomeNButton(
                 text = stringResource(Res.string.home_entry_title),
                 onClick = { viewModel.setEvent(JoinConfirmContract.Event.OnJoinClick) },
-                enabled = true
+                enabled = true,
+                modifier = Modifier.align(Alignment.BottomCenter)
             )
         }
     }
