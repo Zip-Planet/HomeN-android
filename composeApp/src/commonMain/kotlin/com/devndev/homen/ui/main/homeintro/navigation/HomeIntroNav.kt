@@ -14,15 +14,36 @@ fun NavGraphBuilder.homeIntroNav(
     navController: NavHostController,
     onNavToMain: () -> Unit
 ) {
+    // 1. 집 입장/생성 선택 메인
     composable<HomeIntroRoute.Selection> {
          HomeIntroScreen(
-             onNavToCreation = { navController.navigate(HomeIntroRoute.Create) },
+             onNavToCreation = { navController.navigate(HomeIntroRoute.CreateGraph) },
              onNavToCodeEnter = { navController.navigate(HomeIntroRoute.JoinGraph) }
          )
     }
 
-    composable<HomeIntroRoute.Create> {
-        // TODO: CreateHomeScreen 구현 예정
+    // 2. 집 생성하기 흐름 (중첩 네비게이션)
+    navigation<HomeIntroRoute.CreateGraph>(
+        startDestination = HomeIntroRoute.CreateOnboarding,
+        enterTransition = NavTransitions.enterTransition,
+        exitTransition = NavTransitions.exitTransition,
+        popEnterTransition = NavTransitions.popEnterTransition,
+        popExitTransition = NavTransitions.popExitTransition
+    ) {
+        composable<HomeIntroRoute.CreateOnboarding> {
+            // TODO: CreateOnboardingScreen 구현
+        }
+
+        composable<HomeIntroRoute.CreateProfile> {
+            // TODO: CreateProfileScreen 구현
+        }
+
+        composable<HomeIntroRoute.CreatePack> {
+        }
+
+        composable<HomeIntroRoute.CreateReward> {
+            // TODO: CreateRewardScreen 구현
+        }
     }
 
     navigation<HomeIntroRoute.JoinGraph>(

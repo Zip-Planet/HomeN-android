@@ -9,19 +9,26 @@ import kotlinx.serialization.Serializable
 sealed interface HomeIntroRoute {
     @Serializable
     data object Selection : HomeIntroRoute
+
+    @Serializable
+    data object CreateGraph : HomeIntroRoute
     
     @Serializable
-    data object Create : HomeIntroRoute
+    data object CreateOnboarding : HomeIntroRoute
+    
+    @Serializable
+    data object CreateProfile : HomeIntroRoute
+    @Serializable
+    data object CreatePack : HomeIntroRoute
+    @Serializable
+    data object CreateReward : HomeIntroRoute
     
     @Serializable
     data object JoinGraph : HomeIntroRoute
-    
     @Serializable
     data object CodeEnter : HomeIntroRoute
-    
     @Serializable
     data object JoinConfirm : HomeIntroRoute
-    
     @Serializable
     data object JoinDone : HomeIntroRoute
 }
