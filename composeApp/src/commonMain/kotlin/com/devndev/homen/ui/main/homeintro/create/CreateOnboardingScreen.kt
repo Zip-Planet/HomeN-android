@@ -70,7 +70,6 @@ fun CreateOnboardingScreen(
             when (effect) {
                 is CreateHomeContract.Effect.NavToNext -> onNextClick()
                 is CreateHomeContract.Effect.PopBackStack -> onBackClick()
-                else -> {}
             }
         }
     }

@@ -11,6 +11,9 @@ class CreateHomeViewModel : BaseViewModel<CreateHomeContract.Event, CreateHomeCo
             is CreateHomeContract.Event.OnHomeNameChanged -> {
                 setState { copy(homeName = event.name) }
             }
+            is CreateHomeContract.Event.OnAvatarSelected -> {
+                setState { copy(avatarId = event.avatarId) }
+            }
             is CreateHomeContract.Event.OnPackSelected -> {
                 setState { copy(selectedPackId = event.packId) }
             }

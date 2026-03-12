@@ -5,6 +5,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import com.devndev.homen.ui.component.NavTransitions
+import com.devndev.homen.ui.main.homeintro.create.CreateHomeFlowScreen
 import com.devndev.homen.ui.main.homeintro.create.CreateOnboardingScreen
 import com.devndev.homen.ui.main.homeintro.join.CodeEnterScreen
 import com.devndev.homen.ui.main.homeintro.joinconfirm.JoinConfirmScreen
@@ -15,39 +16,24 @@ fun NavGraphBuilder.homeIntroNav(
     navController: NavHostController,
     onNavToMain: () -> Unit
 ) {
-    // 1. 집 입장/생성 선택 메인
     composable<HomeIntroRoute.Selection> {
          HomeIntroScreen(
-             onNavToCreation = { navController.navigate(HomeIntroRoute.CreateGraph) },
+             onNavToCreation = { navController.navigate(HomeIntroRoute.CreateOnboarding) },
              onNavToCodeEnter = { navController.navigate(HomeIntroRoute.JoinGraph) }
          )
     }
 
-    // 2. 집 생성하기 흐름 (중첩 네비게이션)
-    navigation<HomeIntroRoute.CreateGraph>(
-        startDestination = HomeIntroRoute.CreateOnboarding,
-        enterTransition = NavTransitions.enterTransition,
-        exitTransition = NavTransitions.exitTransition,
-        popEnterTransition = NavTransitions.popEnterTransition,
-        popExitTransition = NavTransitions.popExitTransition
-    ) {
-        composable<HomeIntroRoute.CreateOnboarding> {
-            CreateOnboardingScreen(
-                {},
-                {}
-            )
-        }
+    composable<HomeIntroRoute.CreateOnboarding> {
+        CreateOnboardingScreen(
+            onNextClick = { navController.navigate(HomeIntroRoute.CreateGraph) },
+            onBackClick = { navController.popBackStack() }
+        )
+    }
 
-        composable<HomeIntroRoute.CreateProfile> {
-            // TODO: CreateProfileScreen 구현
-        }
-
-        composable<HomeIntroRoute.CreatePack> {
-        }
-
-        composable<HomeIntroRoute.CreateReward> {
-            // TODO: CreateRewardScreen 구현
-        }
+    composable<HomeIntroRoute.CreateGraph> {
+        CreateHomeFlowScreen(
+            onExitFlow = { navController.popBackStack() }
+        )
     }
 
     navigation<HomeIntroRoute.JoinGraph>(

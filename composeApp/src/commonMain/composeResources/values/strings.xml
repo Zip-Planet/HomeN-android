@@ -54,6 +54,12 @@
     <string name= "home_create_onboarding_time_msg">1분이면 충분해요</string>
     <string name= "home_create_onboarding_btn">시작하기</string>
 
+    <string name= "home_create_profile_title">우리집 프로필을\n만들어볼까요?</string>
+
+    <string name= "home_create_step1_title">집 프로필</string>
+    <string name= "home_create_step2_title">스타터팩</string>
+    <string name= "home_create_step3_title">리워드</string>
+
 
 
 </resources>

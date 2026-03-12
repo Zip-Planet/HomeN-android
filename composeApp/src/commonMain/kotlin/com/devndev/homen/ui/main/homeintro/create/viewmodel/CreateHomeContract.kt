@@ -8,6 +8,7 @@ class CreateHomeContract {
     sealed class Event : ViewEvent {
         data class OnHomeNameChanged(val name: String) : Event()
 
+        data class OnAvatarSelected(val avatarId: Int) : Event()
         data class OnPackSelected(val packId: Int) : Event()
 
         data class OnRewardChanged(val reward: String) : Event()
@@ -18,6 +19,7 @@ class CreateHomeContract {
 
     data class State(
         val homeName: String = "",
+        val avatarId: Int? = null,
         val selectedPackId: Int? = null,
         val rewards: String = "",
         val isLoading: Boolean = false
