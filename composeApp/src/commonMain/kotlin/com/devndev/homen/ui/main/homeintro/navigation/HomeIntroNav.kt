@@ -16,21 +16,36 @@ fun NavGraphBuilder.homeIntroNav(
     navController: NavHostController,
     onNavToMain: () -> Unit
 ) {
-    composable<HomeIntroRoute.Selection> {
+    composable<HomeIntroRoute.Selection>(
+        enterTransition = NavTransitions.enterTransition,
+        exitTransition = NavTransitions.exitTransition,
+        popEnterTransition = NavTransitions.popEnterTransition,
+        popExitTransition = NavTransitions.popExitTransition
+    ) {
          HomeIntroScreen(
              onNavToCreation = { navController.navigate(HomeIntroRoute.CreateOnboarding) },
              onNavToCodeEnter = { navController.navigate(HomeIntroRoute.JoinGraph) }
          )
     }
 
-    composable<HomeIntroRoute.CreateOnboarding> {
+    composable<HomeIntroRoute.CreateOnboarding>(
+        enterTransition = NavTransitions.enterTransition,
+        exitTransition = NavTransitions.exitTransition,
+        popEnterTransition = NavTransitions.popEnterTransition,
+        popExitTransition = NavTransitions.popExitTransition
+    ) {
         CreateOnboardingScreen(
             onNextClick = { navController.navigate(HomeIntroRoute.CreateGraph) },
             onBackClick = { navController.popBackStack() }
         )
     }
 
-    composable<HomeIntroRoute.CreateGraph> {
+    composable<HomeIntroRoute.CreateGraph>(
+        enterTransition = NavTransitions.enterTransition,
+        exitTransition = NavTransitions.exitTransition,
+        popEnterTransition = NavTransitions.popEnterTransition,
+        popExitTransition = NavTransitions.popExitTransition
+    ) {
         CreateHomeFlowScreen(
             onExitFlow = { navController.popBackStack() }
         )
