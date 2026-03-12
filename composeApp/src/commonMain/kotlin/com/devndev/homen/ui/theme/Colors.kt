@@ -10,9 +10,16 @@ val Gray7C = Color(0xFF7C7C7C)
 
 val GrayCA = Color(0xFFCACACA)
 
+val GrayE7 = Color(0xFFE7EAF0)
+
 val DarkGray = Color(0xFF474747)
 val LightGray = Color(0xFFB2B2B2)
 
 val KaKao = Color(0xFFFEE500)
 
 val Blue2 = Color(0xFF5270FE)
+val Blue4 = Color(0xFFAFE1FC)
+
+val YellowFF = Color(0xFFbacFFDF5B)
+
+val PinkFF = Color(0xFFFFAEB4)

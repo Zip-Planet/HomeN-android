@@ -90,11 +90,12 @@ fun CreateHomeFlowScreen(
                     )
                 }
                 composable<HomeIntroRoute.CreatePack> {
-                    HomeNScreen {
-                        Text(
-                            text = "alal"
-                        )
-                    }
+                    CreatePackScreen(
+                        onNextClick = { innerNavController.navigate(HomeIntroRoute.CreateReward) },
+                        onBackClick = {
+                            if (!innerNavController.popBackStack()) onExitFlow()
+                        }
+                    )
                 }
                 composable<HomeIntroRoute.CreateReward> {
                     // TODO: CreateRewardScreen 구현 시 연결

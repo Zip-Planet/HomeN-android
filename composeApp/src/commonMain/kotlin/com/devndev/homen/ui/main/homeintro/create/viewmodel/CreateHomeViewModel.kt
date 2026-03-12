@@ -20,6 +20,9 @@ class CreateHomeViewModel : BaseViewModel<CreateHomeContract.Event, CreateHomeCo
             is CreateHomeContract.Event.OnRewardChanged -> {
                 setState { copy(rewards = event.reward) }
             }
+            is CreateHomeContract.Event.OnTooltipToggle -> {
+                setState { copy(showTooltip = event.show) }
+            }
             CreateHomeContract.Event.OnNextClick -> {
                 setEffect { CreateHomeContract.Effect.NavToNext }
             }
