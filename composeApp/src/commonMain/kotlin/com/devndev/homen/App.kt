@@ -31,7 +31,12 @@ fun HomeNApp() {
                     }
                 })
             }
-            composable<AppRoute.Main> {
+            composable<AppRoute.Main>(
+                enterTransition = NavTransitions.enterTransition,
+                exitTransition = NavTransitions.exitTransition,
+                popEnterTransition = NavTransitions.popEnterTransition,
+                popExitTransition = NavTransitions.popExitTransition
+            ) {
                 MainNav()
             }
         }
