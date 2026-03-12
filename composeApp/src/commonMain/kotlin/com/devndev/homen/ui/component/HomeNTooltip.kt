@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -47,6 +48,7 @@ fun HomeNTooltip(
 
     Box(
         modifier = modifier
+            .width(265.dp)
             .shadow(
                 elevation = 20.dp,
                 shape = bubbleShape,
@@ -56,7 +58,7 @@ fun HomeNTooltip(
             .background(color = Color.White, shape = bubbleShape)
     ) {
         Column(
-            modifier = Modifier.padding(start = 15.dp, end = 47.dp, top = 15.dp, bottom = 16.dp),
+            modifier = Modifier.padding(start = 15.dp, end = 8.dp, top = 15.dp, bottom = 16.dp),
             verticalArrangement = Arrangement.spacedBy(2.dp)
         ) {
             Row(
