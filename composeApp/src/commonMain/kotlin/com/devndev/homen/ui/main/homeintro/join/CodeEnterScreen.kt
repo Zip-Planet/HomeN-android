@@ -83,18 +83,6 @@ fun CodeEnterScreen(
                     bottom = HomeNTheme.dimensions.bottomPadding
                 )
         ) {
-            if (uiState.showTooltip) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .pointerInput(Unit) {
-                            detectTapGestures {
-                                viewModel.setEvent(CodeEnterContract.Event.OnTooltipToggle(false))
-                            }
-                        }
-                )
-            }
-
             Column(modifier = Modifier.fillMaxWidth()) {
                 Text(
                     text = stringResource(Res.string.join_code_title),
@@ -152,7 +140,17 @@ fun CodeEnterScreen(
                 }
             }
         }
-
+    }
+    if (uiState.showTooltip) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .pointerInput(Unit) {
+                    detectTapGestures {
+                        viewModel.setEvent(CodeEnterContract.Event.OnTooltipToggle(false))
+                    }
+                }
+        )
     }
 }
 
