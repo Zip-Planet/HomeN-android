@@ -19,8 +19,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -34,11 +32,11 @@ import androidx.compose.ui.unit.sp
 import com.devndev.homen.ui.component.BackHandler
 import com.devndev.homen.ui.component.HomeNButton
 import com.devndev.homen.ui.component.HomeNScreen
+import com.devndev.homen.ui.component.HomeNUnderlineTextField
 import com.devndev.homen.ui.component.TitleTopBar
 import com.devndev.homen.ui.intro.register.viewmodel.RegisterContract
 import com.devndev.homen.ui.intro.register.viewmodel.RegisterStep
 import com.devndev.homen.ui.intro.register.viewmodel.RegisterViewModel
-import com.devndev.homen.ui.theme.BottomGray
 import com.devndev.homen.ui.theme.HomeNTheme
 import homen.composeapp.generated.resources.Res
 import homen.composeapp.generated.resources.chef_avatar
@@ -65,6 +63,7 @@ fun RegisterScreen(
 ) {
     val uiState by viewModel.viewState
     val maxChar = 8
+    val nicknameRegex = Regex("^[a-zA-Z가-힣ㄱ-ㅎㅏ-ㅣ]*$")
 
     BackHandler {
         viewModel.setEvent(RegisterContract.Event.OnBackClick)
@@ -96,7 +95,6 @@ fun RegisterScreen(
                     bottom = HomeNTheme.dimensions.bottomPadding
                 )
         ) {
-            // 닉네임 입력 섹션
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -111,59 +109,18 @@ fun RegisterScreen(
 
                 Spacer(modifier = Modifier.height(20.dp))
 
-                BasicTextField(
+                HomeNUnderlineTextField(
                     value = uiState.nickname,
-                    onValueChange = { input ->
-                        if (uiState.currentStep == RegisterStep.NICKNAME &&
-                            input.length <= maxChar && 
-                            input.matches(Regex("^[a-zA-Z가-힣ㄱ-ㅎㅏ-ㅣ]*$"))) {
-                            viewModel.setEvent(RegisterContract.Event.OnNicknameChanged(input))
-                        }
-                    },
-                    enabled = uiState.currentStep == RegisterStep.NICKNAME,
-                    modifier = Modifier.fillMaxWidth(),
-                    textStyle = HomeNTheme.typography.suitMedium.copy(
-                        fontSize = 16.sp,
-                        color = Color.Black
-                    ),
-                    decorationBox = { innerTextField ->
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 10.dp, vertical = 13.dp),
-                            contentAlignment = Alignment.CenterStart
-                        ) {
-                            if (uiState.nickname.isEmpty()) {
-                                Text(
-                                    text = stringResource(Res.string.nickname_hint),
-                                    style = HomeNTheme.typography.suitRegular,
-                                    color = BottomGray,
-                                    fontSize = 12.sp
-                                )
-                            }
-                            innerTextField()
-                            if (uiState.nickname.isNotEmpty()) {
-                                Text(
-                                    text = "${uiState.nickname.length}/$maxChar",
-                                    style = HomeNTheme.typography.suitRegular,
-                                    color = BottomGray,
-                                    fontSize = 12.sp,
-                                    modifier = Modifier.align(Alignment.CenterEnd)
-                                )
-                            }
-                        }
-                    }
-                )
-
-                HorizontalDivider(
-                    thickness = 1.dp,
-                    color = if (uiState.nickname.isNotEmpty()) Color.Black else Color.Gray
+                    onValueChange = { viewModel.setEvent(RegisterContract.Event.OnNicknameChanged(it)) },
+                    hint = stringResource(Res.string.nickname_hint),
+                    maxChar = maxChar,
+                    regex = nicknameRegex,
+                    enabled = uiState.currentStep == RegisterStep.NICKNAME
                 )
             }
 
             Spacer(modifier = Modifier.height(45.dp))
 
-            // 아바타 선택 섹션
             AnimatedVisibility(
                 visible = uiState.currentStep == RegisterStep.AVATAR,
                 enter = fadeIn() + slideInVertically { it / 2 },
