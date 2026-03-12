@@ -6,6 +6,10 @@ val BackgroundGray = Color(0xFFF3F4F6)
 val BottomGray = Color(0xFFB2B2B2)
 val ButtonGray = Color(0xFFE0E3EA)
 
+val Gray7C = Color(0xFF7C7C7C)
+
+val GrayCA = Color(0xFFCACACA)
+
 val DarkGray = Color(0xFF474747)
 val LightGray = Color(0xFFB2B2B2)
 
