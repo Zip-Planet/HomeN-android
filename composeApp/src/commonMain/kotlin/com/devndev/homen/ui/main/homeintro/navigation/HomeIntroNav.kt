@@ -5,6 +5,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import com.devndev.homen.ui.component.NavTransitions
+import com.devndev.homen.ui.main.homeintro.create.CreateOnboardingScreen
 import com.devndev.homen.ui.main.homeintro.join.CodeEnterScreen
 import com.devndev.homen.ui.main.homeintro.joinconfirm.JoinConfirmScreen
 import com.devndev.homen.ui.main.homeintro.joindone.JoinDoneScreen
@@ -31,7 +32,10 @@ fun NavGraphBuilder.homeIntroNav(
         popExitTransition = NavTransitions.popExitTransition
     ) {
         composable<HomeIntroRoute.CreateOnboarding> {
-            // TODO: CreateOnboardingScreen 구현
+            CreateOnboardingScreen(
+                {},
+                {}
+            )
         }
 
         composable<HomeIntroRoute.CreateProfile> {

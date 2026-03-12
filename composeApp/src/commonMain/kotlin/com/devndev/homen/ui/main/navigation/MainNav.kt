@@ -38,7 +38,7 @@ fun MainNav(
 
     val isHomeIntroRoute = currentDestination?.hasRoute<HomeIntroRoute.Selection>() == true ||
             currentDestination?.hasRoute<HomeIntroRoute.JoinGraph>() == true ||
-            currentDestination?.hasRoute<HomeIntroRoute.Create>() == true
+            currentDestination?.hasRoute<HomeIntroRoute.CreateGraph>() == true
 
     Scaffold(
         bottomBar = {
