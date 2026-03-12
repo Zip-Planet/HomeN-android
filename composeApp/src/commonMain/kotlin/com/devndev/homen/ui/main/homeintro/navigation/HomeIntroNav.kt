@@ -5,6 +5,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import com.devndev.homen.ui.component.NavTransitions
+import com.devndev.homen.ui.main.homeintro.create.CreateHomeFlowScreen
+import com.devndev.homen.ui.main.homeintro.create.CreateOnboardingScreen
 import com.devndev.homen.ui.main.homeintro.join.CodeEnterScreen
 import com.devndev.homen.ui.main.homeintro.joinconfirm.JoinConfirmScreen
 import com.devndev.homen.ui.main.homeintro.joindone.JoinDoneScreen
@@ -16,13 +18,22 @@ fun NavGraphBuilder.homeIntroNav(
 ) {
     composable<HomeIntroRoute.Selection> {
          HomeIntroScreen(
-             onNavToCreation = { navController.navigate(HomeIntroRoute.Create) },
+             onNavToCreation = { navController.navigate(HomeIntroRoute.CreateOnboarding) },
              onNavToCodeEnter = { navController.navigate(HomeIntroRoute.JoinGraph) }
          )
     }
 
-    composable<HomeIntroRoute.Create> {
-        // TODO: CreateHomeScreen 구현 예정
+    composable<HomeIntroRoute.CreateOnboarding> {
+        CreateOnboardingScreen(
+            onNextClick = { navController.navigate(HomeIntroRoute.CreateGraph) },
+            onBackClick = { navController.popBackStack() }
+        )
+    }
+
+    composable<HomeIntroRoute.CreateGraph> {
+        CreateHomeFlowScreen(
+            onExitFlow = { navController.popBackStack() }
+        )
     }
 
     navigation<HomeIntroRoute.JoinGraph>(

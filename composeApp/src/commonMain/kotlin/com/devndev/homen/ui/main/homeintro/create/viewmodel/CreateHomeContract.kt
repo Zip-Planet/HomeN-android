@@ -1,0 +1,33 @@
+package com.devndev.homen.ui.main.homeintro.create.viewmodel
+
+import com.devndev.homen.core.common.base.ViewEvent
+import com.devndev.homen.core.common.base.ViewSideEffect
+import com.devndev.homen.core.common.base.ViewState
+
+class CreateHomeContract {
+    sealed class Event : ViewEvent {
+        data class OnHomeNameChanged(val name: String) : Event()
+        data class OnAvatarSelected(val avatarId: Int) : Event()
+        data class OnPackSelected(val packId: Int) : Event()
+        data class OnRewardChanged(val reward: String) : Event()
+        
+        data class OnTooltipToggle(val show: Boolean) : Event()
+
+        data object OnNextClick : Event()
+        data object OnBackClick : Event()
+    }
+
+    data class State(
+        val homeName: String = "",
+        val avatarId: Int? = null,
+        val selectedPackId: Int? = null,
+        val rewards: String = "",
+        val showTooltip: Boolean = true,
+        val isLoading: Boolean = false
+    ) : ViewState
+
+    sealed class Effect : ViewSideEffect {
+        data object NavToNext : Effect()
+        data object PopBackStack : Effect()
+    }
+}

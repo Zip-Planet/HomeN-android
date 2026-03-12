@@ -20,26 +20,62 @@
     <string name="select_avatar_msg">아바타를 선택해주세요</string>
 
     <!-- 집 입장하기 화면 -->
-    <string name = "home_entry_title">집 입장하기</string>
-    <string name = "home_entry_guide_title">어떻게 시작할까요?</string>
-    <string name = "home_entry_guide_msg">새 집을 생성하거나, 초대받은 집에 참여하세요</string>
-    <string name = "create_btn_msg">집 생성하기</string>
-    <string name = "join_btn_msg">초대코드로 참여하기</string>
-    <string name = "join_code_title">초대코드를 입력하세요</string>
-    <string name = "join_code_msg">초대받은 집의 6자리 코드를 입력해주세요</string>
-    <string name = "join_code_tooltip_title">초대코드는 어디서 받나요?</string>
-    <string name = "join_code_tooltip_msg1">그룹 관리자가 초대코드를 공유해요</string>
-    <string name = "join_code_tooltip_msg2">초대 링크를 받았다면 자동으로 입력돼요</string>
-    <string name = "confirm_home_title">초대받은 집 정보를 확인하세요</string>
-    <string name = "confirm_home_member_count">n명이 살고 있어요</string>
-    <string name = "created_date">생성일</string>
-    <string name = "invite_code">초대코드</string>
-    <string name = "confirm_home_member_list_count">n명의 구성원</string>
-    <string name = "enter_homen_btn">Home/n 시작하기</string>
-    <string name = "join_done_title">s 입장 완료</string>
-    <string name = "join_done_subtitle">Home/n 에서 집안일을 N분의 1로 나눠보세요</string>
-    <string name = "join_done_msg1">지난 데이터를 기반으로 공평하게 집안일을 분담해요</string>
-    <string name = "join_done_msg2">이번주 집안일과 진행률을 한눈에 확인해요</string>
-    <string name = "join_done_msg3">말로 길게 설명하지 마세요, 집안일을 간편하게 조율해요</string>
+    <string name="home_entry_title">집 입장하기</string>
+    <string name="home_entry_guide_title">어떻게 시작할까요?</string>
+    <string name="home_entry_guide_msg">새 집을 생성하거나, 초대받은 집에 참여하세요</string>
+    <string name="create_btn_msg">집 생성하기</string>
+    <string name="join_btn_msg">초대코드로 참여하기</string>
+    <string name="join_code_title">초대코드를 입력하세요</string>
+    <string name="join_code_msg">초대받은 집의 6자리 코드를 입력해주세요</string>
+    <string name="join_code_tooltip_title">초대코드는 어디서 받나요?</string>
+    <string name="join_code_tooltip_msg1">그룹 관리자가 초대코드를 공유해요</string>
+    <string name="join_code_tooltip_msg2">초대 링크를 받았다면 자동으로 입력돼요</string>
+    <string name="confirm_home_title">초대받은 집 정보를 확인하세요</string>
+    <string name="confirm_home_member_count">n명이 살고 있어요</string>
+    <string name="created_date">생성일</string>
+    <string name="invite_code">초대코드</string>
+    <string name="confirm_home_member_list_count">n명의 구성원</string>
+    <string name="enter_homen_btn">Home/n 시작하기</string>
+    <string name="join_done_title">s 입장 완료</string>
+    <string name="join_done_subtitle">Home/n 에서 집안일을 N분의 1로 나눠보세요</string>
+    <string name="join_done_msg1">지난 데이터를 기반으로 공평하게 집안일을 분담해요</string>
+    <string name="join_done_msg2">이번주 집안일과 진행률을 한눈에 확인해요</string>
+    <string name="join_done_msg3">말로 길게 설명하지 마세요, 집안일을 간편하게 조율해요</string>
 
+    <!-- 집 생성하기 화면 -->
+    <string name="home_create_title">집 생성하기</string>
+    <string name="home_create_onboarding_msg">간단한 설정으로 집을 생성하고\n구성원을 초대할 수 있어요</string>
+    <string name="home_create_onboarding_step1_title">집 프로필 설정</string>
+    <string name="home_create_onboarding_step2_title">스타터팩 선택</string>
+    <string name="home_create_onboarding_step3_title">리워드 입력</string>
+    <string name="home_create_onboarding_step1_msg">집 이름과 아이콘을 설정해요</string>
+    <string name="home_create_onboarding_step2_msg">상황에 맞는 집안일 새트를 선택해요</string>
+    <string name="home_create_onboarding_step3_msg">구성원이 받을 리워드를 입력해요</string>
+    <string name="home_create_onboarding_time_msg">1분이면 충분해요</string>
+    <string name="home_create_onboarding_btn">시작하기</string>
+
+    <string name="home_create_profile_title">우리집 프로필을\n만들어볼까요?</string>
+
+    <string name="home_create_step1_title">집 프로필</string>
+    <string name="home_create_step2_title">스타터팩</string>
+    <string name="home_create_step3_title">리워드</string>
+
+    <string name="home_create_pack_title">스타터팩을 선택하세요</string>
+    <string name="home_create_pack_msg">일일이 입력할 필요 없이,\n상황에 맞는 팩으로 편하게 시작해요</string>
+
+    <string name="home_create_pack1_title">룸메이트 기본팩</string>
+    <string name="home_create_pack1_msg">2~4인 공용 공간을 깔끔하게\n유지하는 표준 루틴</string>
+
+    <string name="home_create_pack2_title">기숙사 맞춤팩</string>
+    <string name="home_create_pack2_msg">작은 공간에서도 효과 큰, 짧고 확실한 루틴</string>
+
+    <string name="home_create_pack3_title">미니멀 심플팩</string>
+    <string name="home_create_pack3_msg">꼭 필요한 집안일만 간단하게\n갈등 TOP 최소 구성</string>
+
+    <string name="home_create_pack_badge">n개의 집안일</string>
+
+    <string name="home_create_pack_add_manual_btn">직접 추가</string>
+    <string name="home_create_pack_preview_btn">선택한 팩 미리보기</string>
+    <string name="home_create_pack_tooltip_title">스타터팩은 가벼운 초안이에요.</string>
+    <string name="home_create_pack_tooltip_msg">나중에 우리 집에 맞춰 언제든 자유롭게 추가하고 수정할 수 있어요.</string>
 </resources>
