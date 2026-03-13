@@ -20,6 +20,10 @@ sealed interface HomeIntroRoute {
     data object CreateProfile : HomeIntroRoute
     @Serializable
     data object CreatePack : HomeIntroRoute
+
+    @Serializable
+    data object PackPreview: HomeIntroRoute
+
     @Serializable
     data object CreateReward : HomeIntroRoute
     

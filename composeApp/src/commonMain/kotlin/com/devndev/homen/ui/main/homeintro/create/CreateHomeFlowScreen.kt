@@ -3,7 +3,6 @@ package com.devndev.homen.ui.main.homeintro.create
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -44,6 +43,8 @@ fun CreateHomeFlowScreen(
         else -> 1
     }
 
+    val isIndicatorVisible = currentDestination?.hasRoute<HomeIntroRoute.PackPreview>() != true
+
     HomeNScreen(
         topBar = {
             TitleTopBar(
@@ -57,19 +58,21 @@ fun CreateHomeFlowScreen(
         }
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
-            HomeNStepIndicator(
-                currentStep = currentStep,
-                stepTitles = listOf(
-                    stringResource(Res.string.home_create_step1_title),
-                    stringResource(Res.string.home_create_step2_title),
-                    stringResource(Res.string.home_create_step3_title),
-                ),
-                modifier = Modifier.padding(
-                    start = HomeNTheme.dimensions.horizontalPadding,
-                    end = HomeNTheme.dimensions.horizontalPadding,
-                    top = 21.dp
+            if (isIndicatorVisible) {
+                HomeNStepIndicator(
+                    currentStep = currentStep,
+                    stepTitles = listOf(
+                        stringResource(Res.string.home_create_step1_title),
+                        stringResource(Res.string.home_create_step2_title),
+                        stringResource(Res.string.home_create_step3_title),
+                    ),
+                    modifier = Modifier.padding(
+                        start = HomeNTheme.dimensions.horizontalPadding,
+                        end = HomeNTheme.dimensions.horizontalPadding,
+                        top = 21.dp
+                    )
                 )
-            )
+            }
 
             NavHost(
                 navController = innerNavController,
@@ -91,12 +94,18 @@ fun CreateHomeFlowScreen(
                 }
                 composable<HomeIntroRoute.CreatePack> {
                     CreatePackScreen(
-                        onNextClick = { innerNavController.navigate(HomeIntroRoute.CreateReward) },
+                        onCreateChoreClick = { },
+                        onPreviewClick = { innerNavController.navigate(HomeIntroRoute.PackPreview) },
                         onBackClick = {
                             if (!innerNavController.popBackStack()) onExitFlow()
                         }
                     )
                 }
+
+                composable<HomeIntroRoute.PackPreview> {
+                    // PackPreviewScreen 구현 예정
+                }
+
                 composable<HomeIntroRoute.CreateReward> {
                     // TODO: CreateRewardScreen 구현 시 연결
                 }

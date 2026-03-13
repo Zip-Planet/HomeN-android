@@ -30,6 +30,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
+import com.devndev.homen.core.domain.model.chore.StarterPackType
 import com.devndev.homen.ui.component.HomeNButton
 import com.devndev.homen.ui.component.HomeNTooltip
 import com.devndev.homen.ui.component.StepItem
@@ -68,7 +69,8 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun CreatePackScreen(
-    onNextClick: () -> Unit,
+    onCreateChoreClick: () -> Unit,
+    onPreviewClick: () -> Unit,
     onBackClick: () -> Unit,
     viewModel: CreateHomeViewModel = koinViewModel()
 ) {
@@ -77,8 +79,10 @@ fun CreatePackScreen(
     LaunchedEffect(viewModel.effect) {
         viewModel.effect.collectLatest { effect ->
             when (effect) {
-                is CreateHomeContract.Effect.NavToNext -> onNextClick()
+                is CreateHomeContract.Effect.NavToNext -> {}
                 is CreateHomeContract.Effect.PopBackStack -> onBackClick()
+                CreateHomeContract.Effect.NavToCreateChore -> onCreateChoreClick()
+                CreateHomeContract.Effect.NavToPreview -> onPreviewClick()
             }
         }
     }
@@ -124,34 +128,49 @@ fun CreatePackScreen(
 
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 PackItem(
-                    id = 0,
                     title = stringResource(Res.string.home_create_pack1_title),
                     description = stringResource(Res.string.home_create_pack1_msg),
                     icon = Res.drawable.ticket_icon,
                     num = 6,
-                    isSelected = uiState.selectedPackId == 0,
+                    isSelected = uiState.selectedPack == StarterPackType.ROOMMATE,
                     badgeColor = Blue4,
-                    onClick = { viewModel.setEvent(CreateHomeContract.Event.OnPackSelected(0)) }
+                    onClick = {
+                        viewModel.setEvent(
+                            CreateHomeContract.Event.OnPackSelected(
+                                StarterPackType.ROOMMATE
+                            )
+                        )
+                    }
                 )
                 PackItem(
-                    id = 1,
                     title = stringResource(Res.string.home_create_pack2_title),
                     description = stringResource(Res.string.home_create_pack2_msg),
                     icon = Res.drawable.star_icon,
                     num = 5,
-                    isSelected = uiState.selectedPackId == 1,
+                    isSelected = uiState.selectedPack == StarterPackType.DORMITORY,
                     badgeColor = YellowFF,
-                    onClick = { viewModel.setEvent(CreateHomeContract.Event.OnPackSelected(1)) }
+                    onClick = {
+                        viewModel.setEvent(
+                            CreateHomeContract.Event.OnPackSelected(
+                                StarterPackType.DORMITORY
+                            )
+                        )
+                    }
                 )
                 PackItem(
-                    id = 2,
                     title = stringResource(Res.string.home_create_pack3_title),
                     description = stringResource(Res.string.home_create_pack3_msg),
                     icon = Res.drawable.pin_icon,
                     num = 4,
-                    isSelected = uiState.selectedPackId == 2,
+                    isSelected = uiState.selectedPack == StarterPackType.MINIMAL,
                     badgeColor = PinkFF,
-                    onClick = { viewModel.setEvent(CreateHomeContract.Event.OnPackSelected(2)) }
+                    onClick = {
+                        viewModel.setEvent(
+                            CreateHomeContract.Event.OnPackSelected(
+                                StarterPackType.MINIMAL
+                            )
+                        )
+                    }
                 )
             }
 
@@ -169,9 +188,9 @@ fun CreatePackScreen(
 
                 HomeNButton(
                     text = stringResource(Res.string.home_create_pack_preview_btn),
-                    onClick = { viewModel.setEvent(CreateHomeContract.Event.OnNextClick) },
+                    onClick = { viewModel.setEvent(CreateHomeContract.Event.OnPreviewClick) },
                     modifier = Modifier.weight(1f),
-                    enabled = uiState.selectedPackId != null
+                    enabled = uiState.selectedPack != null
                 )
             }
         }
@@ -220,7 +239,6 @@ fun CreatePackScreen(
 
 @Composable
 fun PackItem(
-    id: Int,
     title: String,
     description: String,
     num: Int,
@@ -262,7 +280,10 @@ fun PackItem(
 
             Column(modifier = Modifier.weight(1f)) {
                 StepItem(
-                    text = stringResource(Res.string.home_create_pack_badge).replace("n", num.toString()),
+                    text = stringResource(Res.string.home_create_pack_badge).replace(
+                        "n",
+                        num.toString()
+                    ),
                     backgroundColor = badgeColor,
                     textColor = Color.Black,
                     width = 63.dp,
