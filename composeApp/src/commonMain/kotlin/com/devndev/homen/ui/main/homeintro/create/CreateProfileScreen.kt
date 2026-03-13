@@ -23,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
@@ -50,6 +51,7 @@ fun CreateProfileScreen(
     viewModel: CreateHomeViewModel = koinViewModel()
 ) {
     val uiState by viewModel.viewState
+    val focusManager = LocalFocusManager.current
 
     LaunchedEffect(viewModel.effect) {
         viewModel.effect.collectLatest { effect ->
@@ -126,7 +128,10 @@ fun CreateProfileScreen(
         }
         HomeNButton(
             text = "다음",
-            onClick = { viewModel.setEvent(CreateHomeContract.Event.OnNextClick) },
+            onClick = {
+                focusManager.clearFocus()
+                viewModel.setEvent(CreateHomeContract.Event.OnNextClick)
+            },
             enabled = uiState.homeName.isNotEmpty() && uiState.avatarId != null,
             modifier = Modifier.align(Alignment.BottomCenter)
         )
