@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -54,6 +55,7 @@ fun CodeEnterScreen(
     viewModel: CodeEnterViewModel = koinViewModel()
 ) {
     val uiState by viewModel.viewState
+    val focusManager = LocalFocusManager.current
 
     LaunchedEffect(viewModel.effect) {
         viewModel.effect.collectLatest { effect ->
@@ -109,7 +111,10 @@ fun CodeEnterScreen(
 
                 HomeNButton(
                     text = stringResource(Res.string.next_button),
-                    onClick = { viewModel.setEvent(CodeEnterContract.Event.OnJoinClick) },
+                    onClick = {
+                        focusManager.clearFocus()
+                        viewModel.setEvent(CodeEnterContract.Event.OnJoinClick)
+                    },
                     enabled = uiState.code.length == 6
                 )
             }
