@@ -72,11 +72,6 @@ fun CreateProfileScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(
-                    start = HomeNTheme.dimensions.horizontalPadding,
-                    end = HomeNTheme.dimensions.horizontalPadding,
-                    bottom = HomeNTheme.dimensions.bottomPadding,
-                )
         ) {
 
             Spacer(modifier = Modifier.height(52.dp))
