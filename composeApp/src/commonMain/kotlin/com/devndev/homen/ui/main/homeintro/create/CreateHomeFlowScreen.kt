@@ -94,20 +94,21 @@ fun CreateHomeFlowScreen(
                 }
                 composable<HomeIntroRoute.CreatePack> {
                     CreatePackScreen(
-                        onCreateChoreClick = { },
-                        onPreviewClick = { innerNavController.navigate(HomeIntroRoute.PackPreview) },
-                        onBackClick = {
-                            if (!innerNavController.popBackStack()) onExitFlow()
-                        }
+                        viewModel = viewModel,
+                        onBackClick = { innerNavController.popBackStack() },
+                        onCreateChoreClick = { /* TODO */ },
+                        onPreviewClick = { innerNavController.navigate(HomeIntroRoute.PackPreview) }
                     )
                 }
-
                 composable<HomeIntroRoute.PackPreview> {
-                    // PackPreviewScreen 구현 예정
+                    CreatePreviewScreen(
+                        viewModel = viewModel,
+                        onNextClick = { innerNavController.navigate(HomeIntroRoute.CreateReward) },
+                        onBackClick = { innerNavController.popBackStack() }
+                    )
                 }
-
                 composable<HomeIntroRoute.CreateReward> {
-                    // TODO: CreateRewardScreen 구현 시 연결
+                    // TODO: CreateRewardScreen 구현
                 }
             }
         }
