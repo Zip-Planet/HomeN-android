@@ -92,13 +92,13 @@ fun RegisterScreen(
                 .padding(
                     start = HomeNTheme.dimensions.horizontalPadding,
                     end = HomeNTheme.dimensions.horizontalPadding,
-                    bottom = HomeNTheme.dimensions.bottomPadding
+                    bottom = HomeNTheme.dimensions.bottomPadding,
+                    top = HomeNTheme.dimensions.topPadding
                 )
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 52.dp),
             ) {
                 Text(
                     text = stringResource(Res.string.nickname_msg),
