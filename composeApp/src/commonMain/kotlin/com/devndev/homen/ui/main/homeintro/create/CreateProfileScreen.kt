@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.devndev.homen.ui.component.HomeNButton
-import com.devndev.homen.ui.component.HomeNUnderlineTextField
+import com.devndev.homen.ui.component.HomeNTextField
 import com.devndev.homen.ui.main.homeintro.create.viewmodel.CreateHomeContract
 import com.devndev.homen.ui.main.homeintro.create.viewmodel.CreateHomeViewModel
 import com.devndev.homen.ui.theme.HomeNTheme
@@ -89,7 +89,7 @@ fun CreateProfileScreen(
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            HomeNUnderlineTextField(
+            HomeNTextField(
                 value = uiState.homeName,
                 onValueChange = { viewModel.setEvent(CreateHomeContract.Event.OnHomeNameChanged(it)) },
                 hint = stringResource(Res.string.nickname_hint),
