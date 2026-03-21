@@ -1,8 +1,5 @@
 package com.devndev.homen.core.domain.model.chore
 
-/**
- * 집안일 카테고리
- */
 enum class ChoreCategory {
     TRASH,
     CLEANING,
@@ -11,29 +8,20 @@ enum class ChoreCategory {
     LAUNDRY
 }
 
-/**
- * 집안일 난이도
- */
-enum class ChoreDifficulty {
-    LOW,
-    LOWER_MEDIUM,
-    MEDIUM,
-    UPPER_MEDIUM,
-    HIGH
+enum class ChoreDifficulty(val point: Int) {
+    LOW(40),
+    LOWER_MEDIUM(80),
+    MEDIUM(120),
+    UPPER_MEDIUM(160),
+    HIGH(200)
 }
 
-/**
- * 요일 정의
- */
 enum class DayOfWeek {
     MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY
 }
 
-/**
- * 스타터팩 종류
- */
 enum class StarterPackType {
-    ROOMMATE,      // 룸메이트 기본팩
-    DORMITORY,  // 기숙사 맞춤팩
-    MINIMAL     // 미니멀 심플팩
+    ROOMMATE,
+    DORMITORY,
+    MINIMAL
 }

@@ -78,4 +78,28 @@
     <string name="home_create_pack_preview_btn">선택한 팩 미리보기</string>
     <string name="home_create_pack_tooltip_title">스타터팩은 가벼운 초안이에요.</string>
     <string name="home_create_pack_tooltip_msg">나중에 우리 집에 맞춰 언제든 자유롭게 추가하고 수정할 수 있어요.</string>
+
+    <!-- 스타터팩 미리보기 -->
+    <string name="home_create_preview_included_chores">포함된 집안일</string>
+    <string name="home_create_preview_apply_btn">s 적용하기</string>
+    <string name="chore_difficulty_easy">쉬움</string>
+    <string name="chore_difficulty_medium">중간</string>
+    <string name="chore_difficulty_hard">어려움</string>
+    <string name="chore_count_format">s n개</string>
+    <string name="chore_info_point_days">nP • s • </string>
+    <string name="chore_info_difficulty">난이도 s</string>
+
+    <string name="day_mon">월</string>
+    <string name="day_tue">화</string>
+    <string name="day_wed">수</string>
+    <string name="day_thu">목</string>
+    <string name="day_fri">금</string>
+    <string name="day_sat">토</string>
+    <string name="day_sun">일</string>
+
+    <string name="difficulty_low">하</string>
+    <string name="difficulty_lower_medium">중하</string>
+    <string name="difficulty_medium">중</string>
+    <string name="difficulty_upper_medium">중상</string>
+    <string name="difficulty_high">상</string>
 </resources>

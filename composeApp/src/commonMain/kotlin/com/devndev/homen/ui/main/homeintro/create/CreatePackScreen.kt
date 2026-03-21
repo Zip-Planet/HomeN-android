@@ -79,8 +79,8 @@ fun CreatePackScreen(
     LaunchedEffect(viewModel.effect) {
         viewModel.effect.collectLatest { effect ->
             when (effect) {
-                is CreateHomeContract.Effect.NavToNext -> {}
-                is CreateHomeContract.Effect.PopBackStack -> onBackClick()
+                CreateHomeContract.Effect.NavToNext -> {}
+                CreateHomeContract.Effect.PopBackStack -> onBackClick()
                 CreateHomeContract.Effect.NavToCreateChore -> onCreateChoreClick()
                 CreateHomeContract.Effect.NavToPreview -> onPreviewClick()
             }

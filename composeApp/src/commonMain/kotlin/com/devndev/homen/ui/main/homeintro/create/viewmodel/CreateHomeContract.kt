@@ -18,6 +18,8 @@ class CreateHomeContract {
 
         data object OnCreateChoreClick : Event()
         data object OnPreviewClick : Event()
+        
+        data class OnChoreChecked(val chore: Chore) : Event()
     }
 
     data class State(
@@ -25,6 +27,7 @@ class CreateHomeContract {
         val avatarId: Int? = null,
         val selectedPack: StarterPackType? = null,
         val chores: List<Chore> = emptyList(),
+        val selectedChores: List<Chore> = emptyList(),
         val rewards: String = "",
         val showTooltip: Boolean = true,
         val isLoading: Boolean = false

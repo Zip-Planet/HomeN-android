@@ -4,7 +4,6 @@ package com.devndev.homen.core.domain.model.chore
  * 집안일
  */
 data class Chore(
-    val id: String = "",
     val title: String,
     val description: String = "",
     val category: ChoreCategory,
