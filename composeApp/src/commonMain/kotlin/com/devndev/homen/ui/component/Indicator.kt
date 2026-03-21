@@ -11,11 +11,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
@@ -25,6 +27,8 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.devndev.homen.ui.theme.BackgroundGray
+import com.devndev.homen.ui.theme.BottomGray
+import com.devndev.homen.ui.theme.ButtonGray
 import com.devndev.homen.ui.theme.Gray7C
 import com.devndev.homen.ui.theme.GrayCA
 import com.devndev.homen.ui.theme.HomeNTheme
@@ -77,7 +81,6 @@ fun HorizontalDashedLine(
             end = Offset(size.width, size.height / 2),
             pathEffect = pathEffect,
             strokeWidth = strokeWidth,
-            cap = StrokeCap.Round
         )
     }
 }
@@ -98,24 +101,33 @@ fun HomeNStepIndicator(
             val isActive = currentStep >= step
             val isLast = index == stepTitles.size - 1
 
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(4.dp)
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                StepItem(
-                    text = "STEP $step",
-                    height = 13.dp,
-                    width = 39.dp,
-                    fontSize = 8.sp,
-                    backgroundColor = if (isActive) Gray7C else GrayCA,
-                    textColor = if (isActive) Color.White else BackgroundGray
-                )
+                val backgroundColor = if (isActive) Color.Black else BottomGray
+                val textColor = if (isActive) Color.White else ButtonGray
+
+                Box(
+                    modifier = Modifier
+                        .size(13.dp)
+                        .clip(CircleShape)
+                        .background(color = backgroundColor),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = step.toString(),
+                        style = HomeNTheme.typography.suitBold,
+                        fontSize = 10.sp,
+                        color = textColor
+                    )
+                }
 
                 Text(
                     text = title,
                     style = HomeNTheme.typography.suitBold,
                     fontSize = 12.sp,
-                    color = if (isActive) Gray7C else GrayCA
+                    color = backgroundColor
                 )
             }
 
@@ -125,11 +137,11 @@ fun HomeNStepIndicator(
                     modifier = Modifier
                         .weight(1f)
                         .height(13.dp)
-                        .padding(2.dp),
+                        .padding(6.dp),
                     color = if (isLineActive) Gray7C else GrayCA,
                     strokeWidth = 4f,
-                    dashLength = 6f,
-                    gapLength = 18f
+                    dashLength = 10f,
+                    gapLength = 5f
                 )
             }
         }

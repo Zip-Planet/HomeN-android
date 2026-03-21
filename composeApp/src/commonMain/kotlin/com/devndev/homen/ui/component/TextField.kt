@@ -1,11 +1,17 @@
 package com.devndev.homen.ui.component
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -16,11 +22,8 @@ import androidx.compose.ui.unit.sp
 import com.devndev.homen.ui.theme.BottomGray
 import com.devndev.homen.ui.theme.HomeNTheme
 
-/**
- * 가입 및 설정 화면에서 사용되는 밑줄 스타일의 입력 필드
- */
 @Composable
-fun HomeNUnderlineTextField(
+fun HomeNTextField(
     value: String,
     onValueChange: (String) -> Unit,
     hint: String,
@@ -29,56 +32,54 @@ fun HomeNUnderlineTextField(
     enabled: Boolean = true,
     regex: Regex? = null
 ) {
-    Column(modifier = modifier) {
-        BasicTextField(
-            value = value,
-            onValueChange = { input ->
-                val isLengthValid = input.length <= maxChar
-                val isRegexValid = regex == null || input.matches(regex)
-                
-                if (isLengthValid && isRegexValid) {
-                    onValueChange(input)
-                }
-            },
-            enabled = enabled,
-            modifier = Modifier.fillMaxWidth(),
-            textStyle = HomeNTheme.typography.suitMedium.copy(
-                fontSize = 16.sp,
-                color = Color.Black
-            ),
-            decorationBox = { innerTextField ->
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 10.dp, vertical = 13.dp),
-                    contentAlignment = Alignment.CenterStart
-                ) {
+    BasicTextField(
+        value = value,
+        onValueChange = { input ->
+            val isLengthValid = input.length <= maxChar
+            val isRegexValid = regex == null || input.matches(regex)
+
+            if (isLengthValid && isRegexValid) {
+                onValueChange(input)
+            }
+        },
+        enabled = enabled,
+        modifier = modifier
+            .fillMaxWidth()
+            .height(50.dp),
+        textStyle = HomeNTheme.typography.suitMedium.copy(
+            fontSize = 16.sp,
+            color = Color.Black
+        ),
+        decorationBox = { innerTextField ->
+            Row(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.White, RoundedCornerShape(10.dp))
+                    .padding(horizontal = 15.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Box(modifier = Modifier.weight(1f)) {
                     if (value.isEmpty()) {
                         Text(
                             text = hint,
                             style = HomeNTheme.typography.suitRegular,
                             color = BottomGray,
-                            fontSize = 12.sp
+                            fontSize = 12.sp,
+                            modifier = Modifier.align(Alignment.CenterStart)
                         )
                     }
                     innerTextField()
-                    
-                    if (value.isNotEmpty()) {
-                        Text(
-                            text = "${value.length}/$maxChar",
-                            style = HomeNTheme.typography.suitRegular,
-                            color = BottomGray,
-                            fontSize = 12.sp,
-                            modifier = Modifier.align(Alignment.CenterEnd)
-                        )
-                    }
                 }
-            }
-        )
 
-        HorizontalDivider(
-            thickness = 1.dp,
-            color = if (value.isNotEmpty()) Color.Black else Color(0xFFE0E3EA)
-        )
-    }
+                Text(
+                    text = "${value.length}/$maxChar",
+                    style = HomeNTheme.typography.suitRegular,
+                    color = BottomGray,
+                    fontSize = 12.sp
+                )
+
+            }
+        }
+    )
 }

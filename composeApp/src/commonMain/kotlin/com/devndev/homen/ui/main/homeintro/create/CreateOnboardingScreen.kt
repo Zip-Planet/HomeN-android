@@ -103,7 +103,7 @@ fun CreateOnboardingScreen(
                 color = Color.Black
             )
 
-            Spacer(modifier = Modifier.height(73.dp))
+            Spacer(modifier = Modifier.height(42.dp))
 
             Column(modifier = Modifier.fillMaxWidth()) {
                 OnboardingStepGuideItem(

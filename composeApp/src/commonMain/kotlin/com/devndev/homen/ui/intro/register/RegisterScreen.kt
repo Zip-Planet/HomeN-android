@@ -32,7 +32,7 @@ import androidx.compose.ui.unit.sp
 import com.devndev.homen.ui.component.BackHandler
 import com.devndev.homen.ui.component.HomeNButton
 import com.devndev.homen.ui.component.HomeNScreen
-import com.devndev.homen.ui.component.HomeNUnderlineTextField
+import com.devndev.homen.ui.component.HomeNTextField
 import com.devndev.homen.ui.component.TitleTopBar
 import com.devndev.homen.ui.intro.register.viewmodel.RegisterContract
 import com.devndev.homen.ui.intro.register.viewmodel.RegisterStep
@@ -92,13 +92,13 @@ fun RegisterScreen(
                 .padding(
                     start = HomeNTheme.dimensions.horizontalPadding,
                     end = HomeNTheme.dimensions.horizontalPadding,
-                    bottom = HomeNTheme.dimensions.bottomPadding
+                    bottom = HomeNTheme.dimensions.bottomPadding,
+                    top = HomeNTheme.dimensions.topPadding
                 )
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 52.dp),
             ) {
                 Text(
                     text = stringResource(Res.string.nickname_msg),
@@ -109,7 +109,7 @@ fun RegisterScreen(
 
                 Spacer(modifier = Modifier.height(20.dp))
 
-                HomeNUnderlineTextField(
+                HomeNTextField(
                     value = uiState.nickname,
                     onValueChange = { viewModel.setEvent(RegisterContract.Event.OnNicknameChanged(it)) },
                     hint = stringResource(Res.string.nickname_hint),
