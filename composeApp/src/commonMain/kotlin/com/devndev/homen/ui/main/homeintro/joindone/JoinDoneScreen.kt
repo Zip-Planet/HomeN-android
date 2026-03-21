@@ -61,7 +61,8 @@ fun JoinDoneScreen(
 
     HomeNScreen(
         topBar = {},
-        isLoading = uiState.isLoading
+        isLoading = uiState.isLoading,
+        containerColor = Color.White
     ) {
         Column(
             modifier = Modifier
