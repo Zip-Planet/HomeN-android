@@ -5,6 +5,8 @@
     <string name="app_logo">Home/n</string>
     <string name="next_button">다음</string>
     <string name="logout">로그아웃</string>
+    <string name="manager">관리자</string>
+    <string name="member">구성원</string>
 
     <!-- Splash 화면 -->
     <string name="login_screen_msg">작은 집안일도 공평하게</string>
@@ -31,10 +33,10 @@
     <string name="join_code_tooltip_msg1">그룹 관리자가 초대코드를 공유해요</string>
     <string name="join_code_tooltip_msg2">초대 링크를 받았다면 자동으로 입력돼요</string>
     <string name="confirm_home_title">초대받은 집 정보를 확인하세요</string>
-    <string name="confirm_home_member_count">n명이 살고 있어요</string>
+    <string name="confirm_home_member_count">n명의 구성원</string>
     <string name="created_date">생성일</string>
     <string name="invite_code">초대코드</string>
-    <string name="confirm_home_member_list_count">n명의 구성원</string>
+    <string name="confirm_home_member">구성원</string>
     <string name="enter_homen_btn">Home/n 시작하기</string>
     <string name="join_done_title">s 입장 완료</string>
     <string name="join_done_subtitle">Home/n 에서 집안일을 N분의 1로 나눠보세요</string>

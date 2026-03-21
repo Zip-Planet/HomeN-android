@@ -30,13 +30,13 @@ import com.devndev.homen.ui.component.HomeNScreen
 import com.devndev.homen.ui.component.TitleTopBar
 import com.devndev.homen.ui.main.homeintro.joinconfirm.viewmodel.JoinConfirmContract
 import com.devndev.homen.ui.main.homeintro.joinconfirm.viewmodel.JoinConfirmViewModel
-import com.devndev.homen.ui.theme.BackgroundGray
 import com.devndev.homen.ui.theme.Blue2
+import com.devndev.homen.ui.theme.ButtonGray
 import com.devndev.homen.ui.theme.HomeNTheme
 import homen.composeapp.generated.resources.Res
 import homen.composeapp.generated.resources.chef_avatar
+import homen.composeapp.generated.resources.confirm_home_member
 import homen.composeapp.generated.resources.confirm_home_member_count
-import homen.composeapp.generated.resources.confirm_home_member_list_count
 import homen.composeapp.generated.resources.confirm_home_title
 import homen.composeapp.generated.resources.created_date
 import homen.composeapp.generated.resources.guard_avatar
@@ -44,6 +44,8 @@ import homen.composeapp.generated.resources.hero_avatar
 import homen.composeapp.generated.resources.home1_small_icon
 import homen.composeapp.generated.resources.home_entry_title
 import homen.composeapp.generated.resources.invite_code
+import homen.composeapp.generated.resources.manager
+import homen.composeapp.generated.resources.member
 import homen.composeapp.generated.resources.user_plus
 import kotlinx.coroutines.flow.collectLatest
 import org.jetbrains.compose.resources.painterResource
@@ -105,14 +107,14 @@ fun JoinConfirmScreen(
 
                 Spacer(modifier = Modifier.height(35.dp))
 
-                Row(
+                Column(
                     modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(6.dp)
+                    verticalArrangement = Arrangement.spacedBy(13.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Box(
                         modifier = Modifier
-                            .size(36.dp)
+                            .size(50.dp)
                             .clip(CircleShape)
                             .background(Color.White)
                     ) {
@@ -121,34 +123,44 @@ fun JoinConfirmScreen(
                             painter = painterResource(Res.drawable.home1_small_icon),
                             contentDescription = null,
                             modifier = Modifier
-                                .size(24.dp)
+                                .size(33.dp)
                                 .align(Alignment.Center),
                             tint = Color.Unspecified
                         )
                     }
 
-                    Text(
-                        text = "골든빌401",
-                        style = HomeNTheme.typography.suitExtraBold,
-                        fontSize = 18.sp,
-                        color = Color.Black
-                    )
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(6.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = "골든빌401",
+                            style = HomeNTheme.typography.suitExtraBold,
+                            fontSize = 18.sp,
+                            color = Color.Black
+                        )
 
-                    Text(
-                        text = stringResource(Res.string.confirm_home_member_count).replace(
-                            "n",
-                            "3"
-                        ),
-                        style = HomeNTheme.typography.suitRegular,
-                        fontSize = 12.sp,
-                        color = Color.Black
-                    )
+                        Text(
+                            text = stringResource(Res.string.confirm_home_member_count).replace(
+                                "n",
+                                "3"
+                            ),
+                            style = HomeNTheme.typography.suitRegular,
+                            fontSize = 12.sp,
+                            color = Color.Black
+                        )
+                    }
                 }
 
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(13.dp))
 
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(9.dp)
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(
+                        9.dp,
+                        Alignment.CenterHorizontally
+                    ),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     Row(
                         modifier = Modifier
@@ -207,7 +219,7 @@ fun JoinConfirmScreen(
                     }
                 }
 
-                Spacer(modifier = Modifier.height(15.dp))
+                Spacer(modifier = Modifier.height(27.dp))
 
                 Column(
                     modifier = Modifier
@@ -224,16 +236,13 @@ fun JoinConfirmScreen(
                         Icon(
                             painter = painterResource(Res.drawable.user_plus),
                             contentDescription = null,
-                            modifier = Modifier.size(15.dp),
+                            modifier = Modifier.size(22.dp),
                         )
 
                         Text(
-                            text = stringResource(Res.string.confirm_home_member_list_count).replace(
-                                "n",
-                                "3"
-                            ),
-                            style = HomeNTheme.typography.suitBold,
-                            fontSize = 14.sp,
+                            text = stringResource(Res.string.confirm_home_member),
+                            style = HomeNTheme.typography.suitExtraBold,
+                            fontSize = 18.sp,
                             color = Color.Black
                         )
                     }
@@ -266,21 +275,14 @@ fun UserSimpleInfo(user: User) {
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Box(
+
+        Icon(
+            painter = painterResource,
+            contentDescription = null,
             modifier = Modifier
-                .size(36.dp)
-                .clip(CircleShape)
-                .background(BackgroundGray)
-        ) {
-            Icon(
-                painter = painterResource,
-                contentDescription = null,
-                modifier = Modifier
-                    .size(26.dp)
-                    .align(Alignment.Center),
-                tint = Color.Unspecified
-            )
-        }
+                .size(20.dp),
+            tint = Color.Unspecified
+        )
 
         Text(
             text = user.name,
@@ -289,19 +291,30 @@ fun UserSimpleInfo(user: User) {
             color = Color.Black
         )
 
-        if (user.isManager) {
-            Box(
-                modifier = Modifier
-                    .background(color = Blue2, shape = RoundedCornerShape(13.dp))
-                        .padding(vertical = 2.dp, horizontal = 5.dp)
-            ) {
-                Text(
-                    text = "관리자",
-                    style = HomeNTheme.typography.suitRegular,
-                    fontSize = 10.sp,
-                    color = Color.White
-                )
-            }
+        Spacer(modifier = Modifier.weight(1f))
+
+        var text = stringResource(Res.string.manager)
+        var backgroundColor = Blue2
+        var textColor = Color.White
+
+        if (!user.isManager) {
+            text = stringResource(Res.string.member)
+            backgroundColor = ButtonGray
+            textColor = Color.Black
         }
+
+        Box(
+            modifier = Modifier
+                .background(color = backgroundColor, shape = RoundedCornerShape(13.dp))
+                .padding(vertical = 2.dp, horizontal = 5.dp)
+        ) {
+            Text(
+                text = text,
+                style = HomeNTheme.typography.suitRegular,
+                fontSize = 10.sp,
+                color = textColor
+            )
+        }
+
     }
 }
