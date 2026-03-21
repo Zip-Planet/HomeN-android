@@ -200,7 +200,7 @@ fun CreatePackScreen(
                 .align(Alignment.TopEnd)
                 .padding(top = 1.dp),
             horizontalAlignment = Alignment.End,
-            verticalArrangement = Arrangement.spacedBy(14.dp)
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             TooltipButton {
                 viewModel.setEvent(CreateHomeContract.Event.OnTooltipToggle(!uiState.showTooltip))

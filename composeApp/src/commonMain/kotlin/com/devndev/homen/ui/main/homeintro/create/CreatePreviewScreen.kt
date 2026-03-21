@@ -320,7 +320,7 @@ fun CreatePreviewScreen(
                 .align(Alignment.TopEnd)
                 .padding(top = 1.dp, end = HomeNTheme.dimensions.horizontalPadding),
             horizontalAlignment = Alignment.End,
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             TooltipButton {
                 viewModel.setEvent(CreateHomeContract.Event.OnTooltipToggle(!uiState.showTooltip))
