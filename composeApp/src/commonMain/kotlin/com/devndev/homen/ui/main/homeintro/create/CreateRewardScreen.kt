@@ -273,7 +273,7 @@ fun RewardInputCard(
                     painter = painterResource(Res.drawable.x_btn),
                     contentDescription = "remove",
                     modifier = Modifier
-                        .size(28.dp)
+                        .size(16.dp)
                         .clickable { onRemoveClick() },
                     tint = Color.Black
                 )
