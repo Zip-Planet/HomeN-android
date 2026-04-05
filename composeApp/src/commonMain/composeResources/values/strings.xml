@@ -114,7 +114,13 @@
     <string name="home_create_reward_complete_btn">생성 완료</string>
     <string name="reward_card_title">리워드 n</string>
     <string name="reward_name_label">이름</string>
-    <string name="reward_name_hint">예 : 저녁 더치페이 1회 면제권</string>
     <string name="reward_point_label">목표 포인트</string>
-    <string name="reward_point_hint">예 : 1,600</string>
+
+    <!-- 리워드 힌트 세트 -->
+    <string name="reward_name_hint1">예 : 저녁 더치페이 1회 면제권</string>
+    <string name="reward_point_hint1">예 : 1,600</string>
+    <string name="reward_name_hint2">예 : 내 최애 배달 음식 결제 해주기</string>
+    <string name="reward_point_hint2">예 : 2,400</string>
+    <string name="reward_name_hint3">예 : 집안일 1회 룸메에게 넘기기</string>
+    <string name="reward_point_hint3">예 : 800</string>
 </resources>

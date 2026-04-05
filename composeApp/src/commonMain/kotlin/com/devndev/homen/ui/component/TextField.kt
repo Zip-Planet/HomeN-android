@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.devndev.homen.ui.theme.BottomGray
@@ -96,7 +97,8 @@ fun HomeNUnderlineTextField(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     regex: Regex? = null,
-    keyboardOptions: KeyboardOptions = KeyboardOptions.Default
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    visualTransformation: VisualTransformation = VisualTransformation.None
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
         BasicTextField(
@@ -111,6 +113,7 @@ fun HomeNUnderlineTextField(
             enabled = enabled,
             modifier = Modifier.fillMaxWidth(),
             keyboardOptions = keyboardOptions,
+            visualTransformation = visualTransformation,
             textStyle = HomeNTheme.typography.suitMedium.copy(
                 fontSize = 16.sp,
                 color = Color.Black

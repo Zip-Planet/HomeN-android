@@ -39,6 +39,7 @@ import com.devndev.homen.ui.component.TooltipButton
 import com.devndev.homen.ui.main.homeintro.create.viewmodel.CreateHomeContract
 import com.devndev.homen.ui.main.homeintro.create.viewmodel.CreateHomeViewModel
 import com.devndev.homen.ui.theme.HomeNTheme
+import com.devndev.homen.util.ThousandSeparatorTransformation
 import homen.composeapp.generated.resources.Res
 import homen.composeapp.generated.resources.home_create_reward_complete_btn
 import homen.composeapp.generated.resources.home_create_reward_msg
@@ -49,9 +50,13 @@ import homen.composeapp.generated.resources.home_create_reward_tooltip_title
 import homen.composeapp.generated.resources.plus_icon
 import homen.composeapp.generated.resources.present_icon
 import homen.composeapp.generated.resources.reward_card_title
-import homen.composeapp.generated.resources.reward_name_hint
+import homen.composeapp.generated.resources.reward_name_hint1
+import homen.composeapp.generated.resources.reward_name_hint2
+import homen.composeapp.generated.resources.reward_name_hint3
 import homen.composeapp.generated.resources.reward_name_label
-import homen.composeapp.generated.resources.reward_point_hint
+import homen.composeapp.generated.resources.reward_point_hint1
+import homen.composeapp.generated.resources.reward_point_hint2
+import homen.composeapp.generated.resources.reward_point_hint3
 import homen.composeapp.generated.resources.reward_point_label
 import homen.composeapp.generated.resources.x_btn
 import kotlinx.coroutines.flow.collectLatest
@@ -226,6 +231,17 @@ fun RewardInputCard(
     onRemoveClick: () -> Unit,
     showRemoveButton: Boolean
 ) {
+    val nameHint = when (index % 3) {
+        0 -> stringResource(Res.string.reward_name_hint1)
+        1 -> stringResource(Res.string.reward_name_hint2)
+        else -> stringResource(Res.string.reward_name_hint3)
+    }
+    val pointHint = when (index % 3) {
+        0 -> stringResource(Res.string.reward_point_hint1)
+        1 -> stringResource(Res.string.reward_point_hint2)
+        else -> stringResource(Res.string.reward_point_hint3)
+    }
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -258,7 +274,7 @@ fun RewardInputCard(
                     painter = painterResource(Res.drawable.x_btn),
                     contentDescription = "remove",
                     modifier = Modifier
-                        .size(28.dp)
+                        .size(16.dp)
                         .clickable { onRemoveClick() },
                     tint = Color.Black
                 )
@@ -276,7 +292,7 @@ fun RewardInputCard(
         HomeNUnderlineTextField(
             value = name,
             onValueChange = onNameChanged,
-            hint = stringResource(Res.string.reward_name_hint),
+            hint = nameHint,
             modifier = Modifier.padding(top = 10.dp)
         )
 
@@ -291,10 +307,11 @@ fun RewardInputCard(
         HomeNUnderlineTextField(
             value = point,
             onValueChange = onPointChanged,
-            hint = stringResource(Res.string.reward_point_hint),
+            hint = pointHint,
             modifier = Modifier.padding(top = 10.dp),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            regex = Regex("^[0-9]*$")
+            regex = Regex("^[1-9][0-9]*$|^$"),
+            visualTransformation = ThousandSeparatorTransformation
         )
     }
 }
