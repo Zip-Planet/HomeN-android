@@ -66,7 +66,7 @@ fun HomeNTooltip(
         ) {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(3.dp),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.Top
             ) {
                 Icon(
                     painter = painterResource(Res.drawable.light_bulb),

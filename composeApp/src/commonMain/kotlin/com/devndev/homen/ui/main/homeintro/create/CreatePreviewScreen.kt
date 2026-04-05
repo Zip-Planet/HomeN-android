@@ -115,6 +115,10 @@ fun CreatePreviewScreen(
         }
     }
 
+    LaunchedEffect(Unit) {
+        viewModel.setEvent(CreateHomeContract.Event.OnTooltipToggle(true))
+    }
+
     val packTitle = when (uiState.selectedPack) {
         StarterPackType.ROOMMATE -> stringResource(Res.string.home_create_pack1_title)
         StarterPackType.DORMITORY -> stringResource(Res.string.home_create_pack2_title)
@@ -123,9 +127,21 @@ fun CreatePreviewScreen(
     }
 
     val packDesc = when (uiState.selectedPack) {
-        StarterPackType.ROOMMATE -> stringResource(Res.string.home_create_pack1_msg).replace("\n", " ")
-        StarterPackType.DORMITORY -> stringResource(Res.string.home_create_pack2_msg).replace("\n", " ")
-        StarterPackType.MINIMAL -> stringResource(Res.string.home_create_pack3_msg).replace("\n", " ")
+        StarterPackType.ROOMMATE -> stringResource(Res.string.home_create_pack1_msg).replace(
+            "\n",
+            " "
+        )
+
+        StarterPackType.DORMITORY -> stringResource(Res.string.home_create_pack2_msg).replace(
+            "\n",
+            " "
+        )
+
+        StarterPackType.MINIMAL -> stringResource(Res.string.home_create_pack3_msg).replace(
+            "\n",
+            " "
+        )
+
         else -> ""
     }
 
@@ -259,7 +275,7 @@ fun CreatePreviewScreen(
 
                         groupedChores.forEach { (difficultyKey, chores) ->
                             item {
-                                val label = when(difficultyKey) {
+                                val label = when (difficultyKey) {
                                     "EASY" -> easyLabel
                                     "MEDIUM" -> mediumLabel
                                     else -> hardLabel
@@ -437,7 +453,10 @@ fun ChorePreviewItem(
                     Text(
                         text = buildAnnotatedString {
                             withStyle(style = HomeNTheme.typography.suitBold.toSpanStyle()) {
-                                append(infoFormat.replace("n", chore.difficulty.point.toString()).replace("s", daysText))
+                                append(
+                                    infoFormat.replace("n", chore.difficulty.point.toString())
+                                        .replace("s", daysText)
+                                )
                             }
                             append(diffFormat.replace("s", diffText))
                         },

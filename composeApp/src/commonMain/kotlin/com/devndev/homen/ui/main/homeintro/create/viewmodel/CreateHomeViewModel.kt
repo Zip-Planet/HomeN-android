@@ -6,6 +6,7 @@ import com.devndev.homen.core.domain.model.chore.ChoreCategory
 import com.devndev.homen.core.domain.model.chore.ChoreDifficulty
 import com.devndev.homen.core.domain.model.chore.DayOfWeek
 import com.devndev.homen.core.domain.model.chore.StarterPackType
+import com.devndev.homen.core.domain.model.home.Reward
 
 class CreateHomeViewModel : BaseViewModel<CreateHomeContract.Event, CreateHomeContract.State, CreateHomeContract.Effect>() {
 
@@ -22,9 +23,6 @@ class CreateHomeViewModel : BaseViewModel<CreateHomeContract.Event, CreateHomeCo
             is CreateHomeContract.Event.OnPackSelected -> {
                 setState { copy(selectedPack = event.packType) }
             }
-            is CreateHomeContract.Event.OnRewardChanged -> {
-                setState { copy(rewards = event.reward) }
-            }
             is CreateHomeContract.Event.OnTooltipToggle -> {
                 setState { copy(showTooltip = event.show) }
             }
@@ -36,6 +34,28 @@ class CreateHomeViewModel : BaseViewModel<CreateHomeContract.Event, CreateHomeCo
                     currentSelected.add(event.chore)
                 }
                 setState { copy(selectedChores = currentSelected) }
+            }
+            is CreateHomeContract.Event.OnAddRewardClick -> {
+                val currentRewards = viewState.value.rewards.toMutableList()
+                currentRewards.add(Reward())
+                setState { copy(rewards = currentRewards) }
+            }
+            is CreateHomeContract.Event.OnRemoveRewardClick -> {
+                val currentRewards = viewState.value.rewards.toMutableList()
+                if (currentRewards.size > 1) {
+                    currentRewards.removeAt(event.index)
+                    setState { copy(rewards = currentRewards) }
+                }
+            }
+            is CreateHomeContract.Event.OnRewardNameChanged -> {
+                val currentRewards = viewState.value.rewards.toMutableList()
+                currentRewards[event.index] = currentRewards[event.index].copy(name = event.name)
+                setState { copy(rewards = currentRewards) }
+            }
+            is CreateHomeContract.Event.OnRewardPointChanged -> {
+                val currentRewards = viewState.value.rewards.toMutableList()
+                currentRewards[event.index] = currentRewards[event.index].copy(targetPoint = event.point)
+                setState { copy(rewards = currentRewards) }
             }
             CreateHomeContract.Event.OnNextClick -> {
                 setEffect { CreateHomeContract.Effect.NavToNext }
@@ -49,9 +69,14 @@ class CreateHomeViewModel : BaseViewModel<CreateHomeContract.Event, CreateHomeCo
             CreateHomeContract.Event.OnPreviewClick -> {
                 val currentPack = viewState.value.selectedPack ?: StarterPackType.ROOMMATE
                 val initialChores = getInitialChoresByPack(currentPack)
-                
                 setState { copy(chores = initialChores, selectedChores = initialChores) }
                 setEffect { CreateHomeContract.Effect.NavToPreview }
+            }
+            CreateHomeContract.Event.OnSkipClick -> {
+                setEffect { CreateHomeContract.Effect.NavToNext }
+            }
+            CreateHomeContract.Event.OnCompleteClick -> {
+                setEffect { CreateHomeContract.Effect.NavToNext }
             }
         }
     }

@@ -3,15 +3,16 @@ package com.devndev.homen.ui.component
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -82,4 +83,61 @@ fun HomeNTextField(
             }
         }
     )
+}
+
+/**
+ * 하단에 밑줄이 있는 텍스트 필드
+ */
+@Composable
+fun HomeNUnderlineTextField(
+    value: String,
+    onValueChange: (String) -> Unit,
+    hint: String,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    regex: Regex? = null,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default
+) {
+    Column(modifier = modifier.fillMaxWidth()) {
+        BasicTextField(
+            value = value,
+            onValueChange = { input ->
+                val isRegexValid = regex == null || input.matches(regex)
+
+                if (isRegexValid) {
+                    onValueChange(input)
+                }
+            },
+            enabled = enabled,
+            modifier = Modifier.fillMaxWidth(),
+            keyboardOptions = keyboardOptions,
+            textStyle = HomeNTheme.typography.suitMedium.copy(
+                fontSize = 16.sp,
+                color = Color.Black
+            ),
+            decorationBox = { innerTextField ->
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(10.dp),
+                    contentAlignment = Alignment.CenterStart
+                ) {
+                    if (value.isEmpty()) {
+                        Text(
+                            text = hint,
+                            style = HomeNTheme.typography.suitMedium,
+                            color = BottomGray,
+                            fontSize = 16.sp
+                        )
+                    }
+                    innerTextField()
+                }
+            }
+        )
+
+        HorizontalDivider(
+            thickness = 1.dp,
+            color = Color.Black
+        )
+    }
 }
