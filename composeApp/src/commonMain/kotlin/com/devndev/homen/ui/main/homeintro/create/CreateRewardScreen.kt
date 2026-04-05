@@ -48,6 +48,11 @@ import homen.composeapp.generated.resources.home_create_reward_tooltip_msg
 import homen.composeapp.generated.resources.home_create_reward_tooltip_title
 import homen.composeapp.generated.resources.plus_icon
 import homen.composeapp.generated.resources.present_icon
+import homen.composeapp.generated.resources.reward_card_title
+import homen.composeapp.generated.resources.reward_name_hint
+import homen.composeapp.generated.resources.reward_name_label
+import homen.composeapp.generated.resources.reward_point_hint
+import homen.composeapp.generated.resources.reward_point_label
 import homen.composeapp.generated.resources.x_btn
 import kotlinx.coroutines.flow.collectLatest
 import org.jetbrains.compose.resources.painterResource
@@ -191,7 +196,7 @@ fun CreateRewardScreen(
                         viewModel.setEvent(CreateHomeContract.Event.OnTooltipToggle(false))
                     },
                     modifier = Modifier.pointerInput(Unit) {
-                        detectTapGestures { /* 툴팁 내부 클릭 시 닫히지 않도록 보호 */ }
+                        detectTapGestures { }
                     }
                 )
             }
@@ -241,7 +246,7 @@ fun RewardInputCard(
                 )
                 Spacer(modifier = Modifier.width(2.dp))
                 Text(
-                    text = "리워드 ${index + 1}",
+                    text = stringResource(Res.string.reward_card_title).replace("n", (index + 1).toString()),
                     style = HomeNTheme.typography.suitExtraBold,
                     fontSize = 18.sp,
                     color = Color.Black
@@ -253,7 +258,7 @@ fun RewardInputCard(
                     painter = painterResource(Res.drawable.x_btn),
                     contentDescription = "remove",
                     modifier = Modifier
-                        .size(16.dp)
+                        .size(28.dp)
                         .clickable { onRemoveClick() },
                     tint = Color.Black
                 )
@@ -263,7 +268,7 @@ fun RewardInputCard(
         Spacer(modifier = Modifier.height(25.dp))
 
         Text(
-            text = "이름",
+            text = stringResource(Res.string.reward_name_label),
             style = HomeNTheme.typography.suitBold,
             fontSize = 18.sp,
             color = Color.Black
@@ -271,14 +276,14 @@ fun RewardInputCard(
         HomeNUnderlineTextField(
             value = name,
             onValueChange = onNameChanged,
-            hint = "예 : 저녁 더치페이 1회 면제권",
+            hint = stringResource(Res.string.reward_name_hint),
             modifier = Modifier.padding(top = 10.dp)
         )
 
         Spacer(modifier = Modifier.height(25.dp))
 
         Text(
-            text = "목표 포인트",
+            text = stringResource(Res.string.reward_point_label),
             style = HomeNTheme.typography.suitBold,
             fontSize = 18.sp,
             color = Color.Black
@@ -286,7 +291,7 @@ fun RewardInputCard(
         HomeNUnderlineTextField(
             value = point,
             onValueChange = onPointChanged,
-            hint = "예 : 1,600",
+            hint = stringResource(Res.string.reward_point_hint),
             modifier = Modifier.padding(top = 10.dp),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             regex = Regex("^[0-9]*$")
