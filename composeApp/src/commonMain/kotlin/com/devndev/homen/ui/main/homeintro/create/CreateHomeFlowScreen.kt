@@ -126,7 +126,11 @@ fun CreateHomeFlowScreen(
                     )
                 }
                 composable<HomeIntroRoute.CreateReward> {
-                    // TODO: CreateRewardScreen 구현
+                    CreateRewardScreen(
+                        viewModel = viewModel,
+                        onBackClick = { innerNavController.popBackStack() },
+                        onCompleteClick = {  },
+                    )
                 }
             }
         }

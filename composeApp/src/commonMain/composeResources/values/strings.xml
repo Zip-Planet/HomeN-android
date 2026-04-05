@@ -104,4 +104,12 @@
     <string name="difficulty_medium">중</string>
     <string name="difficulty_upper_medium">중상</string>
     <string name="difficulty_high">상</string>
+
+    <!-- 초기 리워드 화면 -->
+    <string name="home_create_reward_title">집안일이 즐거워지는\n첫 리워드를 정해볼까요?</string>
+    <string name="home_create_reward_msg">열심히 모은 포인트로 교환할 수 있는 혜택을 만들어보세요</string>
+    <string name="home_create_reward_tooltip_title">언제든 다시 바꿀 수 있으니\n편하게 적어보세요</string>
+    <string name="home_create_reward_tooltip_msg">나중에 리워드 화면에서 더\n다양한 보상을 추가할 수 있어요</string>
+    <string name="home_create_reward_skip_btn">건너뛰기</string>
+    <string name="home_create_reward_complete_btn">생성 완료</string>
 </resources>

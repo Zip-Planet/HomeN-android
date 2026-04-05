@@ -87,6 +87,10 @@ fun CreatePackScreen(
         }
     }
 
+    LaunchedEffect(Unit) {
+        viewModel.setEvent(CreateHomeContract.Event.OnTooltipToggle(true))
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
