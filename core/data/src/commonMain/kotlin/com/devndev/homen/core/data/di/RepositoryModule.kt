@@ -12,7 +12,8 @@ val repositoryModule = module {
     single<AuthRepository> {
         AuthRepositoryImpl(
             kakaoAuthenticator = get(named("kakao")),
-            appleAuthenticator = get(named("apple"))
+            appleAuthenticator = get(named("apple")),
+            authService = get()
         )
     }
 }

@@ -7,7 +7,7 @@ import org.koin.dsl.module
  * 공통 데이터 모듈 (모든 플랫폼 공통)
  */
 val commonDataModule = module {
-    includes(networkModule, dataSourceModule, repositoryModule)
+    includes(networkModule, dataSourceModule, repositoryModule, serviceModule)
 }
 
 /**

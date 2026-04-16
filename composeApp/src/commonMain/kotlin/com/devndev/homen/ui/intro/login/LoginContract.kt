@@ -18,6 +18,6 @@ class LoginContract {
 
     sealed class Effect : ViewSideEffect {
         data object NavigateToMain : Effect()
-        data class NavigateToRegister(val token: String) : Effect()
+        data object NavigateToRegister : Effect()
     }
 }
