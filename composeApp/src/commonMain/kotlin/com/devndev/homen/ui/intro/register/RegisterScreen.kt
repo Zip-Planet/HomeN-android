@@ -29,6 +29,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.devndev.homen.core.domain.model.home.AvatarType
+import com.devndev.homen.ui.common.resource
 import com.devndev.homen.ui.component.BackHandler
 import com.devndev.homen.ui.component.HomeNButton
 import com.devndev.homen.ui.component.HomeNScreen
@@ -39,17 +41,11 @@ import com.devndev.homen.ui.intro.register.viewmodel.RegisterStep
 import com.devndev.homen.ui.intro.register.viewmodel.RegisterViewModel
 import com.devndev.homen.ui.theme.HomeNTheme
 import homen.composeapp.generated.resources.Res
-import homen.composeapp.generated.resources.chef_avatar
-import homen.composeapp.generated.resources.farmer_avatar
-import homen.composeapp.generated.resources.guard_avatar
-import homen.composeapp.generated.resources.hero_avatar
 import homen.composeapp.generated.resources.next_button
 import homen.composeapp.generated.resources.nickname_hint
 import homen.composeapp.generated.resources.nickname_msg
 import homen.composeapp.generated.resources.profile_setting_title
 import homen.composeapp.generated.resources.select_avatar_msg
-import homen.composeapp.generated.resources.wizard_avatar
-import homen.composeapp.generated.resources.zombie_avatar
 import kotlinx.coroutines.flow.collectLatest
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -127,7 +123,7 @@ fun RegisterScreen(
                 exit = fadeOut()
             ) {
                 AvatarSelect(
-                    selectedAvatarIndex = uiState.selectedAvatarIndex,
+                    selectedAvatar = uiState.selectedAvatar,
                     onAvatarSelected = { viewModel.setEvent(RegisterContract.Event.OnAvatarSelected(it)) }
                 )
             }
@@ -139,7 +135,7 @@ fun RegisterScreen(
                 onClick = { viewModel.setEvent(RegisterContract.Event.OnNextClick) },
                 enabled = when (uiState.currentStep) {
                     RegisterStep.NICKNAME -> uiState.nickname.isNotEmpty()
-                    RegisterStep.AVATAR -> uiState.selectedAvatarIndex != null
+                    RegisterStep.AVATAR -> uiState.selectedAvatar != null
                 }
             )
         }
@@ -148,17 +144,10 @@ fun RegisterScreen(
 
 @Composable
 fun AvatarSelect(
-    selectedAvatarIndex: Int?,
-    onAvatarSelected: (Int) -> Unit
+    selectedAvatar: AvatarType?,
+    onAvatarSelected: (AvatarType) -> Unit
 ) {
-    val avatars = listOf(
-        Res.drawable.chef_avatar,
-        Res.drawable.wizard_avatar,
-        Res.drawable.hero_avatar,
-        Res.drawable.guard_avatar,
-        Res.drawable.zombie_avatar,
-        Res.drawable.farmer_avatar,
-    )
+    val avatars = AvatarType.entries
 
     Column(modifier = Modifier.fillMaxWidth()) {
         Text(
@@ -170,14 +159,13 @@ fun AvatarSelect(
         Spacer(modifier = Modifier.height(30.dp))
         val chunkedAvatars = avatars.chunked(3)
         Column(verticalArrangement = Arrangement.spacedBy(15.dp)) {
-            chunkedAvatars.forEachIndexed { rowIndex, rowItems ->
+            chunkedAvatars.forEach { rowItems ->
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(15.dp)
                 ) {
-                    rowItems.forEachIndexed { colIndex, avatar ->
-                        val index = rowIndex * 3 + colIndex
-                        val isSelected = selectedAvatarIndex == index
+                    rowItems.forEach { avatarType ->
+                        val isSelected = selectedAvatar == avatarType
                         Box(
                             modifier = Modifier
                                 .size(80.dp)
@@ -187,11 +175,11 @@ fun AvatarSelect(
                                     if (isSelected) Modifier.border(1.dp, Color.Black, CircleShape)
                                     else Modifier
                                 )
-                                .clickable { onAvatarSelected(index) },
+                                .clickable { onAvatarSelected(avatarType) },
                             contentAlignment = Alignment.Center
                         ) {
                             Image(
-                                painter = painterResource(avatar),
+                                painter = painterResource(avatarType.resource),
                                 contentDescription = null,
                                 modifier = Modifier.size(60.dp)
                             )
