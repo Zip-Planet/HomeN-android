@@ -48,7 +48,7 @@ val networkModule = module {
                     loadTokens { null }
                     refreshTokens { null }
                     sendWithoutRequest { request ->
-                        val publicUrls = listOf("login", "register", "auth/refresh")
+                        val publicUrls = listOf("login", "register", "auth/refresh", "/auth/kakao/")
                         publicUrls.any { request.url.encodedPath.endsWith(it) }
                     }
                 }

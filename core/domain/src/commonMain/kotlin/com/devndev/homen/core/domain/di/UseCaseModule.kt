@@ -1,5 +1,6 @@
 package com.devndev.homen.core.domain.di
 
+import com.devndev.homen.core.domain.usecase.auth.KakaoLoginToServerUseCase
 import com.devndev.homen.core.domain.usecase.auth.SocialLoginUseCase
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
@@ -9,4 +10,5 @@ import org.koin.dsl.module
  */
 val useCaseModule = module {
     factoryOf(::SocialLoginUseCase)
+    factoryOf(::KakaoLoginToServerUseCase)
 }
