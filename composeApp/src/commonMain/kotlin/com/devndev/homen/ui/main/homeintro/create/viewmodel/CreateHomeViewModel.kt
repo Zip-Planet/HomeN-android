@@ -94,7 +94,7 @@ class CreateHomeViewModel(
             when (val result = createHomeUseCase(
                 CreateHome(
                     name = viewState.value.homeName,
-                    imageId = viewState.value.avatarId ?: 1,
+                    imageId = (viewState.value.avatarId ?: 0) + 1,
                     chores = viewState.value.chores,
                     rewards = viewState.value.rewards
                 )
