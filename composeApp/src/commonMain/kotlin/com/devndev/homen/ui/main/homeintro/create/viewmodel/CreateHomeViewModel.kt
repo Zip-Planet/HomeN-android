@@ -1,14 +1,21 @@
 package com.devndev.homen.ui.main.homeintro.create.viewmodel
 
+import androidx.lifecycle.viewModelScope
 import com.devndev.homen.core.common.base.BaseViewModel
-import com.devndev.homen.core.domain.model.chore.Chore
 import com.devndev.homen.core.domain.model.chore.ChoreCategory
 import com.devndev.homen.core.domain.model.chore.ChoreDifficulty
-import com.devndev.homen.core.domain.model.chore.DayOfWeek
+import com.devndev.homen.core.domain.model.chore.RepeatDay
 import com.devndev.homen.core.domain.model.chore.StarterPackType
+import com.devndev.homen.core.domain.model.common.ApiResult
+import com.devndev.homen.core.domain.model.home.Chore
+import com.devndev.homen.core.domain.model.home.CreateHome
 import com.devndev.homen.core.domain.model.home.Reward
+import com.devndev.homen.core.domain.usecase.home.CreateHomeUseCase
+import kotlinx.coroutines.launch
 
-class CreateHomeViewModel : BaseViewModel<CreateHomeContract.Event, CreateHomeContract.State, CreateHomeContract.Effect>() {
+class CreateHomeViewModel(
+    private val createHomeUseCase: CreateHomeUseCase
+) : BaseViewModel<CreateHomeContract.Event, CreateHomeContract.State, CreateHomeContract.Effect>() {
 
     override fun setInitialState() = CreateHomeContract.State()
 
@@ -54,7 +61,7 @@ class CreateHomeViewModel : BaseViewModel<CreateHomeContract.Event, CreateHomeCo
             }
             is CreateHomeContract.Event.OnRewardPointChanged -> {
                 val currentRewards = viewState.value.rewards.toMutableList()
-                currentRewards[event.index] = currentRewards[event.index].copy(targetPoint = event.point)
+                currentRewards[event.index] = currentRewards[event.index].copy(goalPoint = event.point)
                 setState { copy(rewards = currentRewards) }
             }
             CreateHomeContract.Event.OnNextClick -> {
@@ -76,7 +83,32 @@ class CreateHomeViewModel : BaseViewModel<CreateHomeContract.Event, CreateHomeCo
                 setEffect { CreateHomeContract.Effect.NavToNext }
             }
             CreateHomeContract.Event.OnCompleteClick -> {
-                setEffect { CreateHomeContract.Effect.NavToNext }
+                createHome()
+            }
+        }
+    }
+
+    private fun createHome() {
+        setState { copy(isLoading = true) }
+        viewModelScope.launch {
+            setState { copy(isLoading = true) }
+            when (val result = createHomeUseCase(
+                CreateHome(
+                    name = viewState.value.homeName,
+                    imageId = viewState.value.avatarId ?: 1,
+                    chores = viewState.value.chores,
+                    rewards = viewState.value.rewards
+                )
+            )) {
+                is ApiResult.Success -> {
+                    setEffect { CreateHomeContract.Effect.NavToNext }
+                }
+                is ApiResult.Error -> {
+                    // TOOD 에러 처리
+                }
+                is ApiResult.NetworkError -> {
+                    // TODO 네트워크 에러 처리
+                }
             }
         }
     }
@@ -84,25 +116,25 @@ class CreateHomeViewModel : BaseViewModel<CreateHomeContract.Event, CreateHomeCo
     private fun getInitialChoresByPack(packType: StarterPackType): List<Chore> {
         return when (packType) {
             StarterPackType.ROOMMATE -> listOf(
-                Chore(title = "설거지 및 주방 마감", category = ChoreCategory.KITCHEN, days = DayOfWeek.entries.toSet(), difficulty = ChoreDifficulty.LOWER_MEDIUM),
-                Chore(title = "거실 청소기 돌리기", category = ChoreCategory.CLEANING, days = setOf(DayOfWeek.WEDNESDAY, DayOfWeek.SUNDAY), difficulty = ChoreDifficulty.LOWER_MEDIUM),
-                Chore(title = "일반/음식물 쓰레기 버리기", category = ChoreCategory.TRASH, days = setOf(DayOfWeek.TUESDAY, DayOfWeek.FRIDAY), difficulty = ChoreDifficulty.MEDIUM),
-                Chore(title = "공용 수건 세탁 및 건조대 널기", category = ChoreCategory.LAUNDRY, days = setOf(DayOfWeek.THURSDAY, DayOfWeek.SUNDAY), difficulty = ChoreDifficulty.MEDIUM),
-                Chore(title = "재활용 분리수거 및 박스 정리", category = ChoreCategory.TRASH, days = setOf(DayOfWeek.WEDNESDAY, DayOfWeek.SUNDAY), difficulty = ChoreDifficulty.UPPER_MEDIUM),
-                Chore(title = "화장실 전체 물청소", category = ChoreCategory.CLEANING, days = setOf(DayOfWeek.SATURDAY), difficulty = ChoreDifficulty.HIGH),
+                Chore(name = "설거지 및 주방 마감", category = ChoreCategory.KITCHEN.id, repeatDays = RepeatDay.entries.map { it.value }, difficulty = ChoreDifficulty.LOWER_MEDIUM),
+                Chore(name = "거실 청소기 돌리기", category = ChoreCategory.CLEANING.id, repeatDays = listOf(RepeatDay.WEDNESDAY.value, RepeatDay.SUNDAY.value), difficulty = ChoreDifficulty.LOWER_MEDIUM),
+                Chore(name = "일반/음식물 쓰레기 버리기", category = ChoreCategory.TRASH.id, repeatDays = listOf(RepeatDay.TUESDAY.value, RepeatDay.FRIDAY.value), difficulty = ChoreDifficulty.MEDIUM),
+                Chore(name = "공용 수건 세탁 및 건조대 널기", category = ChoreCategory.LAUNDRY.id, repeatDays = listOf(RepeatDay.THURSDAY.value, RepeatDay.SUNDAY.value), difficulty = ChoreDifficulty.MEDIUM),
+                Chore(name = "재활용 분리수거 및 박스 정리", category = ChoreCategory.TRASH.id, repeatDays = listOf(RepeatDay.WEDNESDAY.value, RepeatDay.SUNDAY.value), difficulty = ChoreDifficulty.UPPER_MEDIUM),
+                Chore(name = "화장실 전체 물청소", category = ChoreCategory.CLEANING.id, repeatDays = listOf(RepeatDay.SATURDAY.value), difficulty = ChoreDifficulty.HIGH),
             )
             StarterPackType.DORMITORY -> listOf(
-                Chore(title = "바닥 돌돌이(찍찍이) 밀기", category = ChoreCategory.CLEANING, days = setOf(DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY, DayOfWeek.FRIDAY), difficulty = ChoreDifficulty.LOW),
-                Chore(title = "공용 테이블/책상 먼지 닦기", category = ChoreCategory.CLEANING, days = setOf(DayOfWeek.TUESDAY, DayOfWeek.SATURDAY), difficulty = ChoreDifficulty.LOW),
-                Chore(title = "실내 환기 및 탈취제 뿌리기", category = ChoreCategory.CLEANING, days = DayOfWeek.entries.toSet(), difficulty = ChoreDifficulty.LOW),
-                Chore(title = "공용 쓰레기통 모아서 비우기", category = ChoreCategory.TRASH, days = setOf(DayOfWeek.THURSDAY, DayOfWeek.SUNDAY), difficulty = ChoreDifficulty.LOWER_MEDIUM),
-                Chore(title = "욕실 배수구 머리카락 치우기", category = ChoreCategory.BATHROOM, days = setOf(DayOfWeek.WEDNESDAY, DayOfWeek.SATURDAY), difficulty = ChoreDifficulty.MEDIUM),
+                Chore(name = "바닥 돌돌이(찍찍이) 밀기", category = ChoreCategory.CLEANING.id, repeatDays = listOf(RepeatDay.MONDAY.value, RepeatDay.WEDNESDAY.value, RepeatDay.FRIDAY.value), difficulty = ChoreDifficulty.LOW),
+                Chore(name = "공용 테이블/책상 먼지 닦기", category = ChoreCategory.CLEANING.id, repeatDays = listOf(RepeatDay.TUESDAY.value, RepeatDay.SATURDAY.value), difficulty = ChoreDifficulty.LOW),
+                Chore(name = "실내 환기 및 탈취제 뿌리기", category = ChoreCategory.CLEANING.id, repeatDays = RepeatDay.entries.map { it.value }, difficulty = ChoreDifficulty.LOW),
+                Chore(name = "공용 쓰레기통 모아서 비우기", category = ChoreCategory.TRASH.id, repeatDays = listOf(RepeatDay.THURSDAY.value, RepeatDay.SUNDAY.value), difficulty = ChoreDifficulty.LOWER_MEDIUM),
+                Chore(name = "욕실 배수구 머리카락 치우기", category = ChoreCategory.BATHROOM.id, repeatDays = listOf(RepeatDay.WEDNESDAY.value, RepeatDay.SATURDAY.value), difficulty = ChoreDifficulty.MEDIUM),
             )
             StarterPackType.MINIMAL -> listOf(
-                Chore(title = "청소기 돌리기", category = ChoreCategory.CLEANING, days = setOf(DayOfWeek.SATURDAY), difficulty = ChoreDifficulty.LOWER_MEDIUM),
-                Chore(title = "설거지 한 번에 하기", category = ChoreCategory.KITCHEN, days = setOf(DayOfWeek.WEDNESDAY, DayOfWeek.SUNDAY), difficulty = ChoreDifficulty.MEDIUM),
-                Chore(title = "변기 및 세면대 행구기", category = ChoreCategory.BATHROOM, days = setOf(DayOfWeek.SUNDAY), difficulty = ChoreDifficulty.MEDIUM),
-                Chore(title = "집안 전체 쓰레기 묶어서 버리기", category = ChoreCategory.TRASH, days = setOf(DayOfWeek.SUNDAY), difficulty = ChoreDifficulty.UPPER_MEDIUM),
+                Chore(name = "청소기 돌리기", category = ChoreCategory.CLEANING.id, repeatDays = listOf(RepeatDay.SATURDAY.value), difficulty = ChoreDifficulty.LOWER_MEDIUM),
+                Chore(name = "설거지 한 번에 하기", category = ChoreCategory.KITCHEN.id, repeatDays = listOf(RepeatDay.WEDNESDAY.value, RepeatDay.SUNDAY.value), difficulty = ChoreDifficulty.MEDIUM),
+                Chore(name = "변기 및 세면대 행구기", category = ChoreCategory.BATHROOM.id, repeatDays = listOf(RepeatDay.SUNDAY.value), difficulty = ChoreDifficulty.MEDIUM),
+                Chore(name = "집안 전체 쓰레기 묶어서 버리기", category = ChoreCategory.TRASH.id, repeatDays = listOf(RepeatDay.SUNDAY.value), difficulty = ChoreDifficulty.UPPER_MEDIUM),
             )
         }
     }

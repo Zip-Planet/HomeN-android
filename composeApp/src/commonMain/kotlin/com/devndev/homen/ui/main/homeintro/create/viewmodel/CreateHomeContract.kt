@@ -3,8 +3,8 @@ package com.devndev.homen.ui.main.homeintro.create.viewmodel
 import com.devndev.homen.core.common.base.ViewEvent
 import com.devndev.homen.core.common.base.ViewSideEffect
 import com.devndev.homen.core.common.base.ViewState
-import com.devndev.homen.core.domain.model.chore.Chore
 import com.devndev.homen.core.domain.model.chore.StarterPackType
+import com.devndev.homen.core.domain.model.home.Chore
 import com.devndev.homen.core.domain.model.home.Reward
 
 class CreateHomeContract {
@@ -24,7 +24,7 @@ class CreateHomeContract {
         data object OnAddRewardClick : Event()
         data class OnRemoveRewardClick(val index: Int) : Event()
         data class OnRewardNameChanged(val index: Int, val name: String) : Event()
-        data class OnRewardPointChanged(val index: Int, val point: String) : Event()
+        data class OnRewardPointChanged(val index: Int, val point: Int) : Event()
 
         data object OnSkipClick : Event()
         data object OnCompleteClick : Event()

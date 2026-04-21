@@ -34,11 +34,11 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
-import com.devndev.homen.core.domain.model.chore.Chore
 import com.devndev.homen.core.domain.model.chore.ChoreCategory
 import com.devndev.homen.core.domain.model.chore.ChoreDifficulty
-import com.devndev.homen.core.domain.model.chore.DayOfWeek
+import com.devndev.homen.core.domain.model.chore.RepeatDay
 import com.devndev.homen.core.domain.model.chore.StarterPackType
+import com.devndev.homen.core.domain.model.home.Chore
 import com.devndev.homen.ui.component.HomeNButton
 import com.devndev.homen.ui.component.HomeNTooltip
 import com.devndev.homen.ui.component.StepItem
@@ -381,11 +381,12 @@ fun ChorePreviewItem(
     onToggle: () -> Unit
 ) {
     val icon = when (chore.category) {
-        ChoreCategory.TRASH -> Res.drawable.trash_icon
-        ChoreCategory.CLEANING -> Res.drawable.cleaning_icon
-        ChoreCategory.BATHROOM -> Res.drawable.barhroom_icon
-        ChoreCategory.KITCHEN -> Res.drawable.kitchen_icon
-        ChoreCategory.LAUNDRY -> Res.drawable.laundry_icon
+        ChoreCategory.TRASH.id -> Res.drawable.trash_icon
+        ChoreCategory.CLEANING.id -> Res.drawable.cleaning_icon
+        ChoreCategory.BATHROOM.id -> Res.drawable.barhroom_icon
+        ChoreCategory.KITCHEN.id -> Res.drawable.kitchen_icon
+        ChoreCategory.LAUNDRY.id -> Res.drawable.laundry_icon
+        else -> Res.drawable.trash_icon
     }
 
     val mon = stringResource(Res.string.day_mon)
@@ -439,10 +440,16 @@ fun ChorePreviewItem(
                         .background(ButtonGray, RoundedCornerShape(28.dp))
                         .padding(horizontal = 6.dp, vertical = 2.dp)
                 ) {
-                    val daysText = chore.days.joinToString(",") {
-                        when (it) {
-                            DayOfWeek.MONDAY -> mon; DayOfWeek.TUESDAY -> tue; DayOfWeek.WEDNESDAY -> wed
-                            DayOfWeek.THURSDAY -> thu; DayOfWeek.FRIDAY -> fri; DayOfWeek.SATURDAY -> sat; DayOfWeek.SUNDAY -> sun
+                    val daysText = chore.repeatDays.joinToString(",") { dayValue ->
+                        when (dayValue) {
+                            RepeatDay.MONDAY.value -> mon
+                            RepeatDay.TUESDAY.value -> tue
+                            RepeatDay.WEDNESDAY.value -> wed
+                            RepeatDay.THURSDAY.value -> thu
+                            RepeatDay.FRIDAY.value -> fri
+                            RepeatDay.SATURDAY.value -> sat
+                            RepeatDay.SUNDAY.value -> sun
+                            else -> ""
                         }
                     }
                     val diffText = when (chore.difficulty) {
@@ -470,7 +477,7 @@ fun ChorePreviewItem(
             Spacer(modifier = Modifier.height(4.dp))
 
             Text(
-                text = chore.title,
+                text = chore.name,
                 style = HomeNTheme.typography.suitBold,
                 fontSize = 14.sp,
                 color = Color.Black

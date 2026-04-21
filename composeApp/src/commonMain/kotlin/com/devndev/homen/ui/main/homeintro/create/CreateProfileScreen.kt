@@ -118,7 +118,7 @@ fun CreateProfileScreen(
                         onClick = {
                             viewModel.setEvent(
                                 CreateHomeContract.Event.OnAvatarSelected(
-                                    index
+                                    index + 1
                                 )
                             )
                         }

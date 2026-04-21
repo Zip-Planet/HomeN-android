@@ -132,9 +132,9 @@ fun CreateRewardScreen(
                     RewardInputCard(
                         index = index,
                         name = reward.name,
-                        point = reward.targetPoint,
+                        point = reward.goalPoint,
                         onNameChanged = { viewModel.setEvent(CreateHomeContract.Event.OnRewardNameChanged(index, it)) },
-                        onPointChanged = { viewModel.setEvent(CreateHomeContract.Event.OnRewardPointChanged(index, it)) },
+                        onPointChanged = { viewModel.setEvent(CreateHomeContract.Event.OnRewardPointChanged(index, it.toInt())) },
                         onRemoveClick = { viewModel.setEvent(CreateHomeContract.Event.OnRemoveRewardClick(index)) },
                         showRemoveButton = uiState.rewards.size > 1
                     )
@@ -177,7 +177,7 @@ fun CreateRewardScreen(
                     text = stringResource(Res.string.home_create_reward_complete_btn),
                     onClick = { viewModel.setEvent(CreateHomeContract.Event.OnCompleteClick) },
                     modifier = Modifier.weight(1f),
-                    enabled = uiState.rewards.any { it.name.isNotEmpty() && it.targetPoint.isNotEmpty() }
+                    enabled = uiState.rewards.any { it.name.isNotEmpty() && it.goalPoint.toString().isNotEmpty() }
                 )
             }
         }
@@ -225,7 +225,7 @@ fun CreateRewardScreen(
 fun RewardInputCard(
     index: Int,
     name: String,
-    point: String,
+    point: Int,
     onNameChanged: (String) -> Unit,
     onPointChanged: (String) -> Unit,
     onRemoveClick: () -> Unit,
@@ -305,7 +305,7 @@ fun RewardInputCard(
             color = Color.Black
         )
         HomeNUnderlineTextField(
-            value = point,
+            value = point.toString(),
             onValueChange = onPointChanged,
             hint = pointHint,
             modifier = Modifier.padding(top = 10.dp),
