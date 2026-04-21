@@ -91,7 +91,6 @@ class CreateHomeViewModel(
     private fun createHome() {
         setState { copy(isLoading = true) }
         viewModelScope.launch {
-            setState { copy(isLoading = true) }
             when (val result = createHomeUseCase(
                 CreateHome(
                     name = viewState.value.homeName,
@@ -110,6 +109,7 @@ class CreateHomeViewModel(
                     // TODO 네트워크 에러 처리
                 }
             }
+            setState { copy(isLoading = false) }
         }
     }
 

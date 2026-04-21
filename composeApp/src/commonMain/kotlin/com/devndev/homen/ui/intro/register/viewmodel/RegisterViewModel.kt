@@ -4,11 +4,15 @@ import androidx.lifecycle.viewModelScope
 import com.devndev.homen.core.common.base.BaseViewModel
 import com.devndev.homen.core.domain.model.common.ApiResult
 import com.devndev.homen.core.domain.model.user.UpdateProfile
+import com.devndev.homen.core.domain.usecase.auth.ClearTokenUseCase
+import com.devndev.homen.core.domain.usecase.auth.CommitTokensUseCase
 import com.devndev.homen.core.domain.usecase.user.UpdateProfileUseCase
 import kotlinx.coroutines.launch
 
 class RegisterViewModel(
-    private val updateProfileUseCase: UpdateProfileUseCase
+    private val updateProfileUseCase: UpdateProfileUseCase,
+    private val clearTokenUseCase: ClearTokenUseCase,
+    private val commitTokensUseCase: CommitTokensUseCase
 ) : BaseViewModel<RegisterContract.Event, RegisterContract.State, RegisterContract.Effect>() {
 
     override fun setInitialState() = RegisterContract.State()
@@ -47,6 +51,7 @@ class RegisterViewModel(
     }
 
     private fun registerProfile() {
+        setState { copy(isLoading = true) }
         viewModelScope.launch {
             val result = updateProfileUseCase(
                 UpdateProfile(
@@ -56,6 +61,7 @@ class RegisterViewModel(
             )
             when (result) {
                 is ApiResult.Success -> {
+                    commitToken()
                     setEffect { RegisterContract.Effect.NavigateToMain }
                 }
 
@@ -66,6 +72,7 @@ class RegisterViewModel(
                     // TODO network 에러 처리
                 }
             }
+            setState { copy(isLoading = false) }
         }
     }
 
@@ -75,6 +82,19 @@ class RegisterViewModel(
             setState { copy(selectedAvatar = null) }
         } else {
             setEffect { RegisterContract.Effect.PopBackStack }
+            clearToken()
+        }
+    }
+
+    private fun commitToken() {
+        viewModelScope.launch {
+            commitTokensUseCase()
+        }
+    }
+
+    private fun clearToken() {
+        viewModelScope.launch {
+            clearTokenUseCase()
         }
     }
 }

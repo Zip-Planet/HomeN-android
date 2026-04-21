@@ -25,6 +25,9 @@ kotlin {
             implementation(libs.koin.core)
             implementation(libs.kotlinx.coroutines.core)
             
+            // DataStore
+            implementation(libs.androidx.datastore.preferences)
+            
             // Ktor 공통 의존성
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.auth)
