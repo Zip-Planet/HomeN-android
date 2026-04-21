@@ -1,8 +1,15 @@
 package com.devndev.homen.ui.intro.register.viewmodel
 
+import androidx.lifecycle.viewModelScope
 import com.devndev.homen.core.common.base.BaseViewModel
+import com.devndev.homen.core.domain.model.common.ApiResult
+import com.devndev.homen.core.domain.model.user.UpdateProfile
+import com.devndev.homen.core.domain.usecase.user.UpdateProfileUseCase
+import kotlinx.coroutines.launch
 
-class RegisterViewModel : BaseViewModel<RegisterContract.Event, RegisterContract.State, RegisterContract.Effect>() {
+class RegisterViewModel(
+    private val updateProfileUseCase: UpdateProfileUseCase
+) : BaseViewModel<RegisterContract.Event, RegisterContract.State, RegisterContract.Effect>() {
 
     override fun setInitialState() = RegisterContract.State()
 
@@ -33,8 +40,30 @@ class RegisterViewModel : BaseViewModel<RegisterContract.Event, RegisterContract
             }
             RegisterStep.AVATAR -> {
                 if (currentState.selectedAvatar != null) {
+                    registerProfile()
+                }
+            }
+        }
+    }
+
+    private fun registerProfile() {
+        viewModelScope.launch {
+            val result = updateProfileUseCase(
+                UpdateProfile(
+                    name = viewState.value.nickname,
+                    profileImage = viewState.value.selectedAvatar!!.id
+                )
+            )
+            when (result) {
+                is ApiResult.Success -> {
                     setEffect { RegisterContract.Effect.NavigateToMain }
-                    // TODO: 회원가입 API 호출 시 currentState.selectedAvatar.id 전달
+                }
+
+                is ApiResult.Error -> {
+                    // TODO 에러 처리
+                }
+                ApiResult.NetworkError -> {
+                    // TODO network 에러 처리
                 }
             }
         }

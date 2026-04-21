@@ -3,6 +3,7 @@ package com.devndev.homen.core.domain.di
 import com.devndev.homen.core.domain.usecase.auth.KakaoLoginToServerUseCase
 import com.devndev.homen.core.domain.usecase.auth.SocialLoginUseCase
 import com.devndev.homen.core.domain.usecase.home.CreateHomeUseCase
+import com.devndev.homen.core.domain.usecase.user.UpdateProfileUseCase
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 
@@ -10,7 +11,13 @@ import org.koin.dsl.module
  * 도메인 레이어의 비즈니스 로직(UseCase) 의존성
  */
 val useCaseModule = module {
+    // auth
     factoryOf(::SocialLoginUseCase)
     factoryOf(::KakaoLoginToServerUseCase)
+
+    // home
     factoryOf(::CreateHomeUseCase)
+
+    // user
+    factoryOf(::UpdateProfileUseCase)
 }

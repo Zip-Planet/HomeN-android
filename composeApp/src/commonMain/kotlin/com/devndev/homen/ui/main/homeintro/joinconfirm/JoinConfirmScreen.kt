@@ -24,7 +24,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.devndev.homen.core.domain.model.home.User
+import com.devndev.homen.core.domain.model.user.User
 import com.devndev.homen.ui.component.HomeNButton
 import com.devndev.homen.ui.component.HomeNScreen
 import com.devndev.homen.ui.component.TitleTopBar
@@ -61,9 +61,9 @@ fun JoinConfirmScreen(
     val uiState by viewModel.viewState
 
     val tempMembers = listOf(
-        User("인기스탁", 1, false),
-        User("투다리김치우동", 0, true),
-        User("나는벌레", 2, false)
+        User(uid = "a", name = "인기스탁", avatar = 1, hasHome = true, isProfileSet = true),
+        User(uid = "b", name = "투다리김치우동", avatar = 2, hasHome = true, isProfileSet = true),
+        User(uid = "c", name = "나는벌레", avatar = 3, hasHome = true, isProfileSet = true)
     )
 
     LaunchedEffect(viewModel.effect) {
@@ -247,7 +247,7 @@ fun JoinConfirmScreen(
                         )
                     }
 
-                    tempMembers.sortedByDescending { it.isManager }.forEach {
+                    tempMembers.sortedByDescending { it.hasHome }.forEach {
                         UserSimpleInfo(it)
                     }
                 }
@@ -265,9 +265,9 @@ fun JoinConfirmScreen(
 @Composable
 fun UserSimpleInfo(user: User) {
     val painterResource = when (user.avatar) {
-        0 -> painterResource(Res.drawable.chef_avatar)
-        1 -> painterResource(Res.drawable.hero_avatar)
-        2 -> painterResource(Res.drawable.guard_avatar)
+        1 -> painterResource(Res.drawable.chef_avatar)
+        2 -> painterResource(Res.drawable.hero_avatar)
+        3 -> painterResource(Res.drawable.guard_avatar)
         else -> painterResource(Res.drawable.chef_avatar)
     }
     Row(
@@ -297,7 +297,7 @@ fun UserSimpleInfo(user: User) {
         var backgroundColor = Blue2
         var textColor = Color.White
 
-        if (!user.isManager) {
+        if (!user.hasHome) {
             text = stringResource(Res.string.member)
             backgroundColor = ButtonGray
             textColor = Color.Black
@@ -315,6 +315,5 @@ fun UserSimpleInfo(user: User) {
                 color = textColor
             )
         }
-
     }
 }
