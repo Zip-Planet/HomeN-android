@@ -7,13 +7,15 @@ import com.devndev.homen.core.domain.auth.model.KakaoUser
 import com.devndev.homen.core.domain.model.auth.SocialToken
 import com.devndev.homen.core.domain.model.common.ApiResult
 import com.devndev.homen.core.domain.usecase.auth.KakaoLoginToServerUseCase
+import com.devndev.homen.core.domain.usecase.auth.SaveTokensUseCase
 import com.devndev.homen.core.domain.usecase.auth.SocialLoginUseCase
 import com.devndev.homen.ui.intro.login.LoginContract
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
     private val socialLoginUseCase: SocialLoginUseCase,
-    private val kakaoLoginUseCase: KakaoLoginToServerUseCase
+    private val kakaoLoginUseCase: KakaoLoginToServerUseCase,
+    private val saveTokensUseCase: SaveTokensUseCase
 ) :
     BaseViewModel<LoginContract.Event, LoginContract.State, LoginContract.Effect>() {
 
@@ -66,8 +68,10 @@ class LoginViewModel(
                     when (result) {
                         is ApiResult.Success -> {
                             if (result.data.isProfileSet) {
+                                saveTokens(result.data.accessToken, result.data.refreshToken, isPermanent = true)
                                 setEffect { LoginContract.Effect.NavigateToMain }
                             } else {
+                                saveTokens(result.data.accessToken, result.data.refreshToken, isPermanent = false)
                                 setEffect { LoginContract.Effect.NavigateToRegister }
                             }
                         }
@@ -86,6 +90,12 @@ class LoginViewModel(
 
             }
             setState { copy(isLoading = false) }
+        }
+    }
+
+    private fun saveTokens(accessToken: String, refreshToken: String, isPermanent: Boolean){
+        viewModelScope.launch {
+            saveTokensUseCase(accessToken, refreshToken, isPermanent)
         }
     }
 }

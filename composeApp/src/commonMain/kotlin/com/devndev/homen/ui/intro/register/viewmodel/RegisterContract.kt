@@ -3,11 +3,12 @@ package com.devndev.homen.ui.intro.register.viewmodel
 import com.devndev.homen.core.common.base.ViewEvent
 import com.devndev.homen.core.common.base.ViewSideEffect
 import com.devndev.homen.core.common.base.ViewState
+import com.devndev.homen.core.domain.model.home.AvatarType
 
 class RegisterContract {
     sealed class Event : ViewEvent {
         data class OnNicknameChanged(val nickname: String) : Event()
-        data class OnAvatarSelected(val index: Int) : Event()
+        data class OnAvatarSelected(val avatarType: AvatarType) : Event()
         data object OnNextClick : Event()
         data object OnBackClick : Event()
     }
@@ -15,7 +16,7 @@ class RegisterContract {
     data class State(
         val currentStep: RegisterStep = RegisterStep.NICKNAME,
         val nickname: String = "",
-        val selectedAvatarIndex: Int? = null,
+        val selectedAvatar: AvatarType? = null,
         val isLoading: Boolean = false
     ) : ViewState
 

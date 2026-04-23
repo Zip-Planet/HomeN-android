@@ -1,9 +1,13 @@
 package com.devndev.homen.core.data.di
 
 import com.devndev.homen.core.common.Config
+import com.devndev.homen.core.data.model.auth.request.TokenRefreshRequest
+import com.devndev.homen.core.data.service.auth.AuthService
+import com.devndev.homen.core.domain.repository.TokenRepository
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.auth.Auth
+import io.ktor.client.plugins.auth.providers.BearerTokens
 import io.ktor.client.plugins.auth.providers.bearer
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
@@ -15,6 +19,7 @@ import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import io.ktor.http.encodedPath
 import io.ktor.serialization.kotlinx.json.json
+import kotlinx.coroutines.flow.first
 import kotlinx.serialization.json.Json
 import org.koin.dsl.module
 
@@ -23,15 +28,17 @@ import org.koin.dsl.module
  */
 val networkModule = module {
     single {
+        val tokenRepository: TokenRepository = get()
+        
         HttpClient {
-            // 1. 타임아웃 설정 (서버 연결 안정성 확보)
+            // 1. 타임아웃 설정
             install(HttpTimeout) {
                 requestTimeoutMillis = Config.REQUEST_TIMEOUT
                 connectTimeoutMillis = Config.CONNECT_TIMEOUT
                 socketTimeoutMillis = Config.SOCKET_TIMEOUT
             }
 
-            // 2. JSON 직렬화 설정 (유연한 파싱)
+            // 2. JSON 직렬화 설정
             install(ContentNegotiation) {
                 json(Json {
                     explicitNulls = false
@@ -42,14 +49,53 @@ val networkModule = module {
                 })
             }
 
-            // 3. 자동 인증 및 토큰 갱신 로직 (추후 연동)
+            // 3. 자동 인증 로직
             install(Auth) {
                 bearer {
-                    loadTokens { null }
-                    refreshTokens { null }
+                    loadTokens {
+                        val access = tokenRepository.getAccessToken().first<String?>()
+                        val refresh = tokenRepository.getRefreshToken().first<String?>()
+                        
+                        if (access != null && refresh != null) {
+                            BearerTokens(access, refresh)
+                        } else {
+                            null
+                        }
+                    }
+                    
+                    refreshTokens {
+                        val currentRefreshToken = tokenRepository.getRefreshToken().first<String?>() ?: return@refreshTokens null
+                        
+                        try {
+                            // 토큰 갱신을 위해 별도의 서비스 인스턴스 사용 (무한 루프 방지)
+                            val authService: AuthService = get()
+                            val response = authService.refreshToken(
+                                TokenRefreshRequest(
+                                    currentRefreshToken
+                                )
+                            )
+                            
+                            // 갱신된 액세스 토큰 저장
+                            tokenRepository.saveTokens(
+                                accessToken = response.access,
+                                refreshToken = currentRefreshToken // 기존 리프레시 토큰 유지 (서버 스펙에 따라 다름)
+                            )
+                            
+                            BearerTokens(
+                                accessToken = response.access,
+                                refreshToken = currentRefreshToken
+                            )
+                        } catch (e: Exception) {
+                            // 갱신 실패 시 토큰 삭제 (로그아웃 처리 등)
+                            tokenRepository.clearTokens()
+                            null
+                        }
+                    }
+                    
                     sendWithoutRequest { request ->
-                        val publicUrls = listOf("login", "register", "auth/refresh", "/auth/kakao/")
-                        publicUrls.any { request.url.encodedPath.endsWith(it) }
+                        // 인증이 필요 없는 URL 패턴 정의
+                        val publicUrls = listOf("login", "register", "auth/refresh", "/auth/kakao/", AuthService.TOKEN_REFRESH)
+                        publicUrls.any { request.url.encodedPath.contains(it) }
                     }
                 }
             }
