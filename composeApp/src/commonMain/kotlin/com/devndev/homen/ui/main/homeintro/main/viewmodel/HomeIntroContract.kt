@@ -8,6 +8,7 @@ class HomeIntroContract {
     sealed class Event : ViewEvent {
         data object OnCreateHomeClick : Event()
         data object OnJoinHomeClick : Event()
+        data object OnLogoutClick : Event()
     }
 
     data class State(
@@ -17,5 +18,6 @@ class HomeIntroContract {
     sealed class Effect : ViewSideEffect {
         data object NavigateToCreateHome : Effect()
         data object NavigateToJoinHome : Effect()
+        data object NavigateToSplash: Effect()
     }
 }

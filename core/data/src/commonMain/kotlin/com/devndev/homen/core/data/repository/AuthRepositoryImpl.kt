@@ -1,6 +1,7 @@
 package com.devndev.homen.core.data.repository
 
 import com.devndev.homen.core.data.model.auth.request.KakaoLoginRequest
+import com.devndev.homen.core.data.model.auth.request.LogoutRequest
 import com.devndev.homen.core.data.model.auth.response.toDomainModel
 import com.devndev.homen.core.data.service.auth.AuthService
 import com.devndev.homen.core.domain.auth.SocialAuthResult
@@ -30,6 +31,17 @@ class AuthRepositoryImpl(
         return try {
             val response = authService.kakaoLogin(KakaoLoginRequest(socialToken.token))
             ApiResult.Success(response.toDomainModel())
+        } catch (e: ResponseException) {
+            ApiResult.Error(code = e.response.status.value, message = e.message)
+        } catch (e: Exception) {
+            ApiResult.NetworkError
+        }
+    }
+
+    override suspend fun logout(refreshToken: String): ApiResult<Unit> {
+        return try {
+            authService.logout(LogoutRequest(refreshToken))
+            ApiResult.Success(Unit)
         } catch (e: ResponseException) {
             ApiResult.Error(code = e.response.status.value, message = e.message)
         } catch (e: Exception) {

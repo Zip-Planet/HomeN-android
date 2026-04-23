@@ -3,6 +3,7 @@ package com.devndev.homen.core.domain.di
 import com.devndev.homen.core.domain.usecase.auth.ClearTokenUseCase
 import com.devndev.homen.core.domain.usecase.auth.CommitTokensUseCase
 import com.devndev.homen.core.domain.usecase.auth.KakaoLoginToServerUseCase
+import com.devndev.homen.core.domain.usecase.auth.LogoutUseCase
 import com.devndev.homen.core.domain.usecase.auth.SaveTokensUseCase
 import com.devndev.homen.core.domain.usecase.auth.SocialLoginUseCase
 import com.devndev.homen.core.domain.usecase.home.CreateHomeUseCase
@@ -21,6 +22,7 @@ val useCaseModule = module {
     factoryOf(::ClearTokenUseCase)
     factoryOf(::SaveTokensUseCase)
     factoryOf(::CommitTokensUseCase)
+    factoryOf(::LogoutUseCase)
 
     // home
     factoryOf(::CreateHomeUseCase)
