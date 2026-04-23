@@ -6,6 +6,7 @@ import com.devndev.homen.core.domain.usecase.auth.KakaoLoginToServerUseCase
 import com.devndev.homen.core.domain.usecase.auth.SaveTokensUseCase
 import com.devndev.homen.core.domain.usecase.auth.SocialLoginUseCase
 import com.devndev.homen.core.domain.usecase.home.CreateHomeUseCase
+import com.devndev.homen.core.domain.usecase.splash.CheckTokenUseCase
 import com.devndev.homen.core.domain.usecase.user.UpdateProfileUseCase
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
@@ -26,4 +27,7 @@ val useCaseModule = module {
 
     // user
     factoryOf(::UpdateProfileUseCase)
+
+    // splash
+    factoryOf(::CheckTokenUseCase)
 }

@@ -22,9 +22,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -32,26 +30,47 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.devndev.homen.ui.component.HomeNScreen
+import com.devndev.homen.ui.intro.splash.viewmodel.SplashContract
+import com.devndev.homen.ui.intro.splash.viewmodel.SplashViewModel
 import com.devndev.homen.ui.theme.HomeNTheme
 import homen.composeapp.generated.resources.Res
 import homen.composeapp.generated.resources.app_logo
 import homen.composeapp.generated.resources.homen_logo
 import homen.composeapp.generated.resources.login_screen_msg
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun SplashScreen(onCheckToken: (isValid: Boolean) -> Unit) {
+fun SplashScreen(
+    onNavToMain: () -> Unit,
+    onNavToLogin: () -> Unit,
+    viewModel: SplashViewModel = koinViewModel()
+) {
+    val uiState by viewModel.viewState
+
+    LaunchedEffect(viewModel.effect) {
+        viewModel.effect.collectLatest { effect ->
+            when (effect) {
+                SplashContract.Effect.NavigateToLogin -> {
+                    onNavToLogin()
+                }
+
+                SplashContract.Effect.NavigateToMain -> {
+                    onNavToMain()
+                }
+            }
+        }
+    }
+
     val animatedHeight = remember { Animatable(0f) }
     val animProgress = remember { Animatable(0f) } // 글자 애니메이션 제어용
 
     val loginMsg = stringResource(Res.string.login_screen_msg)
     val words = remember { loginMsg.split(" ") }
-
-    // 모든 단어가 위로 올라왔는지 확인하는 상태 (간격 벌리기 트리거)
-    var isAllWordsUp by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         delay(700)
@@ -69,14 +88,14 @@ fun SplashScreen(onCheckToken: (isValid: Boolean) -> Unit) {
     }
 
     val horizontalSpacing by animateDpAsState(
-        targetValue = if (isAllWordsUp) 3.dp else 0.dp,
+        targetValue = if (uiState.isAllWordsUp) 3.dp else 0.dp,
         animationSpec = tween(durationMillis = 600, easing = LinearOutSlowInEasing)
     )
 
-    LaunchedEffect(isAllWordsUp) {
-        if (isAllWordsUp) {
+    LaunchedEffect(uiState.isAllWordsUp) {
+        if (uiState.isAllWordsUp) {
             delay(1000)
-            onCheckToken(false)
+            viewModel.setEvent(SplashContract.Event.OnCheckToken)
         }
     }
 
@@ -143,7 +162,7 @@ fun SplashScreen(onCheckToken: (isValid: Boolean) -> Unit) {
                                 // 마지막 단어까지 올라왔다면 간격 벌리기 시작
                                 if (index == words.size - 1) {
                                     delay(400) // 마지막 글자가 다 올라올 때까지 대기
-                                    isAllWordsUp = true
+                                    viewModel.setEvent(SplashContract.Event.OnSplashFinished)
                                 }
                             }
                         }

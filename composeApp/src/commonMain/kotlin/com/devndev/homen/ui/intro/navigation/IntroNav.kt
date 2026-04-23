@@ -24,15 +24,14 @@ fun IntroNav(
         popExitTransition = { androidx.compose.animation.ExitTransition.None }
     ) {
         composable<IntroRoute.Splash> {
-            SplashScreen { isValidToken ->
-                if (isValidToken) {
-                    onNavToMain()
-                } else {
+            SplashScreen(
+                onNavToMain = onNavToMain,
+                onNavToLogin = {
                     introNavController.navigate(IntroRoute.Login) {
                         popUpTo<IntroRoute.Splash> { inclusive = true }
                     }
                 }
-            }
+            )
         }
 
         composable<IntroRoute.Login> {
