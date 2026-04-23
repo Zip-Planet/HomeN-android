@@ -14,4 +14,5 @@ interface AuthRepository {
     suspend fun loginWithKakao(): SocialAuthResult<KakaoUser>
     suspend fun loginWithApple(): SocialAuthResult<AppleUser>
     suspend fun kakaoLoginToServer(socialToken: SocialToken): ApiResult<AuthToken>
+    suspend fun logout(refreshToken: String): ApiResult<Unit>
 }

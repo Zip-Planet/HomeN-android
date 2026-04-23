@@ -26,6 +26,7 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun MainNav(
+    onNavToIntro: () -> Unit,
     viewModel: MainViewModel = koinViewModel()
 ) {
     val mainNavController = rememberNavController()
@@ -60,7 +61,8 @@ fun MainNav(
                     mainNavController.navigate(BottomNavItem.Home) {
                         popUpTo<HomeIntroRoute.Selection> { inclusive = true }
                     }
-                }
+                },
+                onNavToIntro = onNavToIntro
             )
 
             homeNav()

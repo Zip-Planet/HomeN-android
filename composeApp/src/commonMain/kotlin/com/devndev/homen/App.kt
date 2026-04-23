@@ -37,7 +37,13 @@ fun HomeNApp() {
                 popEnterTransition = NavTransitions.popEnterTransition,
                 popExitTransition = NavTransitions.popExitTransition
             ) {
-                MainNav()
+                MainNav(
+                    onNavToIntro = {
+                        rootNavController.navigate(AppRoute.Intro) {
+                            popUpTo<AppRoute.Main> { inclusive = true }
+                        }
+                    }
+                )
             }
         }
     }

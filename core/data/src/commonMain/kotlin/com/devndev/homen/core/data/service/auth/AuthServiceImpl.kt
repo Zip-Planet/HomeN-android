@@ -2,6 +2,7 @@ package com.devndev.homen.core.data.service.auth
 
 import com.devndev.homen.core.common.Config
 import com.devndev.homen.core.data.model.auth.request.KakaoLoginRequest
+import com.devndev.homen.core.data.model.auth.request.LogoutRequest
 import com.devndev.homen.core.data.model.auth.request.TokenRefreshRequest
 import com.devndev.homen.core.data.model.auth.response.KakaoLoginResponse
 import com.devndev.homen.core.data.model.auth.response.TokenRefreshResponse
@@ -33,6 +34,17 @@ class AuthServiceImpl(
             url {
                 takeFrom(Config.BASE_URL)
                 encodedPath += AuthService.TOKEN_REFRESH
+            }
+            contentType(ContentType.Application.Json)
+            setBody(request)
+        }.body()
+    }
+
+    override suspend fun logout(request: LogoutRequest) {
+        return client.post {
+            url {
+                takeFrom(Config.BASE_URL)
+                encodedPath += AuthService.LOGOUT
             }
             contentType(ContentType.Application.Json)
             setBody(request)

@@ -14,7 +14,8 @@ import com.devndev.homen.ui.main.homeintro.main.HomeIntroScreen
 
 fun NavGraphBuilder.homeIntroNav(
     navController: NavHostController,
-    onNavToMain: () -> Unit
+    onNavToMain: () -> Unit,
+    onNavToIntro: () -> Unit
 ) {
     composable<HomeIntroRoute.Selection>(
         enterTransition = NavTransitions.enterTransition,
@@ -24,7 +25,8 @@ fun NavGraphBuilder.homeIntroNav(
     ) {
          HomeIntroScreen(
              onNavToCreation = { navController.navigate(HomeIntroRoute.CreateOnboarding) },
-             onNavToCodeEnter = { navController.navigate(HomeIntroRoute.JoinGraph) }
+             onNavToCodeEnter = { navController.navigate(HomeIntroRoute.JoinGraph) },
+             onNavToIntro = { onNavToIntro() }
          )
     }
 
