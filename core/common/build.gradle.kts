@@ -18,9 +18,24 @@ kotlin {
     )
 
     sourceSets {
-        commonMain.dependencies {
-            implementation(libs.androidx.lifecycle.viewmodelCompose)
-            implementation(libs.androidx.lifecycle.runtimeCompose)        }
+        val commonMain by getting {
+            dependencies {
+                implementation(libs.androidx.lifecycle.viewmodelCompose)
+                implementation(libs.androidx.lifecycle.runtimeCompose)
+            }
+        }
+        
+        val iosMain by creating {
+            dependsOn(commonMain)
+        }
+        
+        val iosArm64Main by getting {
+            dependsOn(iosMain)
+        }
+        
+        val iosSimulatorArm64Main by getting {
+            dependsOn(iosMain)
+        }
     }
 }
 
