@@ -55,7 +55,7 @@ val networkModule = module {
                     loadTokens {
                         val access = tokenRepository.getAccessToken().first<String?>()
                         val refresh = tokenRepository.getRefreshToken().first<String?>()
-                        
+
                         if (access != null && refresh != null) {
                             BearerTokens(access, refresh)
                         } else {
@@ -74,7 +74,8 @@ val networkModule = module {
                                     currentRefreshToken
                                 )
                             )
-                            
+                            com.devndev.homen.core.common.util.Logger.d("SHKIM", "accessToken ${response.access}")
+
                             // 갱신된 액세스 토큰 저장
                             tokenRepository.saveTokens(
                                 accessToken = response.access,

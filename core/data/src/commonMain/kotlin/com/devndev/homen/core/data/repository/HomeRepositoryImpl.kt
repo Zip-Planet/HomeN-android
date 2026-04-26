@@ -30,4 +30,15 @@ class HomeRepositoryImpl(
             ApiResult.NetworkError
         }
     }
+
+    override suspend fun getHome(): ApiResult<HomeResponseDomainModel> {
+        return try {
+            val response = homeService.getHome()
+            ApiResult.Success(response.toDomainModel())
+        } catch (e: ResponseException) {
+            ApiResult.Error(code = e.response.status.value, message = e.message)
+        } catch (e: Exception) {
+            ApiResult.NetworkError
+        }
+    }
 }

@@ -11,6 +11,6 @@ import org.koin.dsl.module
 
 val serviceModule = module {
     single<AuthService> { AuthServiceImpl(get()) }
-    single<HomeService> { HomeServiceImpl(get()) }
+    single<HomeService> { HomeServiceImpl(get(), get()) }
     single<UserService> { UserServiceImpl(get()) }
 }

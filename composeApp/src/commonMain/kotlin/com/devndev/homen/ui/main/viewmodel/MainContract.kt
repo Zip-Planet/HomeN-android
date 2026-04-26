@@ -7,7 +7,7 @@ import com.devndev.homen.core.common.base.ViewState
 class MainContract {
 
     sealed class Event : ViewEvent {
-        data class OnHomeEntryComplete(val hasHome: Boolean) : Event()
+        data object OnMainNav: Event()
     }
 
     data class State(

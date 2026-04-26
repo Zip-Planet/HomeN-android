@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,6 +34,10 @@ fun MainNav(
     val navBackStackEntry by mainNavController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
+    LaunchedEffect(Unit) {
+        viewModel.setEvent(MainContract.Event.OnMainNav)
+    }
+
     val uiState by viewModel.viewState
 
     val startDestination: Any = if (uiState.hasHome) BottomNavItem.Home else HomeIntroRoute.Selection
@@ -57,7 +62,6 @@ fun MainNav(
             homeIntroNav(
                 navController = mainNavController,
                 onNavToMain = {
-                    viewModel.setEvent(MainContract.Event.OnHomeEntryComplete(hasHome = true))
                     mainNavController.navigate(BottomNavItem.Home) {
                         popUpTo<HomeIntroRoute.Selection> { inclusive = true }
                     }

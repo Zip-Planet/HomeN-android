@@ -7,6 +7,7 @@ import com.devndev.homen.core.domain.usecase.auth.LogoutUseCase
 import com.devndev.homen.core.domain.usecase.auth.SaveTokensUseCase
 import com.devndev.homen.core.domain.usecase.auth.SocialLoginUseCase
 import com.devndev.homen.core.domain.usecase.home.CreateHomeUseCase
+import com.devndev.homen.core.domain.usecase.home.GetHomeUseCase
 import com.devndev.homen.core.domain.usecase.splash.CheckTokenUseCase
 import com.devndev.homen.core.domain.usecase.user.UpdateProfileUseCase
 import org.koin.core.module.dsl.factoryOf
@@ -26,6 +27,7 @@ val useCaseModule = module {
 
     // home
     factoryOf(::CreateHomeUseCase)
+    factoryOf(::GetHomeUseCase)
 
     // user
     factoryOf(::UpdateProfileUseCase)
