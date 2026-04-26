@@ -24,7 +24,7 @@ class CreateHomeContract {
         data object OnAddRewardClick : Event()
         data class OnRemoveRewardClick(val index: Int) : Event()
         data class OnRewardNameChanged(val index: Int, val name: String) : Event()
-        data class OnRewardPointChanged(val index: Int, val point: Int) : Event()
+        data class OnRewardPointChanged(val index: Int, val point: String) : Event()
 
         data object OnSkipClick : Event()
         data object OnCompleteClick : Event()
@@ -36,7 +36,7 @@ class CreateHomeContract {
         val selectedPack: StarterPackType? = null,
         val chores: List<Chore> = emptyList(),
         val selectedChores: List<Chore> = emptyList(),
-        val rewards: List<Reward> = listOf(Reward()), // 기본적으로 1개 포함
+        val rewards: List<Reward> = emptyList(),
         val showTooltip: Boolean = true,
         val isLoading: Boolean = false
     ) : ViewState

@@ -50,5 +50,5 @@ fun Chore.toDataModel() = ChoreRequest(
 
 fun Reward.toDataModel() = RewardRequest(
     name = name,
-    goalPoint = goalPoint
+    goalPoint = goalPoint.toInt()
 )

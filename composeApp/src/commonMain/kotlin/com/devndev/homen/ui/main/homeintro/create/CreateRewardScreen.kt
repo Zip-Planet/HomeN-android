@@ -134,7 +134,7 @@ fun CreateRewardScreen(
                         name = reward.name,
                         point = reward.goalPoint,
                         onNameChanged = { viewModel.setEvent(CreateHomeContract.Event.OnRewardNameChanged(index, it)) },
-                        onPointChanged = { viewModel.setEvent(CreateHomeContract.Event.OnRewardPointChanged(index, it.toInt())) },
+                        onPointChanged = { viewModel.setEvent(CreateHomeContract.Event.OnRewardPointChanged(index, it)) },
                         onRemoveClick = { viewModel.setEvent(CreateHomeContract.Event.OnRemoveRewardClick(index)) },
                         showRemoveButton = uiState.rewards.size > 1
                     )
@@ -225,7 +225,7 @@ fun CreateRewardScreen(
 fun RewardInputCard(
     index: Int,
     name: String,
-    point: Int,
+    point: String,
     onNameChanged: (String) -> Unit,
     onPointChanged: (String) -> Unit,
     onRemoveClick: () -> Unit,
