@@ -40,7 +40,8 @@ fun MainNav(
 
     val uiState by viewModel.viewState
 
-    val startDestination: Any = if (uiState.hasHome) BottomNavItem.Home else HomeIntroRoute.Selection
+    val hasHome = uiState.hasHome ?: return
+    val startDestination: Any = if (hasHome) BottomNavItem.Home else HomeIntroRoute.Selection
 
     val isHomeIntroRoute = currentDestination?.hasRoute<HomeIntroRoute.Selection>() == true ||
             currentDestination?.hasRoute<HomeIntroRoute.JoinGraph>() == true ||
@@ -48,7 +49,7 @@ fun MainNav(
 
     Scaffold(
         bottomBar = {
-            if (uiState.hasHome && !isHomeIntroRoute) {
+            if (hasHome && !isHomeIntroRoute) {
                 MainBottomBar(navController = mainNavController)
             }
         },
@@ -57,7 +58,7 @@ fun MainNav(
         NavHost(
             navController = mainNavController,
             startDestination = startDestination,
-            modifier = Modifier.padding(if (uiState.hasHome && !isHomeIntroRoute) paddingValues else PaddingValues(0.dp))
+            modifier = Modifier.padding(if (hasHome && !isHomeIntroRoute) paddingValues else PaddingValues(0.dp))
         ) {
             homeIntroNav(
                 navController = mainNavController,

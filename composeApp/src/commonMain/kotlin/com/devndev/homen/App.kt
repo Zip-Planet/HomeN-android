@@ -20,10 +20,10 @@ fun HomeNApp() {
             startDestination = AppRoute.Intro
         ) {
             composable<AppRoute.Intro>(
-                enterTransition = NavTransitions.enterTransition,
-                exitTransition = NavTransitions.exitTransition,
-                popEnterTransition = NavTransitions.popEnterTransition,
-                popExitTransition = NavTransitions.popExitTransition
+                enterTransition = { androidx.compose.animation.EnterTransition.None },
+                exitTransition = { androidx.compose.animation.ExitTransition.None },
+                popEnterTransition = { androidx.compose.animation.EnterTransition.None },
+                popExitTransition = { androidx.compose.animation.ExitTransition.None }
             ) {
                 IntroNav(onNavToMain = {
                     rootNavController.navigate(AppRoute.Main) {
@@ -32,10 +32,10 @@ fun HomeNApp() {
                 })
             }
             composable<AppRoute.Main>(
-                enterTransition = NavTransitions.enterTransition,
-                exitTransition = NavTransitions.exitTransition,
-                popEnterTransition = NavTransitions.popEnterTransition,
-                popExitTransition = NavTransitions.popExitTransition
+                enterTransition = { androidx.compose.animation.EnterTransition.None },
+                exitTransition = { androidx.compose.animation.ExitTransition.None },
+                popEnterTransition = { androidx.compose.animation.EnterTransition.None },
+                popExitTransition = { androidx.compose.animation.ExitTransition.None }
             ) {
                 MainNav(
                     onNavToIntro = {

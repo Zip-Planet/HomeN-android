@@ -11,11 +11,10 @@ class MainContract {
     }
 
     data class State(
-        val hasHome: Boolean = false,
+        val hasHome: Boolean? = null,
         val isLoading: Boolean = false
     ) : ViewState
 
     sealed class Effect : ViewSideEffect {
-        // 필요 시 내비게이션이나 알림 효과 추가
     }
 }

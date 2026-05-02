@@ -18,12 +18,13 @@ fun IntroNav(
     NavHost(
         navController = introNavController,
         startDestination = IntroRoute.Splash,
-        enterTransition = { androidx.compose.animation.EnterTransition.None },
-        exitTransition = { androidx.compose.animation.ExitTransition.None },
-        popEnterTransition = { androidx.compose.animation.EnterTransition.None },
-        popExitTransition = { androidx.compose.animation.ExitTransition.None }
     ) {
-        composable<IntroRoute.Splash> {
+        composable<IntroRoute.Splash>(
+            enterTransition = { androidx.compose.animation.EnterTransition.None },
+            exitTransition = { androidx.compose.animation.ExitTransition.None },
+            popEnterTransition = { androidx.compose.animation.EnterTransition.None },
+            popExitTransition = { androidx.compose.animation.ExitTransition.None }
+        ) {
             SplashScreen(
                 onNavToMain = onNavToMain,
                 onNavToLogin = {

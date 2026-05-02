@@ -3,6 +3,7 @@ package com.devndev.homen.core.data.service.home
 import com.devndev.homen.core.common.Config
 import com.devndev.homen.core.data.model.home.request.CreateHomeRequest
 import com.devndev.homen.core.data.model.home.response.CreateHomeResponse
+import com.devndev.homen.core.data.model.home.response.GetHasHomeResponse
 import com.devndev.homen.core.data.model.home.response.GetHomeResponse
 import com.devndev.homen.core.domain.repository.TokenRepository
 import io.ktor.client.HttpClient
@@ -43,6 +44,20 @@ class HomeServiceImpl(
             url {
                 takeFrom(Config.BASE_URL)
                 encodedPath += HomeService.GET_HOME
+            }
+            contentType(ContentType.Application.Json)
+            accessToken?.let {
+                header(HttpHeaders.Authorization, "Bearer $it")
+            }
+        }.body()
+    }
+
+    override suspend fun getHasHome(): GetHasHomeResponse {
+        val accessToken = tokenRepository.getAccessToken().first()
+        return client.get {
+            url {
+                takeFrom(Config.BASE_URL)
+                encodedPath += HomeService.GET_HAS_HOME
             }
             contentType(ContentType.Application.Json)
             accessToken?.let {
