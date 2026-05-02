@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,9 +34,14 @@ fun MainNav(
     val navBackStackEntry by mainNavController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
+    LaunchedEffect(Unit) {
+        viewModel.setEvent(MainContract.Event.OnMainNav)
+    }
+
     val uiState by viewModel.viewState
 
-    val startDestination: Any = if (uiState.hasHome) BottomNavItem.Home else HomeIntroRoute.Selection
+    val hasHome = uiState.hasHome ?: return
+    val startDestination: Any = if (hasHome) BottomNavItem.Home else HomeIntroRoute.Selection
 
     val isHomeIntroRoute = currentDestination?.hasRoute<HomeIntroRoute.Selection>() == true ||
             currentDestination?.hasRoute<HomeIntroRoute.JoinGraph>() == true ||
@@ -43,7 +49,7 @@ fun MainNav(
 
     Scaffold(
         bottomBar = {
-            if (uiState.hasHome && !isHomeIntroRoute) {
+            if (hasHome && !isHomeIntroRoute) {
                 MainBottomBar(navController = mainNavController)
             }
         },
@@ -52,12 +58,11 @@ fun MainNav(
         NavHost(
             navController = mainNavController,
             startDestination = startDestination,
-            modifier = Modifier.padding(if (uiState.hasHome && !isHomeIntroRoute) paddingValues else PaddingValues(0.dp))
+            modifier = Modifier.padding(if (hasHome && !isHomeIntroRoute) paddingValues else PaddingValues(0.dp))
         ) {
             homeIntroNav(
                 navController = mainNavController,
                 onNavToMain = {
-                    viewModel.setEvent(MainContract.Event.OnHomeEntryComplete(hasHome = true))
                     mainNavController.navigate(BottomNavItem.Home) {
                         popUpTo<HomeIntroRoute.Selection> { inclusive = true }
                     }

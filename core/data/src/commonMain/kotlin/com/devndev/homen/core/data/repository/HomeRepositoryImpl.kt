@@ -12,7 +12,7 @@ import io.ktor.client.plugins.ResponseException
 
 class HomeRepositoryImpl(
     private val homeService: HomeService
-): HomeRepository {
+) : HomeRepository {
     override suspend fun createHome(createHome: CreateHome): ApiResult<HomeResponseDomainModel> {
         return try {
             val response = homeService.createHome(
@@ -24,6 +24,28 @@ class HomeRepositoryImpl(
                 )
             )
             ApiResult.Success(response.toDomainModel())
+        } catch (e: ResponseException) {
+            ApiResult.Error(code = e.response.status.value, message = e.message)
+        } catch (e: Exception) {
+            ApiResult.NetworkError
+        }
+    }
+
+    override suspend fun getHome(): ApiResult<HomeResponseDomainModel> {
+        return try {
+            val response = homeService.getHome()
+            ApiResult.Success(response.toDomainModel())
+        } catch (e: ResponseException) {
+            ApiResult.Error(code = e.response.status.value, message = e.message)
+        } catch (e: Exception) {
+            ApiResult.NetworkError
+        }
+    }
+
+    override suspend fun getHasHome(): ApiResult<Boolean> {
+        return try {
+            val response = homeService.getHasHome()
+            ApiResult.Success(response.hasHome)
         } catch (e: ResponseException) {
             ApiResult.Error(code = e.response.status.value, message = e.message)
         } catch (e: Exception) {
