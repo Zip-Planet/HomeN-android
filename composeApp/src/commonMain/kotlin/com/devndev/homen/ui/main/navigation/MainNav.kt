@@ -58,7 +58,8 @@ fun MainNav(
         NavHost(
             navController = mainNavController,
             startDestination = startDestination,
-            modifier = Modifier.padding(if (hasHome && !isHomeIntroRoute) paddingValues else PaddingValues(0.dp))
+            modifier = Modifier.padding(PaddingValues(0.dp))
+//            modifier = Modifier.padding(if (hasHome && !isHomeIntroRoute) paddingValues else PaddingValues(0.dp))
         ) {
             homeIntroNav(
                 navController = mainNavController,
