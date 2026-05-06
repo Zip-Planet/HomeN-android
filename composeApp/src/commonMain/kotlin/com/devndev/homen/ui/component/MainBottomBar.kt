@@ -57,19 +57,13 @@ fun MainBottomBar(navController: NavController) {
                     if (getPlatform() != OsType.IOS) navigationBarsPadding() else this
                 }
         ) {
-            HorizontalDivider(
-                modifier = Modifier.fillMaxWidth(),
-                thickness = 0.5.dp,
-                color = LightGray.copy(alpha = 0.5f)
-            )
-            
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(80.dp)
-                    .padding(top = 10.dp),
+                    .padding(top = 10.dp)
+                    .padding(horizontal = 30.dp),
                 horizontalArrangement = Arrangement.SpaceAround,
-                verticalAlignment = Alignment.CenterVertically
             ) {
                 items.forEach { item ->
                     val isSelected = currentDestination?.hasRoute(item::class) == true
