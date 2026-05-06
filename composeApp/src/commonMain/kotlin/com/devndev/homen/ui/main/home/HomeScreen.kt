@@ -267,6 +267,7 @@ fun HomeProgressSection(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             HomeManageItem(
+                modifier = Modifier.weight(1f),
                 onClick = {},
                 iconColor = Blue4736FC,
                 iconSize = 16,
@@ -296,8 +297,9 @@ fun HomeProgressSection(
                     )
                 }
             }
-
+            Spacer(modifier = Modifier.width(9.dp))
             HomeManageItem(
+                modifier = Modifier.weight(1f),
                 onClick = {},
                 iconColor = Blue2,
                 iconSize = 20,
@@ -311,8 +313,9 @@ fun HomeProgressSection(
                     color = Color.Black
                 )
             }
-
+            Spacer(modifier = Modifier.width(9.dp))
             HomeManageItem(
+                modifier = Modifier.weight(1f),
                 onClick = {},
                 iconColor = Blue60ABFB,
                 iconSize = 16,
@@ -332,6 +335,7 @@ fun HomeProgressSection(
 
 @Composable
 fun HomeManageItem(
+    modifier: Modifier,
     isExist: Boolean = true,
     onClick: () -> Unit = {},
     iconColor: Color,
@@ -344,7 +348,8 @@ fun HomeManageItem(
     val iconColor = if (isExist) iconColor else BottomGray
     val textColor = if (isExist) Color.Black else BottomGray
     Column(
-        modifier = Modifier.size(103.dp)
+        modifier = modifier
+            .height(103.dp)
             .background(
                 color = containerColor,
                 shape = RoundedCornerShape(10.dp)
