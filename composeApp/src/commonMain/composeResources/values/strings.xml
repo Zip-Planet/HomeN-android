@@ -7,6 +7,9 @@
     <string name="logout">로그아웃</string>
     <string name="manager">관리자</string>
     <string name="member">구성원</string>
+    <string name="division_plan">분담안</string>
+    <string name="chore">집안일</string>
+    <string name="report">리포트</string>
 
     <!-- Splash 화면 -->
     <string name="login_screen_msg">작은 집안일도 공평하게</string>
@@ -123,4 +126,20 @@
     <string name="reward_point_hint2">예 : 2,400</string>
     <string name="reward_name_hint3">예 : 집안일 1회 룸메에게 넘기기</string>
     <string name="reward_point_hint3">예 : 800</string>
+
+    <!-- 홈 화면 -->
+    <string name="home_total_member_count">n명의 구성원</string>
+    <string name="home_progress_section_title">이번주 진행률</string>
+    <string name="home_mvp_section_title">우리집 MVP</string>
+    <string name="home_division_plan_msg">다음주</string>
+    <string name="home_division_plan_status_msg1">제안됨</string>
+    <string name="home_division_plan_status_msg2">없음</string>
+    <string name="home_division_plan_status_msg3">생성필요</string>
+    <string name="home_chore_manage_msg">관리하기</string>
+    <string name="home_report_status_msg1">기여도</string>
+    <string name="home_report_status_msg2">지난주 기여도\n</string>
+    <string name="home_report_status_msg3">없음</string>
+    <string name="home_bottom_section_title">이번 주 분담안</string>
+    <string name="home_create_division_plan_msg">첫 분담안을 만들고 평화로운 일상을 시작해보세요!</string>
+    <string name="home_create_division_plan_btn">첫 분담안 생성하기</string>
 </resources>

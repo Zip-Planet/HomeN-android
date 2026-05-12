@@ -5,9 +5,11 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -21,6 +23,7 @@ import androidx.compose.ui.unit.sp
 import com.devndev.homen.ui.theme.HomeNTheme
 import homen.composeapp.generated.resources.Res
 import homen.composeapp.generated.resources.back_arrow
+import homen.composeapp.generated.resources.notification_icon
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
@@ -65,6 +68,47 @@ fun TitleTopBar(
                 style = HomeNTheme.typography.suitExtraBold,
                 fontSize = 18.sp,
                 color = Color.Black
+            )
+        }
+    }
+}
+
+@Composable
+fun NotificationTopBar(
+    title: String,
+    onNotificationClick: () -> Unit = {},
+) {
+    Box(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(
+                    top = 25.dp,
+                    start = HomeNTheme.dimensions.horizontalPadding,
+                    end = HomeNTheme.dimensions.horizontalPadding
+                ),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = title,
+                style = HomeNTheme.typography.suitHeavy,
+                fontSize = 25.sp,
+                color = Color.Black
+            )
+            Spacer(modifier = Modifier.weight(1f))
+            Icon(
+                painter = painterResource(Res.drawable.notification_icon),
+                contentDescription = "notification",
+                modifier = Modifier
+                    .size(24.dp)
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null
+                    ) {
+                        onNotificationClick()
+                    }
             )
         }
     }

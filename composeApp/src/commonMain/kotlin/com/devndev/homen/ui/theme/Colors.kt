@@ -18,7 +18,9 @@ val LightGray = Color(0xFFB2B2B2)
 val KaKao = Color(0xFFFEE500)
 
 val Blue2 = Color(0xFF5270FE)
+val Blue60ABFB = Color(0xFF60ABFB)
 val Blue4 = Color(0xFFAFE1FC)
+val Blue4736FC = Color(0xFF4736FC)
 
 val YellowFF = Color(0xFFbacFFDF5B)
 
