@@ -2,8 +2,12 @@ package com.devndev.homen.ui.main.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -11,25 +15,33 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.devndev.homen.core.domain.model.home.HomeIconType
 import com.devndev.homen.ui.common.smallResource
+import com.devndev.homen.ui.component.HomeNButton
 import com.devndev.homen.ui.component.HomeNScreen
 import com.devndev.homen.ui.component.NotificationTopBar
+import com.devndev.homen.ui.intro.register.viewmodel.RegisterContract
+import com.devndev.homen.ui.intro.register.viewmodel.RegisterStep
 import com.devndev.homen.ui.main.home.viewmodel.HomeContract
 import com.devndev.homen.ui.main.home.viewmodel.HomeViewModel
 import com.devndev.homen.ui.theme.BackgroundGray
@@ -47,13 +59,17 @@ import homen.composeapp.generated.resources.chart_icon
 import homen.composeapp.generated.resources.chore
 import homen.composeapp.generated.resources.clipboard_icon
 import homen.composeapp.generated.resources.division_plan
+import homen.composeapp.generated.resources.home_bottom_section_title
 import homen.composeapp.generated.resources.home_chore_manage_msg
+import homen.composeapp.generated.resources.home_create_division_plan_btn
+import homen.composeapp.generated.resources.home_create_division_plan_msg
 import homen.composeapp.generated.resources.home_division_plan_msg
 import homen.composeapp.generated.resources.home_division_plan_status_msg1
 import homen.composeapp.generated.resources.home_mvp_section_title
 import homen.composeapp.generated.resources.home_progress_section_title
 import homen.composeapp.generated.resources.home_report_status_msg2
 import homen.composeapp.generated.resources.home_total_member_count
+import homen.composeapp.generated.resources.next_button
 import homen.composeapp.generated.resources.pin_black_icon
 import homen.composeapp.generated.resources.report
 import org.jetbrains.compose.resources.DrawableResource
@@ -78,66 +94,82 @@ fun HomeScreen(
         },
         isLoading = uiState.isLoading
     ) {
-        Column(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            Spacer(modifier = Modifier.height(27.dp))
-            Row(
+        BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
+            val screenHeight = maxHeight
+
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        start = HomeNTheme.dimensions.horizontalPadding,
-                        end = HomeNTheme.dimensions.horizontalPadding
-                    ),
-                verticalAlignment = Alignment.CenterVertically
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
             ) {
-                Box(
-                    modifier = Modifier
-                        .size(50.dp)
-                        .background(Color.White, CircleShape),
-                    contentAlignment = Alignment.Center
+                Column(
+                    modifier = Modifier.fillMaxWidth().heightIn(min = screenHeight)
                 ) {
-                    Icon(
-                        painter = painterResource(homeIcon),
-                        contentDescription = null,
-                        modifier = Modifier.size(33.dp),
-                        tint = Color.Unspecified
+                    Spacer(modifier = Modifier.height(27.dp))
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(
+                                start = HomeNTheme.dimensions.horizontalPadding,
+                                end = HomeNTheme.dimensions.horizontalPadding
+                            ),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .size(50.dp)
+                                .background(Color.White, CircleShape),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(
+                                painter = painterResource(homeIcon),
+                                contentDescription = null,
+                                modifier = Modifier.size(33.dp),
+                                tint = Color.Unspecified
+                            )
+                        }
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = uiState.homeName,
+                            style = HomeNTheme.typography.suitExtraBold,
+                            fontSize = 18.sp,
+                            color = Color.Black
+                        )
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Text(
+                            text = stringResource(Res.string.home_total_member_count).replace(
+                                "n",
+                                uiState.totalMember.toString()
+                            ),
+                            style = HomeNTheme.typography.suitRegular,
+                            fontSize = 12.sp,
+                            color = Color.Black
+                        )
+                        Spacer(modifier = Modifier.weight(1f))
+                        Icon(
+                            painter = painterResource(Res.drawable.arrow_icon),
+                            contentDescription = "todo",
+                            modifier = Modifier.height(13.dp).width(10.dp),
+                            tint = Color.Black
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(10.dp))
+                    HomeProgressSection(uiState)
+                    Spacer(modifier = Modifier.height(26.dp))
+                    HomeDivisionSection(
+                        modifier = Modifier.weight(1f),
+                        uiState = uiState,
+                        onMemberClick = { viewModel.setEvent(HomeContract.Event.OnMemberSelected(it)) }
                     )
                 }
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = uiState.homeName,
-                    style = HomeNTheme.typography.suitExtraBold,
-                    fontSize = 18.sp,
-                    color = Color.Black
-                )
-                Spacer(modifier = Modifier.width(6.dp))
-                Text(
-                    text = stringResource(Res.string.home_total_member_count).replace(
-                        "n",
-                        uiState.totalMember.toString()
-                    ),
-                    style = HomeNTheme.typography.suitRegular,
-                    fontSize = 12.sp,
-                    color = Color.Black
-                )
-                Spacer(modifier = Modifier.weight(1f))
-                Icon(
-                    painter = painterResource(Res.drawable.arrow_icon),
-                    contentDescription = "todo",
-                    modifier = Modifier.height(13.dp).width(10.dp),
-                    tint = Color.Black
-                )
             }
-            Spacer(modifier = Modifier.height(10.dp))
-            HomeProgressSection(uiState)
         }
     }
 }
 
 @Composable
 fun HomeProgressSection(
-    uiState: HomeContract.State
+    uiState: HomeContract.State,
 ) {
     val progress =
         if (uiState.totalChore > 0) uiState.completedChore.toFloat() / uiState.totalChore else 0f
@@ -334,6 +366,98 @@ fun HomeProgressSection(
 }
 
 @Composable
+fun HomeDivisionSection(
+    modifier: Modifier,
+    uiState: HomeContract.State,
+    onMemberClick: (String) -> Unit
+) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .background(
+                color = Color.White,
+                shape = RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp)
+            )
+            .padding(horizontal = HomeNTheme.dimensions.horizontalPadding, vertical = 30.dp)
+    ) {
+        Row(
+            modifier = Modifier,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Image(
+                painter = painterResource(Res.drawable.chart_icon),
+                contentDescription = null,
+                modifier = Modifier.size(18.dp),
+                colorFilter = ColorFilter.tint(Color.Black)
+            )
+            Spacer(modifier = Modifier.width(2.dp))
+            Text(
+                text = stringResource(Res.string.home_bottom_section_title),
+                style = HomeNTheme.typography.suitExtraBold,
+                fontSize = 18.sp,
+                color = Color.Black
+            )
+        }
+
+        Spacer(modifier = Modifier.height(15.dp))
+
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(5.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            uiState.members.forEach { name ->
+                val isSelected = uiState.selectedMember == name
+                MemberChip(
+                    name = name,
+                    isSelected = isSelected,
+                    onMemberClick = { onMemberClick(it) }
+                )
+            }
+        }
+        Spacer(modifier = Modifier.height(25.dp))
+        Text(
+            text = stringResource(Res.string.home_create_division_plan_msg),
+            style = HomeNTheme.typography.suitRegular,
+            fontSize = 14.sp,
+            color = Color.Black
+        )
+        Spacer(modifier = Modifier.height(26.dp))
+        HomeNButton(
+            text = stringResource(Res.string.home_create_division_plan_btn),
+            onClick = {  },
+        )
+    }
+}
+
+@Composable
+fun MemberChip(
+    name: String,
+    isSelected: Boolean,
+    onMemberClick: (String) -> Unit
+) {
+    Box(
+        modifier = Modifier
+            .clip(RoundedCornerShape(13.dp))
+            .background(if (isSelected) Color.Black else Color.White)
+            .border(width = 0.5.dp, color = Color.Black, shape = RoundedCornerShape(13.dp))
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null
+            ) {
+                onMemberClick(name)
+            }
+            .padding(horizontal = 10.dp, vertical = 7.dp),
+        contentAlignment = Alignment.Center) {
+        Text(
+            text = name,
+            style = HomeNTheme.typography.suitRegular,
+            fontSize = 10.sp,
+            color = if (isSelected) Color.White else Color.Black
+        )
+    }
+}
+
+@Composable
 fun HomeManageItem(
     modifier: Modifier,
     isExist: Boolean = true,
@@ -384,6 +508,20 @@ fun HomeProgressSectionPreview() {
                 completedChore = 16,
                 mvpName = "투다리김치우동"
             )
+        )
+    }
+}
+
+@Preview
+@Composable
+fun HomeBottomSectionPreview() {
+    HomeNTheme {
+        HomeDivisionSection(
+            modifier = Modifier,
+            uiState = HomeContract.State(
+                members = listOf("나", "김치투다리우동", "김수환")
+            ),
+            onMemberClick = {}
         )
     }
 }

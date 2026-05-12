@@ -8,6 +8,10 @@ class HomeViewModel(
     override fun setInitialState() = HomeContract.State()
 
     override fun handleEvents(event: HomeContract.Event) {
-
+        when (event) {
+            is HomeContract.Event.OnMemberSelected -> {
+                setState { copy(selectedMember = event.name) }
+            }
+        }
     }
 }
