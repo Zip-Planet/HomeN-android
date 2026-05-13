@@ -3,7 +3,8 @@ package com.devndev.homen.di
 import com.devndev.homen.ui.intro.login.viewmodel.LoginViewModel
 import com.devndev.homen.ui.intro.register.viewmodel.RegisterViewModel
 import com.devndev.homen.ui.intro.splash.viewmodel.SplashViewModel
-import com.devndev.homen.ui.main.home.viewmodel.HomeViewModel
+import com.devndev.homen.ui.main.home.choremanage.viewmodel.ChoreManageViewModel
+import com.devndev.homen.ui.main.home.main.viewmodel.HomeViewModel
 import com.devndev.homen.ui.main.homeintro.create.viewmodel.CreateHomeViewModel
 import com.devndev.homen.ui.main.homeintro.joindone.viewmodel.JoinDoneViewModel
 import com.devndev.homen.ui.main.homeintro.joinconfirm.viewmodel.JoinConfirmViewModel
@@ -27,4 +28,5 @@ val viewModelModule = module {
     viewModelOf(::CreateHomeViewModel)
     viewModelOf(::SplashViewModel)
     viewModelOf(::HomeViewModel)
+    viewModelOf(::ChoreManageViewModel)
 }

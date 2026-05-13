@@ -1,4 +1,4 @@
-package com.devndev.homen.ui.main.home
+package com.devndev.homen.ui.main.home.main
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -26,6 +26,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -34,16 +35,15 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.devndev.homen.core.domain.model.home.HomeIconType
 import com.devndev.homen.ui.common.smallResource
 import com.devndev.homen.ui.component.HomeNButton
 import com.devndev.homen.ui.component.HomeNScreen
 import com.devndev.homen.ui.component.NotificationTopBar
-import com.devndev.homen.ui.intro.register.viewmodel.RegisterContract
-import com.devndev.homen.ui.intro.register.viewmodel.RegisterStep
-import com.devndev.homen.ui.main.home.viewmodel.HomeContract
-import com.devndev.homen.ui.main.home.viewmodel.HomeViewModel
+import com.devndev.homen.ui.main.home.main.viewmodel.HomeContract
+import com.devndev.homen.ui.main.home.main.viewmodel.HomeViewModel
 import com.devndev.homen.ui.theme.BackgroundGray
 import com.devndev.homen.ui.theme.Blue2
 import com.devndev.homen.ui.theme.Blue4736FC
@@ -69,9 +69,10 @@ import homen.composeapp.generated.resources.home_mvp_section_title
 import homen.composeapp.generated.resources.home_progress_section_title
 import homen.composeapp.generated.resources.home_report_status_msg2
 import homen.composeapp.generated.resources.home_total_member_count
-import homen.composeapp.generated.resources.next_button
+import homen.composeapp.generated.resources.home_week_division_plan_msg
 import homen.composeapp.generated.resources.pin_black_icon
 import homen.composeapp.generated.resources.report
+import kotlinx.coroutines.flow.collectLatest
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -80,10 +81,22 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun HomeScreen(
-    viewModel: HomeViewModel = koinViewModel()
+    viewModel: HomeViewModel = koinViewModel(),
+    onNavToChoreManage: () -> Unit
 ) {
     val uiState by viewModel.viewState
     val homeIcon = HomeIconType.fromId(uiState.homeIcon).smallResource
+
+    LaunchedEffect(viewModel.effect) {
+        viewModel.effect.collectLatest { effect ->
+            when (effect) {
+                HomeContract.Effect.NavigateToBoard -> TODO()
+                HomeContract.Effect.NavigateToChoreManage -> {
+                    onNavToChoreManage()
+                }
+            }
+        }
+    }
 
     HomeNScreen(
         topBar = {
@@ -154,7 +167,10 @@ fun HomeScreen(
                         )
                     }
                     Spacer(modifier = Modifier.height(10.dp))
-                    HomeProgressSection(uiState)
+                    HomeProgressSection(
+                        uiState = uiState,
+                        onChoreManageClick = { viewModel.setEvent(HomeContract.Event.OnChoreManageClick) }
+                    )
                     Spacer(modifier = Modifier.height(26.dp))
                     HomeDivisionSection(
                         modifier = Modifier.weight(1f),
@@ -170,6 +186,7 @@ fun HomeScreen(
 @Composable
 fun HomeProgressSection(
     uiState: HomeContract.State,
+    onChoreManageClick: () -> Unit = {},
 ) {
     val progress =
         if (uiState.totalChore > 0) uiState.completedChore.toFloat() / uiState.totalChore else 0f
@@ -209,88 +226,100 @@ fun HomeProgressSection(
                     color = Color.Black
                 )
                 Spacer(modifier = Modifier.weight(1f))
-                Text(
-                    text = "50%",
-                    style = HomeNTheme.typography.suitRegular,
-                    fontSize = 18.sp,
-                    color = Color.Black
-                )
+                if (uiState.choreExist) {
+                    Text(
+                        text = "50%",
+                        style = HomeNTheme.typography.suitRegular,
+                        fontSize = 18.sp,
+                        color = Color.Black
+                    )
+                }
             }
 
             Spacer(modifier = Modifier.height(13.dp))
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Box(
-                    modifier = Modifier
-                        .weight(1f)
-                        .height(14.dp)
-                        .background(BackgroundGray, RoundedCornerShape(99.dp))
-                        .padding(3.dp)
+            if (uiState.choreExist) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     Box(
                         modifier = Modifier
-                            .fillMaxHeight()
-                            .fillMaxWidth(progress)
-                            .background(Blue4736FC, RoundedCornerShape(99.dp))
+                            .weight(1f)
+                            .height(14.dp)
+                            .background(BackgroundGray, RoundedCornerShape(99.dp))
+                            .padding(3.dp)
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxHeight()
+                                .fillMaxWidth(progress)
+                                .background(Blue4736FC, RoundedCornerShape(99.dp))
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(12.dp))
+                    Text(
+                        text = "${uiState.completedChore}/${uiState.totalChore}",
+                        style = HomeNTheme.typography.suitRegular,
+                        fontSize = 14.sp,
+                        color = Color.Black
                     )
                 }
-                Spacer(modifier = Modifier.width(12.dp))
+            } else {
                 Text(
-                    text = "${uiState.completedChore}/${uiState.totalChore}",
-                    style = HomeNTheme.typography.suitRegular,
+                    text = stringResource(Res.string.home_week_division_plan_msg),
+                    style = HomeNTheme.typography.suitRegular.copy(lineHeight = 1.6.em),
                     fontSize = 14.sp,
                     color = Color.Black
                 )
             }
         }
-        Spacer(modifier = Modifier.height(8.dp))
-        Row(
-            modifier = Modifier.fillMaxWidth()
-                .background(
-                    color = Color.White,
-                    shape = RoundedCornerShape(10.dp)
-                )
-                .padding(vertical = 10.dp, horizontal = 15.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Image(
-                painter = painterResource(Res.drawable.award_icon),
-                contentDescription = null,
-                modifier = Modifier.size(15.dp)
-            )
-            Text(
-                text = stringResource(Res.string.home_mvp_section_title),
-                style = HomeNTheme.typography.suitBold,
-                fontSize = 14.sp,
-                color = Color.Black
-            )
-            Spacer(modifier = Modifier.weight(1f))
+        if (uiState.choreExist) {
+            Spacer(modifier = Modifier.height(8.dp))
             Row(
-                horizontalArrangement = Arrangement.spacedBy(3.dp),
+                modifier = Modifier.fillMaxWidth()
+                    .background(
+                        color = Color.White,
+                        shape = RoundedCornerShape(10.dp)
+                    )
+                    .padding(vertical = 10.dp, horizontal = 15.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
+                Image(
+                    painter = painterResource(Res.drawable.award_icon),
+                    contentDescription = null,
+                    modifier = Modifier.size(15.dp)
+                )
                 Text(
-                    text = uiState.mvpName,
-                    style = HomeNTheme.typography.suitRegular,
+                    text = stringResource(Res.string.home_mvp_section_title),
+                    style = HomeNTheme.typography.suitBold,
                     fontSize = 14.sp,
                     color = Color.Black
                 )
+                Spacer(modifier = Modifier.weight(1f))
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(3.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = uiState.mvpName,
+                        style = HomeNTheme.typography.suitRegular,
+                        fontSize = 14.sp,
+                        color = Color.Black
+                    )
 
-                Box(
-                    modifier = Modifier
-                        .size(2.dp)
-                        .background(color = Color.Black, shape = CircleShape)
-                )
+                    Box(
+                        modifier = Modifier
+                            .size(2.dp)
+                            .background(color = Color.Black, shape = CircleShape)
+                    )
 
-                Text(
-                    text = "560P",
-                    style = HomeNTheme.typography.suitRegular,
-                    fontSize = 14.sp,
-                    color = Color.Black
-                )
+                    Text(
+                        text = "560P",
+                        style = HomeNTheme.typography.suitRegular,
+                        fontSize = 14.sp,
+                        color = Color.Black
+                    )
+                }
             }
         }
         Spacer(modifier = Modifier.height(8.dp))
@@ -332,7 +361,9 @@ fun HomeProgressSection(
             Spacer(modifier = Modifier.width(9.dp))
             HomeManageItem(
                 modifier = Modifier.weight(1f),
-                onClick = {},
+                onClick = {
+                    onChoreManageClick()
+                },
                 iconColor = Blue2,
                 iconSize = 20,
                 titleText = stringResource(Res.string.chore),
@@ -424,7 +455,7 @@ fun HomeDivisionSection(
         Spacer(modifier = Modifier.height(26.dp))
         HomeNButton(
             text = stringResource(Res.string.home_create_division_plan_btn),
-            onClick = {  },
+            onClick = { },
         )
     }
 }
@@ -479,6 +510,12 @@ fun HomeManageItem(
                 shape = RoundedCornerShape(10.dp)
             )
             .padding(vertical = 14.dp, horizontal = 11.dp)
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null
+            ) {
+                onClick()
+            }
     ) {
         Image(
             painter = painterResource(icon),

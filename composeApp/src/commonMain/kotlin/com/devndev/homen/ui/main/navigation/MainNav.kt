@@ -16,7 +16,8 @@ import androidx.navigation.compose.rememberNavController
 import com.devndev.homen.ui.component.MainBottomBar
 import com.devndev.homen.ui.main.assignment.navigation.assignmentNav
 import com.devndev.homen.ui.main.board.navigation.boardNav
-import com.devndev.homen.ui.main.home.navigation.homeNav
+import com.devndev.homen.ui.main.home.main.navigation.HomeRoute
+import com.devndev.homen.ui.main.home.main.navigation.homeNav
 import com.devndev.homen.ui.main.homeintro.navigation.HomeIntroRoute
 import com.devndev.homen.ui.main.homeintro.navigation.homeIntroNav
 import com.devndev.homen.ui.main.mypage.navigation.myPageNav
@@ -43,13 +44,14 @@ fun MainNav(
     val hasHome = uiState.hasHome ?: return
     val startDestination: Any = if (hasHome) BottomNavItem.Home else HomeIntroRoute.Selection
 
+    val isChoreManage = currentDestination?.hasRoute<HomeRoute.ChoreManage>() == true
     val isHomeIntroRoute = currentDestination?.hasRoute<HomeIntroRoute.Selection>() == true ||
             currentDestination?.hasRoute<HomeIntroRoute.JoinGraph>() == true ||
             currentDestination?.hasRoute<HomeIntroRoute.CreateGraph>() == true
 
     Scaffold(
         bottomBar = {
-            if (hasHome && !isHomeIntroRoute) {
+            if (hasHome && !isHomeIntroRoute && !isChoreManage) {
                 MainBottomBar(navController = mainNavController)
             }
         },
@@ -71,7 +73,7 @@ fun MainNav(
                 onNavToIntro = onNavToIntro
             )
 
-            homeNav()
+            homeNav(mainNavController)
             boardNav()
             assignmentNav()
             presentNav()
