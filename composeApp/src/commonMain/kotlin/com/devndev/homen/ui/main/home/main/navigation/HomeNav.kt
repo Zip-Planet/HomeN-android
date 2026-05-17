@@ -5,6 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.devndev.homen.ui.component.NavTransitions
 import com.devndev.homen.ui.main.home.choremanage.ChoreManageScreen
+import com.devndev.homen.ui.main.home.createchore.CreateChoreScreen
 import com.devndev.homen.ui.main.home.main.HomeScreen
 import com.devndev.homen.ui.main.navigation.BottomNavItem
 
@@ -23,6 +24,22 @@ fun NavGraphBuilder.homeNav(navController: NavController) {
         popExitTransition = NavTransitions.popExitTransition
     ) {
         ChoreManageScreen(
+            onBackClick = {
+                navController.popBackStack()
+            },
+            onNavToCreateChore = {
+                navController.navigate(HomeRoute.CreateChore)
+            }
+        )
+    }
+
+    composable<HomeRoute.CreateChore>(
+        enterTransition = NavTransitions.enterTransition,
+        exitTransition = NavTransitions.exitTransition,
+        popEnterTransition = NavTransitions.popEnterTransition,
+        popExitTransition = NavTransitions.popExitTransition
+    ) {
+        CreateChoreScreen(
             onBackClick = {
                 navController.popBackStack()
             }

@@ -21,5 +21,6 @@ class ChoreManageContract {
 
     sealed class Effect: ViewSideEffect {
         data object NavigateToBack: Effect()
+        data object NavigateToCrateChore: Effect()
     }
 }

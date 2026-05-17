@@ -21,7 +21,7 @@ class ChoreManageViewModel(
                 // TODO option 화면 전환
                 when (viewState.value.selectedOption) {
                     1-> {
-
+                        setEffect { ChoreManageContract.Effect.NavigateToCrateChore }
                     }
                     2 -> {
 

@@ -10,6 +10,7 @@
     <string name="division_plan">분담안</string>
     <string name="chore">집안일</string>
     <string name="report">리포트</string>
+    <string name="save_button">저장</string>
 
     <!-- Splash 화면 -->
     <string name="login_screen_msg">작은 집안일도 공평하게</string>
@@ -153,4 +154,16 @@
     <string name="chore_starter_pack_option_description">일일이 입력할 필요 없이,\n상황에 맞는 팩으로 편하게 시작해요</string>
     <string name="chore_manage_tooltip_title">걱정 마세요! 언제든 다시 바꿀 수 있어요</string>
     <string name="chore_manage_tooltip_msg">집안일을 추가하거나 삭제하고\n난이도와 포인트를 조정할 수 있어요</string>
+
+    <!-- 집안일 생성 -->
+    <string name="create_chore_title">집안일 추가</string>
+    <string name="create_chore_category_section">카테고리</string>
+    <string name="create_chore_title_section">제목</string>
+    <string name="create_chore_title_hint">청소(쓸기/닦기)</string>
+    <string name="crate_chore_description_section">설명</string>
+    <string name="crate_chore_description_hint">모서리 부분 깨끗하게 부탁드립니다</string>
+    <string name="create_chore_day_section">반복 요일</string>
+    <string name="create_chore_difficulty_section">난이도</string>
+    <string name="create_chore_difficulty_point">예상 포인트 nP</string>
+    <string name="create_chore_difficulty_description">포인트는 난이도에 따라 자동 고정돼요</string>
 </resources>

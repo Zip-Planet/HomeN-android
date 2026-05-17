@@ -5,4 +5,7 @@ import kotlinx.serialization.Serializable
 sealed interface HomeRoute {
     @Serializable
     data object ChoreManage: HomeRoute
+
+    @Serializable
+    data object CreateChore: HomeRoute
 }

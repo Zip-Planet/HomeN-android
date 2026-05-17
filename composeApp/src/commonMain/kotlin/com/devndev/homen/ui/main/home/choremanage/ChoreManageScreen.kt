@@ -17,7 +17,7 @@ import com.devndev.homen.ui.component.TitleTopBar
 import com.devndev.homen.ui.main.home.choremanage.viewmodel.ChoreManageContract
 import com.devndev.homen.ui.main.home.choremanage.viewmodel.ChoreManageViewModel
 import homen.composeapp.generated.resources.Res
-import homen.composeapp.generated.resources.home_entry_title
+import homen.composeapp.generated.resources.chore_manage_title
 import kotlinx.coroutines.flow.collectLatest
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
@@ -25,7 +25,8 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun ChoreManageScreen(
     viewModel: ChoreManageViewModel = koinViewModel(),
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    onNavToCreateChore: () -> Unit
 ) {
     val uiState by viewModel.viewState
 
@@ -33,6 +34,7 @@ fun ChoreManageScreen(
         viewModel.effect.collectLatest { effect ->
             when (effect) {
                 ChoreManageContract.Effect.NavigateToBack -> onBackClick()
+                ChoreManageContract.Effect.NavigateToCrateChore -> onNavToCreateChore()
             }
         }
     }
@@ -40,7 +42,7 @@ fun ChoreManageScreen(
     HomeNScreen(
         topBar = {
             TitleTopBar(
-                title = stringResource(Res.string.home_entry_title),
+                title = stringResource(Res.string.chore_manage_title),
                 onBackClick = { viewModel.setEvent(ChoreManageContract.Event.OnBackClick) }
             )
         },

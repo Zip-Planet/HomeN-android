@@ -5,10 +5,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
@@ -23,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.devndev.homen.ui.theme.BottomGray
 import com.devndev.homen.ui.theme.HomeNTheme
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun HomeNTextField(
@@ -32,7 +35,7 @@ fun HomeNTextField(
     modifier: Modifier = Modifier,
     maxChar: Int = 8,
     enabled: Boolean = true,
-    regex: Regex? = null
+    regex: Regex? = null,
 ) {
     BasicTextField(
         value = value,
@@ -141,6 +144,87 @@ fun HomeNUnderlineTextField(
         HorizontalDivider(
             thickness = 1.dp,
             color = Color.Black
+        )
+    }
+}
+
+@Composable
+fun HomeNLongTextField(
+    value: String,
+    onValueChange: (String) -> Unit,
+    hint: String,
+    modifier: Modifier = Modifier,
+    maxChar: Int = 20,
+    enabled: Boolean = true,
+    regex: Regex? = null,
+    height: Int = 72
+) {
+    BasicTextField(
+        value = value,
+        onValueChange = { input ->
+            val isLengthValid = input.length <= maxChar
+            val isRegexValid = regex == null || input.matches(regex)
+
+            if (isLengthValid && isRegexValid) {
+                onValueChange(input)
+            }
+        },
+        enabled = enabled,
+        modifier = modifier
+            .fillMaxWidth()
+            .height(height.dp),
+        textStyle = HomeNTheme.typography.suitBold.copy(
+            fontSize = 14.sp,
+            color = Color.Black
+        ),
+        decorationBox = { innerTextField ->
+            Row(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.White, RoundedCornerShape(10.dp))
+                    .padding(horizontal = 15.dp, vertical = 20.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Box(modifier = Modifier.weight(1f)) {
+                    if (value.isEmpty()) {
+                        Text(
+                            text = hint,
+                            style = HomeNTheme.typography.suitRegular,
+                            color = BottomGray,
+                            fontSize = 14.sp,
+                            modifier = Modifier.align(Alignment.CenterStart)
+                        )
+                    }
+                    innerTextField()
+                }
+                Spacer(modifier = Modifier.width(10.dp))
+                Text(
+                    text = "${value.length}/$maxChar",
+                    style = HomeNTheme.typography.suitRegular,
+                    color = BottomGray,
+                    fontSize = 12.sp
+                )
+
+            }
+        }
+    )
+}
+
+@Preview
+@Composable
+fun PreviewHomeNTextField() {
+    HomeNTheme {
+        HomeNLongTextField(
+            value = "청소(쓸기/닦기)청소(쓸기/닦기)청소(쓸기/닦기)청소(쓸기/닦기)",
+            onValueChange = {
+
+            },
+            hint = "청소(쓸기/닦기)",
+            modifier = Modifier,
+        maxChar = 20,
+        enabled = true,
+        regex = null,
+        height = 72
         )
     }
 }
