@@ -11,10 +11,12 @@ data class CreateHomeRequest(
     val name: String,
     @SerialName("image_id")
     val imageId: Int,
+    @SerialName("starter_pack_id")
+    val starterPackId: Int? = null,
     @SerialName("chores")
-    val chores: List<ChoreRequest>,
+    val chores: List<ChoreRequest>? = null,
     @SerialName("rewards")
-    val rewards: List<RewardRequest>
+    val rewards: List<RewardRequest>? = null
 )
 
 @Serializable

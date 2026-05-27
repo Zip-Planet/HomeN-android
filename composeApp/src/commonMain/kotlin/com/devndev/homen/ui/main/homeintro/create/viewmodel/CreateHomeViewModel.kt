@@ -72,6 +72,7 @@ class CreateHomeViewModel(
             }
             CreateHomeContract.Event.OnCreateChoreClick -> {
                 setEffect { CreateHomeContract.Effect.NavToCreateChore }
+                setState { copy(chores = emptyList()) }
             }
             CreateHomeContract.Event.OnPreviewClick -> {
                 val currentPack = viewState.value.selectedPack ?: StarterPackType.ROOMMATE
@@ -80,7 +81,8 @@ class CreateHomeViewModel(
                 setEffect { CreateHomeContract.Effect.NavToPreview }
             }
             CreateHomeContract.Event.OnSkipClick -> {
-                setEffect { CreateHomeContract.Effect.NavToNext }
+                setState { copy(rewards = emptyList()) }
+                createHome()
             }
             CreateHomeContract.Event.OnCompleteClick -> {
                 createHome()

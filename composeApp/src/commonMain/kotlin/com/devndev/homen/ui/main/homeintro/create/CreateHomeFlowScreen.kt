@@ -38,6 +38,7 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun CreateHomeFlowScreen(
+    onNavToMain: () -> Unit,
     onExitFlow: () -> Unit,
     viewModel: CreateHomeViewModel = koinViewModel()
 ) {
@@ -114,7 +115,7 @@ fun CreateHomeFlowScreen(
                     CreatePackScreen(
                         viewModel = viewModel,
                         onBackClick = { innerNavController.popBackStack() },
-                        onCreateChoreClick = { /* TODO */ },
+                        onCreateChoreClick = { innerNavController.navigate(HomeIntroRoute.CreateReward) },
                         onPreviewClick = { innerNavController.navigate(HomeIntroRoute.PackPreview) }
                     )
                 }
@@ -129,7 +130,7 @@ fun CreateHomeFlowScreen(
                     CreateRewardScreen(
                         viewModel = viewModel,
                         onBackClick = { innerNavController.popBackStack() },
-                        onCompleteClick = {  },
+                        onCompleteClick = { onNavToMain() },
                     )
                 }
             }
