@@ -60,9 +60,9 @@ class HomeServiceImpl(
                 encodedPath += HomeService.GET_HAS_HOME
             }
             contentType(ContentType.Application.Json)
-            accessToken?.let {
-                header(HttpHeaders.Authorization, "Bearer $it")
-            }
+//            accessToken?.let {
+//                header(HttpHeaders.Authorization, "Bearer $it")
+//            }
         }.body()
     }
 }

@@ -94,9 +94,10 @@ val networkModule = module {
                     }
                     
                     sendWithoutRequest { request ->
-                        // 인증이 필요 없는 URL 패턴 정의
-                        val publicUrls = listOf(AuthService.KAKAO_LOGIN, AuthService.TOKEN_REFRESH)
-                        publicUrls.any { request.url.encodedPath.contains(it) }
+                        val isPublic = listOf(AuthService.KAKAO_LOGIN, AuthService.TOKEN_REFRESH)
+                            .any { request.url.encodedPath.contains(it) }
+
+                        !isPublic
                     }
                 }
             }
