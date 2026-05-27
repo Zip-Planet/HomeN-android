@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.devndev.homen.core.domain.model.home.HomeIconType
+import com.devndev.homen.core.domain.model.home.Member
 import com.devndev.homen.ui.common.smallResource
 import com.devndev.homen.ui.component.HomeNButton
 import com.devndev.homen.ui.component.HomeNScreen
@@ -66,6 +67,7 @@ import homen.composeapp.generated.resources.home_create_division_plan_msg
 import homen.composeapp.generated.resources.home_division_plan_msg
 import homen.composeapp.generated.resources.home_division_plan_status_msg1
 import homen.composeapp.generated.resources.home_mvp_section_title
+import homen.composeapp.generated.resources.home_my_info_name
 import homen.composeapp.generated.resources.home_progress_section_title
 import homen.composeapp.generated.resources.home_report_status_msg2
 import homen.composeapp.generated.resources.home_total_member_count
@@ -86,6 +88,10 @@ fun HomeScreen(
 ) {
     val uiState by viewModel.viewState
     val homeIcon = HomeIconType.fromId(uiState.homeIcon).smallResource
+
+    LaunchedEffect(Unit) {
+        viewModel.setEvent(HomeContract.Event.OnInit)
+    }
 
     LaunchedEffect(viewModel.effect) {
         viewModel.effect.collectLatest { effect ->
@@ -400,7 +406,7 @@ fun HomeProgressSection(
 fun HomeDivisionSection(
     modifier: Modifier,
     uiState: HomeContract.State,
-    onMemberClick: (String) -> Unit
+    onMemberClick: (Member) -> Unit
 ) {
     Column(
         modifier = modifier
@@ -436,12 +442,13 @@ fun HomeDivisionSection(
             horizontalArrangement = Arrangement.spacedBy(5.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            uiState.members.forEach { name ->
-                val isSelected = uiState.selectedMember == name
+            uiState.members.forEachIndexed { index, member ->
+                val isSelected = uiState.selectedMember == member
                 MemberChip(
-                    name = name,
+                    member = member,
                     isSelected = isSelected,
-                    onMemberClick = { onMemberClick(it) }
+                    onMemberClick = { onMemberClick(it) },
+                    index = index
                 )
             }
         }
@@ -462,10 +469,16 @@ fun HomeDivisionSection(
 
 @Composable
 fun MemberChip(
-    name: String,
+    member: Member,
     isSelected: Boolean,
-    onMemberClick: (String) -> Unit
+    onMemberClick: (Member) -> Unit,
+    index: Int
 ) {
+    val nameText = if(index == 0) {
+        stringResource(Res.string.home_my_info_name)
+    } else {
+        member.name
+    }
     Box(
         modifier = Modifier
             .clip(RoundedCornerShape(13.dp))
@@ -475,12 +488,12 @@ fun MemberChip(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = null
             ) {
-                onMemberClick(name)
+                onMemberClick(member)
             }
             .padding(horizontal = 10.dp, vertical = 7.dp),
         contentAlignment = Alignment.Center) {
         Text(
-            text = name,
+            text = nameText,
             style = HomeNTheme.typography.suitRegular,
             fontSize = 10.sp,
             color = if (isSelected) Color.White else Color.Black
@@ -556,7 +569,7 @@ fun HomeBottomSectionPreview() {
         HomeDivisionSection(
             modifier = Modifier,
             uiState = HomeContract.State(
-                members = listOf("나", "김치투다리우동", "김수환")
+                members = emptyList()
             ),
             onMemberClick = {}
         )

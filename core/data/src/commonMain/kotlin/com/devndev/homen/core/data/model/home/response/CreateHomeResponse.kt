@@ -17,7 +17,9 @@ data class CreateHomeResponse(
     @SerialName("status")
     val status: String,
     @SerialName("created_at")
-    val createdAt: String
+    val createdAt: String,
+    @SerialName("members")
+    val members: List<HomeMemberResponse>
 )
 
 fun CreateHomeResponse.toDomainModel(): HomeResponseDomainModel {
@@ -27,6 +29,7 @@ fun CreateHomeResponse.toDomainModel(): HomeResponseDomainModel {
         image = this.image,
         inviteCode = this.name,
         status = this.status,
-        createdAt = this.createdAt
+        createdAt = this.createdAt,
+        members = this.members.map { it.toDomainModel() }
     )
 }
