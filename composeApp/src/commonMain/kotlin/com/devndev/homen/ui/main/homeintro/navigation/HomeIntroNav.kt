@@ -49,6 +49,7 @@ fun NavGraphBuilder.homeIntroNav(
         popExitTransition = NavTransitions.popExitTransition
     ) {
         CreateHomeFlowScreen(
+            onNavToMain = { onNavToMain() },
             onExitFlow = { navController.popBackStack() }
         )
     }

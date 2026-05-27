@@ -186,7 +186,7 @@ fun CreatePackScreen(
             ) {
                 HomeNButton(
                     text = stringResource(Res.string.home_create_pack_add_manual_btn),
-                    onClick = { /* TODO: 직접 추가 */ },
+                    onClick = { viewModel.setEvent(CreateHomeContract.Event.OnCreateChoreClick) },
                     modifier = Modifier.weight(1f),
                 )
 
