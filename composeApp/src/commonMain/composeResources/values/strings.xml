@@ -144,6 +144,7 @@
     <string name="home_create_division_plan_msg">첫 분담안을 만들고 평화로운 일상을 시작해보세요!</string>
     <string name="home_create_division_plan_btn">첫 분담안 생성하기</string>
     <string name="home_week_division_plan_msg">아직 이번 주 분담안이 없네요\n첫 분담안을 만들고 진행률을 100%로 채워보세요</string>
+    <string name="home_my_info_name">나</string>
 
     <!-- 집안일 관리-->
     <string name="chore_manage_title">집안일 관리</string>
