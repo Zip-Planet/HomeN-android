@@ -7,12 +7,14 @@ import com.devndev.homen.core.domain.model.user.UpdateProfile
 import com.devndev.homen.core.domain.usecase.auth.ClearTokenUseCase
 import com.devndev.homen.core.domain.usecase.auth.CommitTokensUseCase
 import com.devndev.homen.core.domain.usecase.user.UpdateProfileUseCase
+import com.devndev.homen.core.domain.usecase.user.ValidateNicknameUseCase
 import kotlinx.coroutines.launch
 
 class RegisterViewModel(
     private val updateProfileUseCase: UpdateProfileUseCase,
     private val clearTokenUseCase: ClearTokenUseCase,
-    private val commitTokensUseCase: CommitTokensUseCase
+    private val commitTokensUseCase: CommitTokensUseCase,
+    private val validateNicknameUseCase: ValidateNicknameUseCase
 ) : BaseViewModel<RegisterContract.Event, RegisterContract.State, RegisterContract.Effect>() {
 
     override fun setInitialState() = RegisterContract.State()
@@ -20,7 +22,7 @@ class RegisterViewModel(
     override fun handleEvents(event: RegisterContract.Event) {
         when (event) {
             is RegisterContract.Event.OnNicknameChanged -> {
-                setState { copy(nickname = event.nickname) }
+                setState { copy(nickname = event.nickname, currentStep = RegisterStep.NICKNAME) }
             }
             is RegisterContract.Event.OnAvatarSelected -> {
                 setState { copy(selectedAvatar = event.avatarType) }
@@ -38,14 +40,16 @@ class RegisterViewModel(
         val currentState = viewState.value
         when (currentState.currentStep) {
             RegisterStep.NICKNAME -> {
-                if (currentState.nickname.isNotEmpty()) {
-                    setState { copy(currentStep = RegisterStep.AVATAR) }
-                }
+                validateNickname()
             }
             RegisterStep.AVATAR -> {
                 if (currentState.selectedAvatar != null) {
                     registerProfile()
                 }
+            }
+
+            RegisterStep.INVALID -> {
+
             }
         }
     }
@@ -73,6 +77,29 @@ class RegisterViewModel(
                 }
             }
             setState { copy(isLoading = false) }
+        }
+    }
+
+    private fun validateNickname() {
+        viewModelScope.launch {
+            val result = validateNicknameUseCase(viewState.value.nickname)
+
+            when (result) {
+                is ApiResult.Success -> {
+                    if (result.data) {
+                        setState { copy(currentStep = RegisterStep.AVATAR) }
+                    } else {
+                        setState { copy(currentStep = RegisterStep.INVALID) }
+                    }
+                }
+
+                is ApiResult.Error -> {
+                    // TODO 에러 처리
+                }
+                ApiResult.NetworkError -> {
+                    // TODO network 에러 처리
+                }
+            }
         }
     }
 

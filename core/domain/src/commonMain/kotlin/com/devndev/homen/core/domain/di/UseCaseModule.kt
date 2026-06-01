@@ -12,6 +12,7 @@ import com.devndev.homen.core.domain.usecase.home.GetHomeUseCase
 import com.devndev.homen.core.domain.usecase.splash.CheckTokenUseCase
 import com.devndev.homen.core.domain.usecase.user.GetMyInfoUseCase
 import com.devndev.homen.core.domain.usecase.user.UpdateProfileUseCase
+import com.devndev.homen.core.domain.usecase.user.ValidateNicknameUseCase
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 
@@ -35,6 +36,7 @@ val useCaseModule = module {
     // user
     factoryOf(::UpdateProfileUseCase)
     factoryOf(::GetMyInfoUseCase)
+    factoryOf(::ValidateNicknameUseCase)
 
     // splash
     factoryOf(::CheckTokenUseCase)

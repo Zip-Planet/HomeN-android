@@ -24,6 +24,7 @@
     <string name="nickname_msg">홈엔에 처음 오셨군요\n닉네임을 만들어볼까요?</string>
     <string name="nickname_hint">특수문자 제외 한글, 영어만 입력해 주세요</string>
     <string name="select_avatar_msg">아바타를 선택해주세요</string>
+    <string name="nickname_invalid_msg">이미 사용중인 닉네임입니다.</string>
 
     <!-- 집 입장하기 화면 -->
     <string name="home_entry_title">집 입장하기</string>

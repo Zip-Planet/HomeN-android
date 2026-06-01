@@ -36,6 +36,7 @@ fun HomeNTextField(
     maxChar: Int = 8,
     enabled: Boolean = true,
     regex: Regex? = null,
+    backgroundColor: Color = Color.White
 ) {
     BasicTextField(
         value = value,
@@ -59,7 +60,7 @@ fun HomeNTextField(
             Row(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(Color.White, RoundedCornerShape(10.dp))
+                    .background(backgroundColor, RoundedCornerShape(10.dp))
                     .padding(horizontal = 15.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween

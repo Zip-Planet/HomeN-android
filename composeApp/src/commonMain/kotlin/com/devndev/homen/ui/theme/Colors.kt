@@ -25,3 +25,6 @@ val Blue4736FC = Color(0xFF4736FC)
 val YellowFF = Color(0xFFbacFFDF5B)
 
 val PinkFF = Color(0xFFFFAEB4)
+
+val RedFF1E1E = Color(0xFFFF1E1E)
+val RedFFCACA = Color(0xFFFFCACA)

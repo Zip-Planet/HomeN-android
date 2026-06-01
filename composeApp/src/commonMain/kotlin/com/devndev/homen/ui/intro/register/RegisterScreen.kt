@@ -40,9 +40,12 @@ import com.devndev.homen.ui.intro.register.viewmodel.RegisterContract
 import com.devndev.homen.ui.intro.register.viewmodel.RegisterStep
 import com.devndev.homen.ui.intro.register.viewmodel.RegisterViewModel
 import com.devndev.homen.ui.theme.HomeNTheme
+import com.devndev.homen.ui.theme.RedFF1E1E
+import com.devndev.homen.ui.theme.RedFFCACA
 import homen.composeapp.generated.resources.Res
 import homen.composeapp.generated.resources.next_button
 import homen.composeapp.generated.resources.nickname_hint
+import homen.composeapp.generated.resources.nickname_invalid_msg
 import homen.composeapp.generated.resources.nickname_msg
 import homen.composeapp.generated.resources.profile_setting_title
 import homen.composeapp.generated.resources.select_avatar_msg
@@ -111,7 +114,8 @@ fun RegisterScreen(
                     hint = stringResource(Res.string.nickname_hint),
                     maxChar = maxChar,
                     regex = nicknameRegex,
-                    enabled = uiState.currentStep == RegisterStep.NICKNAME
+                    enabled = uiState.currentStep != RegisterStep.AVATAR,
+                    backgroundColor = if (uiState.currentStep == RegisterStep.INVALID) RedFFCACA else Color.White
                 )
             }
 
@@ -129,13 +133,27 @@ fun RegisterScreen(
             }
 
             Spacer(modifier = Modifier.weight(1f))
-
+            if (uiState.currentStep == RegisterStep.INVALID) {
+                Box(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = stringResource(Res.string.nickname_invalid_msg),
+                        style = HomeNTheme.typography.suitLight,
+                        color = RedFF1E1E,
+                        fontSize = 12.sp
+                    )
+                }
+                Spacer(modifier = Modifier.height(10.dp))
+            }
             HomeNButton(
                 text = stringResource(Res.string.next_button),
                 onClick = { viewModel.setEvent(RegisterContract.Event.OnNextClick) },
                 enabled = when (uiState.currentStep) {
                     RegisterStep.NICKNAME -> uiState.nickname.isNotEmpty()
                     RegisterStep.AVATAR -> uiState.selectedAvatar != null
+                    RegisterStep.INVALID -> false
                 }
             )
         }

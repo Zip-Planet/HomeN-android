@@ -39,4 +39,15 @@ class UserRepositoryImpl(
             ApiResult.NetworkError
         }
     }
+
+    override suspend fun validateNickname(nickname: String): ApiResult<Boolean> {
+        return try {
+            val response = userService.validateNickname(nickname)
+            ApiResult.Success(response.isAvailable)
+        } catch (e: ResponseException) {
+            ApiResult.Error(code = e.response.status.value, message = e.message)
+        } catch (e: Exception) {
+            ApiResult.NetworkError
+        }
+    }
 }

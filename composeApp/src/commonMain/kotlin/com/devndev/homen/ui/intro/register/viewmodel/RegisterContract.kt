@@ -28,5 +28,6 @@ class RegisterContract {
 
 enum class RegisterStep {
     NICKNAME,
+    INVALID,
     AVATAR
 }
