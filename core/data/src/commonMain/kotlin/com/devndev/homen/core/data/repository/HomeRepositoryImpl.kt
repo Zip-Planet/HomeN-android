@@ -52,4 +52,15 @@ class HomeRepositoryImpl(
             ApiResult.NetworkError
         }
     }
+
+    override suspend fun getJoinHome(code: String): ApiResult<Unit> {
+        return try {
+            val response = homeService.getJoinHome(code)
+            ApiResult.Success(response)
+        } catch (e: ResponseException) {
+            ApiResult.Error(code = e.response.status.value, message = e.message)
+        } catch (e: Exception) {
+            ApiResult.NetworkError
+        }
+    }
 }

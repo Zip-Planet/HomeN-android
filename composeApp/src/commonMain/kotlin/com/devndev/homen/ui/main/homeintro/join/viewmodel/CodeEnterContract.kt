@@ -13,6 +13,7 @@ class CodeEnterContract {
     }
 
     data class State(
+        val codeEnterStep: CodeEnterStep = CodeEnterStep.NONE,
         val code: String = "",
         val isLoading: Boolean = false,
         val isError: Boolean = false,
@@ -23,4 +24,9 @@ class CodeEnterContract {
         data object NavigateToMain : Effect()
         data object PopBackStack : Effect()
     }
+}
+
+enum class CodeEnterStep {
+    NONE,
+    INVALID
 }

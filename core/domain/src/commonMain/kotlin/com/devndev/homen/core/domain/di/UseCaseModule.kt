@@ -9,6 +9,7 @@ import com.devndev.homen.core.domain.usecase.auth.SocialLoginUseCase
 import com.devndev.homen.core.domain.usecase.home.CreateHomeUseCase
 import com.devndev.homen.core.domain.usecase.home.GetHasHomeUseCase
 import com.devndev.homen.core.domain.usecase.home.GetHomeUseCase
+import com.devndev.homen.core.domain.usecase.home.GetJoinHomeUseCase
 import com.devndev.homen.core.domain.usecase.splash.CheckTokenUseCase
 import com.devndev.homen.core.domain.usecase.user.GetMyInfoUseCase
 import com.devndev.homen.core.domain.usecase.user.UpdateProfileUseCase
@@ -32,6 +33,7 @@ val useCaseModule = module {
     factoryOf(::CreateHomeUseCase)
     factoryOf(::GetHomeUseCase)
     factoryOf(::GetHasHomeUseCase)
+    factoryOf(::GetJoinHomeUseCase)
 
     // user
     factoryOf(::UpdateProfileUseCase)

@@ -65,4 +65,18 @@ class HomeServiceImpl(
 //            }
         }.body()
     }
+
+    override suspend fun getJoinHome(code: String) {
+        val accessToken = tokenRepository.getAccessToken().first()
+        return client.get {
+            url {
+                takeFrom(Config.BASE_URL)
+                encodedPath += "${HomeService.GET_JOIN_HOME}$code"
+            }
+            contentType(ContentType.Application.Json)
+            accessToken?.let {
+                header(HttpHeaders.Authorization, "Bearer $it")
+            }
+        }.body()
+    }
 }

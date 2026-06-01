@@ -10,9 +10,11 @@ interface HomeService {
         const val CREATE_HOME = "/homes/"
         const val GET_HOME = "/homes/mine/"
         const val GET_HAS_HOME = "/homes/mine/membership/"
+        const val GET_JOIN_HOME = "/homes/invite/"
     }
 
     suspend fun createHome(createHomeRequest: CreateHomeRequest): CreateHomeResponse
     suspend fun getHome(): GetHomeResponse
     suspend fun getHasHome(): GetHasHomeResponse
+    suspend fun getJoinHome(code: String)
 }
