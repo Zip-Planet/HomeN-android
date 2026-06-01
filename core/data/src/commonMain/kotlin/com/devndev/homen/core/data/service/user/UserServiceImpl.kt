@@ -4,6 +4,7 @@ import com.devndev.homen.core.common.Config
 import com.devndev.homen.core.data.model.user.request.UpdateProfileRequest
 import com.devndev.homen.core.data.model.user.response.GetMyInfoResponse
 import com.devndev.homen.core.data.model.user.response.UpdateProfileResponse
+import com.devndev.homen.core.data.model.user.response.ValidateNicknameResponse
 import com.devndev.homen.core.domain.repository.TokenRepository
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -44,6 +45,20 @@ class UserServiceImpl(
             }
             contentType(ContentType.Application.Json)
             setBody(request)
+        }.body()
+    }
+
+    override suspend fun validateNickname(nickname: String): ValidateNicknameResponse {
+        val accessToken = tokenRepository.getAccessToken().first()
+        return client.get {
+            url {
+                takeFrom(Config.BASE_URL)
+                encodedPath += "${UserService.VALIDATE_NICKNAME}$nickname/"
+            }
+            contentType(ContentType.Application.Json)
+            accessToken?.let {
+                header(HttpHeaders.Authorization, "Bearer $it")
+            }
         }.body()
     }
 }
