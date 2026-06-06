@@ -26,6 +26,7 @@ fun HomeNScreen(
     topBar: @Composable () -> Unit = {},
     bottomBar: @Composable () -> Unit = {},
     isLoading: Boolean = false,
+    mainIsLoading: Boolean = false,
     containerColor: Color = BackgroundGray,
     content: @Composable (PaddingValues) -> Unit,
 ) {
@@ -52,9 +53,11 @@ fun HomeNScreen(
                         })
                     },
             ) {
-                content(paddingValues)
+                if (!mainIsLoading) {
+                    content(paddingValues)
+                }
 
-                if (isLoading) {
+                if (isLoading || mainIsLoading) {
                     CircularProgressIndicator(
                         modifier = Modifier.align(Alignment.Center),
                         color = Color.Black

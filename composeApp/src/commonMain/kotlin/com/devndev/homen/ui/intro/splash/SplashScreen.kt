@@ -46,7 +46,7 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun SplashScreen(
-    onNavToMain: () -> Unit,
+    onNavToMain: (Boolean) -> Unit,
     onNavToLogin: () -> Unit,
     viewModel: SplashViewModel = koinViewModel()
 ) {
@@ -60,7 +60,7 @@ fun SplashScreen(
                 }
 
                 SplashContract.Effect.NavigateToMain -> {
-                    onNavToMain()
+                    onNavToMain(uiState.hasHome)
                 }
             }
         }

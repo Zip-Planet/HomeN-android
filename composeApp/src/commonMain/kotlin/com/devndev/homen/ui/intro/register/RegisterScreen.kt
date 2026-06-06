@@ -57,7 +57,7 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun RegisterScreen(
     onNavBack: () -> Unit,
-    onNavToMain: () -> Unit,
+    onNavToMain: (Boolean) -> Unit,
     viewModel: RegisterViewModel = koinViewModel()
 ) {
     val uiState by viewModel.viewState
@@ -71,7 +71,7 @@ fun RegisterScreen(
     LaunchedEffect(viewModel.effect) {
         viewModel.effect.collectLatest { effect ->
             when (effect) {
-                RegisterContract.Effect.NavigateToMain -> onNavToMain()
+                RegisterContract.Effect.NavigateToMain -> onNavToMain(uiState.hasHome)
                 RegisterContract.Effect.PopBackStack -> onNavBack()
             }
         }

@@ -13,8 +13,9 @@ class HomeContract {
     }
 
     data class State(
+        val mainIsLoading: Boolean = true,
         val isLoading: Boolean = false,
-        val homeIcon: Int = 1,
+        val homeIcon: Int = 0,
         val homeName: String = "",
         val totalMember: Int = 0,
         val totalChore: Int = 0,

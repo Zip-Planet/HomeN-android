@@ -13,7 +13,8 @@ class SplashContract {
     }
 
     data class State(
-        val isAllWordsUp: Boolean = false
+        val isAllWordsUp: Boolean = false,
+        val hasHome: Boolean = false
     ) : ViewState
 
     sealed class Effect : ViewSideEffect {

@@ -9,13 +9,16 @@ import com.devndev.homen.core.domain.model.common.ApiResult
 import com.devndev.homen.core.domain.usecase.auth.KakaoLoginToServerUseCase
 import com.devndev.homen.core.domain.usecase.auth.SaveTokensUseCase
 import com.devndev.homen.core.domain.usecase.auth.SocialLoginUseCase
+import com.devndev.homen.core.domain.usecase.home.GetHasHomeUseCase
 import com.devndev.homen.ui.intro.login.LoginContract
+import com.devndev.homen.ui.intro.splash.viewmodel.SplashContract
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
     private val socialLoginUseCase: SocialLoginUseCase,
     private val kakaoLoginUseCase: KakaoLoginToServerUseCase,
-    private val saveTokensUseCase: SaveTokensUseCase
+    private val saveTokensUseCase: SaveTokensUseCase,
+    private val getHasHomeUseCase: GetHasHomeUseCase
 ) :
     BaseViewModel<LoginContract.Event, LoginContract.State, LoginContract.Effect>() {
 
@@ -69,7 +72,7 @@ class LoginViewModel(
                         is ApiResult.Success -> {
                             if (result.data.isProfileSet) {
                                 saveTokens(result.data.accessToken, result.data.refreshToken, isPermanent = true)
-                                setEffect { LoginContract.Effect.NavigateToMain }
+                                getHasHome()
                             } else {
                                 saveTokens(result.data.accessToken, result.data.refreshToken, isPermanent = false)
                                 setEffect { LoginContract.Effect.NavigateToRegister }
@@ -96,6 +99,23 @@ class LoginViewModel(
     private fun saveTokens(accessToken: String, refreshToken: String, isPermanent: Boolean){
         viewModelScope.launch {
             saveTokensUseCase(accessToken, refreshToken, isPermanent)
+        }
+    }
+
+    private fun getHasHome() {
+        viewModelScope.launch {
+            when (val result = getHasHomeUseCase()) {
+                is ApiResult.Success -> {
+                    setState { copy(hasHome = result.data) }
+                    setEffect { LoginContract.Effect.NavigateToMain }
+                }
+                is ApiResult.Error -> {
+
+                }
+                ApiResult.NetworkError -> {
+
+                }
+            }
         }
     }
 }

@@ -17,7 +17,8 @@ class RegisterContract {
         val currentStep: RegisterStep = RegisterStep.NICKNAME,
         val nickname: String = "",
         val selectedAvatar: AvatarType? = null,
-        val isLoading: Boolean = false
+        val isLoading: Boolean = false,
+        val hasHome: Boolean = false
     ) : ViewState
 
     sealed class Effect : ViewSideEffect {

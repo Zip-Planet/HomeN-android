@@ -31,7 +31,7 @@ class HomeViewModel(
 
     private fun getHomeData() {
         viewModelScope.launch {
-            setState { copy(isLoading = true) }
+            setState { copy(mainIsLoading = true) }
 
             val homeResult = getHomeUseCase()
             val myInfoResult = getMyInfoUseCase()
@@ -48,7 +48,7 @@ class HomeViewModel(
                 val memberList = listOfNotNull(myInfo) + otherMembers
                 setState {
                     copy(
-                        isLoading = false,
+                        mainIsLoading = false,
                         homeIcon = homeData.image,
                         homeName = homeData.name,
                         totalMember = homeData.members.size,

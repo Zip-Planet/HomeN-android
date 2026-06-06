@@ -47,7 +47,7 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun LoginScreen(
-    onNavToMain: () -> Unit,
+    onNavToMain: (Boolean) -> Unit,
     onNavToRegister: () -> Unit,
     viewModel: LoginViewModel = koinViewModel()
 ) {
@@ -56,7 +56,7 @@ fun LoginScreen(
     LaunchedEffect(viewModel.effect) {
         viewModel.effect.collectLatest { effect ->
             when (effect) {
-                is LoginContract.Effect.NavigateToMain -> onNavToMain()
+                is LoginContract.Effect.NavigateToMain -> onNavToMain(uiState.hasHome)
                 is LoginContract.Effect.NavigateToRegister -> onNavToRegister()
 
             }
