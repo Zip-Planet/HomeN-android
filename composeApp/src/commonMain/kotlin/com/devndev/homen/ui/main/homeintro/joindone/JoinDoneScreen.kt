@@ -1,14 +1,17 @@
 package com.devndev.homen.ui.main.homeintro.joindone
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,6 +30,7 @@ import com.devndev.homen.ui.component.HomeNButton
 import com.devndev.homen.ui.component.HomeNScreen
 import com.devndev.homen.ui.main.homeintro.joindone.viewmodel.JoinDoneContract
 import com.devndev.homen.ui.main.homeintro.joindone.viewmodel.JoinDoneViewModel
+import com.devndev.homen.ui.theme.BackgroundGray
 import com.devndev.homen.ui.theme.DarkGray
 import com.devndev.homen.ui.theme.HomeNTheme
 import homen.composeapp.generated.resources.Res
@@ -44,6 +48,7 @@ import kotlinx.coroutines.flow.collectLatest
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -63,6 +68,21 @@ fun JoinDoneScreen(
         }
     }
 
+    JoinDoneContent(
+        homeName = homeName,
+        homeIcon = homeIcon,
+        uiState = uiState,
+        onConfirmClick = { viewModel.setEvent(JoinDoneContract.Event.OnConfirmClick) }
+    )
+}
+
+@Composable
+private fun JoinDoneContent(
+    homeName: String,
+    homeIcon: Int,
+    uiState: JoinDoneContract.State,
+    onConfirmClick: () -> Unit
+) {
     HomeNScreen(
         topBar = {},
         isLoading = uiState.isLoading,
@@ -78,32 +98,10 @@ fun JoinDoneScreen(
                 ),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            val topSpace = if (getPlatform() == OsType.IOS) {
-                120.dp
-            } else {
-                146.dp
-            }
+            val topSpace = if (getPlatform() == OsType.IOS) 130.dp else 183.dp
             Spacer(modifier = Modifier.height(topSpace))
-
-            Text(
-                text = stringResource(Res.string.join_done_title).replace("s", homeName),
-                style = HomeNTheme.typography.suitExtraBold,
-                fontSize = 20.sp,
-                color = Color.Black
-            )
-
-            Spacer(modifier = Modifier.height(15.dp))
-
-            Text(
-                text = stringResource(Res.string.join_done_subtitle),
-                style = HomeNTheme.typography.suitMedium,
-                fontSize = 14.sp,
-                color = Color.Black
-            )
-
-            Spacer(modifier = Modifier.height(80.dp))
-
             val homeResource = HomeIconType.fromId(homeIcon).bigResource
+
             Icon(
                 painter = painterResource(homeResource),
                 contentDescription = null,
@@ -113,17 +111,35 @@ fun JoinDoneScreen(
                     .height(166.dp)
             )
 
-            Spacer(modifier = Modifier.height(60.dp))
+            Spacer(modifier = Modifier.height(50.dp))
+
+            Text(
+                text = stringResource(Res.string.join_done_title).replace("s", homeName),
+                style = HomeNTheme.typography.suitExtraBold,
+                fontSize = 20.sp,
+                color = Color.Black
+            )
+
+            Spacer(modifier = Modifier.height(18.dp))
+
+            Text(
+                text = stringResource(Res.string.join_done_subtitle),
+                style = HomeNTheme.typography.suitMedium,
+                fontSize = 14.sp,
+                color = Color.Black
+            )
+
+            Spacer(modifier = Modifier.height(37.dp))
 
             Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(3.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(color = BackgroundGray, shape = RoundedCornerShape(10.dp))
+                    .padding(15.dp),
+                verticalArrangement = Arrangement.spacedBy(6.dp)
             ) {
                 JoinDoneMsg(Res.drawable.chart_icon, stringResource(Res.string.join_done_msg1))
-                JoinDoneMsg(
-                    Res.drawable.location_check_icon,
-                    stringResource(Res.string.join_done_msg2)
-                )
+                JoinDoneMsg(Res.drawable.location_check_icon, stringResource(Res.string.join_done_msg2))
                 JoinDoneMsg(Res.drawable.clipboard_icon, stringResource(Res.string.join_done_msg3))
             }
 
@@ -131,7 +147,7 @@ fun JoinDoneScreen(
 
             HomeNButton(
                 text = stringResource(Res.string.enter_homen_btn),
-                onClick = { viewModel.setEvent(JoinDoneContract.Event.OnConfirmClick) },
+                onClick = onConfirmClick,
                 enabled = true
             )
         }
@@ -159,6 +175,19 @@ fun JoinDoneMsg(
             style = HomeNTheme.typography.suitMedium,
             fontSize = 12.sp,
             color = DarkGray
+        )
+    }
+}
+
+@Preview
+@Composable
+fun JoinDoneScreenPreView() {
+    HomeNTheme {
+        JoinDoneContent(
+            homeName = "누리빌",
+            homeIcon = 1,
+            uiState = JoinDoneContract.State(),
+            onConfirmClick = {}
         )
     }
 }

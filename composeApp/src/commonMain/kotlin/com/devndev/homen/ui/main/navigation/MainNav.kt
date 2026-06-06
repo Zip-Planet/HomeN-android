@@ -70,6 +70,7 @@ fun MainNav(
                     mainNavController.navigate(BottomNavItem.Home) {
                         popUpTo<HomeIntroRoute.Selection> { inclusive = true }
                     }
+                    viewModel.setEvent(MainContract.Event.OnMainNav)
                 },
                 onNavToIntro = onNavToIntro
             )
