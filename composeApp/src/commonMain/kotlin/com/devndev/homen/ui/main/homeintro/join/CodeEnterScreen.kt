@@ -34,8 +34,11 @@ import com.devndev.homen.ui.component.HomeNTooltip
 import com.devndev.homen.ui.component.TitleTopBar
 import com.devndev.homen.ui.component.TooltipButton
 import com.devndev.homen.ui.main.homeintro.join.viewmodel.CodeEnterContract
+import com.devndev.homen.ui.main.homeintro.join.viewmodel.CodeEnterStep
 import com.devndev.homen.ui.main.homeintro.join.viewmodel.CodeEnterViewModel
 import com.devndev.homen.ui.theme.HomeNTheme
+import com.devndev.homen.ui.theme.RedFF1E1E
+import com.devndev.homen.ui.theme.RedFFCACA
 import homen.composeapp.generated.resources.Res
 import homen.composeapp.generated.resources.home_entry_title
 import homen.composeapp.generated.resources.join_code_msg
@@ -43,6 +46,7 @@ import homen.composeapp.generated.resources.join_code_title
 import homen.composeapp.generated.resources.join_code_tooltip_msg1
 import homen.composeapp.generated.resources.join_code_tooltip_msg2
 import homen.composeapp.generated.resources.join_code_tooltip_title
+import homen.composeapp.generated.resources.join_invalid_code_msg
 import homen.composeapp.generated.resources.next_button
 import kotlinx.coroutines.flow.collectLatest
 import org.jetbrains.compose.resources.stringResource
@@ -50,7 +54,7 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun CodeEnterScreen(
-    onNavToConfirm: () -> Unit,
+    onNavToConfirm: (String) -> Unit,
     onBackClick: () -> Unit,
     viewModel: CodeEnterViewModel = koinViewModel()
 ) {
@@ -60,12 +64,11 @@ fun CodeEnterScreen(
     LaunchedEffect(viewModel.effect) {
         viewModel.effect.collectLatest { effect ->
             when (effect) {
-                is CodeEnterContract.Effect.NavigateToMain -> onNavToConfirm()
+                is CodeEnterContract.Effect.NavigateToConfirm -> onNavToConfirm(uiState.code)
                 is CodeEnterContract.Effect.PopBackStack -> onBackClick()
             }
         }
     }
-    // TODO 유효성 검증 실패 화면 추가
     HomeNScreen(
         topBar = {
             TitleTopBar(
@@ -102,13 +105,28 @@ fun CodeEnterScreen(
                 Spacer(modifier = Modifier.height(20.dp))
                 CodeInputSection(
                     code = uiState.code,
+                    step = uiState.codeEnterStep,
                     onCodeChanged = {
                         viewModel.setEvent(CodeEnterContract.Event.OnCodeChanged(it))
                     }
                 )
 
                 Spacer(modifier = Modifier.weight(1f))
-
+                if (uiState.codeEnterStep == CodeEnterStep.INVALID) {
+                    Box(
+                        modifier = Modifier.fillMaxWidth(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = stringResource(Res.string.join_invalid_code_msg),
+                            style = HomeNTheme.typography.suitLight,
+                            color = RedFF1E1E,
+                            fontSize = 12.sp,
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                }
+                Spacer(modifier = Modifier.height(10.dp))
                 HomeNButton(
                     text = stringResource(Res.string.next_button),
                     onClick = {
@@ -162,8 +180,13 @@ fun CodeEnterScreen(
 @Composable
 fun CodeInputSection(
     code: String,
+    step: CodeEnterStep,
     onCodeChanged: (String) -> Unit
 ) {
+    val backgroundColor = when (step) {
+        CodeEnterStep.NONE -> Color.White
+        CodeEnterStep.INVALID -> RedFFCACA
+    }
     Box(modifier = Modifier.fillMaxWidth()) {
         BasicTextField(
             value = code,
@@ -184,7 +207,7 @@ fun CodeInputSection(
                             modifier = Modifier
                                 .weight(1f)
                                 .height(48.dp)
-                                .background(Color.White, shape = RoundedCornerShape(10.dp)),
+                                .background(backgroundColor, shape = RoundedCornerShape(10.dp)),
                             contentAlignment = Alignment.Center
                         ) {
                             Text(

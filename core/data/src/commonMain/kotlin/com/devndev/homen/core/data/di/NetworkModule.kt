@@ -29,8 +29,8 @@ import org.koin.dsl.module
 val networkModule = module {
     single {
         val tokenRepository: TokenRepository = get()
-        
         HttpClient {
+            expectSuccess = true
             // 1. 타임아웃 설정
             install(HttpTimeout) {
                 requestTimeoutMillis = Config.REQUEST_TIMEOUT

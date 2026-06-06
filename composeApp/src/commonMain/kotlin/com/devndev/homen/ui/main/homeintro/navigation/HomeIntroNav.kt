@@ -4,6 +4,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import androidx.navigation.toRoute
 import com.devndev.homen.ui.component.NavTransitions
 import com.devndev.homen.ui.main.homeintro.create.CreateHomeFlowScreen
 import com.devndev.homen.ui.main.homeintro.create.CreateOnboardingScreen
@@ -23,11 +24,11 @@ fun NavGraphBuilder.homeIntroNav(
         popEnterTransition = NavTransitions.popEnterTransition,
         popExitTransition = NavTransitions.popExitTransition
     ) {
-         HomeIntroScreen(
-             onNavToCreation = { navController.navigate(HomeIntroRoute.CreateOnboarding) },
-             onNavToCodeEnter = { navController.navigate(HomeIntroRoute.JoinGraph) },
-             onNavToIntro = { onNavToIntro() }
-         )
+        HomeIntroScreen(
+            onNavToCreation = { navController.navigate(HomeIntroRoute.CreateOnboarding) },
+            onNavToCodeEnter = { navController.navigate(HomeIntroRoute.JoinGraph) },
+            onNavToIntro = { onNavToIntro() }
+        )
     }
 
     composable<HomeIntroRoute.CreateOnboarding>(
@@ -63,15 +64,19 @@ fun NavGraphBuilder.homeIntroNav(
     ) {
         composable<HomeIntroRoute.CodeEnter> {
             CodeEnterScreen(
-                onNavToConfirm = { navController.navigate(HomeIntroRoute.JoinConfirm) },
+                onNavToConfirm = { code ->
+                    navController.navigate(HomeIntroRoute.JoinConfirm(code))
+                },
                 onBackClick = { navController.popBackStack() }
             )
         }
 
-        composable<HomeIntroRoute.JoinConfirm> {
+        composable<HomeIntroRoute.JoinConfirm> { backStackEntry ->
+            val route: HomeIntroRoute.JoinConfirm = backStackEntry.toRoute()
             JoinConfirmScreen(
-                onNavToDone = {
-                    navController.navigate(HomeIntroRoute.JoinDone) {
+                code = route.code,
+                onNavToDone = { homeName, homeIcon ->
+                    navController.navigate(HomeIntroRoute.JoinDone(homeName, homeIcon)) {
                         popUpTo<HomeIntroRoute.JoinGraph> { inclusive = true }
                     }
                 },
@@ -79,8 +84,11 @@ fun NavGraphBuilder.homeIntroNav(
             )
         }
 
-        composable<HomeIntroRoute.JoinDone> {
+        composable<HomeIntroRoute.JoinDone> { backStackEntry ->
+            val route: HomeIntroRoute.JoinDone = backStackEntry.toRoute()
             JoinDoneScreen(
+                homeName = route.homeName,
+                homeIcon = route.homeIcon,
                 onNavToHome = onNavToMain
             )
         }

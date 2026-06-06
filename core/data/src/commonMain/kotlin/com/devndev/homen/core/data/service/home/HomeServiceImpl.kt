@@ -2,9 +2,11 @@ package com.devndev.homen.core.data.service.home
 
 import com.devndev.homen.core.common.Config
 import com.devndev.homen.core.data.model.home.request.CreateHomeRequest
+import com.devndev.homen.core.data.model.home.request.JoinHomeRequest
 import com.devndev.homen.core.data.model.home.response.CreateHomeResponse
 import com.devndev.homen.core.data.model.home.response.GetHasHomeResponse
 import com.devndev.homen.core.data.model.home.response.GetHomeResponse
+import com.devndev.homen.core.data.model.home.response.JoinHomeResponse
 import com.devndev.homen.core.domain.repository.TokenRepository
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -63,6 +65,35 @@ class HomeServiceImpl(
 //            accessToken?.let {
 //                header(HttpHeaders.Authorization, "Bearer $it")
 //            }
+        }.body()
+    }
+
+    override suspend fun getJoinHome(code: String): JoinHomeResponse {
+        val accessToken = tokenRepository.getAccessToken().first()
+        return client.get {
+            url {
+                takeFrom(Config.BASE_URL)
+                encodedPath += "${HomeService.GET_JOIN_HOME}$code"
+            }
+            contentType(ContentType.Application.Json)
+            accessToken?.let {
+                header(HttpHeaders.Authorization, "Bearer $it")
+            }
+        }.body()
+    }
+
+    override suspend fun joinHome(joinHomeRequest: JoinHomeRequest) {
+        val accessToken = tokenRepository.getAccessToken().first()
+        return client.post {
+            url {
+                takeFrom(Config.BASE_URL)
+                encodedPath += HomeService.JOIN_HOME
+            }
+            contentType(ContentType.Application.Json)
+            accessToken?.let {
+                header(HttpHeaders.Authorization, "Bearer $it")
+            }
+            setBody(joinHomeRequest)
         }.body()
     }
 }
