@@ -37,7 +37,12 @@ fun IntroNav(
             )
         }
 
-        composable<IntroRoute.Login> {
+        composable<IntroRoute.Login>(
+            enterTransition = { androidx.compose.animation.EnterTransition.None },
+            exitTransition = { androidx.compose.animation.ExitTransition.None },
+            popEnterTransition = { androidx.compose.animation.EnterTransition.None },
+            popExitTransition = { androidx.compose.animation.ExitTransition.None }
+        ) {
             LoginScreen(
                 onNavToMain = { hasHome ->
                     onNavToMain(hasHome)
