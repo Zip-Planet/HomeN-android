@@ -60,7 +60,7 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun JoinConfirmScreen(
     code: String,
-    onNavToDone: () -> Unit,
+    onNavToDone: (String, Int) -> Unit,
     onBackClick: () -> Unit,
     viewModel: JoinConfirmViewModel = koinViewModel()
 ) {
@@ -69,7 +69,7 @@ fun JoinConfirmScreen(
     LaunchedEffect(viewModel.effect) {
         viewModel.effect.collectLatest { effect ->
             when (effect) {
-                is JoinConfirmContract.Effect.NavigateToDone -> onNavToDone()
+                is JoinConfirmContract.Effect.NavigateToDone -> onNavToDone(uiState.homeName, uiState.imageId)
                 is JoinConfirmContract.Effect.PopBackStack -> onBackClick()
             }
         }
@@ -258,7 +258,7 @@ fun JoinConfirmScreen(
             }
             HomeNButton(
                 text = stringResource(Res.string.home_entry_title),
-                onClick = { viewModel.setEvent(JoinConfirmContract.Event.OnJoinClick) },
+                onClick = { viewModel.setEvent(JoinConfirmContract.Event.OnJoinClick(code)) },
                 enabled = true,
                 modifier = Modifier.align(Alignment.BottomCenter)
             )

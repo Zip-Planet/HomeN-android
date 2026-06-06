@@ -4,11 +4,13 @@ import androidx.lifecycle.viewModelScope
 import com.devndev.homen.core.common.base.BaseViewModel
 import com.devndev.homen.core.domain.model.common.ApiResult
 import com.devndev.homen.core.domain.usecase.home.GetJoinHomeUseCase
+import com.devndev.homen.core.domain.usecase.home.JoinHomeUseCase
 import com.devndev.homen.util.DateUtil
 import kotlinx.coroutines.launch
 
 class JoinConfirmViewModel(
-    private val getJoinHomeUseCase: GetJoinHomeUseCase
+    private val getJoinHomeUseCase: GetJoinHomeUseCase,
+    private val joinHomeUseCase: JoinHomeUseCase
 ) : BaseViewModel<JoinConfirmContract.Event, JoinConfirmContract.State, JoinConfirmContract.Effect>() {
 
     override fun setInitialState() = JoinConfirmContract.State()
@@ -18,9 +20,8 @@ class JoinConfirmViewModel(
             is JoinConfirmContract.Event.OnInit -> {
                 getJoinHome(event.code)
             }
-            JoinConfirmContract.Event.OnJoinClick -> {
-                // TODO: 실제 집 참여 API 호출 로직 추가 예정
-                setEffect { JoinConfirmContract.Effect.NavigateToDone }
+            is JoinConfirmContract.Event.OnJoinClick -> {
+                joinHome(event.code)
             }
             JoinConfirmContract.Event.OnBackClick -> {
                 setEffect { JoinConfirmContract.Effect.PopBackStack }
@@ -43,6 +44,25 @@ class JoinConfirmViewModel(
                             createdAt = DateUtil.formatIsoDate(result.data.createdAt)
                         )
                     }
+                }
+                is ApiResult.Error -> {
+
+                }
+                ApiResult.NetworkError -> {
+
+                }
+            }
+            setState { copy(isLoading = false) }
+        }
+    }
+
+    private fun joinHome(code: String) {
+        viewModelScope.launch {
+            val result = joinHomeUseCase(code)
+
+            when (result) {
+                is ApiResult.Success -> {
+                    setEffect { JoinConfirmContract.Effect.NavigateToDone }
                 }
                 is ApiResult.Error -> {
 

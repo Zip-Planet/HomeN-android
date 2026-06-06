@@ -10,4 +10,5 @@ interface HomeRepository {
     suspend fun getHome(): ApiResult<HomeResponseDomainModel>
     suspend fun getHasHome(): ApiResult<Boolean>
     suspend fun getJoinHome(code: String): ApiResult<JoinHomeResponseDomainModel>
+    suspend fun joinHome(code: String): ApiResult<Unit>
 }

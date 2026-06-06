@@ -1,6 +1,7 @@
 package com.devndev.homen.core.data.repository
 
 import com.devndev.homen.core.data.model.home.request.CreateHomeRequest
+import com.devndev.homen.core.data.model.home.request.JoinHomeRequest
 import com.devndev.homen.core.data.model.home.request.toDataModel
 import com.devndev.homen.core.data.model.home.response.JoinHomeResponse
 import com.devndev.homen.core.data.model.home.response.toDomainModel
@@ -59,6 +60,17 @@ class HomeRepositoryImpl(
         return try {
             val response = homeService.getJoinHome(code)
             ApiResult.Success(response.toDomainModel())
+        } catch (e: ResponseException) {
+            ApiResult.Error(code = e.response.status.value, message = e.message)
+        } catch (e: Exception) {
+            ApiResult.NetworkError
+        }
+    }
+
+    override suspend fun joinHome(code: String): ApiResult<Unit> {
+        return try {
+            val response = homeService.joinHome(JoinHomeRequest(code))
+            ApiResult.Success(response)
         } catch (e: ResponseException) {
             ApiResult.Error(code = e.response.status.value, message = e.message)
         } catch (e: Exception) {

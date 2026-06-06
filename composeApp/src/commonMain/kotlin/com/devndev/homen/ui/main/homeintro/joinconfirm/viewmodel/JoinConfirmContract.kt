@@ -8,7 +8,7 @@ import com.devndev.homen.core.domain.model.home.Member
 class JoinConfirmContract {
     sealed class Event : ViewEvent {
         data class OnInit(val code: String) : Event()
-        data object OnJoinClick : Event()
+        data class OnJoinClick(val code: String) : Event()
         data object OnBackClick : Event()
     }
 

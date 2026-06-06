@@ -67,7 +67,6 @@ fun NavGraphBuilder.homeIntroNav(
                 onNavToConfirm = { code ->
                     navController.navigate(HomeIntroRoute.JoinConfirm(code))
                 },
-
                 onBackClick = { navController.popBackStack() }
             )
         }
@@ -76,8 +75,8 @@ fun NavGraphBuilder.homeIntroNav(
             val route: HomeIntroRoute.JoinConfirm = backStackEntry.toRoute()
             JoinConfirmScreen(
                 code = route.code,
-                onNavToDone = {
-                    navController.navigate(HomeIntroRoute.JoinDone) {
+                onNavToDone = { homeName, homeIcon ->
+                    navController.navigate(HomeIntroRoute.JoinDone(homeName, homeIcon)) {
                         popUpTo<HomeIntroRoute.JoinGraph> { inclusive = true }
                     }
                 },
@@ -85,8 +84,11 @@ fun NavGraphBuilder.homeIntroNav(
             )
         }
 
-        composable<HomeIntroRoute.JoinDone> {
+        composable<HomeIntroRoute.JoinDone> { backStackEntry ->
+            val route: HomeIntroRoute.JoinDone = backStackEntry.toRoute()
             JoinDoneScreen(
+                homeName = route.homeName,
+                homeIcon = route.homeIcon,
                 onNavToHome = onNavToMain
             )
         }

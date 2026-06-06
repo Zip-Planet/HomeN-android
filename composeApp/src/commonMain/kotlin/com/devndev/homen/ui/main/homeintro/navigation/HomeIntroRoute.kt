@@ -34,5 +34,5 @@ sealed interface HomeIntroRoute {
     @Serializable
     data class JoinConfirm(val code: String) : HomeIntroRoute
     @Serializable
-    data object JoinDone : HomeIntroRoute
+    data class JoinDone(val homeName: String, val homeIcon: Int) : HomeIntroRoute
 }

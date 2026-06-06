@@ -20,7 +20,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.devndev.homen.OsType
+import com.devndev.homen.core.domain.model.home.HomeIconType
 import com.devndev.homen.getPlatform
+import com.devndev.homen.ui.common.bigResource
 import com.devndev.homen.ui.component.HomeNButton
 import com.devndev.homen.ui.component.HomeNScreen
 import com.devndev.homen.ui.main.homeintro.joindone.viewmodel.JoinDoneContract
@@ -46,6 +48,8 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun JoinDoneScreen(
+    homeName: String,
+    homeIcon: Int,
     onNavToHome: () -> Unit,
     viewModel: JoinDoneViewModel = koinViewModel()
 ) {
@@ -82,7 +86,7 @@ fun JoinDoneScreen(
             Spacer(modifier = Modifier.height(topSpace))
 
             Text(
-                text = stringResource(Res.string.join_done_title).replace("s", "골든빌 401"),
+                text = stringResource(Res.string.join_done_title).replace("s", homeName),
                 style = HomeNTheme.typography.suitExtraBold,
                 fontSize = 20.sp,
                 color = Color.Black
@@ -99,8 +103,9 @@ fun JoinDoneScreen(
 
             Spacer(modifier = Modifier.height(80.dp))
 
+            val homeResource = HomeIconType.fromId(homeIcon).bigResource
             Icon(
-                painter = painterResource(Res.drawable.home1_big_icon),
+                painter = painterResource(homeResource),
                 contentDescription = null,
                 tint = Color.Unspecified,
                 modifier = Modifier
