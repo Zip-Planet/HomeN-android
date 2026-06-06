@@ -13,7 +13,8 @@ class LoginContract {
 
     data class State(
         val isLoading: Boolean = false,
-        val error: String? = null
+        val error: String? = null,
+        val hasHome: Boolean = false
     ) : ViewState
 
     sealed class Effect : ViewSideEffect {

@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.devndev.homen.ui.component.NavTransitions
 import com.devndev.homen.ui.intro.navigation.IntroNav
 import com.devndev.homen.ui.main.navigation.MainNav
@@ -25,8 +26,8 @@ fun HomeNApp() {
                 popEnterTransition = { androidx.compose.animation.EnterTransition.None },
                 popExitTransition = { androidx.compose.animation.ExitTransition.None }
             ) {
-                IntroNav(onNavToMain = {
-                    rootNavController.navigate(AppRoute.Main) {
+                IntroNav(onNavToMain = { hasHome ->
+                    rootNavController.navigate(AppRoute.Main(hasHome)) {
                         popUpTo<AppRoute.Intro> { inclusive = true }
                     }
                 })
@@ -36,8 +37,10 @@ fun HomeNApp() {
                 exitTransition = { androidx.compose.animation.ExitTransition.None },
                 popEnterTransition = { androidx.compose.animation.EnterTransition.None },
                 popExitTransition = { androidx.compose.animation.ExitTransition.None }
-            ) {
+            ) { backStackEntry ->
+                val route: AppRoute.Main = backStackEntry.toRoute()
                 MainNav(
+                    initialHasHome = route.hasHome,
                     onNavToIntro = {
                         rootNavController.navigate(AppRoute.Intro) {
                             popUpTo<AppRoute.Main> { inclusive = true }

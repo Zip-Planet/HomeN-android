@@ -28,6 +28,7 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun MainNav(
+    initialHasHome: Boolean,
     onNavToIntro: () -> Unit,
     viewModel: MainViewModel = koinViewModel()
 ) {
@@ -41,7 +42,7 @@ fun MainNav(
 
     val uiState by viewModel.viewState
 
-    val hasHome = uiState.hasHome ?: return
+    val hasHome = uiState.hasHome ?: initialHasHome
     val startDestination: Any = if (hasHome) BottomNavItem.Home else HomeIntroRoute.Selection
 
     val isChoreManage = currentDestination?.hasRoute<HomeRoute.ChoreManage>() == true ||

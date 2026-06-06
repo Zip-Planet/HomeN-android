@@ -11,7 +11,7 @@ import com.devndev.homen.ui.intro.splash.SplashScreen
 
 @Composable
 fun IntroNav(
-    onNavToMain: () -> Unit
+    onNavToMain: (Boolean) -> Unit
 ) {
     val introNavController = rememberNavController()
 
@@ -26,7 +26,9 @@ fun IntroNav(
             popExitTransition = { androidx.compose.animation.ExitTransition.None }
         ) {
             SplashScreen(
-                onNavToMain = onNavToMain,
+                onNavToMain =  { hasHome ->
+                    onNavToMain(hasHome)
+                },
                 onNavToLogin = {
                     introNavController.navigate(IntroRoute.Login) {
                         popUpTo<IntroRoute.Splash> { inclusive = true }
@@ -37,7 +39,9 @@ fun IntroNav(
 
         composable<IntroRoute.Login> {
             LoginScreen(
-                onNavToMain = onNavToMain,
+                onNavToMain = { hasHome ->
+                    onNavToMain(hasHome)
+                },
                 onNavToRegister = {
                     introNavController.navigate(IntroRoute.Register)
                 }
@@ -51,7 +55,9 @@ fun IntroNav(
             popExitTransition = NavTransitions.popExitTransition
         ) {
             RegisterScreen(
-                onNavToMain = onNavToMain,
+                onNavToMain = { hasHome ->
+                    onNavToMain(hasHome)
+                },
                 onNavBack = { introNavController.popBackStack() }
             )
         }

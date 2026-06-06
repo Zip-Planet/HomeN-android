@@ -6,15 +6,18 @@ import com.devndev.homen.core.domain.model.common.ApiResult
 import com.devndev.homen.core.domain.model.user.UpdateProfile
 import com.devndev.homen.core.domain.usecase.auth.ClearTokenUseCase
 import com.devndev.homen.core.domain.usecase.auth.CommitTokensUseCase
+import com.devndev.homen.core.domain.usecase.home.GetHasHomeUseCase
 import com.devndev.homen.core.domain.usecase.user.UpdateProfileUseCase
 import com.devndev.homen.core.domain.usecase.user.ValidateNicknameUseCase
+import com.devndev.homen.ui.intro.splash.viewmodel.SplashContract
 import kotlinx.coroutines.launch
 
 class RegisterViewModel(
     private val updateProfileUseCase: UpdateProfileUseCase,
     private val clearTokenUseCase: ClearTokenUseCase,
     private val commitTokensUseCase: CommitTokensUseCase,
-    private val validateNicknameUseCase: ValidateNicknameUseCase
+    private val validateNicknameUseCase: ValidateNicknameUseCase,
+    private val getHasHomeUseCase: GetHasHomeUseCase
 ) : BaseViewModel<RegisterContract.Event, RegisterContract.State, RegisterContract.Effect>() {
 
     override fun setInitialState() = RegisterContract.State()
@@ -66,7 +69,7 @@ class RegisterViewModel(
             when (result) {
                 is ApiResult.Success -> {
                     commitToken()
-                    setEffect { RegisterContract.Effect.NavigateToMain }
+                    getHasHome()
                 }
 
                 is ApiResult.Error -> {
@@ -122,6 +125,23 @@ class RegisterViewModel(
     private fun clearToken() {
         viewModelScope.launch {
             clearTokenUseCase()
+        }
+    }
+
+    private fun getHasHome() {
+        viewModelScope.launch {
+            when (val result = getHasHomeUseCase()) {
+                is ApiResult.Success -> {
+                    setState { copy(hasHome = result.data) }
+                    setEffect { RegisterContract.Effect.NavigateToMain }
+                }
+                is ApiResult.Error -> {
+
+                }
+                ApiResult.NetworkError -> {
+
+                }
+            }
         }
     }
 }

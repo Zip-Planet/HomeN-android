@@ -8,5 +8,5 @@ sealed interface AppRoute {
     data object Intro : AppRoute
     
     @Serializable
-    data object Main : AppRoute
+    data class Main(val hasHome: Boolean) : AppRoute
 }
