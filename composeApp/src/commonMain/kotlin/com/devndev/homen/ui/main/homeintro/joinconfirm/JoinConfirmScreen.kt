@@ -24,7 +24,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.devndev.homen.core.domain.model.home.AvatarType
+import com.devndev.homen.core.domain.model.home.HomeIconType
+import com.devndev.homen.core.domain.model.home.Member
 import com.devndev.homen.core.domain.model.user.User
+import com.devndev.homen.ui.common.resource
+import com.devndev.homen.ui.common.smallResource
 import com.devndev.homen.ui.component.HomeNButton
 import com.devndev.homen.ui.component.HomeNScreen
 import com.devndev.homen.ui.component.TitleTopBar
@@ -54,17 +59,12 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun JoinConfirmScreen(
+    code: String,
     onNavToDone: () -> Unit,
     onBackClick: () -> Unit,
     viewModel: JoinConfirmViewModel = koinViewModel()
 ) {
     val uiState by viewModel.viewState
-
-    val tempMembers = listOf(
-        User(uid = "a", name = "인기스탁", avatar = 1, hasHome = true, isProfileSet = true),
-        User(uid = "b", name = "투다리김치우동", avatar = 2, hasHome = true, isProfileSet = true),
-        User(uid = "c", name = "나는벌레", avatar = 3, hasHome = true, isProfileSet = true)
-    )
 
     LaunchedEffect(viewModel.effect) {
         viewModel.effect.collectLatest { effect ->
@@ -73,6 +73,10 @@ fun JoinConfirmScreen(
                 is JoinConfirmContract.Effect.PopBackStack -> onBackClick()
             }
         }
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.setEvent(JoinConfirmContract.Event.OnInit(code))
     }
 
     HomeNScreen(
@@ -118,9 +122,9 @@ fun JoinConfirmScreen(
                             .clip(CircleShape)
                             .background(Color.White)
                     ) {
-                        // TODO 집 아이콘 설정
+                        val homeIcon = HomeIconType.fromId(uiState.imageId).smallResource
                         Icon(
-                            painter = painterResource(Res.drawable.home1_small_icon),
+                            painter = painterResource(homeIcon),
                             contentDescription = null,
                             modifier = Modifier
                                 .size(33.dp)
@@ -134,7 +138,7 @@ fun JoinConfirmScreen(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = "골든빌401",
+                            text = uiState.homeName,
                             style = HomeNTheme.typography.suitExtraBold,
                             fontSize = 18.sp,
                             color = Color.Black
@@ -143,7 +147,7 @@ fun JoinConfirmScreen(
                         Text(
                             text = stringResource(Res.string.confirm_home_member_count).replace(
                                 "n",
-                                "3"
+                                uiState.members.size.toString()
                             ),
                             style = HomeNTheme.typography.suitRegular,
                             fontSize = 12.sp,
@@ -183,7 +187,7 @@ fun JoinConfirmScreen(
                         )
 
                         Text(
-                            text = "2026년 1월 2일",
+                            text = uiState.createdAt,
                             style = HomeNTheme.typography.suitBold,
                             fontSize = 12.sp,
                             color = Color.Black
@@ -211,7 +215,7 @@ fun JoinConfirmScreen(
                         )
 
                         Text(
-                            text = "ABC123",
+                            text = code,
                             style = HomeNTheme.typography.suitBold,
                             fontSize = 12.sp,
                             color = Color.Black
@@ -247,7 +251,7 @@ fun JoinConfirmScreen(
                         )
                     }
 
-                    tempMembers.sortedByDescending { it.hasHome }.forEach {
+                    uiState.members.sortedByDescending {it.role == 1 }.forEach {
                         UserSimpleInfo(it)
                     }
                 }
@@ -263,13 +267,8 @@ fun JoinConfirmScreen(
 }
 
 @Composable
-fun UserSimpleInfo(user: User) {
-    val painterResource = when (user.avatar) {
-        1 -> painterResource(Res.drawable.chef_avatar)
-        2 -> painterResource(Res.drawable.hero_avatar)
-        3 -> painterResource(Res.drawable.guard_avatar)
-        else -> painterResource(Res.drawable.chef_avatar)
-    }
+fun UserSimpleInfo(member: Member) {
+    val icon = AvatarType.fromId(member.profileImage?: 1).resource
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -277,7 +276,7 @@ fun UserSimpleInfo(user: User) {
     ) {
 
         Icon(
-            painter = painterResource,
+            painter = painterResource(icon),
             contentDescription = null,
             modifier = Modifier
                 .size(20.dp),
@@ -285,7 +284,7 @@ fun UserSimpleInfo(user: User) {
         )
 
         Text(
-            text = user.name,
+            text = member.name,
             style = HomeNTheme.typography.suitRegular,
             fontSize = 14.sp,
             color = Color.Black
@@ -297,7 +296,7 @@ fun UserSimpleInfo(user: User) {
         var backgroundColor = Blue2
         var textColor = Color.White
 
-        if (!user.hasHome) {
+        if (member.role == 2) {
             text = stringResource(Res.string.member)
             backgroundColor = ButtonGray
             textColor = Color.Black

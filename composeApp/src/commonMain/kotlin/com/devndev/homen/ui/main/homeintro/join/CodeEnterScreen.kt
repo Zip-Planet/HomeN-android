@@ -54,7 +54,7 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun CodeEnterScreen(
-    onNavToConfirm: () -> Unit,
+    onNavToConfirm: (String) -> Unit,
     onBackClick: () -> Unit,
     viewModel: CodeEnterViewModel = koinViewModel()
 ) {
@@ -64,7 +64,7 @@ fun CodeEnterScreen(
     LaunchedEffect(viewModel.effect) {
         viewModel.effect.collectLatest { effect ->
             when (effect) {
-                is CodeEnterContract.Effect.NavigateToMain -> onNavToConfirm()
+                is CodeEnterContract.Effect.NavigateToConfirm -> onNavToConfirm(uiState.code)
                 is CodeEnterContract.Effect.PopBackStack -> onBackClick()
             }
         }

@@ -4,6 +4,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import androidx.navigation.toRoute
 import com.devndev.homen.ui.component.NavTransitions
 import com.devndev.homen.ui.main.homeintro.create.CreateHomeFlowScreen
 import com.devndev.homen.ui.main.homeintro.create.CreateOnboardingScreen
@@ -23,11 +24,11 @@ fun NavGraphBuilder.homeIntroNav(
         popEnterTransition = NavTransitions.popEnterTransition,
         popExitTransition = NavTransitions.popExitTransition
     ) {
-         HomeIntroScreen(
-             onNavToCreation = { navController.navigate(HomeIntroRoute.CreateOnboarding) },
-             onNavToCodeEnter = { navController.navigate(HomeIntroRoute.JoinGraph) },
-             onNavToIntro = { onNavToIntro() }
-         )
+        HomeIntroScreen(
+            onNavToCreation = { navController.navigate(HomeIntroRoute.CreateOnboarding) },
+            onNavToCodeEnter = { navController.navigate(HomeIntroRoute.JoinGraph) },
+            onNavToIntro = { onNavToIntro() }
+        )
     }
 
     composable<HomeIntroRoute.CreateOnboarding>(
@@ -63,13 +64,18 @@ fun NavGraphBuilder.homeIntroNav(
     ) {
         composable<HomeIntroRoute.CodeEnter> {
             CodeEnterScreen(
-                onNavToConfirm = { navController.navigate(HomeIntroRoute.JoinConfirm) },
+                onNavToConfirm = { code ->
+                    navController.navigate(HomeIntroRoute.JoinConfirm(code))
+                },
+
                 onBackClick = { navController.popBackStack() }
             )
         }
 
-        composable<HomeIntroRoute.JoinConfirm> {
+        composable<HomeIntroRoute.JoinConfirm> { backStackEntry ->
+            val route: HomeIntroRoute.JoinConfirm = backStackEntry.toRoute()
             JoinConfirmScreen(
+                code = route.code,
                 onNavToDone = {
                     navController.navigate(HomeIntroRoute.JoinDone) {
                         popUpTo<HomeIntroRoute.JoinGraph> { inclusive = true }

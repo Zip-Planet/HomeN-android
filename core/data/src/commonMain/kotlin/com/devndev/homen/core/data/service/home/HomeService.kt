@@ -4,6 +4,7 @@ import com.devndev.homen.core.data.model.home.request.CreateHomeRequest
 import com.devndev.homen.core.data.model.home.response.CreateHomeResponse
 import com.devndev.homen.core.data.model.home.response.GetHasHomeResponse
 import com.devndev.homen.core.data.model.home.response.GetHomeResponse
+import com.devndev.homen.core.data.model.home.response.JoinHomeResponse
 
 interface HomeService {
     companion object {
@@ -16,5 +17,5 @@ interface HomeService {
     suspend fun createHome(createHomeRequest: CreateHomeRequest): CreateHomeResponse
     suspend fun getHome(): GetHomeResponse
     suspend fun getHasHome(): GetHasHomeResponse
-    suspend fun getJoinHome(code: String)
+    suspend fun getJoinHome(code: String): JoinHomeResponse
 }

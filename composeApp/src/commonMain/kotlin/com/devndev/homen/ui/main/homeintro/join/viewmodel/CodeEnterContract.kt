@@ -21,7 +21,7 @@ class CodeEnterContract {
     ) : ViewState
 
     sealed class Effect : ViewSideEffect {
-        data object NavigateToMain : Effect()
+        data object NavigateToConfirm : Effect()
         data object PopBackStack : Effect()
     }
 }

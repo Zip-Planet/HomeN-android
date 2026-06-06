@@ -32,7 +32,7 @@ sealed interface HomeIntroRoute {
     @Serializable
     data object CodeEnter : HomeIntroRoute
     @Serializable
-    data object JoinConfirm : HomeIntroRoute
+    data class JoinConfirm(val code: String) : HomeIntroRoute
     @Serializable
     data object JoinDone : HomeIntroRoute
 }

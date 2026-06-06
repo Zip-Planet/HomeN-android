@@ -36,7 +36,7 @@ class CodeEnterViewModel(
 
             when (result) {
                 is ApiResult.Success -> {
-                    setEffect { CodeEnterContract.Effect.NavigateToMain }
+                    setEffect { CodeEnterContract.Effect.NavigateToConfirm }
                 }
                 is ApiResult.Error -> {
                     if (result.code == 404) {

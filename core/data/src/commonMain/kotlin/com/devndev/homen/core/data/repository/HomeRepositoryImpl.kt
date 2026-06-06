@@ -2,11 +2,13 @@ package com.devndev.homen.core.data.repository
 
 import com.devndev.homen.core.data.model.home.request.CreateHomeRequest
 import com.devndev.homen.core.data.model.home.request.toDataModel
+import com.devndev.homen.core.data.model.home.response.JoinHomeResponse
 import com.devndev.homen.core.data.model.home.response.toDomainModel
 import com.devndev.homen.core.data.service.home.HomeService
 import com.devndev.homen.core.domain.model.common.ApiResult
 import com.devndev.homen.core.domain.model.home.CreateHome
 import com.devndev.homen.core.domain.model.home.HomeResponseDomainModel
+import com.devndev.homen.core.domain.model.home.JoinHomeResponseDomainModel
 import com.devndev.homen.core.domain.repository.HomeRepository
 import io.ktor.client.plugins.ResponseException
 
@@ -53,10 +55,10 @@ class HomeRepositoryImpl(
         }
     }
 
-    override suspend fun getJoinHome(code: String): ApiResult<Unit> {
+    override suspend fun getJoinHome(code: String): ApiResult<JoinHomeResponseDomainModel> {
         return try {
             val response = homeService.getJoinHome(code)
-            ApiResult.Success(response)
+            ApiResult.Success(response.toDomainModel())
         } catch (e: ResponseException) {
             ApiResult.Error(code = e.response.status.value, message = e.message)
         } catch (e: Exception) {
