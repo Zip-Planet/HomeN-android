@@ -111,7 +111,8 @@ fun HomeScreen(
                 onNotificationClick = {}
             )
         },
-        isLoading = uiState.isLoading
+        isLoading = uiState.isLoading,
+        mainIsLoading = uiState.mainIsLoading
     ) {
         BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
             val screenHeight = maxHeight
