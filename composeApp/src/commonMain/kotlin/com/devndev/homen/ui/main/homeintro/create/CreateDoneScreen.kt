@@ -28,10 +28,9 @@ import com.devndev.homen.getPlatform
 import com.devndev.homen.ui.common.bigResource
 import com.devndev.homen.ui.component.BackHandler
 import com.devndev.homen.ui.component.HomeNButton
-import com.devndev.homen.ui.component.HomeNScreen
+import com.devndev.homen.ui.component.InvitePopup
 import com.devndev.homen.ui.main.homeintro.create.viewmodel.CreateHomeContract
 import com.devndev.homen.ui.main.homeintro.create.viewmodel.CreateHomeViewModel
-import com.devndev.homen.ui.main.homeintro.joindone.viewmodel.JoinDoneContract
 import com.devndev.homen.ui.theme.BackgroundGray
 import com.devndev.homen.ui.theme.DarkGray
 import com.devndev.homen.ui.theme.HomeNTheme
@@ -76,11 +75,27 @@ fun CreateDoneScreen(
             }
         }
     }
+
+    if (uiState.isShowInvitePopup) {
+        InvitePopup(
+            homeName = uiState.homeName,
+            inviteCode = "ABCABC",
+            onClose = {
+                viewModel.setEvent(CreateHomeContract.Event.OnInviteClick(false))
+            },
+            onCopy = {
+
+            },
+            onKakaoShare = { },
+            onGeneralShare = {}
+        )
+    }
+
     CreateDoneContent(
         homeName = uiState.homeName,
         homeIcon = (uiState.avatarId ?: 0) + 1,
         onConfirmClick = { viewModel.setEvent(CreateHomeContract.Event.OnNextClick) },
-        onInviteClick = { viewModel.setEvent(CreateHomeContract.Event.OnInviteClick) }
+        onInviteClick = { viewModel.setEvent(CreateHomeContract.Event.OnInviteClick(true)) }
     )
 }
 

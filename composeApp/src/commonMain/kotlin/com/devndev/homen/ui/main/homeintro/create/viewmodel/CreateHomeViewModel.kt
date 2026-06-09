@@ -87,8 +87,8 @@ class CreateHomeViewModel(
             CreateHomeContract.Event.OnCompleteClick -> {
                 createHome()
             }
-            CreateHomeContract.Event.OnInviteClick -> {
-
+            is CreateHomeContract.Event.OnInviteClick -> {
+                setState { copy(isShowInvitePopup = event.isShow) }
             }
         }
     }
