@@ -87,6 +87,9 @@ class CreateHomeViewModel(
             CreateHomeContract.Event.OnCompleteClick -> {
                 createHome()
             }
+            CreateHomeContract.Event.OnInviteClick -> {
+
+            }
         }
     }
 

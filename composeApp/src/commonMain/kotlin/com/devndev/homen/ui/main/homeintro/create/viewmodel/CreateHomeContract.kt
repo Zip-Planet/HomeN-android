@@ -28,6 +28,7 @@ class CreateHomeContract {
 
         data object OnSkipClick : Event()
         data object OnCompleteClick : Event()
+        data object OnInviteClick: Event()
     }
 
     data class State(
