@@ -17,5 +17,7 @@ class MainApplication : Application() {
             androidLogger()
             androidContext(this@MainApplication)
         }
+
+        multiplatform.network.cmptoast.AppContext.apply { set(applicationContext) }
     }
 }

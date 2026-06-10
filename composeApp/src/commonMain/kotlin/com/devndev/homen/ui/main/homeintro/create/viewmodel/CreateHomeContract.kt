@@ -41,6 +41,7 @@ class CreateHomeContract {
         val showTooltip: Boolean = true,
         val isLoading: Boolean = false,
         val isShowInvitePopup: Boolean = false,
+        val inviteCode: String = "ABCABC"
     ) : ViewState
 
     sealed class Effect : ViewSideEffect {

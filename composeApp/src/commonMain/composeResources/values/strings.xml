@@ -175,4 +175,7 @@
     <!-- 초대 팝업 -->
     <string name="invite_popup_title">s 초대코드</string>
     <string name="invite_popup_msg">구성원을 초대하고 집안일을 나눠보세요</string>
+
+    <!-- Toast -->
+    <string name="clipboard_copy_toast">클립보드에 복사했어요</string>
 </resources>

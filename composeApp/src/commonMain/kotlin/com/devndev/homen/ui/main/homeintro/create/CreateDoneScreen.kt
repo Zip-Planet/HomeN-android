@@ -17,9 +17,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.devndev.homen.OsType
@@ -36,6 +39,7 @@ import com.devndev.homen.ui.theme.DarkGray
 import com.devndev.homen.ui.theme.HomeNTheme
 import homen.composeapp.generated.resources.Res
 import homen.composeapp.generated.resources.chart_icon
+import homen.composeapp.generated.resources.clipboard_copy_toast
 import homen.composeapp.generated.resources.clipboard_icon
 import homen.composeapp.generated.resources.enter_homen_btn
 import homen.composeapp.generated.resources.home_create_done_title
@@ -46,6 +50,9 @@ import homen.composeapp.generated.resources.join_done_msg3
 import homen.composeapp.generated.resources.join_done_subtitle
 import homen.composeapp.generated.resources.location_check_icon
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+import multiplatform.network.cmptoast.ToastDuration
+import multiplatform.network.cmptoast.showToast
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -62,7 +69,8 @@ fun CreateDoneScreen(
     }
 
     val uiState by viewModel.viewState
-
+    val clipboard = LocalClipboardManager.current
+    val scope = rememberCoroutineScope()
     LaunchedEffect(viewModel.effect) {
         viewModel.effect.collectLatest { effect->
             when (effect) {
@@ -77,14 +85,24 @@ fun CreateDoneScreen(
     }
 
     if (uiState.isShowInvitePopup) {
+        val toastMsg = stringResource(Res.string.clipboard_copy_toast)
         InvitePopup(
             homeName = uiState.homeName,
-            inviteCode = "ABCABC",
+            inviteCode = uiState.inviteCode,
             onClose = {
                 viewModel.setEvent(CreateHomeContract.Event.OnInviteClick(false))
             },
             onCopy = {
-
+                scope.launch {
+                    clipboard.setText(AnnotatedString(uiState.inviteCode))
+                }
+                showToast(
+                    message = toastMsg,
+                    backgroundColor = Color.Black.copy(alpha = 0.8f),
+                    textColor = Color.White,
+                    cornerRadius = 10,
+                    duration = ToastDuration.Short
+                )
             },
             onKakaoShare = { },
             onGeneralShare = {}
