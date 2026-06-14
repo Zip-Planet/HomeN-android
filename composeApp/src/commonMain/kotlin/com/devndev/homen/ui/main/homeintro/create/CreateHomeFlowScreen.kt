@@ -14,6 +14,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.compose.NavHost
@@ -26,6 +27,7 @@ import com.devndev.homen.ui.component.NavTransitions
 import com.devndev.homen.ui.component.TitleTopBar
 import com.devndev.homen.ui.main.homeintro.create.viewmodel.CreateHomeViewModel
 import com.devndev.homen.ui.main.homeintro.navigation.HomeIntroRoute
+import com.devndev.homen.ui.theme.BackgroundGray
 import com.devndev.homen.ui.theme.ButtonGray
 import com.devndev.homen.ui.theme.HomeNTheme
 import homen.composeapp.generated.resources.Res
@@ -54,23 +56,26 @@ fun CreateHomeFlowScreen(
     }
 
     val isIndicatorVisible = currentDestination?.hasRoute<HomeIntroRoute.PackPreview>() != true
-
+    val isCreateDoneScreen = currentDestination?.hasRoute<HomeIntroRoute.CreateDone>() == true
     HomeNScreen(
         topBar = {
-            TitleTopBar(
-                title = stringResource(Res.string.home_create_title),
-                onBackClick = {
-                    if (!innerNavController.popBackStack()) {
-                        onExitFlow()
+            if (!isCreateDoneScreen) {
+                TitleTopBar(
+                    title = stringResource(Res.string.home_create_title),
+                    onBackClick = {
+                        if (!innerNavController.popBackStack()) {
+                            onExitFlow()
+                        }
                     }
-                }
-            )
-        }
+                )
+            }
+        },
+        containerColor = if (isCreateDoneScreen) Color.White else BackgroundGray
     ) {
         Column(modifier = Modifier
             .fillMaxSize()
         ) {
-            if (isIndicatorVisible) {
+            if (isIndicatorVisible && !isCreateDoneScreen) {
                 Spacer(modifier = Modifier.height(21.dp))
                 Box(
                     modifier = Modifier
@@ -130,7 +135,13 @@ fun CreateHomeFlowScreen(
                     CreateRewardScreen(
                         viewModel = viewModel,
                         onBackClick = { innerNavController.popBackStack() },
-                        onCompleteClick = { onNavToMain() },
+                        onCompleteClick = { innerNavController.navigate(HomeIntroRoute.CreateDone) },
+                    )
+                }
+                composable<HomeIntroRoute.CreateDone> {
+                    CreateDoneScreen(
+                        viewModel = viewModel,
+                        onNavToMain = { onNavToMain() }
                     )
                 }
             }

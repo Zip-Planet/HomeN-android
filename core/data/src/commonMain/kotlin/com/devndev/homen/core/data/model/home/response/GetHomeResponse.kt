@@ -40,7 +40,7 @@ fun GetHomeResponse.toDomainModel(): HomeResponseDomainModel {
         id = this.id,
         name = this.name,
         image = this.image,
-        inviteCode = this.name,
+        inviteCode = this.inviteCode,
         status = this.status,
         createdAt = this.createdAt,
         members = this.members.map { it.toDomainModel() }

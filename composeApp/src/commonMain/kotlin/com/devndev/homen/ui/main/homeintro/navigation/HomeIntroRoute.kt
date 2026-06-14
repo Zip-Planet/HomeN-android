@@ -26,6 +26,9 @@ sealed interface HomeIntroRoute {
 
     @Serializable
     data object CreateReward : HomeIntroRoute
+
+    @Serializable
+    data object CreateDone: HomeIntroRoute
     
     @Serializable
     data object JoinGraph : HomeIntroRoute

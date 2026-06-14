@@ -172,7 +172,6 @@ fun CreatePreviewScreen(
             .fillMaxSize()
             .padding(
                 top = HomeNTheme.dimensions.topPadding,
-                bottom = HomeNTheme.dimensions.bottomPadding
             )
     ) {
         Column(modifier = Modifier.fillMaxSize()) {

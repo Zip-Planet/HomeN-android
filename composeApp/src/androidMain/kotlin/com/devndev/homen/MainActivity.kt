@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.tooling.preview.Preview
 import com.devndev.homen.ui.theme.BackgroundGray
+import multiplatform.network.cmptoast.ToastHost
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -17,6 +18,7 @@ class MainActivity : ComponentActivity() {
         
         setContent {
             HomeNApp()
+            ToastHost()
         }
     }
 }

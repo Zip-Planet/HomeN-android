@@ -28,6 +28,7 @@ class CreateHomeContract {
 
         data object OnSkipClick : Event()
         data object OnCompleteClick : Event()
+        data class OnInviteClick(val isShow: Boolean): Event()
     }
 
     data class State(
@@ -38,7 +39,9 @@ class CreateHomeContract {
         val selectedChores: List<Chore> = emptyList(),
         val rewards: List<Reward> = emptyList(),
         val showTooltip: Boolean = true,
-        val isLoading: Boolean = false
+        val isLoading: Boolean = false,
+        val isShowInvitePopup: Boolean = false,
+        val inviteCode: String = ""
     ) : ViewState
 
     sealed class Effect : ViewSideEffect {

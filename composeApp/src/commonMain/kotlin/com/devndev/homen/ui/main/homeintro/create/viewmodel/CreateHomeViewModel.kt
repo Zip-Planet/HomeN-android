@@ -87,6 +87,9 @@ class CreateHomeViewModel(
             CreateHomeContract.Event.OnCompleteClick -> {
                 createHome()
             }
+            is CreateHomeContract.Event.OnInviteClick -> {
+                setState { copy(isShowInvitePopup = event.isShow) }
+            }
         }
     }
 
@@ -102,6 +105,7 @@ class CreateHomeViewModel(
                 )
             )) {
                 is ApiResult.Success -> {
+                    setState { copy(inviteCode = result.data.inviteCode) }
                     setEffect { CreateHomeContract.Effect.NavToNext }
                 }
                 is ApiResult.Error -> {
