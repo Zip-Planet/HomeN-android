@@ -1,12 +1,13 @@
 package com.devndev.homen.core.data.repository
 
+import com.devndev.homen.core.data.model.home.request.CreateChoreRequest
 import com.devndev.homen.core.data.model.home.request.CreateHomeRequest
 import com.devndev.homen.core.data.model.home.request.JoinHomeRequest
 import com.devndev.homen.core.data.model.home.request.toDataModel
-import com.devndev.homen.core.data.model.home.response.JoinHomeResponse
 import com.devndev.homen.core.data.model.home.response.toDomainModel
 import com.devndev.homen.core.data.service.home.HomeService
 import com.devndev.homen.core.domain.model.common.ApiResult
+import com.devndev.homen.core.domain.model.home.Chore
 import com.devndev.homen.core.domain.model.home.CreateHome
 import com.devndev.homen.core.domain.model.home.HomeResponseDomainModel
 import com.devndev.homen.core.domain.model.home.JoinHomeResponseDomainModel
@@ -70,6 +71,17 @@ class HomeRepositoryImpl(
     override suspend fun joinHome(code: String): ApiResult<Unit> {
         return try {
             val response = homeService.joinHome(JoinHomeRequest(code))
+            ApiResult.Success(response)
+        } catch (e: ResponseException) {
+            ApiResult.Error(code = e.response.status.value, message = e.message)
+        } catch (e: Exception) {
+            ApiResult.NetworkError
+        }
+    }
+
+    override suspend fun createChore(chores: List<Chore>): ApiResult<Unit> {
+        return try {
+            val response = homeService.createChore(CreateChoreRequest(chores = chores.map { it.toDataModel() }))
             ApiResult.Success(response)
         } catch (e: ResponseException) {
             ApiResult.Error(code = e.response.status.value, message = e.message)
