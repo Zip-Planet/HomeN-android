@@ -89,4 +89,15 @@ class HomeRepositoryImpl(
             ApiResult.NetworkError
         }
     }
+
+    override suspend fun getChores(): ApiResult<List<Chore>> {
+        return try {
+            val response = homeService.getChores()
+            ApiResult.Success(response.toDomainModel())
+        } catch (e: ResponseException) {
+            ApiResult.Error(code = e.response.status.value, message = e.message)
+        } catch (e: Exception) {
+            ApiResult.NetworkError
+        }
+    }
 }

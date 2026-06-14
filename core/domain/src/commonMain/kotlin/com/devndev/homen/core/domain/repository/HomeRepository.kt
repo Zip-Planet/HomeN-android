@@ -13,4 +13,5 @@ interface HomeRepository {
     suspend fun getJoinHome(code: String): ApiResult<JoinHomeResponseDomainModel>
     suspend fun joinHome(code: String): ApiResult<Unit>
     suspend fun createChore(chores: List<Chore>): ApiResult<Unit>
+    suspend fun getChores(): ApiResult<List<Chore>>
 }

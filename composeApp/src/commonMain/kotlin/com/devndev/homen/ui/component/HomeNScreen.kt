@@ -5,7 +5,9 @@ import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -18,6 +20,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
+import com.devndev.homen.OsType
+import com.devndev.homen.getPlatform
 import com.devndev.homen.ui.theme.BackgroundGray
 
 @Composable
@@ -32,6 +36,11 @@ fun HomeNScreen(
 ) {
     val focusManager = LocalFocusManager.current
 
+    val windowInsets = if (getPlatform() == OsType.IOS) {
+        WindowInsets.safeDrawing.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal)
+    } else {
+        WindowInsets.safeDrawing
+    }
     Box(
         modifier = modifier.fillMaxSize()
             .background(containerColor)
@@ -41,7 +50,7 @@ fun HomeNScreen(
             topBar = topBar,
             bottomBar = bottomBar,
             containerColor = containerColor,
-            contentWindowInsets = WindowInsets.safeDrawing
+            contentWindowInsets = windowInsets
         ) { paddingValues ->
             Box(
                 modifier = Modifier

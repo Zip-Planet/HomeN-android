@@ -4,6 +4,7 @@ import com.devndev.homen.core.common.Config
 import com.devndev.homen.core.data.model.home.request.CreateChoreRequest
 import com.devndev.homen.core.data.model.home.request.CreateHomeRequest
 import com.devndev.homen.core.data.model.home.request.JoinHomeRequest
+import com.devndev.homen.core.data.model.home.response.ChoreResponse
 import com.devndev.homen.core.data.model.home.response.CreateHomeResponse
 import com.devndev.homen.core.data.model.home.response.GetHasHomeResponse
 import com.devndev.homen.core.data.model.home.response.GetHomeResponse
@@ -110,6 +111,20 @@ class HomeServiceImpl(
                 header(HttpHeaders.Authorization, "Bearer $it")
             }
             setBody(createChoreRequest)
+        }.body()
+    }
+
+    override suspend fun getChores(): List<ChoreResponse> {
+        val accessToken = tokenRepository.getAccessToken().first()
+        return client.get {
+            url {
+                takeFrom(Config.BASE_URL)
+                encodedPath += HomeService.GET_CHORES
+            }
+            contentType(ContentType.Application.Json)
+            accessToken?.let {
+                header(HttpHeaders.Authorization, "Bearer $it")
+            }
         }.body()
     }
 }

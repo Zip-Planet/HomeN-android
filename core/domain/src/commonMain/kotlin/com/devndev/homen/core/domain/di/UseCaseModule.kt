@@ -8,6 +8,7 @@ import com.devndev.homen.core.domain.usecase.auth.SaveTokensUseCase
 import com.devndev.homen.core.domain.usecase.auth.SocialLoginUseCase
 import com.devndev.homen.core.domain.usecase.home.CreateChoreUseCase
 import com.devndev.homen.core.domain.usecase.home.CreateHomeUseCase
+import com.devndev.homen.core.domain.usecase.home.GetChoresUseCase
 import com.devndev.homen.core.domain.usecase.home.GetHasHomeUseCase
 import com.devndev.homen.core.domain.usecase.home.GetHomeUseCase
 import com.devndev.homen.core.domain.usecase.home.GetJoinHomeUseCase
@@ -38,6 +39,7 @@ val useCaseModule = module {
     factoryOf(::GetJoinHomeUseCase)
     factoryOf(::JoinHomeUseCase)
     factoryOf(::CreateChoreUseCase)
+    factoryOf(::GetChoresUseCase)
 
     // user
     factoryOf(::UpdateProfileUseCase)
