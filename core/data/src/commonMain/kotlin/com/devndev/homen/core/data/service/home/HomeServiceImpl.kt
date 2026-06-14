@@ -1,6 +1,7 @@
 package com.devndev.homen.core.data.service.home
 
 import com.devndev.homen.core.common.Config
+import com.devndev.homen.core.data.model.home.request.CreateChoreRequest
 import com.devndev.homen.core.data.model.home.request.CreateHomeRequest
 import com.devndev.homen.core.data.model.home.request.JoinHomeRequest
 import com.devndev.homen.core.data.model.home.response.CreateHomeResponse
@@ -94,6 +95,21 @@ class HomeServiceImpl(
                 header(HttpHeaders.Authorization, "Bearer $it")
             }
             setBody(joinHomeRequest)
+        }.body()
+    }
+
+    override suspend fun createChore(createChoreRequest: CreateChoreRequest) {
+        val accessToken = tokenRepository.getAccessToken().first()
+        return client.post {
+            url {
+                takeFrom(Config.BASE_URL)
+                encodedPath += HomeService.CREATE_CHORE
+            }
+            contentType(ContentType.Application.Json)
+            accessToken?.let {
+                header(HttpHeaders.Authorization, "Bearer $it")
+            }
+            setBody(createChoreRequest)
         }.body()
     }
 }

@@ -1,6 +1,7 @@
 package com.devndev.homen.core.domain.repository
 
 import com.devndev.homen.core.domain.model.common.ApiResult
+import com.devndev.homen.core.domain.model.home.Chore
 import com.devndev.homen.core.domain.model.home.CreateHome
 import com.devndev.homen.core.domain.model.home.HomeResponseDomainModel
 import com.devndev.homen.core.domain.model.home.JoinHomeResponseDomainModel
@@ -11,4 +12,5 @@ interface HomeRepository {
     suspend fun getHasHome(): ApiResult<Boolean>
     suspend fun getJoinHome(code: String): ApiResult<JoinHomeResponseDomainModel>
     suspend fun joinHome(code: String): ApiResult<Unit>
+    suspend fun createChore(chores: List<Chore>): ApiResult<Unit>
 }
