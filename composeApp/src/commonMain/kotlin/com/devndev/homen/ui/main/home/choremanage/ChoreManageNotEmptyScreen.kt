@@ -76,6 +76,7 @@ fun ChoreManageNotEmptyScreen(
     uiState: ChoreManageContract.State,
     onTooltipClick: (Boolean) -> Unit,
     onAddButtonClick: () -> Unit,
+    onDeleteClick: (Int) -> Unit
 ) {
     Box(
         modifier = Modifier
@@ -123,7 +124,10 @@ fun ChoreManageNotEmptyScreen(
             ) {
                 uiState.chores.forEach {
                     item {
-                        ChoreItem(it)
+                        ChoreItem(
+                            chore = it,
+                            onDeleteClick = onDeleteClick
+                        )
                     }
                 }
                 item {
@@ -177,7 +181,10 @@ fun ChoreManageNotEmptyScreen(
 }
 
 @Composable
-fun ChoreItem(chore: Chore) {
+fun ChoreItem(
+    chore: Chore,
+    onDeleteClick: (Int) -> Unit
+) {
     var isExpanded by remember { mutableStateOf(false) }
     val choreResource = ChoreCategory.fromId(chore.category).resource
     val infoFormat = stringResource(Res.string.chore_info_point_days)
@@ -287,7 +294,7 @@ fun ChoreItem(chore: Chore) {
                                 interactionSource = remember { MutableInteractionSource() },
                                 indication = null
                             ) {
-                                // 삭제 로직
+                                onDeleteClick(chore.id!!)
                             },
                     )
                 }
@@ -319,6 +326,7 @@ fun ChoreItemPreview() {
             description = "열심히 해라",
             repeatDays = listOf(1, 3, 4),
             difficulty = ChoreDifficulty.LOWER_MEDIUM
-        )
+        ),
+        onDeleteClick = {}
     )
 }

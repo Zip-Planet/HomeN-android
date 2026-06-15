@@ -18,6 +18,7 @@ interface HomeService {
         const val JOIN_HOME = "/homes/join/"
         const val CREATE_CHORE = "/homes/mine/chores/"
         const val GET_CHORES = "/homes/mine/chores/"
+        const val DELETE_CHORE = "/homes/mine/chores/"
     }
 
     suspend fun createHome(createHomeRequest: CreateHomeRequest): CreateHomeResponse
@@ -27,4 +28,5 @@ interface HomeService {
     suspend fun joinHome(joinHomeRequest: JoinHomeRequest)
     suspend fun createChore(createChoreRequest: CreateChoreRequest)
     suspend fun getChores(): List<ChoreResponse>
+    suspend fun deleteChore(id: Int)
 }

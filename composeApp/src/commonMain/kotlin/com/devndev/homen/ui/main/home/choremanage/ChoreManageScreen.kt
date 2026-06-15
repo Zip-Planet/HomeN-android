@@ -80,6 +80,9 @@ fun ChoreManageScreen(
                     },
                     onAddButtonClick = {
                         viewModel.setEvent(ChoreManageContract.Event.OnAddButtonClick)
+                    },
+                    onDeleteClick = {
+                        viewModel.setEvent(ChoreManageContract.Event.OnDeleteBlick(it))
                     }
                 )
             }

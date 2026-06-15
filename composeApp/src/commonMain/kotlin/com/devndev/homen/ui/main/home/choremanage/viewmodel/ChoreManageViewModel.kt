@@ -3,13 +3,15 @@ package com.devndev.homen.ui.main.home.choremanage.viewmodel
 import androidx.lifecycle.viewModelScope
 import com.devndev.homen.core.common.base.BaseViewModel
 import com.devndev.homen.core.domain.model.common.ApiResult
+import com.devndev.homen.core.domain.usecase.home.DeleteChoreUseCase
 import com.devndev.homen.core.domain.usecase.home.GetChoresUseCase
 import com.devndev.homen.core.domain.usecase.home.GetHomeUseCase
 import kotlinx.coroutines.launch
 
 class ChoreManageViewModel(
     private val getHomeUseCase: GetHomeUseCase,
-    private val getChoresUseCase: GetChoresUseCase
+    private val getChoresUseCase: GetChoresUseCase,
+    private val deleteChoreUseCase: DeleteChoreUseCase
 ): BaseViewModel<ChoreManageContract.Event, ChoreManageContract.State, ChoreManageContract.Effect>() {
     override fun setInitialState() = ChoreManageContract.State()
 
@@ -48,6 +50,10 @@ class ChoreManageViewModel(
             ChoreManageContract.Event.OnAddButtonClick -> {
                 setEffect { ChoreManageContract.Effect.NavigateToCrateChore }
             }
+
+            is ChoreManageContract.Event.OnDeleteBlick -> {
+                deleteChore(event.id)
+            }
         }
     }
 
@@ -60,6 +66,23 @@ class ChoreManageViewModel(
                 setState { copy(homeName = homeResult.data.name, chores = choreResult.data) }
             }
             setState { copy(isLoading = false) }
+        }
+    }
+
+    private fun deleteChore(id: Int) {
+        viewModelScope.launch {
+            val result = deleteChoreUseCase(id)
+            when (result) {
+                is ApiResult.Success -> {
+                    getChoreManageData()
+                }
+                is ApiResult.Error -> {
+
+                }
+                ApiResult.NetworkError -> {
+
+                }
+            }
         }
     }
 }

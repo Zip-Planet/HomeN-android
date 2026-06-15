@@ -12,6 +12,7 @@ import com.devndev.homen.core.data.model.home.response.JoinHomeResponse
 import com.devndev.homen.core.domain.repository.TokenRepository
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
+import io.ktor.client.request.delete
 import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.request.post
@@ -120,6 +121,20 @@ class HomeServiceImpl(
             url {
                 takeFrom(Config.BASE_URL)
                 encodedPath += HomeService.GET_CHORES
+            }
+            contentType(ContentType.Application.Json)
+            accessToken?.let {
+                header(HttpHeaders.Authorization, "Bearer $it")
+            }
+        }.body()
+    }
+
+    override suspend fun deleteChore(id: Int) {
+        val accessToken = tokenRepository.getAccessToken().first()
+        return client.delete {
+            url {
+                takeFrom(Config.BASE_URL)
+                encodedPath += "${HomeService.DELETE_CHORE}$id/"
             }
             contentType(ContentType.Application.Json)
             accessToken?.let {

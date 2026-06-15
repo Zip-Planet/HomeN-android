@@ -13,6 +13,7 @@ class ChoreManageContract {
         data class OnOptionClick(val option: Int): Event()
         data object OnNextButtonClick: Event()
         data object OnAddButtonClick: Event()
+        data class OnDeleteBlick(val id: Int): Event()
     }
 
     data class State(
