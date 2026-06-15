@@ -13,7 +13,8 @@ class ChoreManageContract {
         data class OnOptionClick(val option: Int): Event()
         data object OnNextButtonClick: Event()
         data object OnAddButtonClick: Event()
-        data class OnDeleteBlick(val id: Int): Event()
+        data class OnDeleteClick(val id: Int): Event()
+        data class OnEditClick(val id: Int): Event()
     }
 
     data class State(
@@ -29,5 +30,6 @@ class ChoreManageContract {
     sealed class Effect: ViewSideEffect {
         data object NavigateToBack: Effect()
         data object NavigateToCrateChore: Effect()
+        data class NavigateToEditChore(val id: Int): Effect()
     }
 }

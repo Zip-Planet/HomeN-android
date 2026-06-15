@@ -4,6 +4,7 @@ import com.devndev.homen.core.data.model.home.request.CreateChoreRequest
 import com.devndev.homen.core.data.model.home.request.CreateHomeRequest
 import com.devndev.homen.core.data.model.home.request.JoinHomeRequest
 import com.devndev.homen.core.data.model.home.request.toDataModel
+import com.devndev.homen.core.data.model.home.request.toEditDataModel
 import com.devndev.homen.core.data.model.home.response.toDomainModel
 import com.devndev.homen.core.data.service.home.HomeService
 import com.devndev.homen.core.domain.model.common.ApiResult
@@ -104,6 +105,28 @@ class HomeRepositoryImpl(
     override suspend fun deleteChore(id: Int): ApiResult<Unit> {
         return try {
             val response = homeService.deleteChore(id)
+            ApiResult.Success(response)
+        } catch (e: ResponseException) {
+            ApiResult.Error(code = e.response.status.value, message = e.message)
+        } catch (e: Exception) {
+            ApiResult.NetworkError
+        }
+    }
+
+    override suspend fun getHomeDetail(id: Int): ApiResult<Chore> {
+        return try {
+            val response = homeService.getChoreDetail(id)
+            ApiResult.Success(response.toDomainModel())
+        } catch (e: ResponseException) {
+            ApiResult.Error(code = e.response.status.value, message = e.message)
+        } catch (e: Exception) {
+            ApiResult.NetworkError
+        }
+    }
+
+    override suspend fun editChore(chore: Chore): ApiResult<Unit> {
+        return try {
+            val response = homeService.editChore(chore.id!!, chore.toEditDataModel())
             ApiResult.Success(response)
         } catch (e: ResponseException) {
             ApiResult.Error(code = e.response.status.value, message = e.message)

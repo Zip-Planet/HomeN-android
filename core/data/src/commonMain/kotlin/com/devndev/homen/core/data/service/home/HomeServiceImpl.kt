@@ -3,6 +3,7 @@ package com.devndev.homen.core.data.service.home
 import com.devndev.homen.core.common.Config
 import com.devndev.homen.core.data.model.home.request.CreateChoreRequest
 import com.devndev.homen.core.data.model.home.request.CreateHomeRequest
+import com.devndev.homen.core.data.model.home.request.EditChoreRequest
 import com.devndev.homen.core.data.model.home.request.JoinHomeRequest
 import com.devndev.homen.core.data.model.home.response.ChoreResponse
 import com.devndev.homen.core.data.model.home.response.CreateHomeResponse
@@ -15,6 +16,7 @@ import io.ktor.client.call.body
 import io.ktor.client.request.delete
 import io.ktor.client.request.get
 import io.ktor.client.request.header
+import io.ktor.client.request.patch
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
@@ -105,7 +107,7 @@ class HomeServiceImpl(
         return client.post {
             url {
                 takeFrom(Config.BASE_URL)
-                encodedPath += HomeService.CREATE_CHORE
+                encodedPath += HomeService.CHORES
             }
             contentType(ContentType.Application.Json)
             accessToken?.let {
@@ -120,7 +122,7 @@ class HomeServiceImpl(
         return client.get {
             url {
                 takeFrom(Config.BASE_URL)
-                encodedPath += HomeService.GET_CHORES
+                encodedPath += HomeService.CHORES
             }
             contentType(ContentType.Application.Json)
             accessToken?.let {
@@ -134,12 +136,44 @@ class HomeServiceImpl(
         return client.delete {
             url {
                 takeFrom(Config.BASE_URL)
-                encodedPath += "${HomeService.DELETE_CHORE}$id/"
+                encodedPath += "${HomeService.CHORES}$id/"
             }
             contentType(ContentType.Application.Json)
             accessToken?.let {
                 header(HttpHeaders.Authorization, "Bearer $it")
             }
+        }.body()
+    }
+
+    override suspend fun getChoreDetail(id: Int): ChoreResponse {
+        val accessToken = tokenRepository.getAccessToken().first()
+        return client.get {
+            url {
+                takeFrom(Config.BASE_URL)
+                encodedPath += "${HomeService.CHORES}$id/"
+            }
+            contentType(ContentType.Application.Json)
+            accessToken?.let {
+                header(HttpHeaders.Authorization, "Bearer $it")
+            }
+        }.body()
+    }
+
+    override suspend fun editChore(
+        id: Int,
+        editChoreRequest: EditChoreRequest
+    ) {
+        val accessToken = tokenRepository.getAccessToken().first()
+        return client.patch {
+            url {
+                takeFrom(Config.BASE_URL)
+                encodedPath += "${HomeService.CHORES}$id/"
+            }
+            contentType(ContentType.Application.Json)
+            accessToken?.let {
+                header(HttpHeaders.Authorization, "Bearer $it")
+            }
+            setBody(editChoreRequest)
         }.body()
     }
 }

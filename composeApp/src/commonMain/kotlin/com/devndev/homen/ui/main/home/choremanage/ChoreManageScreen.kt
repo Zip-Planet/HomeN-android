@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import com.devndev.homen.core.common.util.Logger
+import com.devndev.homen.core.domain.model.home.Chore
 import com.devndev.homen.ui.component.HomeNScreen
 import com.devndev.homen.ui.component.TitleTopBar
 import com.devndev.homen.ui.main.home.choremanage.viewmodel.ChoreManageContract
@@ -27,7 +28,8 @@ import org.koin.compose.viewmodel.koinViewModel
 fun ChoreManageScreen(
     viewModel: ChoreManageViewModel = koinViewModel(),
     onBackClick: () -> Unit,
-    onNavToCreateChore: () -> Unit
+    onNavToCreateChore: () -> Unit,
+    onNavToEditChore: (Int) -> Unit
 ) {
     val uiState by viewModel.viewState
 
@@ -36,6 +38,7 @@ fun ChoreManageScreen(
             when (effect) {
                 ChoreManageContract.Effect.NavigateToBack -> onBackClick()
                 ChoreManageContract.Effect.NavigateToCrateChore -> onNavToCreateChore()
+                is ChoreManageContract.Effect.NavigateToEditChore -> onNavToEditChore(effect.id)
             }
         }
     }
@@ -82,7 +85,10 @@ fun ChoreManageScreen(
                         viewModel.setEvent(ChoreManageContract.Event.OnAddButtonClick)
                     },
                     onDeleteClick = {
-                        viewModel.setEvent(ChoreManageContract.Event.OnDeleteBlick(it))
+                        viewModel.setEvent(ChoreManageContract.Event.OnDeleteClick(it))
+                    },
+                    onEditClick = {
+                        viewModel.setEvent(ChoreManageContract.Event.OnEditClick(it))
                     }
                 )
             }

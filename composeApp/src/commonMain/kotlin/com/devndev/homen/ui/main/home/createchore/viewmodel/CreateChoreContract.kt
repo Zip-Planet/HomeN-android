@@ -6,6 +6,7 @@ import com.devndev.homen.core.common.base.ViewState
 import com.devndev.homen.core.domain.model.chore.ChoreCategory
 import com.devndev.homen.core.domain.model.chore.ChoreDifficulty
 import com.devndev.homen.core.domain.model.chore.RepeatDay
+import com.devndev.homen.core.domain.model.home.Chore
 
 class CreateChoreContract {
     sealed class Event : ViewEvent {
@@ -15,7 +16,8 @@ class CreateChoreContract {
         data class OnDescriptionChange(val description: String) : Event()
         data class OnDayClick(val day: RepeatDay) : Event()
         data class OnDifficultyClick(val difficulty: ChoreDifficulty) : Event()
-        data object OnSaveClick : Event()
+        data class OnSaveClick(val isEdit: Boolean, val id: Int? = null) : Event()
+        data class OnEdit(val id: Int) : Event()
     }
 
     data class State(

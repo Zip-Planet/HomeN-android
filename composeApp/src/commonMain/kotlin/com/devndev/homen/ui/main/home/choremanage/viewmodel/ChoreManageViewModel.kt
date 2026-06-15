@@ -51,8 +51,12 @@ class ChoreManageViewModel(
                 setEffect { ChoreManageContract.Effect.NavigateToCrateChore }
             }
 
-            is ChoreManageContract.Event.OnDeleteBlick -> {
+            is ChoreManageContract.Event.OnDeleteClick -> {
                 deleteChore(event.id)
+            }
+
+            is ChoreManageContract.Event.OnEditClick -> {
+                setEffect { ChoreManageContract.Effect.NavigateToEditChore(event.id) }
             }
         }
     }

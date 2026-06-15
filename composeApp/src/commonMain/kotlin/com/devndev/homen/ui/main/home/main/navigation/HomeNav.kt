@@ -3,6 +3,7 @@ package com.devndev.homen.ui.main.home.main.navigation
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import androidx.navigation.toRoute
 import com.devndev.homen.ui.component.NavTransitions
 import com.devndev.homen.ui.main.home.choremanage.ChoreManageScreen
 import com.devndev.homen.ui.main.home.createchore.CreateChoreScreen
@@ -29,6 +30,9 @@ fun NavGraphBuilder.homeNav(navController: NavController) {
             },
             onNavToCreateChore = {
                 navController.navigate(HomeRoute.CreateChore)
+            },
+            onNavToEditChore = { chore ->
+                navController.navigate(HomeRoute.EditChore(chore))
             }
         )
     }
@@ -43,6 +47,22 @@ fun NavGraphBuilder.homeNav(navController: NavController) {
             onBackClick = {
                 navController.popBackStack()
             }
+        )
+    }
+
+    composable<HomeRoute.EditChore>(
+        enterTransition = NavTransitions.enterTransition,
+        exitTransition = NavTransitions.exitTransition,
+        popEnterTransition = NavTransitions.popEnterTransition,
+        popExitTransition = NavTransitions.popExitTransition
+    ) { backStackEntry ->
+        val route: HomeRoute.EditChore = backStackEntry.toRoute()
+        CreateChoreScreen(
+            onBackClick = {
+                navController.popBackStack()
+            },
+            isEdit = true,
+            choreId = route.choreId
         )
     }
 }

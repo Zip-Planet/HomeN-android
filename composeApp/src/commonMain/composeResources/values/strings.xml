@@ -161,6 +161,7 @@
     <string name="chore_manage_tooltip_msg">집안일을 추가하거나 삭제하고\n난이도와 포인트를 조정할 수 있어요</string>
     <string name="chore_not_empty_title">s의 집안일</string>
     <string name="chore_not_empty_description">반복규칙과 난이도를 관리해보세요</string>
+    <string name="chore_edit_title">집안일 수정</string>
 
     <!-- 집안일 생성 -->
     <string name="create_chore_title">집안일 추가</string>

@@ -4,10 +4,8 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.expandHorizontally
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.Image
@@ -76,7 +74,8 @@ fun ChoreManageNotEmptyScreen(
     uiState: ChoreManageContract.State,
     onTooltipClick: (Boolean) -> Unit,
     onAddButtonClick: () -> Unit,
-    onDeleteClick: (Int) -> Unit
+    onDeleteClick: (Int) -> Unit,
+    onEditClick: (Int) -> Unit
 ) {
     Box(
         modifier = Modifier
@@ -126,7 +125,8 @@ fun ChoreManageNotEmptyScreen(
                     item {
                         ChoreItem(
                             chore = it,
-                            onDeleteClick = onDeleteClick
+                            onDeleteClick = onDeleteClick,
+                            onEditClick = onEditClick
                         )
                     }
                 }
@@ -183,7 +183,8 @@ fun ChoreManageNotEmptyScreen(
 @Composable
 fun ChoreItem(
     chore: Chore,
-    onDeleteClick: (Int) -> Unit
+    onDeleteClick: (Int) -> Unit,
+    onEditClick: (Int) -> Unit
 ) {
     var isExpanded by remember { mutableStateOf(false) }
     val choreResource = ChoreCategory.fromId(chore.category).resource
@@ -283,7 +284,7 @@ fun ChoreItem(
                                 interactionSource = remember { MutableInteractionSource() },
                                 indication = null
                             ) {
-                                // 편집 로직
+                                onEditClick(chore.id!!)
                             },
                     )
                     Icon(
@@ -327,6 +328,7 @@ fun ChoreItemPreview() {
             repeatDays = listOf(1, 3, 4),
             difficulty = ChoreDifficulty.LOWER_MEDIUM
         ),
-        onDeleteClick = {}
+        onDeleteClick = {},
+        onEditClick = {}
     )
 }
