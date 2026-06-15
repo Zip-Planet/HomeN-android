@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -20,8 +19,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
-import com.devndev.homen.OsType
-import com.devndev.homen.getPlatform
 import com.devndev.homen.ui.theme.BackgroundGray
 
 @Composable
@@ -31,12 +28,13 @@ fun HomeNScreen(
     bottomBar: @Composable () -> Unit = {},
     isLoading: Boolean = false,
     mainIsLoading: Boolean = false,
+    isNeedBottomExpanded: Boolean = false,
     containerColor: Color = BackgroundGray,
-    content: @Composable (PaddingValues) -> Unit,
+    content: @Composable (PaddingValues) -> Unit
 ) {
     val focusManager = LocalFocusManager.current
 
-    val windowInsets = if (getPlatform() == OsType.IOS) {
+    val windowInsets = if (isNeedBottomExpanded) {
         WindowInsets.safeDrawing.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal)
     } else {
         WindowInsets.safeDrawing

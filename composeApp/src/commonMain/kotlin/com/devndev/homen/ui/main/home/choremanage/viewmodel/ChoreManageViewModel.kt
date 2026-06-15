@@ -44,6 +44,10 @@ class ChoreManageViewModel(
             is ChoreManageContract.Event.OnOptionClick -> {
                 setState { copy(selectedOption = event.option) }
             }
+
+            ChoreManageContract.Event.OnAddButtonClick -> {
+                setEffect { ChoreManageContract.Effect.NavigateToCrateChore }
+            }
         }
     }
 

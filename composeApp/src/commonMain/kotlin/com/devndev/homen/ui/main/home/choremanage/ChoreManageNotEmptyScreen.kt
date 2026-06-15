@@ -75,6 +75,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 fun ChoreManageNotEmptyScreen(
     uiState: ChoreManageContract.State,
     onTooltipClick: (Boolean) -> Unit,
+    onAddButtonClick: () -> Unit,
 ) {
     Box(
         modifier = Modifier
@@ -169,7 +170,7 @@ fun ChoreManageNotEmptyScreen(
                     interactionSource = remember { MutableInteractionSource() },
                     indication = null
                 ) {
-
+                    onAddButtonClick()
                 }
         )
     }

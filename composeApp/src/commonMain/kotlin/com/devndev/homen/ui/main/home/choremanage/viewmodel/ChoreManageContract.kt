@@ -12,6 +12,7 @@ class ChoreManageContract {
         data class OnTooltipClick(val show: Boolean, val isEmptyChore: Boolean): Event()
         data class OnOptionClick(val option: Int): Event()
         data object OnNextButtonClick: Event()
+        data object OnAddButtonClick: Event()
     }
 
     data class State(

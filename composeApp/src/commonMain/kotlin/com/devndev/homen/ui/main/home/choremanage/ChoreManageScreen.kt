@@ -51,7 +51,8 @@ fun ChoreManageScreen(
                 onBackClick = { viewModel.setEvent(ChoreManageContract.Event.OnBackClick) }
             )
         },
-        mainIsLoading = uiState.isLoading
+        mainIsLoading = uiState.isLoading,
+        isNeedBottomExpanded = uiState.chores.isNotEmpty()
     ) {
         Column(
             modifier = Modifier.fillMaxSize()
@@ -76,6 +77,9 @@ fun ChoreManageScreen(
                     uiState = uiState,
                     onTooltipClick = {
                         viewModel.setEvent(ChoreManageContract.Event.OnTooltipClick(it, false))
+                    },
+                    onAddButtonClick = {
+                        viewModel.setEvent(ChoreManageContract.Event.OnAddButtonClick)
                     }
                 )
             }
