@@ -8,4 +8,7 @@ sealed interface HomeRoute {
 
     @Serializable
     data object CreateChore: HomeRoute
+
+    @Serializable
+    data class EditChore(val choreId: Int): HomeRoute
 }

@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.sp
 import com.devndev.homen.core.domain.model.chore.ChoreCategory
 import com.devndev.homen.core.domain.model.chore.ChoreDifficulty
 import com.devndev.homen.core.domain.model.chore.RepeatDay
+import com.devndev.homen.core.domain.model.home.Chore
 import com.devndev.homen.ui.common.resource
 import com.devndev.homen.ui.component.HomeNButton
 import com.devndev.homen.ui.component.HomeNLongTextField
@@ -44,6 +45,7 @@ import com.devndev.homen.ui.main.home.createchore.viewmodel.CreateChoreViewModel
 import com.devndev.homen.ui.theme.Blue4736FC
 import com.devndev.homen.ui.theme.HomeNTheme
 import homen.composeapp.generated.resources.Res
+import homen.composeapp.generated.resources.chore_edit_title
 import homen.composeapp.generated.resources.crate_chore_description_hint
 import homen.composeapp.generated.resources.crate_chore_description_section
 import homen.composeapp.generated.resources.create_chore_category_section
@@ -63,7 +65,9 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun CreateChoreScreen(
     viewModel: CreateChoreViewModel = koinViewModel(),
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    isEdit: Boolean = false,
+    choreId: Int? = null
 ) {
     val uiState by viewModel.viewState
 
@@ -75,10 +79,23 @@ fun CreateChoreScreen(
         }
     }
 
+    LaunchedEffect(Unit) {
+        if (isEdit) {
+            viewModel.setEvent(CreateChoreContract.Event.OnEdit(choreId!!))
+        }
+    }
+
+    val title = if (isEdit) {
+        stringResource(Res.string.chore_edit_title)
+    } else {
+        stringResource(Res.string.create_chore_title)
+
+    }
+
     HomeNScreen(
         topBar = {
             TitleTopBar(
-                title = stringResource(Res.string.create_chore_title),
+                title = title,
                 onBackClick = { viewModel.setEvent(CreateChoreContract.Event.OnBackClick) }
             )
         },
@@ -235,7 +252,7 @@ fun CreateChoreScreen(
             HomeNButton(
                 text = stringResource(Res.string.save_button),
                 onClick = {
-                    viewModel.setEvent(CreateChoreContract.Event.OnSaveClick)
+                    viewModel.setEvent(CreateChoreContract.Event.OnSaveClick(isEdit = isEdit, id = choreId))
                 },
                 enabled = uiState.isSaveButtonEnabled
             )

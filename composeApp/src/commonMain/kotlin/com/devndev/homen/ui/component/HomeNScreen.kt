@@ -5,12 +5,13 @@ import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -27,11 +28,17 @@ fun HomeNScreen(
     bottomBar: @Composable () -> Unit = {},
     isLoading: Boolean = false,
     mainIsLoading: Boolean = false,
+    isNeedBottomExpanded: Boolean = false,
     containerColor: Color = BackgroundGray,
-    content: @Composable (PaddingValues) -> Unit,
+    content: @Composable (PaddingValues) -> Unit
 ) {
     val focusManager = LocalFocusManager.current
 
+    val windowInsets = if (isNeedBottomExpanded) {
+        WindowInsets.safeDrawing.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal)
+    } else {
+        WindowInsets.safeDrawing
+    }
     Box(
         modifier = modifier.fillMaxSize()
             .background(containerColor)
@@ -41,7 +48,7 @@ fun HomeNScreen(
             topBar = topBar,
             bottomBar = bottomBar,
             containerColor = containerColor,
-            contentWindowInsets = WindowInsets.safeDrawing
+            contentWindowInsets = windowInsets
         ) { paddingValues ->
             Box(
                 modifier = Modifier

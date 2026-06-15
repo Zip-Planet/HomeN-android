@@ -2,7 +2,9 @@ package com.devndev.homen.core.data.service.home
 
 import com.devndev.homen.core.data.model.home.request.CreateChoreRequest
 import com.devndev.homen.core.data.model.home.request.CreateHomeRequest
+import com.devndev.homen.core.data.model.home.request.EditChoreRequest
 import com.devndev.homen.core.data.model.home.request.JoinHomeRequest
+import com.devndev.homen.core.data.model.home.response.ChoreResponse
 import com.devndev.homen.core.data.model.home.response.CreateHomeResponse
 import com.devndev.homen.core.data.model.home.response.GetHasHomeResponse
 import com.devndev.homen.core.data.model.home.response.GetHomeResponse
@@ -15,7 +17,8 @@ interface HomeService {
         const val GET_HAS_HOME = "/homes/mine/membership/"
         const val GET_JOIN_HOME = "/homes/invite/"
         const val JOIN_HOME = "/homes/join/"
-        const val CREATE_CHORE = "/homes/mine/chores/"
+
+        const val CHORES = "/homes/mine/chores/"
     }
 
     suspend fun createHome(createHomeRequest: CreateHomeRequest): CreateHomeResponse
@@ -24,4 +27,8 @@ interface HomeService {
     suspend fun getJoinHome(code: String): JoinHomeResponse
     suspend fun joinHome(joinHomeRequest: JoinHomeRequest)
     suspend fun createChore(createChoreRequest: CreateChoreRequest)
+    suspend fun getChores(): List<ChoreResponse>
+    suspend fun deleteChore(id: Int)
+    suspend fun getChoreDetail(id: Int): ChoreResponse
+    suspend fun editChore(id: Int, editChoreRequest: EditChoreRequest)
 }

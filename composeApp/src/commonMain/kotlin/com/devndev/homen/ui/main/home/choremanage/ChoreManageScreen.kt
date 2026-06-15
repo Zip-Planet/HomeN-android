@@ -12,6 +12,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
+import com.devndev.homen.core.common.util.Logger
+import com.devndev.homen.core.domain.model.home.Chore
 import com.devndev.homen.ui.component.HomeNScreen
 import com.devndev.homen.ui.component.TitleTopBar
 import com.devndev.homen.ui.main.home.choremanage.viewmodel.ChoreManageContract
@@ -26,7 +28,8 @@ import org.koin.compose.viewmodel.koinViewModel
 fun ChoreManageScreen(
     viewModel: ChoreManageViewModel = koinViewModel(),
     onBackClick: () -> Unit,
-    onNavToCreateChore: () -> Unit
+    onNavToCreateChore: () -> Unit,
+    onNavToEditChore: (Int) -> Unit
 ) {
     val uiState by viewModel.viewState
 
@@ -35,8 +38,13 @@ fun ChoreManageScreen(
             when (effect) {
                 ChoreManageContract.Effect.NavigateToBack -> onBackClick()
                 ChoreManageContract.Effect.NavigateToCrateChore -> onNavToCreateChore()
+                is ChoreManageContract.Effect.NavigateToEditChore -> onNavToEditChore(effect.id)
             }
         }
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.setEvent(ChoreManageContract.Event.OnInit)
     }
 
     HomeNScreen(
@@ -46,18 +54,19 @@ fun ChoreManageScreen(
                 onBackClick = { viewModel.setEvent(ChoreManageContract.Event.OnBackClick) }
             )
         },
-        isLoading = uiState.isLoading
+        mainIsLoading = uiState.isLoading,
+        isNeedBottomExpanded = uiState.chores.isNotEmpty()
     ) {
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
             Spacer(modifier = Modifier.height(42.dp))
 
-            if (uiState.isEmptyChore) {
-                ChoreManageEmptyScreen(
+            if (uiState.chores.isEmpty()) {
+                 ChoreManageEmptyScreen(
                     uiState = uiState,
                     onTooltipClick = {
-                        viewModel.setEvent(ChoreManageContract.Event.OnTooltipClick(it))
+                        viewModel.setEvent(ChoreManageContract.Event.OnTooltipClick(it, true))
                     },
                     onSelectOption = {
                         viewModel.setEvent(ChoreManageContract.Event.OnOptionClick(it))
@@ -67,16 +76,48 @@ fun ChoreManageScreen(
                     }
                 )
             } else {
-                // TODO 집안일 관리
+                ChoreManageNotEmptyScreen(
+                    uiState = uiState,
+                    onTooltipClick = {
+                        viewModel.setEvent(ChoreManageContract.Event.OnTooltipClick(it, false))
+                    },
+                    onAddButtonClick = {
+                        viewModel.setEvent(ChoreManageContract.Event.OnAddButtonClick)
+                    },
+                    onDeleteClick = {
+                        viewModel.setEvent(ChoreManageContract.Event.OnDeleteClick(it))
+                    },
+                    onEditClick = {
+                        viewModel.setEvent(ChoreManageContract.Event.OnEditClick(it))
+                    }
+                )
             }
         }
-        if (uiState.isEmptyChoreTooltipShow) {
+        if (uiState.isEmptyChoreTooltipShow && uiState.chores.isEmpty()) {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
                     .pointerInput(Unit) {
                         detectTapGestures {
-                            viewModel.setEvent(ChoreManageContract.Event.OnTooltipClick(false))
+                            viewModel.setEvent(ChoreManageContract.Event.OnTooltipClick(
+                                show = false,
+                                isEmptyChore = true
+                            ))
+                        }
+                    }
+            )
+        }
+
+        if (uiState.isNotEmptyChoreTooltipShow && uiState.chores.isNotEmpty()) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .pointerInput(Unit) {
+                        detectTapGestures {
+                            viewModel.setEvent(ChoreManageContract.Event.OnTooltipClick(
+                                show = false,
+                                isEmptyChore = false
+                            ))
                         }
                     }
             )
