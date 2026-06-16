@@ -3,9 +3,9 @@ package com.devndev.homen.core.data.service.home
 import com.devndev.homen.core.common.Config
 import com.devndev.homen.core.data.model.home.request.CreateChoreRequest
 import com.devndev.homen.core.data.model.home.request.CreateHomeRequest
-import com.devndev.homen.core.data.model.home.request.CreateMemoRequest
 import com.devndev.homen.core.data.model.home.request.EditChoreRequest
 import com.devndev.homen.core.data.model.home.request.JoinHomeRequest
+import com.devndev.homen.core.data.model.home.request.MemoRequest
 import com.devndev.homen.core.data.model.home.response.ChoreDetailResponse
 import com.devndev.homen.core.data.model.home.response.ChoreResponse
 import com.devndev.homen.core.data.model.home.response.CreateHomeResponse
@@ -194,7 +194,7 @@ class HomeServiceImpl(
         }.body()
     }
 
-    override suspend fun createMemo(id: Int, createMemoRequest: CreateMemoRequest) {
+    override suspend fun createMemo(id: Int, createMemoRequest: MemoRequest) {
         val accessToken = tokenRepository.getAccessToken().first()
         return client.post {
             url {
@@ -206,6 +206,21 @@ class HomeServiceImpl(
                 header(HttpHeaders.Authorization, "Bearer $it")
             }
             setBody(createMemoRequest)
+        }.body()
+    }
+
+    override suspend fun editMemo(choreId: Int, memoId: Int, editMemoRequest: MemoRequest) {
+        val accessToken = tokenRepository.getAccessToken().first()
+        return client.patch {
+            url {
+                takeFrom(Config.BASE_URL)
+                encodedPath += "${HomeService.CHORES}$choreId/notes/$memoId/"
+            }
+            contentType(ContentType.Application.Json)
+            accessToken?.let {
+                header(HttpHeaders.Authorization, "Bearer $it")
+            }
+            setBody(editMemoRequest)
         }.body()
     }
 }

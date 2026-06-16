@@ -2,8 +2,8 @@ package com.devndev.homen.core.data.repository
 
 import com.devndev.homen.core.data.model.home.request.CreateChoreRequest
 import com.devndev.homen.core.data.model.home.request.CreateHomeRequest
-import com.devndev.homen.core.data.model.home.request.CreateMemoRequest
 import com.devndev.homen.core.data.model.home.request.JoinHomeRequest
+import com.devndev.homen.core.data.model.home.request.MemoRequest
 import com.devndev.homen.core.data.model.home.request.toDataModel
 import com.devndev.homen.core.data.model.home.request.toEditDataModel
 import com.devndev.homen.core.data.model.home.response.toDomainModel
@@ -85,7 +85,8 @@ class HomeRepositoryImpl(
 
     override suspend fun createChore(chores: List<Chore>): ApiResult<Unit> {
         return try {
-            val response = homeService.createChore(CreateChoreRequest(chores = chores.map { it.toDataModel() }))
+            val response =
+                homeService.createChore(CreateChoreRequest(chores = chores.map { it.toDataModel() }))
             ApiResult.Success(response)
         } catch (e: ResponseException) {
             ApiResult.Error(code = e.response.status.value, message = e.message)
@@ -141,7 +142,7 @@ class HomeRepositoryImpl(
     override suspend fun getMemos(id: Int): ApiResult<List<Memo>> {
         return try {
             val response = homeService.getMemos(id)
-            ApiResult.Success(response.map { it.toDomainModel()} )
+            ApiResult.Success(response.map { it.toDomainModel() })
         } catch (e: ResponseException) {
             ApiResult.Error(code = e.response.status.value, message = e.message)
         } catch (e: Exception) {
@@ -154,7 +155,26 @@ class HomeRepositoryImpl(
         content: String
     ): ApiResult<Unit> {
         return try {
-            val response = homeService.createMemo(id = id, createMemoRequest = CreateMemoRequest(content))
+            val response = homeService.createMemo(id = id, createMemoRequest = MemoRequest(content))
+            ApiResult.Success(response)
+        } catch (e: ResponseException) {
+            ApiResult.Error(code = e.response.status.value, message = e.message)
+        } catch (e: Exception) {
+            ApiResult.NetworkError
+        }
+    }
+
+    override suspend fun editMemo(
+        choreId: Int,
+        memoId: Int,
+        content: String
+    ): ApiResult<Unit> {
+        return try {
+            val response = homeService.editMemo(
+                choreId = choreId,
+                memoId = memoId,
+                editMemoRequest = MemoRequest(content)
+            )
             ApiResult.Success(response)
         } catch (e: ResponseException) {
             ApiResult.Error(code = e.response.status.value, message = e.message)

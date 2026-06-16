@@ -2,9 +2,9 @@ package com.devndev.homen.core.data.service.home
 
 import com.devndev.homen.core.data.model.home.request.CreateChoreRequest
 import com.devndev.homen.core.data.model.home.request.CreateHomeRequest
-import com.devndev.homen.core.data.model.home.request.CreateMemoRequest
 import com.devndev.homen.core.data.model.home.request.EditChoreRequest
 import com.devndev.homen.core.data.model.home.request.JoinHomeRequest
+import com.devndev.homen.core.data.model.home.request.MemoRequest
 import com.devndev.homen.core.data.model.home.response.ChoreDetailResponse
 import com.devndev.homen.core.data.model.home.response.ChoreResponse
 import com.devndev.homen.core.data.model.home.response.CreateHomeResponse
@@ -37,5 +37,6 @@ interface HomeService {
 
     suspend fun getMemos(id: Int): List<GetMemoResponse>
 
-    suspend fun createMemo(id: Int, createMemoRequest: CreateMemoRequest)
+    suspend fun createMemo(id: Int, createMemoRequest: MemoRequest)
+    suspend fun editMemo(choreId: Int, memoId: Int, editMemoRequest: MemoRequest)
 }
