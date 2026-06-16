@@ -34,7 +34,6 @@ import androidx.compose.ui.unit.sp
 import com.devndev.homen.core.domain.model.chore.ChoreCategory
 import com.devndev.homen.core.domain.model.chore.ChoreDifficulty
 import com.devndev.homen.core.domain.model.chore.RepeatDay
-import com.devndev.homen.core.domain.model.home.Chore
 import com.devndev.homen.ui.common.resource
 import com.devndev.homen.ui.component.HomeNButton
 import com.devndev.homen.ui.component.HomeNLongTextField

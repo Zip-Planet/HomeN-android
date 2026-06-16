@@ -30,7 +30,8 @@ fun ChoreManageScreen(
     onBackClick: () -> Unit,
     onNavToCreateChore: () -> Unit,
     onNavToEditChore: (Int) -> Unit,
-    onNavToChoreDetail: (Int) -> Unit
+    onNavToChoreDetail: (Int) -> Unit,
+    onNavToStaterPack: () -> Unit
 ) {
     val uiState by viewModel.viewState
 
@@ -41,6 +42,7 @@ fun ChoreManageScreen(
                 ChoreManageContract.Effect.NavigateToCrateChore -> onNavToCreateChore()
                 is ChoreManageContract.Effect.NavigateToEditChore -> onNavToEditChore(effect.id)
                 is ChoreManageContract.Effect.NavigateToChoreDetail -> onNavToChoreDetail(effect.id)
+                ChoreManageContract.Effect.NavigateToStaterPack -> onNavToStaterPack()
             }
         }
     }

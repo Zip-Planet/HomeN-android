@@ -38,8 +38,12 @@ enum class RepeatDay(val value: Int, val day: String) {
     }
 }
 
-enum class StarterPackType {
-    ROOMMATE,
-    DORMITORY,
-    MINIMAL
+enum class StarterPackType(val id: Int) {
+    ROOMMATE(id = 0),
+    DORMITORY(id = 1),
+    MINIMAL(id = 2);
+
+    companion object {
+        fun fromValue(id: Int) = entries.find { it.id == id }
+    }
 }

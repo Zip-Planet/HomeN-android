@@ -33,5 +33,6 @@ class ChoreManageContract {
         data object NavigateToCrateChore: Effect()
         data class NavigateToEditChore(val id: Int): Effect()
         data class NavigateToChoreDetail(val id: Int): Effect()
+        data object NavigateToStaterPack: Effect()
     }
 }

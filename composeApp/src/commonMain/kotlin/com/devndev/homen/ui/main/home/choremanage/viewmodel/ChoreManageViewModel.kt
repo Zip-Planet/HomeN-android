@@ -39,7 +39,7 @@ class ChoreManageViewModel(
                         setEffect { ChoreManageContract.Effect.NavigateToCrateChore }
                     }
                     2 -> {
-
+                        setEffect { ChoreManageContract.Effect.NavigateToStaterPack }
                     }
                 }
             }
