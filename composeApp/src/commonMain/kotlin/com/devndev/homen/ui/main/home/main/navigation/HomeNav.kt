@@ -10,6 +10,8 @@ import com.devndev.homen.ui.main.home.choremanage.ChoreManageScreen
 import com.devndev.homen.ui.main.home.createchore.CreateChoreScreen
 import com.devndev.homen.ui.main.home.main.HomeScreen
 import com.devndev.homen.ui.main.home.memo.MemoScreen
+import com.devndev.homen.ui.main.home.starterpack.StarterPackScreen
+import com.devndev.homen.ui.main.home.starterpackpreview.StarterPackPreviewScreen
 import com.devndev.homen.ui.main.navigation.BottomNavItem
 
 fun NavGraphBuilder.homeNav(navController: NavController) {
@@ -38,6 +40,9 @@ fun NavGraphBuilder.homeNav(navController: NavController) {
             },
             onNavToChoreDetail = { chore ->
                 navController.navigate(HomeRoute.ChoreDetail(chore))
+            },
+            onNavToStaterPack = {
+                navController.navigate(HomeRoute.StarterPack)
             }
         )
     }
@@ -107,4 +112,42 @@ fun NavGraphBuilder.homeNav(navController: NavController) {
         )
     }
 
+    composable<HomeRoute.StarterPack>(
+        enterTransition = NavTransitions.enterTransition,
+        exitTransition = NavTransitions.exitTransition,
+        popEnterTransition = NavTransitions.popEnterTransition,
+        popExitTransition = NavTransitions.popExitTransition
+    ) {
+        StarterPackScreen(
+            onNavToPreview = {
+                navController.navigate(HomeRoute.StarterPackPreview(it))
+            },
+            onNavToBack = {
+                navController.popBackStack()
+            }
+        )
+    }
+
+    composable<HomeRoute.StarterPackPreview>(
+        enterTransition = NavTransitions.enterTransition,
+        exitTransition = NavTransitions.exitTransition,
+        popEnterTransition = NavTransitions.popEnterTransition,
+        popExitTransition = NavTransitions.popExitTransition
+    ) { backStackEntry ->
+        val route: HomeRoute.StarterPackPreview = backStackEntry.toRoute()
+        StarterPackPreviewScreen(
+            packType = route.starterPackType,
+            onNavToBack = {
+                navController.popBackStack()
+            },
+            onCreateChore = {
+                navController.navigate(HomeRoute.ChoreManage) {
+                    popUpTo(HomeRoute.ChoreManage) {
+                        inclusive = false
+                    }
+                    launchSingleTop = true
+                }
+            }
+        )
+    }
 }

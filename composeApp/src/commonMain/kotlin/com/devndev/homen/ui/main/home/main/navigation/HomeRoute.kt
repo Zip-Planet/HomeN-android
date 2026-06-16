@@ -17,4 +17,10 @@ sealed interface HomeRoute {
 
     @Serializable
     data class Memo(val choreId: Int, val memoId: Int?, val content: String?, val isEdit: Boolean): HomeRoute
+
+    @Serializable
+    data object StarterPack: HomeRoute
+
+    @Serializable
+    data class StarterPackPreview(val starterPackType: Int): HomeRoute
 }
