@@ -163,10 +163,14 @@ fun HomeNLongTextField(
     BasicTextField(
         value = value,
         onValueChange = { input ->
-            val isLengthValid = input.length <= maxChar
-            val isRegexValid = regex == null || input.matches(regex)
+            if (maxChar != 0) {
+                val isLengthValid = input.length <= maxChar
+                val isRegexValid = regex == null || input.matches(regex)
 
-            if (isLengthValid && isRegexValid) {
+                if (isLengthValid && isRegexValid) {
+                    onValueChange(input)
+                }
+            } else {
                 onValueChange(input)
             }
         },
@@ -199,13 +203,15 @@ fun HomeNLongTextField(
                     innerTextField()
                 }
                 Spacer(modifier = Modifier.width(10.dp))
-                Text(
-                    text = "${value.length}/$maxChar",
-                    style = HomeNTheme.typography.suitRegular,
-                    color = BottomGray,
-                    fontSize = 12.sp
-                )
 
+                if (maxChar != 0) {
+                    Text(
+                        text = "${value.length}/$maxChar",
+                        style = HomeNTheme.typography.suitRegular,
+                        color = BottomGray,
+                        fontSize = 12.sp
+                    )
+                }
             }
         }
     )

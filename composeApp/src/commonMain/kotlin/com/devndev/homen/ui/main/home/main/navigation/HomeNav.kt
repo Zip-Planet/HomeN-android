@@ -5,9 +5,11 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.devndev.homen.ui.component.NavTransitions
+import com.devndev.homen.ui.main.home.choredetail.ChoreDetailScreen
 import com.devndev.homen.ui.main.home.choremanage.ChoreManageScreen
 import com.devndev.homen.ui.main.home.createchore.CreateChoreScreen
 import com.devndev.homen.ui.main.home.main.HomeScreen
+import com.devndev.homen.ui.main.home.memo.MemoScreen
 import com.devndev.homen.ui.main.navigation.BottomNavItem
 
 fun NavGraphBuilder.homeNav(navController: NavController) {
@@ -33,6 +35,9 @@ fun NavGraphBuilder.homeNav(navController: NavController) {
             },
             onNavToEditChore = { chore ->
                 navController.navigate(HomeRoute.EditChore(chore))
+            },
+            onNavToChoreDetail = { chore ->
+                navController.navigate(HomeRoute.ChoreDetail(chore))
             }
         )
     }
@@ -65,4 +70,41 @@ fun NavGraphBuilder.homeNav(navController: NavController) {
             choreId = route.choreId
         )
     }
+
+    composable<HomeRoute.ChoreDetail>(
+        enterTransition = NavTransitions.enterTransition,
+        exitTransition = NavTransitions.exitTransition,
+        popEnterTransition = NavTransitions.popEnterTransition,
+        popExitTransition = NavTransitions.popExitTransition
+    ) { backStackEntry ->
+        val route: HomeRoute.EditChore = backStackEntry.toRoute()
+        ChoreDetailScreen(
+            onBackClick = {
+                navController.popBackStack()
+            },
+            choreId = route.choreId,
+            onNavToMemo = { memoId, content, isEdit ->
+                navController.navigate(HomeRoute.Memo(route.choreId, memoId, content, isEdit))
+            }
+        )
+    }
+
+    composable<HomeRoute.Memo>(
+        enterTransition = NavTransitions.enterTransition,
+        exitTransition = NavTransitions.exitTransition,
+        popEnterTransition = NavTransitions.popEnterTransition,
+        popExitTransition = NavTransitions.popExitTransition
+    ) { backStackEntry ->
+        val route: HomeRoute.Memo = backStackEntry.toRoute()
+        MemoScreen(
+            choreId = route.choreId,
+            memoId = route.memoId,
+            content = route.content,
+            isEdit = route.isEdit,
+            onBackClick = {
+                navController.popBackStack()
+            }
+        )
+    }
+
 }

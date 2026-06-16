@@ -97,15 +97,17 @@ class CreateChoreViewModel(
         setState { copy(isLoading = true) }
         viewModelScope.launch {
             val result = getChoreDetailUseCase(id)
+
             when (result) {
                 is ApiResult.Success -> {
+                    val chore = result.data.chore
                     setState {
                         copy(
-                            title = result.data.name,
-                            description = result.data.description,
-                            selectedCategory = ChoreCategory.fromId(result.data.category),
-                            selectedDays = result.data.repeatDays.toSet(),
-                            selectedDifficulty = result.data.difficulty
+                            title = chore.name,
+                            description = chore.description,
+                            selectedCategory = ChoreCategory.fromId(chore.category),
+                            selectedDays = chore.repeatDays.toSet(),
+                            selectedDifficulty = chore.difficulty
                         )
                     }
                 }

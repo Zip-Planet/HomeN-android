@@ -75,7 +75,8 @@ fun ChoreManageNotEmptyScreen(
     onTooltipClick: (Boolean) -> Unit,
     onAddButtonClick: () -> Unit,
     onDeleteClick: (Int) -> Unit,
-    onEditClick: (Int) -> Unit
+    onEditClick: (Int) -> Unit,
+    onChoreClick: (Int) -> Unit
 ) {
     Box(
         modifier = Modifier
@@ -126,7 +127,8 @@ fun ChoreManageNotEmptyScreen(
                         ChoreItem(
                             chore = it,
                             onDeleteClick = onDeleteClick,
-                            onEditClick = onEditClick
+                            onEditClick = onEditClick,
+                            onChoreClick = onChoreClick
                         )
                     }
                 }
@@ -184,7 +186,8 @@ fun ChoreManageNotEmptyScreen(
 fun ChoreItem(
     chore: Chore,
     onDeleteClick: (Int) -> Unit,
-    onEditClick: (Int) -> Unit
+    onEditClick: (Int) -> Unit,
+    onChoreClick: (Int) -> Unit
 ) {
     var isExpanded by remember { mutableStateOf(false) }
     val choreResource = ChoreCategory.fromId(chore.category).resource
@@ -204,6 +207,12 @@ fun ChoreItem(
     }
     Row(
         modifier = Modifier.fillMaxWidth()
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null
+            ) {
+                onChoreClick(chore.id!!)
+            }
             .padding(vertical = 14.dp),
     ) {
         Box(
@@ -329,6 +338,7 @@ fun ChoreItemPreview() {
             difficulty = ChoreDifficulty.LOWER_MEDIUM
         ),
         onDeleteClick = {},
-        onEditClick = {}
+        onEditClick = {},
+        onChoreClick = {}
     )
 }

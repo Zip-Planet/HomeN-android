@@ -175,6 +175,21 @@
     <string name="create_chore_difficulty_point">예상 포인트 nP</string>
     <string name="create_chore_difficulty_description">포인트는 난이도에 따라 자동 고정돼요</string>
 
+    <!-- 집안일 상세 -->
+    <string name="chore_detail_title">집안일 상세</string>
+    <string name="chore_detail_weekly_progress_title">이번주 진행 상태</string>
+    <string name="chore_detail_weekly_progress_completed">완료</string>
+    <string name="chore_detail_weekly_progress_incompleted">미완료</string>
+    <string name="chore_detail_memo_title">메모</string>
+    <string name="chore_detail_memo_add_btn">메모 추가</string>
+
+    <!-- 메모 -->
+    <string name="memo_title">메모</string>
+    <string name="memo_description">우리 집만의 청소 꿀팁이나 규칙을 남겨보세요</string>
+    <string name="create_memo_title">메모 추가</string>
+    <string name="create_memo_hint">예: 락스 사용 시 환기 필수</string>
+    <string name="edit_memo_title">메모 수정</string>
+
     <!-- 초대 팝업 -->
     <string name="invite_popup_title">s 초대코드</string>
     <string name="invite_popup_msg">구성원을 초대하고 집안일을 나눠보세요</string>
