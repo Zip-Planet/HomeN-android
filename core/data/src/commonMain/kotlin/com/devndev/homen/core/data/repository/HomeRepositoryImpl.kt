@@ -182,4 +182,21 @@ class HomeRepositoryImpl(
             ApiResult.NetworkError
         }
     }
+
+    override suspend fun deleteMemo(
+        choreId: Int,
+        memoId: Int
+    ): ApiResult<Unit> {
+        return try {
+            val response = homeService.deleteMemo(
+                choreId = choreId,
+                memoId = memoId
+            )
+            ApiResult.Success(response)
+        } catch (e: ResponseException) {
+            ApiResult.Error(code = e.response.status.value, message = e.message)
+        } catch (e: Exception) {
+            ApiResult.NetworkError
+        }
+    }
 }

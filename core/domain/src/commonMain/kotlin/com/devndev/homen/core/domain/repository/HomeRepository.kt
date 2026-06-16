@@ -22,4 +22,6 @@ interface HomeRepository {
     suspend fun getMemos(id: Int): ApiResult<List<Memo>>
     suspend fun createMemos(id: Int, content: String): ApiResult<Unit>
     suspend fun editMemo(choreId: Int, memoId: Int, content: String): ApiResult<Unit>
+    suspend fun deleteMemo(choreId: Int, memoId: Int): ApiResult<Unit>
+
 }

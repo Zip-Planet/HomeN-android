@@ -39,4 +39,5 @@ interface HomeService {
 
     suspend fun createMemo(id: Int, createMemoRequest: MemoRequest)
     suspend fun editMemo(choreId: Int, memoId: Int, editMemoRequest: MemoRequest)
+    suspend fun deleteMemo(choreId: Int, memoId: Int)
 }

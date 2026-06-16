@@ -13,6 +13,7 @@ class ChoreDetailContract {
         data class OnInit(val id: Int): Event()
         data object OnBackClick: Event()
         data class OnNavToMemo(val memoId: Int?, val content: String?, val isEdit: Boolean): Event()
+        data class OnDeleteMemo(val choreId: Int, val memoId: Int): Event()
     }
 
     data class State(

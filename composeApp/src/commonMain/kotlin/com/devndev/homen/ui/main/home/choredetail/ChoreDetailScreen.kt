@@ -114,7 +114,10 @@ fun ChoreDetailScreen(
     ChoreDetailContent(
         uiState = uiState,
         onNavToMemo = { memoId, content, isEdit ->
-            onNavToMemo(memoId, content, isEdit)
+           viewModel.setEvent(ChoreDetailContract.Event.OnNavToMemo(memoId, content, isEdit))
+        },
+        onDeleteMemo = {
+            viewModel.setEvent(ChoreDetailContract.Event.OnDeleteMemo(choreId, it))
         },
         onBackClick = { viewModel.setEvent(ChoreDetailContract.Event.OnBackClick) }
     )
@@ -124,6 +127,7 @@ fun ChoreDetailScreen(
 fun ChoreDetailContent(
     uiState: ChoreDetailContract.State,
     onNavToMemo: (Int?, String?, Boolean) -> Unit,
+    onDeleteMemo: (Int) -> Unit,
     onBackClick: () -> Unit
 ) {
     HomeNScreen(
@@ -176,7 +180,10 @@ fun ChoreDetailContent(
 
             MemoSection(
                 memos = uiState.memos,
-                onNavToMemo = onNavToMemo
+                onNavToMemo = onNavToMemo,
+                onDeleteMemo = {
+                    onDeleteMemo(it)
+                }
             )
         }
     }
@@ -463,7 +470,8 @@ fun WeeklyProgressItem(weeklyProgress: WeeklyProgress) {
 @Composable
 fun MemoSection(
     memos: List<Memo>,
-    onNavToMemo: (Int?, String?, Boolean) -> Unit
+    onNavToMemo: (Int?, String?, Boolean) -> Unit,
+    onDeleteMemo: (Int) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -505,7 +513,10 @@ fun MemoSection(
         memos.forEachIndexed { index, memo ->
             MemoItem(
                 memo = memo,
-                onNavToMemo = onNavToMemo
+                onNavToMemo = onNavToMemo,
+                onDeleteMemo = {
+                    onDeleteMemo(memo.id)
+                }
             )
             if (index != memos.lastIndex) {
                 Spacer(modifier = Modifier.height(20.dp))
@@ -517,7 +528,8 @@ fun MemoSection(
 @Composable
 fun MemoItem(
     memo: Memo,
-    onNavToMemo: (Int?, String?, Boolean) -> Unit
+    onNavToMemo: (Int?, String?, Boolean) -> Unit,
+    onDeleteMemo: () -> Unit
 ) {
     var isExpanded by remember { mutableStateOf(false) }
 
@@ -586,7 +598,7 @@ fun MemoItem(
                                 interactionSource = remember { MutableInteractionSource() },
                                 indication = null
                             ) {
-
+                                onDeleteMemo()
                             },
                     )
                 }
@@ -636,6 +648,7 @@ fun ChoreDetailContentPreview() {
             )
         ),
         onNavToMemo = { _, _, _ ->},
+        onDeleteMemo = {},
         onBackClick = {},
     )
 }

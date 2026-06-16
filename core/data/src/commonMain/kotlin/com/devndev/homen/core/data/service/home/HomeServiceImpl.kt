@@ -223,4 +223,18 @@ class HomeServiceImpl(
             setBody(editMemoRequest)
         }.body()
     }
+
+    override suspend fun deleteMemo(choreId: Int, memoId: Int) {
+        val accessToken = tokenRepository.getAccessToken().first()
+        return client.delete {
+            url {
+                takeFrom(Config.BASE_URL)
+                encodedPath += "${HomeService.CHORES}$choreId/notes/$memoId/"
+            }
+            contentType(ContentType.Application.Json)
+            accessToken?.let {
+                header(HttpHeaders.Authorization, "Bearer $it")
+            }
+        }.body()
+    }
 }

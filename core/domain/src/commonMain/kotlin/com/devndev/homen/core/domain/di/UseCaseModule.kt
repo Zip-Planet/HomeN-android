@@ -10,6 +10,7 @@ import com.devndev.homen.core.domain.usecase.home.CreateChoreUseCase
 import com.devndev.homen.core.domain.usecase.home.CreateHomeUseCase
 import com.devndev.homen.core.domain.usecase.home.CreateMemoUseCase
 import com.devndev.homen.core.domain.usecase.home.DeleteChoreUseCase
+import com.devndev.homen.core.domain.usecase.home.DeleteMemoUseCase
 import com.devndev.homen.core.domain.usecase.home.EditChoreUseCase
 import com.devndev.homen.core.domain.usecase.home.EditMemoUseCase
 import com.devndev.homen.core.domain.usecase.home.GetChoreDetailUseCase
@@ -52,6 +53,7 @@ val useCaseModule = module {
     factoryOf(::GetMemosUseCase)
     factoryOf(::CreateMemoUseCase)
     factoryOf(::EditMemoUseCase)
+    factoryOf(::DeleteMemoUseCase)
 
     // user
     factoryOf(::UpdateProfileUseCase)

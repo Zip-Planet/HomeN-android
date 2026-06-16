@@ -3,13 +3,16 @@ package com.devndev.homen.ui.main.home.choredetail.viewmodel
 import androidx.lifecycle.viewModelScope
 import com.devndev.homen.core.common.base.BaseViewModel
 import com.devndev.homen.core.domain.model.common.ApiResult
+import com.devndev.homen.core.domain.usecase.home.DeleteMemoUseCase
 import com.devndev.homen.core.domain.usecase.home.GetChoreDetailUseCase
 import com.devndev.homen.core.domain.usecase.home.GetMemosUseCase
+import com.devndev.homen.ui.main.home.choredetail.viewmodel.ChoreDetailContract.Effect.*
 import kotlinx.coroutines.launch
 
 class ChoreDetailViewModel(
     private val getChoreDetailUseCase: GetChoreDetailUseCase,
-    private val getMemosUseCase: GetMemosUseCase
+    private val getMemosUseCase: GetMemosUseCase,
+    private val deleteMemoUseCase: DeleteMemoUseCase
 ) : BaseViewModel<ChoreDetailContract.Event, ChoreDetailContract.State, ChoreDetailContract.Effect>() {
     override fun setInitialState() = ChoreDetailContract.State()
 
@@ -25,12 +28,16 @@ class ChoreDetailViewModel(
 
             is ChoreDetailContract.Event.OnNavToMemo -> {
                 setEffect {
-                    ChoreDetailContract.Effect.NavigateToMemo(
+                    NavigateToMemo(
                         event.memoId,
                         event.content,
                         event.isEdit
                     )
                 }
+            }
+
+            is ChoreDetailContract.Event.OnDeleteMemo -> {
+                deleteMemo(event.choreId, event.memoId)
             }
         }
     }
@@ -82,4 +89,22 @@ class ChoreDetailViewModel(
         }
     }
 
+    private fun deleteMemo(choreId: Int, memoId: Int) {
+        viewModelScope.launch {
+            val result = deleteMemoUseCase(choreId, memoId)
+            when (result) {
+                is ApiResult.Success -> {
+                    getMemos(choreId)
+                }
+
+                is ApiResult.Error -> {
+
+                }
+
+                is ApiResult.NetworkError -> {
+
+                }
+            }
+        }
+    }
 }
