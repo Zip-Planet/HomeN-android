@@ -15,6 +15,7 @@ class ChoreManageContract {
         data object OnAddButtonClick: Event()
         data class OnDeleteClick(val id: Int): Event()
         data class OnEditClick(val id: Int): Event()
+        data class OnChoreClick(val id: Int): Event()
     }
 
     data class State(
@@ -31,5 +32,6 @@ class ChoreManageContract {
         data object NavigateToBack: Effect()
         data object NavigateToCrateChore: Effect()
         data class NavigateToEditChore(val id: Int): Effect()
+        data class NavigateToChoreDetail(val id: Int): Effect()
     }
 }

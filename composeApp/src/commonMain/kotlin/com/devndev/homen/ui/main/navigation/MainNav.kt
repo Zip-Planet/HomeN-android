@@ -47,7 +47,9 @@ fun MainNav(
 
     val isChoreManage = currentDestination?.hasRoute<HomeRoute.ChoreManage>() == true ||
             currentDestination?.hasRoute<HomeRoute.CreateChore>() == true ||
-            currentDestination?.hasRoute<HomeRoute.EditChore>() == true
+            currentDestination?.hasRoute<HomeRoute.EditChore>() == true ||
+            currentDestination?.hasRoute<HomeRoute.ChoreDetail>() == true ||
+            currentDestination?.hasRoute<HomeRoute.Memo>() == true
     val isHomeIntroRoute = currentDestination?.hasRoute<HomeIntroRoute.Selection>() == true ||
             currentDestination?.hasRoute<HomeIntroRoute.JoinGraph>() == true ||
             currentDestination?.hasRoute<HomeIntroRoute.CreateGraph>() == true

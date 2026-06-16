@@ -29,7 +29,8 @@ fun ChoreManageScreen(
     viewModel: ChoreManageViewModel = koinViewModel(),
     onBackClick: () -> Unit,
     onNavToCreateChore: () -> Unit,
-    onNavToEditChore: (Int) -> Unit
+    onNavToEditChore: (Int) -> Unit,
+    onNavToChoreDetail: (Int) -> Unit
 ) {
     val uiState by viewModel.viewState
 
@@ -39,6 +40,7 @@ fun ChoreManageScreen(
                 ChoreManageContract.Effect.NavigateToBack -> onBackClick()
                 ChoreManageContract.Effect.NavigateToCrateChore -> onNavToCreateChore()
                 is ChoreManageContract.Effect.NavigateToEditChore -> onNavToEditChore(effect.id)
+                is ChoreManageContract.Effect.NavigateToChoreDetail -> onNavToChoreDetail(effect.id)
             }
         }
     }
@@ -89,6 +91,9 @@ fun ChoreManageScreen(
                     },
                     onEditClick = {
                         viewModel.setEvent(ChoreManageContract.Event.OnEditClick(it))
+                    },
+                    onChoreClick = {
+                        viewModel.setEvent(ChoreManageContract.Event.OnChoreClick(it))
                     }
                 )
             }

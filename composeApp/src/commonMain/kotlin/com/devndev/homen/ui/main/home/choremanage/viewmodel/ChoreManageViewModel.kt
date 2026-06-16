@@ -58,6 +58,10 @@ class ChoreManageViewModel(
             is ChoreManageContract.Event.OnEditClick -> {
                 setEffect { ChoreManageContract.Effect.NavigateToEditChore(event.id) }
             }
+
+            is ChoreManageContract.Event.OnChoreClick -> {
+                setEffect { ChoreManageContract.Effect.NavigateToChoreDetail(event.id) }
+            }
         }
     }
 

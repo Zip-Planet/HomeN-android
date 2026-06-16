@@ -2,6 +2,7 @@ package com.devndev.homen.core.data.repository
 
 import com.devndev.homen.core.data.model.home.request.CreateChoreRequest
 import com.devndev.homen.core.data.model.home.request.CreateHomeRequest
+import com.devndev.homen.core.data.model.home.request.CreateMemoRequest
 import com.devndev.homen.core.data.model.home.request.JoinHomeRequest
 import com.devndev.homen.core.data.model.home.request.toDataModel
 import com.devndev.homen.core.data.model.home.request.toEditDataModel
@@ -9,9 +10,11 @@ import com.devndev.homen.core.data.model.home.response.toDomainModel
 import com.devndev.homen.core.data.service.home.HomeService
 import com.devndev.homen.core.domain.model.common.ApiResult
 import com.devndev.homen.core.domain.model.home.Chore
+import com.devndev.homen.core.domain.model.home.ChoreDetail
 import com.devndev.homen.core.domain.model.home.CreateHome
 import com.devndev.homen.core.domain.model.home.HomeResponseDomainModel
 import com.devndev.homen.core.domain.model.home.JoinHomeResponseDomainModel
+import com.devndev.homen.core.domain.model.home.Memo
 import com.devndev.homen.core.domain.repository.HomeRepository
 import io.ktor.client.plugins.ResponseException
 
@@ -113,7 +116,7 @@ class HomeRepositoryImpl(
         }
     }
 
-    override suspend fun getHomeDetail(id: Int): ApiResult<Chore> {
+    override suspend fun getChoreDetail(id: Int): ApiResult<ChoreDetail> {
         return try {
             val response = homeService.getChoreDetail(id)
             ApiResult.Success(response.toDomainModel())
@@ -127,6 +130,31 @@ class HomeRepositoryImpl(
     override suspend fun editChore(chore: Chore): ApiResult<Unit> {
         return try {
             val response = homeService.editChore(chore.id!!, chore.toEditDataModel())
+            ApiResult.Success(response)
+        } catch (e: ResponseException) {
+            ApiResult.Error(code = e.response.status.value, message = e.message)
+        } catch (e: Exception) {
+            ApiResult.NetworkError
+        }
+    }
+
+    override suspend fun getMemos(id: Int): ApiResult<List<Memo>> {
+        return try {
+            val response = homeService.getMemos(id)
+            ApiResult.Success(response.map { it.toDomainModel()} )
+        } catch (e: ResponseException) {
+            ApiResult.Error(code = e.response.status.value, message = e.message)
+        } catch (e: Exception) {
+            ApiResult.NetworkError
+        }
+    }
+
+    override suspend fun createMemos(
+        id: Int,
+        content: String
+    ): ApiResult<Unit> {
+        return try {
+            val response = homeService.createMemo(id = id, createMemoRequest = CreateMemoRequest(content))
             ApiResult.Success(response)
         } catch (e: ResponseException) {
             ApiResult.Error(code = e.response.status.value, message = e.message)
