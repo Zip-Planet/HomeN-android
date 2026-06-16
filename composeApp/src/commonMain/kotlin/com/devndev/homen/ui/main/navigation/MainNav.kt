@@ -50,7 +50,8 @@ fun MainNav(
             currentDestination?.hasRoute<HomeRoute.EditChore>() == true ||
             currentDestination?.hasRoute<HomeRoute.ChoreDetail>() == true ||
             currentDestination?.hasRoute<HomeRoute.Memo>() == true ||
-            currentDestination?.hasRoute<HomeRoute.StarterPack>() == true
+            currentDestination?.hasRoute<HomeRoute.StarterPack>() == true ||
+            currentDestination?.hasRoute<HomeRoute.StarterPackPreview>() == true
     val isHomeIntroRoute = currentDestination?.hasRoute<HomeIntroRoute.Selection>() == true ||
             currentDestination?.hasRoute<HomeIntroRoute.JoinGraph>() == true ||
             currentDestination?.hasRoute<HomeIntroRoute.CreateGraph>() == true
