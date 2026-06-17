@@ -83,6 +83,10 @@ class ChoreDetailViewModel(
                     setEffect { ChoreDetailContract.Effect.NavigateToBackWithDelete(choreId) }
                 }
             }
+
+            ChoreDetailContract.Event.OnEditChore -> {
+                setEffect { ChoreDetailContract.Effect.NavigateToEditChore }
+            }
         }
     }
 
