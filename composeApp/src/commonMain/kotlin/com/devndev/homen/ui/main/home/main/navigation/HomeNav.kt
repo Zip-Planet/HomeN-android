@@ -101,6 +101,9 @@ fun NavGraphBuilder.homeNav(navController: NavController) {
             onNavToMemo = { memoId, content, isEdit ->
                 navController.navigate(HomeRoute.Memo(route.choreId, memoId, content, isEdit))
             },
+            onEditChore = {
+                navController.navigate(HomeRoute.EditChore(route.choreId))
+            },
             onDeleteChoreSuccess = { deletedId ->
                 navController.previousBackStackEntry?.savedStateHandle?.set("deleted_chore_id", deletedId)
                 navController.popBackStack()

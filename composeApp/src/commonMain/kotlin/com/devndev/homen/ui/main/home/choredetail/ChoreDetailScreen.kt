@@ -65,6 +65,7 @@ import com.devndev.homen.ui.component.BackHandler
 import com.devndev.homen.ui.component.HomeNScreen
 import com.devndev.homen.ui.component.TitleTopBar
 import com.devndev.homen.ui.main.home.choredetail.viewmodel.ChoreDetailContract
+import com.devndev.homen.ui.main.home.choredetail.viewmodel.ChoreDetailContract.Event.*
 import com.devndev.homen.ui.main.home.choredetail.viewmodel.ChoreDetailViewModel
 import com.devndev.homen.ui.theme.BackgroundGray
 import com.devndev.homen.ui.theme.Blue4
@@ -100,6 +101,7 @@ fun ChoreDetailScreen(
     choreId: Int,
     onBackClick: () -> Unit,
     onDeleteChoreSuccess: (Int) -> Unit,
+    onEditChore: () -> Unit,
     onNavToMemo: (Int?, String?, Boolean) -> Unit
 ) {
     val uiState by viewModel.viewState
@@ -137,20 +139,24 @@ fun ChoreDetailScreen(
                     when (result) {
                         SnackbarResult.ActionPerformed -> {
                             viewModel.setEvent(
-                                ChoreDetailContract.Event.OnUndoDeleteMemo(
+                                OnUndoDeleteMemo(
                                     memo = effect.memo,
                                     index = effect.index
                                 )
                             )
                         }
                         SnackbarResult.Dismissed -> {
-                            viewModel.setEvent(ChoreDetailContract.Event.OnDeleteConfirmMemo(effect.memo.id))
+                            viewModel.setEvent(OnDeleteConfirmMemo(effect.memo.id))
                         }
                     }
                 }
 
                 is ChoreDetailContract.Effect.NavigateToBackWithDelete -> {
                     onDeleteChoreSuccess(effect.choreId)
+                }
+
+                ChoreDetailContract.Effect.NavigateToEditChore -> {
+                    onEditChore()
                 }
             }
         }
@@ -169,6 +175,9 @@ fun ChoreDetailScreen(
         onDeleteMemo = {
             viewModel.setEvent(ChoreDetailContract.Event.OnDeleteMemo(it))
         },
+        onEditChore = {
+            viewModel.setEvent(ChoreDetailContract.Event.OnEditChore)
+        },
         onDeleteChore = {
             viewModel.setEvent(ChoreDetailContract.Event.OnDeleteChore)
         },
@@ -182,6 +191,7 @@ fun ChoreDetailContent(
     snackbarHostState: SnackbarHostState,
     onNavToMemo: (Int?, String?, Boolean) -> Unit,
     onDeleteMemo: (Int) -> Unit,
+    onEditChore: () -> Unit,
     onDeleteChore: () -> Unit,
     onBackClick: () -> Unit
 ) {
@@ -234,7 +244,7 @@ fun ChoreDetailContent(
             ChoreDetailItem(
                 chore = uiState.chore,
                 onDeleteClick = { onDeleteChore() },
-                onEditClick = {}
+                onEditClick = { onEditChore() }
             )
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -726,6 +736,7 @@ fun ChoreDetailContentPreview() {
         onNavToMemo = { _, _, _ ->},
         onDeleteMemo = {},
         onDeleteChore = {},
+        onEditChore = {},
         onBackClick = {},
     )
 }
