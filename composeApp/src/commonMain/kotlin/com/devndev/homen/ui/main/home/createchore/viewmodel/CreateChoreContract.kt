@@ -31,7 +31,6 @@ class CreateChoreContract {
         val isSaveButtonEnabled =
             title.isNotBlank()
                     && selectedCategory != null
-                    && description.isNotBlank()
                     && selectedDays.isNotEmpty()
                     && selectedDifficulty != null
     }
