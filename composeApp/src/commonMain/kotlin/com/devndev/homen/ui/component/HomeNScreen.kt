@@ -26,6 +26,7 @@ fun HomeNScreen(
     modifier: Modifier = Modifier,
     topBar: @Composable () -> Unit = {},
     bottomBar: @Composable () -> Unit = {},
+    snackbarHost: @Composable () -> Unit = {},
     isLoading: Boolean = false,
     mainIsLoading: Boolean = false,
     isNeedBottomExpanded: Boolean = false,
@@ -47,6 +48,7 @@ fun HomeNScreen(
             modifier = modifier.statusBarsPadding(),
             topBar = topBar,
             bottomBar = bottomBar,
+            snackbarHost = snackbarHost,
             containerColor = containerColor,
             contentWindowInsets = windowInsets
         ) { paddingValues ->

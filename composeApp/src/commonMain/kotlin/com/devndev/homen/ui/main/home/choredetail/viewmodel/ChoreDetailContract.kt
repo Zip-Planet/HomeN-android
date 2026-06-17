@@ -12,8 +12,12 @@ class ChoreDetailContract {
     sealed class Event: ViewEvent {
         data class OnInit(val id: Int): Event()
         data object OnBackClick: Event()
+        data object OnDispose: Event()
         data class OnNavToMemo(val memoId: Int?, val content: String?, val isEdit: Boolean): Event()
-        data class OnDeleteMemo(val choreId: Int, val memoId: Int): Event()
+        data class OnDeleteMemo(val memoId: Int): Event()
+        data class OnUndoDeleteMemo(val memo: Memo, val index: Int): Event()
+        data class OnDeleteConfirmMemo(val memoId: Int): Event()
+        data object OnDeleteChore: Event()
     }
 
     data class State(
@@ -33,5 +37,7 @@ class ChoreDetailContract {
     sealed class Effect: ViewSideEffect {
         data object NavigateToBack: Effect()
         data class NavigateToMemo(val memoId: Int?, val content: String?, val isEdit: Boolean): Effect()
+        data class ShowDeleteMemoSnackBar(val memo: Memo, val index: Int): Effect()
+        data class NavigateToBackWithDelete(val choreId: Int): Effect()
     }
 }

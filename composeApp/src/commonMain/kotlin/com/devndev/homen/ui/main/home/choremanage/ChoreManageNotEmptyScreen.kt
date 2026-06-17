@@ -78,9 +78,14 @@ fun ChoreManageNotEmptyScreen(
     onEditClick: (Int) -> Unit,
     onChoreClick: (Int) -> Unit
 ) {
+    var expandedChoreId by remember { mutableStateOf<Int?>(null) }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
+            .pointerInput(Unit) {
+                detectTapGestures(onTap = { expandedChoreId = null })
+            }
     ) {
         Column(
             modifier = Modifier
@@ -122,10 +127,14 @@ fun ChoreManageNotEmptyScreen(
                         top = 6.dp
                     ),
             ) {
-                uiState.chores.forEach {
-                    item {
+                uiState.chores.forEach { chore ->
+                    item(key = chore.id) {
                         ChoreItem(
-                            chore = it,
+                            chore = chore,
+                            isExpanded = expandedChoreId == chore.id,
+                            onMenuClick = {
+                                expandedChoreId = if (expandedChoreId == chore.id) null else chore.id
+                            },
                             onDeleteClick = onDeleteClick,
                             onEditClick = onEditClick,
                             onChoreClick = onChoreClick
@@ -185,11 +194,12 @@ fun ChoreManageNotEmptyScreen(
 @Composable
 fun ChoreItem(
     chore: Chore,
+    isExpanded: Boolean,
+    onMenuClick: () -> Unit,
     onDeleteClick: (Int) -> Unit,
     onEditClick: (Int) -> Unit,
     onChoreClick: (Int) -> Unit
 ) {
-    var isExpanded by remember { mutableStateOf(false) }
     val choreResource = ChoreCategory.fromId(chore.category).resource
     val infoFormat = stringResource(Res.string.chore_info_point_days)
     val diffFormat = stringResource(Res.string.chore_info_difficulty)
@@ -318,7 +328,7 @@ fun ChoreItem(
                         interactionSource = remember { MutableInteractionSource() },
                         indication = null
                     ) {
-                        isExpanded = !isExpanded
+                        onMenuClick()
                     },
             )
         }
@@ -329,7 +339,7 @@ fun ChoreItem(
 @Composable
 fun ChoreItemPreview() {
     ChoreItem(
-        Chore(
+        chore = Chore(
             id = 1,
             category = 1,
             name = "청소",
@@ -337,6 +347,8 @@ fun ChoreItemPreview() {
             repeatDays = listOf(1, 3, 4),
             difficulty = ChoreDifficulty.LOWER_MEDIUM
         ),
+        isExpanded = false,
+        onMenuClick = {},
         onDeleteClick = {},
         onEditClick = {},
         onChoreClick = {}

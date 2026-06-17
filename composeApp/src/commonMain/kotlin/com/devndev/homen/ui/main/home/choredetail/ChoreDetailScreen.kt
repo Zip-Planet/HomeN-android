@@ -11,6 +11,7 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -28,8 +29,13 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -39,6 +45,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
@@ -54,6 +61,7 @@ import com.devndev.homen.core.domain.model.home.Memo
 import com.devndev.homen.core.domain.model.home.WeeklyProgress
 import com.devndev.homen.core.domain.model.home.WeeklyProgressStatus
 import com.devndev.homen.ui.common.resource
+import com.devndev.homen.ui.component.BackHandler
 import com.devndev.homen.ui.component.HomeNScreen
 import com.devndev.homen.ui.component.TitleTopBar
 import com.devndev.homen.ui.main.home.choredetail.viewmodel.ChoreDetailContract
@@ -66,6 +74,7 @@ import com.devndev.homen.ui.theme.HomeNTheme
 import homen.composeapp.generated.resources.Res
 import homen.composeapp.generated.resources.chart_icon
 import homen.composeapp.generated.resources.chore_detail_memo_add_btn
+import homen.composeapp.generated.resources.chore_detail_memo_delete_snackbar_msg
 import homen.composeapp.generated.resources.chore_detail_memo_title
 import homen.composeapp.generated.resources.chore_detail_title
 import homen.composeapp.generated.resources.chore_detail_weekly_progress_completed
@@ -76,6 +85,7 @@ import homen.composeapp.generated.resources.chore_info_point_days
 import homen.composeapp.generated.resources.edit_alt_icon
 import homen.composeapp.generated.resources.menu_dot_icon
 import homen.composeapp.generated.resources.pin_black_icon
+import homen.composeapp.generated.resources.snackbar_cancel
 import homen.composeapp.generated.resources.star_black_icon
 import homen.composeapp.generated.resources.trash_alt_icon
 import kotlinx.coroutines.flow.collectLatest
@@ -89,10 +99,24 @@ fun ChoreDetailScreen(
     viewModel: ChoreDetailViewModel = koinViewModel(),
     choreId: Int,
     onBackClick: () -> Unit,
+    onDeleteChoreSuccess: (Int) -> Unit,
     onNavToMemo: (Int?, String?, Boolean) -> Unit
 ) {
     val uiState by viewModel.viewState
+    val snackbarHostState = remember { SnackbarHostState() }
 
+    DisposableEffect(Unit) {
+        onDispose {
+            viewModel.setEvent(ChoreDetailContract.Event.OnDispose)
+        }
+    }
+
+    BackHandler {
+        viewModel.setEvent(ChoreDetailContract.Event.OnBackClick)
+    }
+
+    val snackbarMsg = stringResource(Res.string.chore_detail_memo_delete_snackbar_msg)
+    val cancelMsg = stringResource(Res.string.snackbar_cancel)
     LaunchedEffect(viewModel.effect) {
         viewModel.effect.collectLatest { effect ->
             when (effect) {
@@ -102,6 +126,31 @@ fun ChoreDetailScreen(
 
                 is ChoreDetailContract.Effect.NavigateToMemo -> {
                     onNavToMemo(effect.memoId, effect.content, effect.isEdit)
+                }
+
+                is ChoreDetailContract.Effect.ShowDeleteMemoSnackBar -> {
+                    val result = snackbarHostState.showSnackbar(
+                        message = snackbarMsg,
+                        actionLabel = cancelMsg,
+                        duration = SnackbarDuration.Short
+                    )
+                    when (result) {
+                        SnackbarResult.ActionPerformed -> {
+                            viewModel.setEvent(
+                                ChoreDetailContract.Event.OnUndoDeleteMemo(
+                                    memo = effect.memo,
+                                    index = effect.index
+                                )
+                            )
+                        }
+                        SnackbarResult.Dismissed -> {
+                            viewModel.setEvent(ChoreDetailContract.Event.OnDeleteConfirmMemo(effect.memo.id))
+                        }
+                    }
+                }
+
+                is ChoreDetailContract.Effect.NavigateToBackWithDelete -> {
+                    onDeleteChoreSuccess(effect.choreId)
                 }
             }
         }
@@ -113,11 +162,15 @@ fun ChoreDetailScreen(
 
     ChoreDetailContent(
         uiState = uiState,
+        snackbarHostState = snackbarHostState,
         onNavToMemo = { memoId, content, isEdit ->
            viewModel.setEvent(ChoreDetailContract.Event.OnNavToMemo(memoId, content, isEdit))
         },
         onDeleteMemo = {
-            viewModel.setEvent(ChoreDetailContract.Event.OnDeleteMemo(choreId, it))
+            viewModel.setEvent(ChoreDetailContract.Event.OnDeleteMemo(it))
+        },
+        onDeleteChore = {
+            viewModel.setEvent(ChoreDetailContract.Event.OnDeleteChore)
         },
         onBackClick = { viewModel.setEvent(ChoreDetailContract.Event.OnBackClick) }
     )
@@ -126,10 +179,14 @@ fun ChoreDetailScreen(
 @Composable
 fun ChoreDetailContent(
     uiState: ChoreDetailContract.State,
+    snackbarHostState: SnackbarHostState,
     onNavToMemo: (Int?, String?, Boolean) -> Unit,
     onDeleteMemo: (Int) -> Unit,
+    onDeleteChore: () -> Unit,
     onBackClick: () -> Unit
 ) {
+    var expandedMemoId by remember { mutableStateOf<Int?>(null) }
+
     HomeNScreen(
         topBar = {
             TitleTopBar(
@@ -138,12 +195,20 @@ fun ChoreDetailContent(
             )
         },
         mainIsLoading = uiState.isLoading,
+        snackbarHost = {
+            SnackbarHost(
+                hostState = snackbarHostState
+            )
+        }
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = HomeNTheme.dimensions.horizontalPadding)
                 .verticalScroll(rememberScrollState())
+                .pointerInput(Unit) {
+                    detectTapGestures(onTap = { expandedMemoId = null })
+                }
         ) {
             Spacer(modifier = Modifier.height(42.dp))
 
@@ -168,7 +233,7 @@ fun ChoreDetailContent(
 
             ChoreDetailItem(
                 chore = uiState.chore,
-                onDeleteClick = {},
+                onDeleteClick = { onDeleteChore() },
                 onEditClick = {}
             )
 
@@ -180,11 +245,17 @@ fun ChoreDetailContent(
 
             MemoSection(
                 memos = uiState.memos,
+                expandedMemoId = expandedMemoId,
+                onMenuClick = { id ->
+                    expandedMemoId = if (expandedMemoId == id) null else id
+                },
                 onNavToMemo = onNavToMemo,
                 onDeleteMemo = {
                     onDeleteMemo(it)
                 }
             )
+            
+            Spacer(modifier = Modifier.height(100.dp))
         }
     }
 }
@@ -470,6 +541,8 @@ fun WeeklyProgressItem(weeklyProgress: WeeklyProgress) {
 @Composable
 fun MemoSection(
     memos: List<Memo>,
+    expandedMemoId: Int?,
+    onMenuClick: (Int) -> Unit,
     onNavToMemo: (Int?, String?, Boolean) -> Unit,
     onDeleteMemo: (Int) -> Unit
 ) {
@@ -513,6 +586,8 @@ fun MemoSection(
         memos.forEachIndexed { index, memo ->
             MemoItem(
                 memo = memo,
+                isExpanded = expandedMemoId == memo.id,
+                onMenuClick = { onMenuClick(memo.id) },
                 onNavToMemo = onNavToMemo,
                 onDeleteMemo = {
                     onDeleteMemo(memo.id)
@@ -528,11 +603,11 @@ fun MemoSection(
 @Composable
 fun MemoItem(
     memo: Memo,
+    isExpanded: Boolean,
+    onMenuClick: () -> Unit,
     onNavToMemo: (Int?, String?, Boolean) -> Unit,
     onDeleteMemo: () -> Unit
 ) {
-    var isExpanded by remember { mutableStateOf(false) }
-
     Box(
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -612,7 +687,7 @@ fun MemoItem(
                         interactionSource = remember { MutableInteractionSource() },
                         indication = null
                     ) {
-                        isExpanded = !isExpanded
+                        onMenuClick()
                     },
             )
         }
@@ -647,8 +722,10 @@ fun ChoreDetailContentPreview() {
                 )
             )
         ),
+        snackbarHostState = SnackbarHostState(),
         onNavToMemo = { _, _, _ ->},
         onDeleteMemo = {},
+        onDeleteChore = {},
         onBackClick = {},
     )
 }

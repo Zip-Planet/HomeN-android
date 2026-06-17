@@ -6,7 +6,9 @@ import com.devndev.homen.core.domain.model.common.ApiResult
 import com.devndev.homen.core.domain.usecase.home.DeleteMemoUseCase
 import com.devndev.homen.core.domain.usecase.home.GetChoreDetailUseCase
 import com.devndev.homen.core.domain.usecase.home.GetMemosUseCase
-import com.devndev.homen.ui.main.home.choredetail.viewmodel.ChoreDetailContract.Effect.*
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class ChoreDetailViewModel(
@@ -14,6 +16,9 @@ class ChoreDetailViewModel(
     private val getMemosUseCase: GetMemosUseCase,
     private val deleteMemoUseCase: DeleteMemoUseCase
 ) : BaseViewModel<ChoreDetailContract.Event, ChoreDetailContract.State, ChoreDetailContract.Effect>() {
+    
+    private val pendingDeleteJobs = mutableMapOf<Int, Job>()
+    
     override fun setInitialState() = ChoreDetailContract.State()
 
     override fun handleEvents(event: ChoreDetailContract.Event) {
@@ -25,10 +30,14 @@ class ChoreDetailViewModel(
             ChoreDetailContract.Event.OnBackClick -> {
                 setEffect { ChoreDetailContract.Effect.NavigateToBack }
             }
+            
+            ChoreDetailContract.Event.OnDispose -> {
+                flushPendingDeletes()
+            }
 
             is ChoreDetailContract.Event.OnNavToMemo -> {
                 setEffect {
-                    NavigateToMemo(
+                    ChoreDetailContract.Effect.NavigateToMemo(
                         event.memoId,
                         event.content,
                         event.isEdit
@@ -37,7 +46,42 @@ class ChoreDetailViewModel(
             }
 
             is ChoreDetailContract.Event.OnDeleteMemo -> {
-                deleteMemo(event.choreId, event.memoId)
+                val index = viewState.value.memos.indexOfFirst { it.id == event.memoId }
+                if (index != -1) {
+                    val memo = viewState.value.memos[index]
+                    val updatedList = viewState.value.memos.toMutableList().apply {
+                        removeAt(index)
+                    }
+                    setState { copy(memos = updatedList) }
+                    startPendingDelete(event.memoId)
+                    setEffect { ChoreDetailContract.Effect.ShowDeleteMemoSnackBar(memo, index) }
+                }
+            }
+            
+            is ChoreDetailContract.Event.OnUndoDeleteMemo -> {
+                pendingDeleteJobs[event.memo.id]?.cancel()
+                pendingDeleteJobs.remove(event.memo.id)
+                
+                val currentList = viewState.value.memos.toMutableList()
+                if (event.index in 0..currentList.size) {
+                    currentList.add(event.index, event.memo)
+                } else {
+                    currentList.add(event.memo)
+                }
+                setState { copy(memos = currentList) }
+            }
+            
+            is ChoreDetailContract.Event.OnDeleteConfirmMemo -> {
+                pendingDeleteJobs[event.memoId]?.cancel()
+                pendingDeleteJobs.remove(event.memoId)
+                deleteMemo(viewState.value.chore.id!!, event.memoId)
+            }
+
+            is ChoreDetailContract.Event.OnDeleteChore -> {
+                val choreId = viewState.value.chore.id
+                if (choreId != null) {
+                    setEffect { ChoreDetailContract.Effect.NavigateToBackWithDelete(choreId) }
+                }
             }
         }
     }
@@ -57,14 +101,7 @@ class ChoreDetailViewModel(
                     }
                     getMemos(id)
                 }
-
-                is ApiResult.Error -> {
-
-                }
-
-                is ApiResult.NetworkError -> {
-
-                }
+                else -> {}
             }
             setState { copy(isLoading = false) }
         }
@@ -75,35 +112,51 @@ class ChoreDetailViewModel(
             val result = getMemosUseCase(id)
             when (result) {
                 is ApiResult.Success -> {
-                    setState { copy(memos = result.data) }
+                    val filteredMemos = result.data.filter { it.id !in pendingDeleteJobs.keys }
+                    setState { copy(memos = filteredMemos) }
                 }
-
-                is ApiResult.Error -> {
-
-                }
-
-                is ApiResult.NetworkError -> {
-
-                }
+                else -> {}
             }
         }
     }
 
+    private fun startPendingDelete(memoId: Int) {
+        pendingDeleteJobs[memoId]?.cancel()
+        val job = viewModelScope.launch {
+            try {
+                delay(5000)
+                deleteMemo(viewState.value.chore.id!!, memoId)
+                pendingDeleteJobs.remove(memoId)
+            } catch (e: Exception) {
+                // Cancelled
+            }
+        }
+        pendingDeleteJobs[memoId] = job
+    }
+
+    private fun flushPendingDeletes() {
+        if (pendingDeleteJobs.isEmpty()) return
+        val choreId = viewState.value.chore.id ?: return
+        
+        pendingDeleteJobs.forEach { (id, job) ->
+            job.cancel()
+            viewModelScope.launch(NonCancellable) {
+                deleteMemoUseCase(choreId, id)
+            }
+        }
+        pendingDeleteJobs.clear()
+    }
+
+    override fun onCleared() {
+        flushPendingDeletes()
+        super.onCleared()
+    }
+
     private fun deleteMemo(choreId: Int, memoId: Int) {
-        viewModelScope.launch {
+        viewModelScope.launch(NonCancellable) {
             val result = deleteMemoUseCase(choreId, memoId)
-            when (result) {
-                is ApiResult.Success -> {
-                    getMemos(choreId)
-                }
-
-                is ApiResult.Error -> {
-
-                }
-
-                is ApiResult.NetworkError -> {
-
-                }
+            if (result !is ApiResult.Success) {
+                getMemos(choreId)
             }
         }
     }

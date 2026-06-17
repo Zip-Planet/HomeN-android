@@ -11,6 +11,7 @@
     <string name="chore">집안일</string>
     <string name="report">리포트</string>
     <string name="save_button">저장</string>
+    <string name="snackbar_cancel">실행취소</string>
 
     <!-- Splash 화면 -->
     <string name="login_screen_msg">작은 집안일도 공평하게</string>
@@ -162,6 +163,7 @@
     <string name="chore_not_empty_title">s의 집안일</string>
     <string name="chore_not_empty_description">반복규칙과 난이도를 관리해보세요</string>
     <string name="chore_edit_title">집안일 수정</string>
+    <string name="chore_delete_snackbar_msg">집안일이 삭제되었어요</string>
 
     <!-- 집안일 생성 -->
     <string name="create_chore_title">집안일 추가</string>
@@ -184,6 +186,7 @@
     <string name="chore_detail_weekly_progress_incompleted">미완료</string>
     <string name="chore_detail_memo_title">메모</string>
     <string name="chore_detail_memo_add_btn">메모 추가</string>
+    <string name="chore_detail_memo_delete_snackbar_msg">메모가 삭제되었어요</string>
 
     <!-- 메모 -->
     <string name="memo_title">메모</string>
