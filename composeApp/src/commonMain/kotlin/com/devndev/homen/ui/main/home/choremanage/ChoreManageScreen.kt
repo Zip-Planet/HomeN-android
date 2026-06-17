@@ -105,7 +105,7 @@ fun ChoreManageScreen(
         snackbarHost = { 
             SnackbarHost(
                 hostState = snackbarHostState,
-                modifier = Modifier.padding(bottom = 40.dp)
+                modifier = Modifier.padding(bottom = 34.dp)
             ) 
         },
         isNeedBottomExpanded = uiState.chores.isNotEmpty()

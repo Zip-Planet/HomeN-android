@@ -186,6 +186,7 @@
     <string name="chore_detail_weekly_progress_incompleted">미완료</string>
     <string name="chore_detail_memo_title">메모</string>
     <string name="chore_detail_memo_add_btn">메모 추가</string>
+    <string name="chore_detail_memo_delete_snackbar_msg">메모가 삭제되었어요</string>
 
     <!-- 메모 -->
     <string name="memo_title">메모</string>
