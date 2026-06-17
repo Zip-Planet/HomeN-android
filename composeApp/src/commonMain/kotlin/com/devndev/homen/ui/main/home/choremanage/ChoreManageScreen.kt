@@ -6,20 +6,29 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
-import com.devndev.homen.core.common.util.Logger
-import com.devndev.homen.core.domain.model.home.Chore
+import com.devndev.homen.ui.component.BackHandler
 import com.devndev.homen.ui.component.HomeNScreen
 import com.devndev.homen.ui.component.TitleTopBar
 import com.devndev.homen.ui.main.home.choremanage.viewmodel.ChoreManageContract
 import com.devndev.homen.ui.main.home.choremanage.viewmodel.ChoreManageViewModel
 import homen.composeapp.generated.resources.Res
+import homen.composeapp.generated.resources.chore_delete_snackbar_msg
+import homen.composeapp.generated.resources.chore_detail_memo_add_btn
 import homen.composeapp.generated.resources.chore_manage_title
+import homen.composeapp.generated.resources.snackbar_cancel
 import kotlinx.coroutines.flow.collectLatest
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
@@ -34,8 +43,22 @@ fun ChoreManageScreen(
     onNavToStaterPack: () -> Unit
 ) {
     val uiState by viewModel.viewState
+    val snackbarHostState = remember { SnackbarHostState() }
 
+    DisposableEffect(Unit) {
+        onDispose {
+            viewModel.setEvent(ChoreManageContract.Event.OnDispose)
+        }
+    }
+
+    BackHandler {
+        viewModel.setEvent(ChoreManageContract.Event.OnBackClick)
+    }
+
+    val deleteMsg = stringResource(Res.string.chore_delete_snackbar_msg)
+    val cancelMsg = stringResource(Res.string.snackbar_cancel)
     LaunchedEffect(viewModel.effect) {
+
         viewModel.effect.collectLatest { effect ->
             when (effect) {
                 ChoreManageContract.Effect.NavigateToBack -> onBackClick()
@@ -43,6 +66,26 @@ fun ChoreManageScreen(
                 is ChoreManageContract.Effect.NavigateToEditChore -> onNavToEditChore(effect.id)
                 is ChoreManageContract.Effect.NavigateToChoreDetail -> onNavToChoreDetail(effect.id)
                 ChoreManageContract.Effect.NavigateToStaterPack -> onNavToStaterPack()
+                is ChoreManageContract.Effect.ShowDeleteSnackBar -> {
+                    val result = snackbarHostState.showSnackbar(
+                        message = deleteMsg,
+                        actionLabel = cancelMsg,
+                        duration = SnackbarDuration.Short
+                    )
+                    when (result) {
+                        SnackbarResult.ActionPerformed -> {
+                            viewModel.setEvent(
+                                ChoreManageContract.Event.OnUndoDelete(
+                                    chore = effect.chore,
+                                    index = effect.index
+                                )
+                            )
+                        }
+                        SnackbarResult.Dismissed -> {
+                            viewModel.setEvent(ChoreManageContract.Event.OnDeleteConfirm(effect.chore.id!!))
+                        }
+                    }
+                }
             }
         }
     }
@@ -59,6 +102,12 @@ fun ChoreManageScreen(
             )
         },
         mainIsLoading = uiState.isLoading,
+        snackbarHost = { 
+            SnackbarHost(
+                hostState = snackbarHostState,
+                modifier = Modifier.padding(bottom = 40.dp)
+            ) 
+        },
         isNeedBottomExpanded = uiState.chores.isNotEmpty()
     ) {
         Column(

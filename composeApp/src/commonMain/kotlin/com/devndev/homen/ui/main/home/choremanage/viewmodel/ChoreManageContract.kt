@@ -9,11 +9,14 @@ class ChoreManageContract {
     sealed class Event: ViewEvent {
         data object OnInit : Event()
         data object OnBackClick: Event()
+        data object OnDispose: Event()
         data class OnTooltipClick(val show: Boolean, val isEmptyChore: Boolean): Event()
         data class OnOptionClick(val option: Int): Event()
         data object OnNextButtonClick: Event()
         data object OnAddButtonClick: Event()
         data class OnDeleteClick(val id: Int): Event()
+        data class OnUndoDelete(val chore: Chore, val index: Int): Event()
+        data class OnDeleteConfirm(val id: Int): Event()
         data class OnEditClick(val id: Int): Event()
         data class OnChoreClick(val id: Int): Event()
     }
@@ -34,5 +37,6 @@ class ChoreManageContract {
         data class NavigateToEditChore(val id: Int): Effect()
         data class NavigateToChoreDetail(val id: Int): Effect()
         data object NavigateToStaterPack: Effect()
+        data class ShowDeleteSnackBar(val chore: Chore, val index: Int): Effect()
     }
 }
