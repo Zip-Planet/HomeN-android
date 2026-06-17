@@ -30,12 +30,16 @@ class KakaoAuthenticatorImpl(private val context: Context) : SocialAuthenticator
             }
         }
 
-        // AuthCodeClient를 사용하여 인가 코드만 요청
-        if (AuthCodeClient.instance.isKakaoTalkLoginAvailable(context)) {
-            AuthCodeClient.instance.authorizeWithKakaoTalk(context, callback = callback)
-        } else {
-            AuthCodeClient.instance.authorizeWithKakaoAccount(context, callback = callback)
-        }
+        // 액티비티 넘겨주지 않아 카카오 앱으로 로그인 실패 -> 무조건 웹으로 변경
+        AuthCodeClient.instance.authorizeWithKakaoAccount(context, callback = callback)
+
+
+//        // AuthCodeClient를 사용하여 인가 코드만 요청
+//        if (AuthCodeClient.instance.isKakaoTalkLoginAvailable(context)) {
+//            AuthCodeClient.instance.authorizeWithKakaoTalk(context, callback = callback)
+//        } else {
+//            AuthCodeClient.instance.authorizeWithKakaoAccount(context, callback = callback)
+//        }
     }
 //    override suspend fun authenticate(): SocialAuthResult<KakaoUser> = suspendCancellableCoroutine { continuation ->
 //        val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
