@@ -29,6 +29,8 @@ class CreateHomeContract {
         data object OnSkipClick : Event()
         data object OnCompleteClick : Event()
         data class OnInviteClick(val isShow: Boolean): Event()
+        data object OnKakaoShare: Event()
+        data object OnGeneralShare: Event()
     }
 
     data class State(

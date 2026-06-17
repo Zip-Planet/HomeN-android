@@ -18,7 +18,8 @@ fun initKoin(appDeclaration: KoinAppDeclaration = {}) = startKoin {
     modules(
         dataModule,
         domainModule,
-        viewModelModule
+        viewModelModule,
+        managerModule
     )
 }
 
@@ -27,10 +28,12 @@ fun initKoin(appDeclaration: KoinAppDeclaration = {}) = startKoin {
  */
 fun doInitKoin(
     kakaoAuthenticator: SocialAuthenticator<KakaoUser>,
-    appleAuthenticator: SocialAuthenticator<AppleUser>
+    appleAuthenticator: SocialAuthenticator<AppleUser>,
+    onKakaoShare: (String, String) -> Unit
 ) = initKoin {
     modules(module {
         single(named("kakao")) { kakaoAuthenticator }
         single(named("apple")) { appleAuthenticator }
+        single(named("onKakaoShare")) { onKakaoShare }
     })
 }
