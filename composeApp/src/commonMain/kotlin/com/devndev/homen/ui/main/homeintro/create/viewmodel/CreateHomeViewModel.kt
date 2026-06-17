@@ -11,10 +11,12 @@ import com.devndev.homen.core.domain.model.home.Chore
 import com.devndev.homen.core.domain.model.home.CreateHome
 import com.devndev.homen.core.domain.model.home.Reward
 import com.devndev.homen.core.domain.usecase.home.CreateHomeUseCase
+import com.devndev.homen.util.ShareManager
 import kotlinx.coroutines.launch
 
 class CreateHomeViewModel(
-    private val createHomeUseCase: CreateHomeUseCase
+    private val createHomeUseCase: CreateHomeUseCase,
+    private val shareManager: ShareManager
 ) : BaseViewModel<CreateHomeContract.Event, CreateHomeContract.State, CreateHomeContract.Effect>() {
 
     override fun setInitialState() = CreateHomeContract.State()
@@ -89,6 +91,13 @@ class CreateHomeViewModel(
             }
             is CreateHomeContract.Event.OnInviteClick -> {
                 setState { copy(isShowInvitePopup = event.isShow) }
+            }
+
+            CreateHomeContract.Event.OnGeneralShare -> {
+                shareManager.shareText(viewState.value.inviteCode, viewState.value.homeName)
+            }
+            CreateHomeContract.Event.OnKakaoShare -> {
+                shareManager.shareKakaoInvite(viewState.value.inviteCode, viewState.value.homeName)
             }
         }
     }

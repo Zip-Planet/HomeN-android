@@ -41,6 +41,7 @@ kotlin {
             implementation(libs.androidx.activity.compose)
             implementation(libs.koin.android)
             implementation(libs.kakao.user.v2)
+            implementation(libs.kakao.share.v2)
         }
         commonMain.dependencies {
             api(project(":core:domain"))

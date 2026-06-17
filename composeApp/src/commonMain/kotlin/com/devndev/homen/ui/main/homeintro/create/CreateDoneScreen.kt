@@ -104,8 +104,12 @@ fun CreateDoneScreen(
                     duration = ToastDuration.Short
                 )
             },
-            onKakaoShare = { },
-            onGeneralShare = {}
+            onKakaoShare = {
+                viewModel.setEvent(CreateHomeContract.Event.OnKakaoShare)
+            },
+            onGeneralShare = {
+                viewModel.setEvent(CreateHomeContract.Event.OnGeneralShare)
+            }
         )
     }
 
