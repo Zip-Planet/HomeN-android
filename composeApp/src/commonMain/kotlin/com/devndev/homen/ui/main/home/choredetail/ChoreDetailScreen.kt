@@ -99,6 +99,7 @@ fun ChoreDetailScreen(
     viewModel: ChoreDetailViewModel = koinViewModel(),
     choreId: Int,
     onBackClick: () -> Unit,
+    onDeleteChoreSuccess: (Int) -> Unit,
     onNavToMemo: (Int?, String?, Boolean) -> Unit
 ) {
     val uiState by viewModel.viewState
@@ -147,6 +148,10 @@ fun ChoreDetailScreen(
                         }
                     }
                 }
+
+                is ChoreDetailContract.Effect.NavigateToBackWithDelete -> {
+                    onDeleteChoreSuccess(effect.choreId)
+                }
             }
         }
     }
@@ -164,6 +169,9 @@ fun ChoreDetailScreen(
         onDeleteMemo = {
             viewModel.setEvent(ChoreDetailContract.Event.OnDeleteMemo(it))
         },
+        onDeleteChore = {
+            viewModel.setEvent(ChoreDetailContract.Event.OnDeleteChore)
+        },
         onBackClick = { viewModel.setEvent(ChoreDetailContract.Event.OnBackClick) }
     )
 }
@@ -174,6 +182,7 @@ fun ChoreDetailContent(
     snackbarHostState: SnackbarHostState,
     onNavToMemo: (Int?, String?, Boolean) -> Unit,
     onDeleteMemo: (Int) -> Unit,
+    onDeleteChore: () -> Unit,
     onBackClick: () -> Unit
 ) {
     var expandedMemoId by remember { mutableStateOf<Int?>(null) }
@@ -224,7 +233,7 @@ fun ChoreDetailContent(
 
             ChoreDetailItem(
                 chore = uiState.chore,
-                onDeleteClick = {},
+                onDeleteClick = { onDeleteChore() },
                 onEditClick = {}
             )
 
@@ -716,6 +725,7 @@ fun ChoreDetailContentPreview() {
         snackbarHostState = SnackbarHostState(),
         onNavToMemo = { _, _, _ ->},
         onDeleteMemo = {},
+        onDeleteChore = {},
         onBackClick = {},
     )
 }

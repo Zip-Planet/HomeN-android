@@ -1,5 +1,7 @@
 package com.devndev.homen.ui.main.home.main.navigation
 
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -27,8 +29,16 @@ fun NavGraphBuilder.homeNav(navController: NavController) {
         exitTransition = NavTransitions.exitTransition,
         popEnterTransition = NavTransitions.popEnterTransition,
         popExitTransition = NavTransitions.popExitTransition
-    ) {
+    ) { backStackEntry ->
+        val deletedChoreId by backStackEntry.savedStateHandle
+            .getStateFlow<Int?>("deleted_chore_id", null)
+            .collectAsState()
+
         ChoreManageScreen(
+            deletedChoreId = deletedChoreId,
+            onDeleteConsumed = {
+                backStackEntry.savedStateHandle["deleted_chore_id"] = null
+            },
             onBackClick = {
                 navController.popBackStack()
             },
@@ -82,7 +92,7 @@ fun NavGraphBuilder.homeNav(navController: NavController) {
         popEnterTransition = NavTransitions.popEnterTransition,
         popExitTransition = NavTransitions.popExitTransition
     ) { backStackEntry ->
-        val route: HomeRoute.EditChore = backStackEntry.toRoute()
+        val route: HomeRoute.ChoreDetail = backStackEntry.toRoute()
         ChoreDetailScreen(
             onBackClick = {
                 navController.popBackStack()
@@ -90,6 +100,10 @@ fun NavGraphBuilder.homeNav(navController: NavController) {
             choreId = route.choreId,
             onNavToMemo = { memoId, content, isEdit ->
                 navController.navigate(HomeRoute.Memo(route.choreId, memoId, content, isEdit))
+            },
+            onDeleteChoreSuccess = { deletedId ->
+                navController.previousBackStackEntry?.savedStateHandle?.set("deleted_chore_id", deletedId)
+                navController.popBackStack()
             }
         )
     }

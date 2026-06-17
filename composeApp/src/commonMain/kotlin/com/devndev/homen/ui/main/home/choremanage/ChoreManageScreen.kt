@@ -26,7 +26,6 @@ import com.devndev.homen.ui.main.home.choremanage.viewmodel.ChoreManageContract
 import com.devndev.homen.ui.main.home.choremanage.viewmodel.ChoreManageViewModel
 import homen.composeapp.generated.resources.Res
 import homen.composeapp.generated.resources.chore_delete_snackbar_msg
-import homen.composeapp.generated.resources.chore_detail_memo_add_btn
 import homen.composeapp.generated.resources.chore_manage_title
 import homen.composeapp.generated.resources.snackbar_cancel
 import kotlinx.coroutines.flow.collectLatest
@@ -36,6 +35,8 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun ChoreManageScreen(
     viewModel: ChoreManageViewModel = koinViewModel(),
+    deletedChoreId: Int? = null,
+    onDeleteConsumed: () -> Unit = {},
     onBackClick: () -> Unit,
     onNavToCreateChore: () -> Unit,
     onNavToEditChore: (Int) -> Unit,
@@ -44,6 +45,13 @@ fun ChoreManageScreen(
 ) {
     val uiState by viewModel.viewState
     val snackbarHostState = remember { SnackbarHostState() }
+
+    LaunchedEffect(deletedChoreId) {
+        deletedChoreId?.let { id ->
+            viewModel.setEvent(ChoreManageContract.Event.OnDeleteClick(id))
+            onDeleteConsumed()
+        }
+    }
 
     DisposableEffect(Unit) {
         onDispose {
@@ -58,7 +66,6 @@ fun ChoreManageScreen(
     val deleteMsg = stringResource(Res.string.chore_delete_snackbar_msg)
     val cancelMsg = stringResource(Res.string.snackbar_cancel)
     LaunchedEffect(viewModel.effect) {
-
         viewModel.effect.collectLatest { effect ->
             when (effect) {
                 ChoreManageContract.Effect.NavigateToBack -> onBackClick()

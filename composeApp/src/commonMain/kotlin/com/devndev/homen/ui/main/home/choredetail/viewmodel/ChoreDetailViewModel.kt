@@ -6,7 +6,6 @@ import com.devndev.homen.core.domain.model.common.ApiResult
 import com.devndev.homen.core.domain.usecase.home.DeleteMemoUseCase
 import com.devndev.homen.core.domain.usecase.home.GetChoreDetailUseCase
 import com.devndev.homen.core.domain.usecase.home.GetMemosUseCase
-import com.devndev.homen.ui.main.home.choredetail.viewmodel.ChoreDetailContract.Effect.*
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.delay
@@ -38,7 +37,7 @@ class ChoreDetailViewModel(
 
             is ChoreDetailContract.Event.OnNavToMemo -> {
                 setEffect {
-                    NavigateToMemo(
+                    ChoreDetailContract.Effect.NavigateToMemo(
                         event.memoId,
                         event.content,
                         event.isEdit
@@ -55,7 +54,7 @@ class ChoreDetailViewModel(
                     }
                     setState { copy(memos = updatedList) }
                     startPendingDelete(event.memoId)
-                    setEffect { ShowDeleteMemoSnackBar(memo, index) }
+                    setEffect { ChoreDetailContract.Effect.ShowDeleteMemoSnackBar(memo, index) }
                 }
             }
             
@@ -76,6 +75,13 @@ class ChoreDetailViewModel(
                 pendingDeleteJobs[event.memoId]?.cancel()
                 pendingDeleteJobs.remove(event.memoId)
                 deleteMemo(viewState.value.chore.id!!, event.memoId)
+            }
+
+            is ChoreDetailContract.Event.OnDeleteChore -> {
+                val choreId = viewState.value.chore.id
+                if (choreId != null) {
+                    setEffect { ChoreDetailContract.Effect.NavigateToBackWithDelete(choreId) }
+                }
             }
         }
     }
