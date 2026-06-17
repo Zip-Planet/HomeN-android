@@ -46,7 +46,7 @@ class AndroidShareManager(private val context: Context) : ShareManager {
             ShareClient.instance.shareDefault(context, textTemplate) { sharingResult, error ->
                 if (error != null) {
                     // 에러 발생 시 일반 공유로 대체
-                    shareText("[$homeName] 홈 초대코드: $inviteCode")
+                    shareText(inviteCode, homeName)
                 } else if (sharingResult != null) {
                     context.startActivity(sharingResult.intent)
                 }
@@ -58,7 +58,7 @@ class AndroidShareManager(private val context: Context) : ShareManager {
                 KakaoCustomTabsClient.openWithDefault(context, sharerUrl)
             } catch (e: Exception) {
                 // 웹 브라우저도 실패 시 일반 공유로 대체
-                shareText("[$homeName] 홈 초대코드: $inviteCode")
+                shareText(inviteCode, homeName)
             }
         }
     }
