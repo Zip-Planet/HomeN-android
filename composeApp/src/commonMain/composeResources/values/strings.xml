@@ -12,6 +12,7 @@
     <string name="report">리포트</string>
     <string name="save_button">저장</string>
     <string name="snackbar_cancel">실행취소</string>
+    <string name="board">보드</string>
 
     <!-- Splash 화면 -->
     <string name="login_screen_msg">작은 집안일도 공평하게</string>
@@ -194,6 +195,28 @@
     <string name="create_memo_title">메모 추가</string>
     <string name="create_memo_hint">예: 락스 사용 시 환기 필수</string>
     <string name="edit_memo_title">메모 수정</string>
+
+    <!-- 보드 -->
+    <string name="board_homen_bot">Home/n 봇</string>
+    <string name="board_division_plan_message_btn">분담안 확인하기</string>
+    <string name="board_report_message_title">주간 리포트를 확인해보세요</string>
+    <string name="board_report_message_btn">리포트 확인하기</string>
+    <string name="board_report_mvp_message">우리집 MVP:</string>
+    <string name="board_reward_message_title">리워드 달성</string>
+    <string name="board_reward_message_btn">리워드 확인하기</string>
+    <string name="board_bot_type">Home/n 봇</string>
+    <string name="board_request_help_type">도움 요청</string>
+    <string name="board_request_exchange_type">교환 요청</string>
+    <string name="board_request_help_title">s님의 도움 요청</string>
+    <string name="board_request_help_highlight_text">도움 요청</string>
+    <string name="board_request_help_btn">내가 도와줄게</string>
+    <string name="board_request_help_cancel_btn">요청 취소</string>
+    <string name="board_request_help_accept_title">s님의 도움 요청 수락</string>
+    <string name="board_request_help_accept_highlight_text">도움 요청 수락</string>
+    <string name="board_request_help_expire_title">s님의 도움 요청 만료</string>
+    <string name="board_request_help_expire_highlight_text">도움 요청 만료</string>
+    <string name="board_request_help_expire_message">완료 날짜가 지나 도움 요청이 자동으로 종료됐어요</string>
+
 
     <!-- 초대 팝업 -->
     <string name="invite_popup_title">s 초대코드</string>

@@ -21,7 +21,8 @@ fun HomeNButton(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    enabled: Boolean = true
+    enabled: Boolean = true,
+    color: Color = Color.Black
 ) {
     Button(
         onClick = onClick,
@@ -31,7 +32,7 @@ fun HomeNButton(
         enabled = enabled,
         shape = RoundedCornerShape(10.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = Color.Black,
+            containerColor = color,
             contentColor = Color.White,
             disabledContainerColor = ButtonGray,
             disabledContentColor = BottomGray
