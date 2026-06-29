@@ -1,5 +1,7 @@
 package com.devndev.homen.ui.main.home.main.navigation
 
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.navigation.NavController
@@ -17,7 +19,10 @@ import com.devndev.homen.ui.main.home.starterpackpreview.StarterPackPreviewScree
 import com.devndev.homen.ui.main.navigation.BottomNavItem
 
 fun NavGraphBuilder.homeNav(navController: NavController) {
-    composable<BottomNavItem.Home> {
+    composable<BottomNavItem.Home>(
+        enterTransition = { EnterTransition.None },
+        exitTransition = { ExitTransition.None }
+    ) {
         HomeScreen(
             onNavToChoreManage = {
                 navController.navigate(HomeRoute.ChoreManage)
