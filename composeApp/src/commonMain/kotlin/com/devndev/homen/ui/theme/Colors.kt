@@ -21,6 +21,7 @@ val Blue2 = Color(0xFF5270FE)
 val Blue60ABFB = Color(0xFF60ABFB)
 val Blue4 = Color(0xFFAFE1FC)
 val Blue4736FC = Color(0xFF4736FC)
+val BlueCAEAFC = Color(0xFFCAEAFC)
 
 val YellowFF = Color(0xFFbacFFDF5B)
 
@@ -28,3 +29,7 @@ val PinkFF = Color(0xFFFFAEB4)
 
 val RedFF1E1E = Color(0xFFFF1E1E)
 val RedFFCACA = Color(0xFFFFCACA)
+
+val OrangeFF8431 = Color(0xFFFF8431)
+
+val Green28A049 = Color(0xFF28A049)
