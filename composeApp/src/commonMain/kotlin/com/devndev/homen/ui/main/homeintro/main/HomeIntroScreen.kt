@@ -38,8 +38,8 @@ import homen.composeapp.generated.resources.Res
 import homen.composeapp.generated.resources.create_btn_msg
 import homen.composeapp.generated.resources.home_entry_guide_msg
 import homen.composeapp.generated.resources.home_entry_guide_title
-import homen.composeapp.generated.resources.home_entry_title
 import homen.composeapp.generated.resources.home_icon
+import homen.composeapp.generated.resources.home_start_title
 import homen.composeapp.generated.resources.join_btn_msg
 import homen.composeapp.generated.resources.key_icon
 import homen.composeapp.generated.resources.logout
@@ -73,7 +73,7 @@ fun HomeIntroScreen(
     HomeNScreen(
         topBar = {
             TitleTopBar(
-                title = stringResource(Res.string.home_entry_title),
+                title = stringResource(Res.string.home_start_title),
                 isBackVisible = false
             )
         },

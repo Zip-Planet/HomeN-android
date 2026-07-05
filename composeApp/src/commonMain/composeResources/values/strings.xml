@@ -32,9 +32,10 @@
     <string name="nickname_invalid_msg">이미 사용중인 닉네임입니다.</string>
 
     <!-- 집 입장하기 화면 -->
+    <string name="home_start_title">시작하기</string>
     <string name="home_entry_title">집 입장하기</string>
     <string name="home_entry_guide_title">어떻게 시작할까요?</string>
-    <string name="home_entry_guide_msg">새 집을 생성하거나, 초대받은 집에 참여하세요</string>
+    <string name="home_entry_guide_msg">내가 관리자가 되어 새 집을 만들거나,\n룸메이트의 초대 코드를 입력해 보세요</string>
     <string name="create_btn_msg">집 생성하기</string>
     <string name="join_btn_msg">초대코드로 참여하기</string>
     <string name="join_code_title">초대코드를 입력하세요</string>
