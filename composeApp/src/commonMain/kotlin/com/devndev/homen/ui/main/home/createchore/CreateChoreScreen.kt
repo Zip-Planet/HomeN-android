@@ -278,7 +278,10 @@ fun CategoryItem(
                     if (isSelected) Modifier.border(1.dp, Color.Black, CircleShape)
                     else Modifier
                 )
-                .clickable {
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = null
+                ) {
                     onClick()
                 },
             contentAlignment = Alignment.Center

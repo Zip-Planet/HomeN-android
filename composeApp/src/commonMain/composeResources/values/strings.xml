@@ -15,11 +15,14 @@
     <string name="board">보드</string>
 
     <!-- Splash 화면 -->
-    <string name="login_screen_msg">작은 집안일도 공평하게</string>
+    <string name="login_screen_msg1">집안일을 데이터로 공평하게</string>
+    <string name="login_screen_msg2">집안일 조율은 스트레스 없이 간편하게</string>
+    <string name="login_screen_msg3">집안일 분담은 자동으로 편리하게</string>
 
     <!-- 로그인 화면 -->
     <string name="terms_of_service">이용약관</string>
     <string name="privacy_policy">개인정보처리방침</string>
+    <string name="login_screen_agree_message">가입을 진행할 경우, 위 정책에 대해 동의한 것으로 간주합니다</string>
 
     <!-- Register 화면 -->
     <string name="profile_setting_title">프로필 설정</string>
@@ -27,11 +30,13 @@
     <string name="nickname_hint">특수문자 제외 한글, 영어만 입력해 주세요</string>
     <string name="select_avatar_msg">아바타를 선택해주세요</string>
     <string name="nickname_invalid_msg">이미 사용중인 닉네임입니다.</string>
+    <string name="select_home_icon_msg">우리집 아이콘을 선택해주세요</string>
 
     <!-- 집 입장하기 화면 -->
+    <string name="home_start_title">시작하기</string>
     <string name="home_entry_title">집 입장하기</string>
     <string name="home_entry_guide_title">어떻게 시작할까요?</string>
-    <string name="home_entry_guide_msg">새 집을 생성하거나, 초대받은 집에 참여하세요</string>
+    <string name="home_entry_guide_msg">내가 관리자가 되어 새 집을 만들거나,\n룸메이트의 초대 코드를 입력해 보세요</string>
     <string name="create_btn_msg">집 생성하기</string>
     <string name="join_btn_msg">초대코드로 참여하기</string>
     <string name="join_code_title">초대코드를 입력하세요</string>
@@ -47,9 +52,9 @@
     <string name="enter_homen_btn">Home/n 시작하기</string>
     <string name="join_done_title">s 입장 완료</string>
     <string name="join_done_subtitle">Home/n 에서 집안일을 N분의 1로 나눠보세요</string>
-    <string name="join_done_msg1">지난 데이터를 기반으로 공평하게 집안일을 분담해요</string>
-    <string name="join_done_msg2">이번주 집안일과 진행률을 한눈에 확인해요</string>
-    <string name="join_done_msg3">말로 길게 설명하지 마세요, 집안일을 간편하게 조율해요</string>
+    <string name="join_done_msg1">집안일의 난이도를 계산해 가장 공평하게 분배해요</string>
+    <string name="join_done_msg2">이번 주 남은 집안일과 서로의 진행률을 한눈에 파악해요</string>
+    <string name="join_done_msg3">잔소리나 감정 소모 없이, 시스템으로 깔끔하게 조율해요</string>
     <string name="join_invalid_code_msg">일치하는 집을 찾을 수 없어요\n코드를 다시 확인해 주세요</string>
 
     <!-- 집 생성하기 화면 -->
@@ -64,7 +69,7 @@
     <string name="home_create_onboarding_time_msg">1분이면 충분해요</string>
     <string name="home_create_onboarding_btn">시작하기</string>
 
-    <string name="home_create_profile_title">우리집 프로필을\n만들어볼까요?</string>
+    <string name="home_create_profile_title">우리집 프로필을 만들어볼까요?</string>
 
     <string name="home_create_step1_title">집 프로필</string>
     <string name="home_create_step2_title">스타터팩</string>
@@ -87,9 +92,12 @@
     <string name="home_create_pack_add_manual_btn">직접 추가</string>
     <string name="home_create_pack_preview_btn">선택한 팩 미리보기</string>
     <string name="home_create_pack_tooltip_title">스타터팩은 가벼운 초안이에요.</string>
-    <string name="home_create_pack_tooltip_msg">나중에 우리 집에 맞춰 언제든 자유롭게 추가하고 수정할 수 있어요.</string>
+    <string name="home_create_pack_tooltip_msg">나중에 우리 집에 맞춰 언제든\n자유롭게 추가하고 수정할 수 있어요.</string>
     <string name="home_create_done_title">s 생성 완료</string>
     <string name="home_create_invite_btn">구성원 초대하기</string>
+    <string name="home_starter_pack_tooltip_title">언제든 우리 집에 맞게 수정할 수 있어요</string>
+    <string name="home_starter_pack_tooltip_msg">집안일을 빼거나 추가하고, 난이도(포인트)도\n자유롭게 바꿀 수 있으니 가볍게 시작해 보세요</string>
+
 
     <!-- 스타터팩 미리보기 -->
     <string name="home_create_preview_included_chores">포함된 집안일</string>
@@ -228,9 +236,6 @@
     <string name="board_request_exchange_reject_title">s님의 교환 요청 거절</string>
     <string name="board_request_exchange_reject_highlight_text">교환 요청 거절</string>
     <string name="board_request_exchange_reject_message">상대가 이번 교환은 진행하기 어렵다고 했어요</string>
-
-
-
 
     <!-- 초대 팝업 -->
     <string name="invite_popup_title">s 초대코드</string>

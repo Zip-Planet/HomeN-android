@@ -2,6 +2,7 @@ package com.devndev.homen.ui.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
@@ -14,10 +15,11 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun Dot(
     width: Int,
+    height: Int = 0,
     dotSize: Int
 ) {
     Box(
-        modifier = Modifier.width(width = width.dp),
+        modifier = Modifier.width(width = width.dp).height(height = height.dp),
         contentAlignment = Alignment.Center
     ) {
         Box(

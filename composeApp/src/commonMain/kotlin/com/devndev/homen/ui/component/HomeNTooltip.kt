@@ -91,17 +91,11 @@ fun HomeNTooltip(
                         horizontalArrangement = Arrangement.spacedBy(3.dp),
                         verticalAlignment = Alignment.Top
                     ) {
-                        Box(
-                            modifier = Modifier.size(15.dp),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(
-                                text = "·",
-                                style = HomeNTheme.typography.suitExtraBold,
-                                fontSize = 12.sp,
-                                color = Color.Black
-                            )
-                        }
+                        Dot(
+                            width = 15,
+                            height = 15,
+                            dotSize = 2
+                        )
 
                         Text(
                             text = message,
@@ -142,7 +136,10 @@ fun TooltipButton(
             .size(25.dp)
             .clip(CircleShape)
             .background(Color.Black)
-            .clickable {
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null
+            ) {
                 onClick()
             },
         contentAlignment = Alignment.Center

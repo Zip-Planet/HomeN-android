@@ -1,6 +1,7 @@
 package com.devndev.homen.ui.intro.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -15,6 +16,8 @@ fun IntroNav(
 ) {
     val introNavController = rememberNavController()
 
+    val msgIndex = remember { (1..3).random() }
+
     NavHost(
         navController = introNavController,
         startDestination = IntroRoute.Splash,
@@ -26,6 +29,7 @@ fun IntroNav(
             popExitTransition = { androidx.compose.animation.ExitTransition.None }
         ) {
             SplashScreen(
+                msgIndex = msgIndex,
                 onNavToMain =  { hasHome ->
                     onNavToMain(hasHome)
                 },
@@ -44,6 +48,7 @@ fun IntroNav(
             popExitTransition = { androidx.compose.animation.ExitTransition.None }
         ) {
             LoginScreen(
+                msgIndex = msgIndex,
                 onNavToMain = { hasHome ->
                     onNavToMain(hasHome)
                 },

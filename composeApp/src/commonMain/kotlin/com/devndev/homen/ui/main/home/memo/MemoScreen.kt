@@ -127,7 +127,8 @@ fun MemoContent(
                 maxChar = 0,
                 enabled = true,
                 regex = null,
-                height = 116
+                height = 116,
+                textStyle = HomeNTheme.typography.suitRegular
             )
             Spacer(modifier = Modifier.weight(1f))
 

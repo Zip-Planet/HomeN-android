@@ -136,7 +136,7 @@ class CreateHomeViewModel(
                 Chore(name = "일반/음식물 쓰레기 버리기", category = ChoreCategory.TRASH.id, repeatDays = listOf(RepeatDay.TUESDAY.value, RepeatDay.FRIDAY.value), difficulty = ChoreDifficulty.MEDIUM),
                 Chore(name = "공용 수건 세탁 및 건조대 널기", category = ChoreCategory.LAUNDRY.id, repeatDays = listOf(RepeatDay.THURSDAY.value, RepeatDay.SUNDAY.value), difficulty = ChoreDifficulty.MEDIUM),
                 Chore(name = "재활용 분리수거 및 박스 정리", category = ChoreCategory.TRASH.id, repeatDays = listOf(RepeatDay.WEDNESDAY.value, RepeatDay.SUNDAY.value), difficulty = ChoreDifficulty.UPPER_MEDIUM),
-                Chore(name = "화장실 전체 물청소", category = ChoreCategory.CLEANING.id, repeatDays = listOf(RepeatDay.SATURDAY.value), difficulty = ChoreDifficulty.HIGH),
+                Chore(name = "화장실 전체 물청소", category = ChoreCategory.BATHROOM.id, repeatDays = listOf(RepeatDay.SATURDAY.value), difficulty = ChoreDifficulty.HIGH),
             )
             StarterPackType.DORMITORY -> listOf(
                 Chore(name = "바닥 돌돌이(찍찍이) 밀기", category = ChoreCategory.CLEANING.id, repeatDays = listOf(RepeatDay.MONDAY.value, RepeatDay.WEDNESDAY.value, RepeatDay.FRIDAY.value), difficulty = ChoreDifficulty.LOW),

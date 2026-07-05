@@ -82,7 +82,7 @@ class StarterPackPreviewViewModel(
                 ),
                 Chore(
                     name = "화장실 전체 물청소",
-                    category = ChoreCategory.CLEANING.id,
+                    category = ChoreCategory.BATHROOM.id,
                     repeatDays = listOf(RepeatDay.SATURDAY.value),
                     difficulty = ChoreDifficulty.HIGH
                 ),

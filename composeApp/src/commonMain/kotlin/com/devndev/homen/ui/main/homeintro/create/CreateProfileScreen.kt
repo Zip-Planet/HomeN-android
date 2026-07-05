@@ -3,6 +3,7 @@ package com.devndev.homen.ui.main.homeintro.create
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,6 +20,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -38,7 +40,7 @@ import homen.composeapp.generated.resources.home2_small_icon
 import homen.composeapp.generated.resources.home3_small_icon
 import homen.composeapp.generated.resources.home_create_profile_title
 import homen.composeapp.generated.resources.nickname_hint
-import homen.composeapp.generated.resources.select_avatar_msg
+import homen.composeapp.generated.resources.select_home_icon_msg
 import kotlinx.coroutines.flow.collectLatest
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -76,7 +78,7 @@ fun CreateProfileScreen(
                 .fillMaxSize()
         ) {
 
-            Spacer(modifier = Modifier.height(52.dp))
+            Spacer(modifier = Modifier.height(39.dp))
 
             Text(
                 text = stringResource(Res.string.home_create_profile_title),
@@ -87,19 +89,20 @@ fun CreateProfileScreen(
                 color = Color.Black
             )
 
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(20.dp))
 
             HomeNTextField(
                 value = uiState.homeName,
                 onValueChange = { viewModel.setEvent(CreateHomeContract.Event.OnHomeNameChanged(it)) },
                 hint = stringResource(Res.string.nickname_hint),
-                maxChar = 10
+                maxChar = 10,
+                regex = Regex("^[a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣]*$")
             )
 
             Spacer(modifier = Modifier.height(48.dp))
 
             Text(
-                text = stringResource(Res.string.select_avatar_msg),
+                text = stringResource(Res.string.select_home_icon_msg),
                 style = HomeNTheme.typography.suitBold,
                 fontSize = 16.sp,
                 color = Color.Black
@@ -160,7 +163,10 @@ fun AvatarItem(
                 if (isSelected) Modifier.border(1.dp, Color.Black, CircleShape)
                 else Modifier
             )
-            .clickable { onClick() },
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null
+            ) { onClick() },
         contentAlignment = Alignment.Center
     ) {
         Icon(

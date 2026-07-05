@@ -81,10 +81,10 @@ import homen.composeapp.generated.resources.home_create_pack2_title
 import homen.composeapp.generated.resources.home_create_pack3_msg
 import homen.composeapp.generated.resources.home_create_pack3_title
 import homen.composeapp.generated.resources.home_create_pack_badge
-import homen.composeapp.generated.resources.home_create_pack_tooltip_msg
-import homen.composeapp.generated.resources.home_create_pack_tooltip_title
 import homen.composeapp.generated.resources.home_create_preview_apply_btn
 import homen.composeapp.generated.resources.home_create_preview_included_chores
+import homen.composeapp.generated.resources.home_starter_pack_tooltip_msg
+import homen.composeapp.generated.resources.home_starter_pack_tooltip_title
 import homen.composeapp.generated.resources.kitchen_icon
 import homen.composeapp.generated.resources.laundry_icon
 import homen.composeapp.generated.resources.pin_black_icon
@@ -343,8 +343,8 @@ fun CreatePreviewScreen(
 
             if (uiState.showTooltip) {
                 HomeNTooltip(
-                    title = stringResource(Res.string.home_create_pack_tooltip_title),
-                    messages = listOf(stringResource(Res.string.home_create_pack_tooltip_msg)),
+                    title = stringResource(Res.string.home_starter_pack_tooltip_title),
+                    messages = listOf(stringResource(Res.string.home_starter_pack_tooltip_msg)),
                     onCloseClick = {
                         viewModel.setEvent(
                             CreateHomeContract.Event.OnTooltipToggle(
