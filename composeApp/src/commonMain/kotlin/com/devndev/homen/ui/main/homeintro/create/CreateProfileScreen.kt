@@ -40,7 +40,7 @@ import homen.composeapp.generated.resources.home2_small_icon
 import homen.composeapp.generated.resources.home3_small_icon
 import homen.composeapp.generated.resources.home_create_profile_title
 import homen.composeapp.generated.resources.nickname_hint
-import homen.composeapp.generated.resources.select_avatar_msg
+import homen.composeapp.generated.resources.select_home_icon_msg
 import kotlinx.coroutines.flow.collectLatest
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -78,7 +78,7 @@ fun CreateProfileScreen(
                 .fillMaxSize()
         ) {
 
-            Spacer(modifier = Modifier.height(52.dp))
+            Spacer(modifier = Modifier.height(39.dp))
 
             Text(
                 text = stringResource(Res.string.home_create_profile_title),
@@ -89,19 +89,20 @@ fun CreateProfileScreen(
                 color = Color.Black
             )
 
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(20.dp))
 
             HomeNTextField(
                 value = uiState.homeName,
                 onValueChange = { viewModel.setEvent(CreateHomeContract.Event.OnHomeNameChanged(it)) },
                 hint = stringResource(Res.string.nickname_hint),
-                maxChar = 10
+                maxChar = 10,
+                regex = Regex("^[a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣]*$")
             )
 
             Spacer(modifier = Modifier.height(48.dp))
 
             Text(
-                text = stringResource(Res.string.select_avatar_msg),
+                text = stringResource(Res.string.select_home_icon_msg),
                 style = HomeNTheme.typography.suitBold,
                 fontSize = 16.sp,
                 color = Color.Black

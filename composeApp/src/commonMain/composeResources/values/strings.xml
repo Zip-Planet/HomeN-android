@@ -30,6 +30,7 @@
     <string name="nickname_hint">특수문자 제외 한글, 영어만 입력해 주세요</string>
     <string name="select_avatar_msg">아바타를 선택해주세요</string>
     <string name="nickname_invalid_msg">이미 사용중인 닉네임입니다.</string>
+    <string name="select_home_icon_msg">우리집 아이콘을 선택해주세요</string>
 
     <!-- 집 입장하기 화면 -->
     <string name="home_start_title">시작하기</string>
@@ -68,7 +69,7 @@
     <string name="home_create_onboarding_time_msg">1분이면 충분해요</string>
     <string name="home_create_onboarding_btn">시작하기</string>
 
-    <string name="home_create_profile_title">우리집 프로필을\n만들어볼까요?</string>
+    <string name="home_create_profile_title">우리집 프로필을 만들어볼까요?</string>
 
     <string name="home_create_step1_title">집 프로필</string>
     <string name="home_create_step2_title">스타터팩</string>
