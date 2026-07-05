@@ -216,6 +216,20 @@
     <string name="board_request_help_expire_title">s님의 도움 요청 만료</string>
     <string name="board_request_help_expire_highlight_text">도움 요청 만료</string>
     <string name="board_request_help_expire_message">완료 날짜가 지나 도움 요청이 자동으로 종료됐어요</string>
+    <string name="board_request_exchange_title">s님의 교환 요청</string>
+    <string name="board_request_exchange_highlight_text">교환 요청</string>"
+    <string name="board_request_exchange_next_btn">아쉽지만 다음에</string>
+    <string name="board_request_exchange_accept_btn">교환할게</string>
+    <string name="board_request_exchange_accept_title">s님의 교환 수락</string>
+    <string name="board_request_exchange_accept_highlight_text">교환 수락</string>">
+    <string name="board_request_exchange_expire_title">s님의 교환 요청 만료</string>
+    <string name="board_request_exchange_expire_highlight_text">교환 요청 만료</string>
+    <string name="board_request_exchange_expire_message">완료 날짜가 지나 교환 요청이 자동으로 종료됐어요</string>
+    <string name="board_request_exchange_reject_title">s님의 교환 요청 거절</string>
+    <string name="board_request_exchange_reject_highlight_text">교환 요청 거절</string>
+    <string name="board_request_exchange_reject_message">상대가 이번 교환은 진행하기 어렵다고 했어요</string>
+
+
 
 
     <!-- 초대 팝업 -->

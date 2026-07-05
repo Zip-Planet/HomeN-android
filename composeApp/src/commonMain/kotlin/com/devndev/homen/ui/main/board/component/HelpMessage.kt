@@ -266,75 +266,81 @@ fun ChoreExchangeCard(
     title: String,
     day: String,
     difficulty: String,
-    points: String
+    points: String,
+    bottomContent: @Composable () -> Unit = {},
 ) {
-    Row(
+    Column(
         modifier = Modifier
             .width(250.dp)
             .clip(RoundedCornerShape(8.dp))
             .background(BackgroundGray)
             .padding(10.dp),
-        verticalAlignment = Alignment.Top
     ) {
-        Icon(
-            painter = painterResource(Res.drawable.pin_black_icon),
-            contentDescription = null,
-            modifier = Modifier
-                .padding(top = 2.dp)
-                .size(16.dp),
-            tint = Color.Black
-        )
-
-        // FlowRow를 사용하여 텍스트가 길어지면 자동으로 점과 함께 줄바꿈되도록 함
-        FlowRow(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Start,
-            verticalArrangement = Arrangement.Center,
-            itemVerticalAlignment = Alignment.CenterVertically
+        Row(
+            modifier = Modifier,
+            verticalAlignment = Alignment.Top
         ) {
-            Text(
-                text = title,
-                style = HomeNTheme.typography.suitSemiBold,
-                fontSize = 14.sp,
-                color = Color.Black
+            Icon(
+                painter = painterResource(Res.drawable.pin_black_icon),
+                contentDescription = null,
+                modifier = Modifier
+                    .padding(top = 2.dp)
+                    .size(16.dp),
+                tint = Color.Black
             )
 
-            Dot(
-                width = 8,
-                dotSize = 2
-            )
+            // FlowRow를 사용하여 텍스트가 길어지면 자동으로 점과 함께 줄바꿈되도록 함
+            FlowRow(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalArrangement = Arrangement.Center,
+                itemVerticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = title,
+                    style = HomeNTheme.typography.suitSemiBold,
+                    fontSize = 14.sp,
+                    color = Color.Black
+                )
 
-            Text(
-                text = day,
-                style = HomeNTheme.typography.suitRegular,
-                fontSize = 14.sp,
-                color = Color.Black
-            )
+                Dot(
+                    width = 8,
+                    dotSize = 2
+                )
 
-            Dot(
-                width = 8,
-                dotSize = 2
-            )
+                Text(
+                    text = day,
+                    style = HomeNTheme.typography.suitRegular,
+                    fontSize = 14.sp,
+                    color = Color.Black
+                )
 
-            Text(
-                text = "난이도 $difficulty",
-                style = HomeNTheme.typography.suitRegular,
-                fontSize = 14.sp,
-                color = Color.Black
-            )
+                Dot(
+                    width = 8,
+                    dotSize = 2
+                )
 
-            Dot(
-                width = 8,
-                dotSize = 2
-            )
+                Text(
+                    text = "난이도 $difficulty",
+                    style = HomeNTheme.typography.suitRegular,
+                    fontSize = 14.sp,
+                    color = Color.Black
+                )
 
-            Text(
-                text = points,
-                style = HomeNTheme.typography.suitRegular,
-                fontSize = 14.sp,
-                color = Color.Black
-            )
+                Dot(
+                    width = 8,
+                    dotSize = 2
+                )
+
+                Text(
+                    text = points,
+                    style = HomeNTheme.typography.suitRegular,
+                    fontSize = 14.sp,
+                    color = Color.Black
+                )
+            }
         }
+        bottomContent()
     }
 }
 
