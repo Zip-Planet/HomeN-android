@@ -15,7 +15,9 @@
     <string name="board">보드</string>
 
     <!-- Splash 화면 -->
-    <string name="login_screen_msg">작은 집안일도 공평하게</string>
+    <string name="login_screen_msg1">집안일을 데이터로 공평하게</string>
+    <string name="login_screen_msg2">집안일 조율은 스트레스 없이 간편하게</string>
+    <string name="login_screen_msg3">집안일 분담은 자동으로 편리하게</string>
 
     <!-- 로그인 화면 -->
     <string name="terms_of_service">이용약관</string>

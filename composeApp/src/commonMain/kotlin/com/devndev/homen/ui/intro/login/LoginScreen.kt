@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -39,7 +38,9 @@ import homen.composeapp.generated.resources.app_logo
 import homen.composeapp.generated.resources.homen_logo
 import homen.composeapp.generated.resources.kako_login_btn
 import homen.composeapp.generated.resources.login_screen_agree_message
-import homen.composeapp.generated.resources.login_screen_msg
+import homen.composeapp.generated.resources.login_screen_msg1
+import homen.composeapp.generated.resources.login_screen_msg2
+import homen.composeapp.generated.resources.login_screen_msg3
 import homen.composeapp.generated.resources.privacy_policy
 import homen.composeapp.generated.resources.terms_of_service
 import kotlinx.coroutines.flow.collectLatest
@@ -49,6 +50,7 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun LoginScreen(
+    msgIndex: Int,
     onNavToMain: (Boolean) -> Unit,
     onNavToRegister: () -> Unit,
     viewModel: LoginViewModel = koinViewModel()
@@ -63,6 +65,12 @@ fun LoginScreen(
 
             }
         }
+    }
+
+    val loginMsg = when (msgIndex) {
+        1 -> stringResource(Res.string.login_screen_msg1)
+        2 -> stringResource(Res.string.login_screen_msg2)
+        else -> stringResource(Res.string.login_screen_msg3)
     }
 
     HomeNScreen(
@@ -106,7 +114,7 @@ fun LoginScreen(
             Spacer(modifier = Modifier.height(20.dp))
 
             Text(
-                text = stringResource(Res.string.login_screen_msg),
+                text = loginMsg,
                 fontSize = 15.sp,
                 style = HomeNTheme.typography.suitMedium,
             )

@@ -36,7 +36,9 @@ import com.devndev.homen.ui.theme.HomeNTheme
 import homen.composeapp.generated.resources.Res
 import homen.composeapp.generated.resources.app_logo
 import homen.composeapp.generated.resources.homen_logo
-import homen.composeapp.generated.resources.login_screen_msg
+import homen.composeapp.generated.resources.login_screen_msg1
+import homen.composeapp.generated.resources.login_screen_msg2
+import homen.composeapp.generated.resources.login_screen_msg3
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -46,11 +48,18 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun SplashScreen(
+    msgIndex: Int,
     onNavToMain: (Boolean) -> Unit,
     onNavToLogin: () -> Unit,
     viewModel: SplashViewModel = koinViewModel()
 ) {
     val uiState by viewModel.viewState
+
+    val loginMsg = when (msgIndex) {
+        1 -> stringResource(Res.string.login_screen_msg1)
+        2 -> stringResource(Res.string.login_screen_msg2)
+        else -> stringResource(Res.string.login_screen_msg3)
+    }
 
     LaunchedEffect(viewModel.effect) {
         viewModel.effect.collectLatest { effect ->
@@ -69,7 +78,6 @@ fun SplashScreen(
     val animatedHeight = remember { Animatable(0f) }
     val animProgress = remember { Animatable(0f) } // 글자 애니메이션 제어용
 
-    val loginMsg = stringResource(Res.string.login_screen_msg)
     val words = remember { loginMsg.split(" ") }
 
     LaunchedEffect(Unit) {
