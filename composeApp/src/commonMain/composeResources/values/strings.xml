@@ -20,6 +20,7 @@
     <!-- 로그인 화면 -->
     <string name="terms_of_service">이용약관</string>
     <string name="privacy_policy">개인정보처리방침</string>
+    <string name="login_screen_agree_message">가입을 진행할 경우, 위 정책에 대해 동의한 것으로 간주합니다</string>
 
     <!-- Register 화면 -->
     <string name="profile_setting_title">프로필 설정</string>
@@ -228,9 +229,6 @@
     <string name="board_request_exchange_reject_title">s님의 교환 요청 거절</string>
     <string name="board_request_exchange_reject_highlight_text">교환 요청 거절</string>
     <string name="board_request_exchange_reject_message">상대가 이번 교환은 진행하기 어렵다고 했어요</string>
-
-
-
 
     <!-- 초대 팝업 -->
     <string name="invite_popup_title">s 초대코드</string>

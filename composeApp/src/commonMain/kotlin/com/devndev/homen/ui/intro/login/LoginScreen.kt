@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.devndev.homen.OsType
 import com.devndev.homen.getPlatform
+import com.devndev.homen.ui.component.Dot
 import com.devndev.homen.ui.component.HomeNScreen
 import com.devndev.homen.ui.intro.login.viewmodel.LoginViewModel
 import com.devndev.homen.ui.theme.HomeNTheme
@@ -37,6 +38,7 @@ import homen.composeapp.generated.resources.apple_login_btn
 import homen.composeapp.generated.resources.app_logo
 import homen.composeapp.generated.resources.homen_logo
 import homen.composeapp.generated.resources.kako_login_btn
+import homen.composeapp.generated.resources.login_screen_agree_message
 import homen.composeapp.generated.resources.login_screen_msg
 import homen.composeapp.generated.resources.privacy_policy
 import homen.composeapp.generated.resources.terms_of_service
@@ -122,12 +124,12 @@ fun LoginScreen(
                     fontSize = 12.sp,
                     color = Color.Black
                 )
-                Text(
-                    text = "·",
-                    style = HomeNTheme.typography.suitLight,
-                    fontSize = 12.sp,
-                    color = Color.Black
+
+                Dot(
+                    width = 6,
+                    dotSize = 2
                 )
+
                 Text(
                     text = stringResource(Res.string.privacy_policy),
                     style = HomeNTheme.typography.suitLight.copy(textDecoration = TextDecoration.Underline),
@@ -135,8 +137,16 @@ fun LoginScreen(
                     color = Color.Black
                 )
             }
+            Spacer(modifier = Modifier.height(10.dp))
 
-            Spacer(modifier = Modifier.height(14.dp))
+            Text(
+                text = stringResource(Res.string.login_screen_agree_message),
+                style = HomeNTheme.typography.suitLight,
+                fontSize = 12.sp,
+                color = Color.Black
+            )
+
+            Spacer(modifier = Modifier.height(10.dp))
 
             Image(
                 painter = painterResource(Res.drawable.kako_login_btn),
