@@ -20,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -158,7 +159,8 @@ fun HomeNLongTextField(
     maxChar: Int = 20,
     enabled: Boolean = true,
     regex: Regex? = null,
-    height: Int = 72
+    height: Int = 72,
+    textStyle: TextStyle = HomeNTheme.typography.suitBold
 ) {
     BasicTextField(
         value = value,
@@ -178,7 +180,7 @@ fun HomeNLongTextField(
         modifier = modifier
             .fillMaxWidth()
             .height(height.dp),
-        textStyle = HomeNTheme.typography.suitBold.copy(
+        textStyle = textStyle.copy(
             fontSize = 14.sp,
             color = Color.Black
         ),
