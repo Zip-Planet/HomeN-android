@@ -95,6 +95,9 @@
     <string name="home_create_pack_tooltip_msg">나중에 우리 집에 맞춰 언제든\n자유롭게 추가하고 수정할 수 있어요.</string>
     <string name="home_create_done_title">s 생성 완료</string>
     <string name="home_create_invite_btn">구성원 초대하기</string>
+    <string name="home_starter_pack_tooltip_title">언제든 우리 집에 맞게 수정할 수 있어요</string>
+    <string name="home_starter_pack_tooltip_msg">집안일을 빼거나 추가하고, 난이도(포인트)도\n자유롭게 바꿀 수 있으니 가볍게 시작해 보세요</string>
+
 
     <!-- 스타터팩 미리보기 -->
     <string name="home_create_preview_included_chores">포함된 집안일</string>
