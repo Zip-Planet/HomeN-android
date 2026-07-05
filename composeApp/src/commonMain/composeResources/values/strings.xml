@@ -92,7 +92,7 @@
     <string name="home_create_pack_add_manual_btn">직접 추가</string>
     <string name="home_create_pack_preview_btn">선택한 팩 미리보기</string>
     <string name="home_create_pack_tooltip_title">스타터팩은 가벼운 초안이에요.</string>
-    <string name="home_create_pack_tooltip_msg">나중에 우리 집에 맞춰 언제든 자유롭게 추가하고 수정할 수 있어요.</string>
+    <string name="home_create_pack_tooltip_msg">나중에 우리 집에 맞춰 언제든\n자유롭게 추가하고 수정할 수 있어요.</string>
     <string name="home_create_done_title">s 생성 완료</string>
     <string name="home_create_invite_btn">구성원 초대하기</string>
 
