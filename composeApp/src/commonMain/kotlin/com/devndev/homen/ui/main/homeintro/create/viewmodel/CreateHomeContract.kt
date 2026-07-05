@@ -39,7 +39,7 @@ class CreateHomeContract {
         val selectedPack: StarterPackType? = null,
         val chores: List<Chore> = emptyList(),
         val selectedChores: List<Chore> = emptyList(),
-        val rewards: List<Reward> = emptyList(),
+        val rewards: List<Reward> = listOf(Reward()),
         val showTooltip: Boolean = true,
         val isLoading: Boolean = false,
         val isShowInvitePopup: Boolean = false,

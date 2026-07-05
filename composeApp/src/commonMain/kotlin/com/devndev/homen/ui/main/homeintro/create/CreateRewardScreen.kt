@@ -94,7 +94,7 @@ fun CreateRewardScreen(
             .padding(
                 start = HomeNTheme.dimensions.horizontalPadding,
                 end = HomeNTheme.dimensions.horizontalPadding,
-                top = 52.dp,
+                top = 39.dp,
                 bottom = HomeNTheme.dimensions.bottomPadding,
             )
     ) {
