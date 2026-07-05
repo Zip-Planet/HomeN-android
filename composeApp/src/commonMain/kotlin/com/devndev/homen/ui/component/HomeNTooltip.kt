@@ -142,7 +142,10 @@ fun TooltipButton(
             .size(25.dp)
             .clip(CircleShape)
             .background(Color.Black)
-            .clickable {
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null
+            ) {
                 onClick()
             },
         contentAlignment = Alignment.Center

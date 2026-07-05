@@ -183,7 +183,10 @@ fun EntryOptionCard(
                 color = if (isSelected) Color.Black else Color.Transparent,
                 shape = RoundedCornerShape(10.dp)
             )
-            .clickable { onClick() }
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null
+            ) { onClick() }
             .padding(top = 15.dp, bottom = 15.dp, start = 19.dp, end = 19.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically

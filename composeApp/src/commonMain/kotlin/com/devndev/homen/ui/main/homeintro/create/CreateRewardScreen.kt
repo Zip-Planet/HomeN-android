@@ -3,6 +3,7 @@ package com.devndev.homen.ui.main.homeintro.create
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,6 +24,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -146,7 +148,10 @@ fun CreateRewardScreen(
                             .fillMaxWidth()
                             .height(36.dp)
                             .background(Color.Black, RoundedCornerShape(10.dp))
-                            .clickable { viewModel.setEvent(CreateHomeContract.Event.OnAddRewardClick) },
+                            .clickable(
+                                interactionSource = remember { MutableInteractionSource() },
+                                indication = null
+                            ) { viewModel.setEvent(CreateHomeContract.Event.OnAddRewardClick) },
                         contentAlignment = Alignment.Center
                     ) {
                         Icon(
@@ -275,7 +280,10 @@ fun RewardInputCard(
                     contentDescription = "remove",
                     modifier = Modifier
                         .size(16.dp)
-                        .clickable { onRemoveClick() },
+                        .clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null
+                        ) { onRemoveClick() },
                     tint = Color.Black
                 )
             }
