@@ -73,7 +73,7 @@ fun InvitePopup(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 70.dp, bottom = 50.dp),
+                    .padding(top = 54.dp, bottom = 34.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
