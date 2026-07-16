@@ -14,7 +14,7 @@ class AssignmentContract {
         val mainIsLoading: Boolean = false,
         val isLoading: Boolean = false,
         val selectedTab: AssignmentTab = AssignmentTab.THIS_WEEK,
-        val screenType: AssignmentScreenType = AssignmentScreenType.ADD_CHORE,
+        val screenType: AssignmentScreenType = AssignmentScreenType.NONE,
         val isManager: Boolean = false
     ) : ViewState {
         val isAddButtonExist = selectedTab == AssignmentTab.THIS_WEEK && when (screenType) {
@@ -28,15 +28,17 @@ class AssignmentContract {
 
     }
 
-    enum class AssignmentTab(val title: String) {
-        THIS_WEEK("이번 주"),
-        NEXT_WEEK("다음 주"),
-        HISTORY("히스토리")
-    }
+}
 
-    enum class AssignmentScreenType {
-        NONE,
-        ADD_CHORE,
-        CREATE_ASSIGNMENT,
-    }
+enum class AssignmentTab(val title: String) {
+    THIS_WEEK("이번 주"),
+    NEXT_WEEK("다음 주"),
+    HISTORY("히스토리")
+}
+
+enum class AssignmentScreenType {
+    NONE,
+    ADD_CHORE,
+    CREATE_ASSIGNMENT,
+    ASSIGNMENT
 }

@@ -31,6 +31,8 @@ import com.devndev.homen.ui.component.HomeNButton
 import com.devndev.homen.ui.component.HomeNScreen
 import com.devndev.homen.ui.component.NotificationTopBar
 import com.devndev.homen.ui.main.assignment.main.viewmodel.AssignmentContract
+import com.devndev.homen.ui.main.assignment.main.viewmodel.AssignmentScreenType
+import com.devndev.homen.ui.main.assignment.main.viewmodel.AssignmentTab
 import com.devndev.homen.ui.main.assignment.main.viewmodel.AssignmentViewModel
 import com.devndev.homen.ui.theme.BottomGray
 import com.devndev.homen.ui.theme.ButtonGray
@@ -73,6 +75,10 @@ fun AssignmentScreen(
         }
     }
 
+    LaunchedEffect(Unit) {
+        viewModel.setEvent(AssignmentContract.Event.OnInit)
+    }
+
     HomeNScreen(
         topBar = {
             NotificationTopBar(
@@ -102,11 +108,11 @@ fun AssignmentScreen(
                 Spacer(modifier = Modifier.height(25.dp))
 
                 when (uiState.screenType) {
-                    AssignmentContract.AssignmentScreenType.NONE -> {
+                    AssignmentScreenType.NONE -> {
 
                     }
 
-                    AssignmentContract.AssignmentScreenType.ADD_CHORE -> {
+                    AssignmentScreenType.ADD_CHORE -> {
                         if (uiState.isManager) {
                             NotAssignmentContent(
                                 icon = Res.drawable.clipboard_icon,
@@ -128,7 +134,7 @@ fun AssignmentScreen(
                         }
                     }
 
-                    AssignmentContract.AssignmentScreenType.CREATE_ASSIGNMENT -> {
+                    AssignmentScreenType.CREATE_ASSIGNMENT -> {
                         if (uiState.isManager) {
                             NotAssignmentContent(
                                 icon = Res.drawable.chart_icon,
@@ -148,6 +154,10 @@ fun AssignmentScreen(
 
                             }
                         }
+                    }
+
+                    AssignmentScreenType.ASSIGNMENT -> {
+
                     }
                 }
             }
@@ -186,8 +196,8 @@ fun AssignmentScreen(
 
 @Composable
 fun AssignmentTabHeader(
-    selectedTab: AssignmentContract.AssignmentTab,
-    onTabSelected: (AssignmentContract.AssignmentTab) -> Unit,
+    selectedTab: AssignmentTab,
+    onTabSelected: (AssignmentTab) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -198,7 +208,7 @@ fun AssignmentTabHeader(
             .padding(5.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        AssignmentContract.AssignmentTab.entries.forEach { tab ->
+        AssignmentTab.entries.forEach { tab ->
             val isSelected = tab == selectedTab
             Box(
                 modifier = Modifier

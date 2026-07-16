@@ -9,6 +9,7 @@ import com.devndev.homen.core.data.model.home.request.MemoRequest
 import com.devndev.homen.core.data.model.home.response.ChoreDetailResponse
 import com.devndev.homen.core.data.model.home.response.ChoreResponse
 import com.devndev.homen.core.data.model.home.response.CreateHomeResponse
+import com.devndev.homen.core.data.model.home.response.GetAssignmentResponse
 import com.devndev.homen.core.data.model.home.response.GetHasHomeResponse
 import com.devndev.homen.core.data.model.home.response.GetHomeResponse
 import com.devndev.homen.core.data.model.home.response.GetMemoResponse
@@ -19,6 +20,7 @@ import io.ktor.client.call.body
 import io.ktor.client.request.delete
 import io.ktor.client.request.get
 import io.ktor.client.request.header
+import io.ktor.client.request.parameter
 import io.ktor.client.request.patch
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
@@ -177,6 +179,21 @@ class HomeServiceImpl(
                 header(HttpHeaders.Authorization, "Bearer $it")
             }
             setBody(editChoreRequest)
+        }.body()
+    }
+
+    override suspend fun getAssignments(weekStart: String?): GetAssignmentResponse {
+        val accessToken = tokenRepository.getAccessToken().first()
+        return client.get {
+            url {
+                takeFrom(Config.BASE_URL)
+                encodedPath += HomeService.ASSIGNMENT
+                weekStart?.let { parameter("week_start", it) }
+            }
+            contentType(ContentType.Application.Json)
+            accessToken?.let {
+                header(HttpHeaders.Authorization, "Bearer $it")
+            }
         }.body()
     }
 
