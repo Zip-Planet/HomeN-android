@@ -64,6 +64,8 @@ kotlin {
 
             // Toast
             implementation(libs.network.chaintech.cmptoast)
+
+            implementation(libs.kotlinx.datetime)
         }
     }
 }

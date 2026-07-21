@@ -1,5 +1,6 @@
 package com.devndev.homen.core.data.repository
 
+import com.devndev.homen.core.data.model.home.request.CreateAssignmentRequest
 import com.devndev.homen.core.data.model.home.request.CreateChoreRequest
 import com.devndev.homen.core.data.model.home.request.CreateHomeRequest
 import com.devndev.homen.core.data.model.home.request.JoinHomeRequest
@@ -9,6 +10,7 @@ import com.devndev.homen.core.data.model.home.request.toEditDataModel
 import com.devndev.homen.core.data.model.home.response.toDomainModel
 import com.devndev.homen.core.data.service.home.HomeService
 import com.devndev.homen.core.domain.model.common.ApiResult
+import com.devndev.homen.core.domain.model.home.Assignment
 import com.devndev.homen.core.domain.model.home.Chore
 import com.devndev.homen.core.domain.model.home.ChoreDetail
 import com.devndev.homen.core.domain.model.home.CreateHome
@@ -132,6 +134,28 @@ class HomeRepositoryImpl(
         return try {
             val response = homeService.editChore(chore.id!!, chore.toEditDataModel())
             ApiResult.Success(response)
+        } catch (e: ResponseException) {
+            ApiResult.Error(code = e.response.status.value, message = e.message)
+        } catch (e: Exception) {
+            ApiResult.NetworkError
+        }
+    }
+
+    override suspend fun getAssignments(weekStart: String?): ApiResult<Assignment> {
+        return try {
+            val response = homeService.getAssignments(weekStart)
+            ApiResult.Success(response.toDomainModel())
+        } catch (e: ResponseException) {
+            ApiResult.Error(code = e.response.status.value, message = e.message)
+        } catch (e: Exception) {
+            ApiResult.NetworkError
+        }
+    }
+
+    override suspend fun createAssignment(weekStart: String?): ApiResult<Assignment> {
+        return try {
+            val response = homeService.createAssignment(CreateAssignmentRequest(weekStart))
+            ApiResult.Success(response.toDomainModel())
         } catch (e: ResponseException) {
             ApiResult.Error(code = e.response.status.value, message = e.message)
         } catch (e: Exception) {

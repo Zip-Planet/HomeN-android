@@ -1,5 +1,6 @@
 package com.devndev.homen.core.data.service.home
 
+import com.devndev.homen.core.data.model.home.request.CreateAssignmentRequest
 import com.devndev.homen.core.data.model.home.request.CreateChoreRequest
 import com.devndev.homen.core.data.model.home.request.CreateHomeRequest
 import com.devndev.homen.core.data.model.home.request.EditChoreRequest
@@ -8,6 +9,7 @@ import com.devndev.homen.core.data.model.home.request.MemoRequest
 import com.devndev.homen.core.data.model.home.response.ChoreDetailResponse
 import com.devndev.homen.core.data.model.home.response.ChoreResponse
 import com.devndev.homen.core.data.model.home.response.CreateHomeResponse
+import com.devndev.homen.core.data.model.home.response.GetAssignmentResponse
 import com.devndev.homen.core.data.model.home.response.GetHasHomeResponse
 import com.devndev.homen.core.data.model.home.response.GetHomeResponse
 import com.devndev.homen.core.data.model.home.response.GetMemoResponse
@@ -22,6 +24,8 @@ interface HomeService {
         const val JOIN_HOME = "/homes/join/"
 
         const val CHORES = "/homes/mine/chores/"
+
+        const val ASSIGNMENT = "/homes/mine/assignments/"
     }
 
     suspend fun createHome(createHomeRequest: CreateHomeRequest): CreateHomeResponse
@@ -34,6 +38,9 @@ interface HomeService {
     suspend fun deleteChore(id: Int)
     suspend fun getChoreDetail(id: Int): ChoreDetailResponse
     suspend fun editChore(id: Int, editChoreRequest: EditChoreRequest)
+
+    suspend fun getAssignments(weekStart: String? = null): GetAssignmentResponse
+    suspend fun createAssignment(createAssignmentRequest: CreateAssignmentRequest): GetAssignmentResponse
 
     suspend fun getMemos(id: Int): List<GetMemoResponse>
 

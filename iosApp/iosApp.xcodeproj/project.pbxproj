@@ -404,7 +404,7 @@
 			repositoryURL = "https://github.com/kakao/kakao-ios-sdk";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 2.27.2;
+				minimumVersion = 2.28.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
