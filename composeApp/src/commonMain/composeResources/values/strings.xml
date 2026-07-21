@@ -248,6 +248,11 @@
     <string name="assignment_create_assignment_msg">분담안은 관리자가 생성 후 확정할 수 있어요\n집안일을 추가하고 분담안 생성을 요청해보세요</string>
     <string name="assignment_create_assignment_btn">분담안 생성 요청하기</string>
     <string name="assignment_add_chore_floating_btn">집안일 추가</string>
+    <string name="assignment_this_week_title">이번 주 분담안</string>
+    <string name="assignment_this_week_suggested_manager_msg">포인트가 공평하게 나뉘었는지 확인하고 확정해 주세요</string>
+    <string name="assignment_confirm_btn">분담안 확정</string>
+    <string name="assignment_point_title">구성원 배정 포인트</string>
+    <string name="assignment_pic_msg">담당자 | s</string>
 
     <!-- 초대 팝업 -->
     <string name="invite_popup_title">s 초대코드</string>

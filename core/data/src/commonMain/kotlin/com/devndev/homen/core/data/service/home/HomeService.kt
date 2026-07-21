@@ -1,5 +1,6 @@
 package com.devndev.homen.core.data.service.home
 
+import com.devndev.homen.core.data.model.home.request.CreateAssignmentRequest
 import com.devndev.homen.core.data.model.home.request.CreateChoreRequest
 import com.devndev.homen.core.data.model.home.request.CreateHomeRequest
 import com.devndev.homen.core.data.model.home.request.EditChoreRequest
@@ -39,6 +40,7 @@ interface HomeService {
     suspend fun editChore(id: Int, editChoreRequest: EditChoreRequest)
 
     suspend fun getAssignments(weekStart: String? = null): GetAssignmentResponse
+    suspend fun createAssignment(createAssignmentRequest: CreateAssignmentRequest): GetAssignmentResponse
 
     suspend fun getMemos(id: Int): List<GetMemoResponse>
 

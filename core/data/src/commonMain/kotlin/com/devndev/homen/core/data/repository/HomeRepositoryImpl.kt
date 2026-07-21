@@ -1,5 +1,6 @@
 package com.devndev.homen.core.data.repository
 
+import com.devndev.homen.core.data.model.home.request.CreateAssignmentRequest
 import com.devndev.homen.core.data.model.home.request.CreateChoreRequest
 import com.devndev.homen.core.data.model.home.request.CreateHomeRequest
 import com.devndev.homen.core.data.model.home.request.JoinHomeRequest
@@ -143,6 +144,17 @@ class HomeRepositoryImpl(
     override suspend fun getAssignments(weekStart: String?): ApiResult<Assignment> {
         return try {
             val response = homeService.getAssignments(weekStart)
+            ApiResult.Success(response.toDomainModel())
+        } catch (e: ResponseException) {
+            ApiResult.Error(code = e.response.status.value, message = e.message)
+        } catch (e: Exception) {
+            ApiResult.NetworkError
+        }
+    }
+
+    override suspend fun createAssignment(weekStart: String?): ApiResult<Assignment> {
+        return try {
+            val response = homeService.createAssignment(CreateAssignmentRequest(weekStart))
             ApiResult.Success(response.toDomainModel())
         } catch (e: ResponseException) {
             ApiResult.Error(code = e.response.status.value, message = e.message)

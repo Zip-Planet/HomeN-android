@@ -1,6 +1,7 @@
 package com.devndev.homen.core.data.service.home
 
 import com.devndev.homen.core.common.Config
+import com.devndev.homen.core.data.model.home.request.CreateAssignmentRequest
 import com.devndev.homen.core.data.model.home.request.CreateChoreRequest
 import com.devndev.homen.core.data.model.home.request.CreateHomeRequest
 import com.devndev.homen.core.data.model.home.request.EditChoreRequest
@@ -72,9 +73,6 @@ class HomeServiceImpl(
                 encodedPath += HomeService.GET_HAS_HOME
             }
             contentType(ContentType.Application.Json)
-//            accessToken?.let {
-//                header(HttpHeaders.Authorization, "Bearer $it")
-//            }
         }.body()
     }
 
@@ -194,6 +192,21 @@ class HomeServiceImpl(
             accessToken?.let {
                 header(HttpHeaders.Authorization, "Bearer $it")
             }
+        }.body()
+    }
+
+    override suspend fun createAssignment(createAssignmentRequest: CreateAssignmentRequest): GetAssignmentResponse {
+        val accessToken = tokenRepository.getAccessToken().first()
+        return client.post {
+            url {
+                takeFrom(Config.BASE_URL)
+                encodedPath += HomeService.ASSIGNMENT
+            }
+            contentType(ContentType.Application.Json)
+            accessToken?.let {
+                header(HttpHeaders.Authorization, "Bearer $it")
+            }
+            setBody(createAssignmentRequest)
         }.body()
     }
 
