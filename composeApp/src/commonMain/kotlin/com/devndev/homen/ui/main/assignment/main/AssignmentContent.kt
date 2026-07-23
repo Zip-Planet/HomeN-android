@@ -39,6 +39,7 @@ import com.devndev.homen.core.domain.model.home.MemberPoint
 import com.devndev.homen.ui.common.resource
 import com.devndev.homen.ui.component.HomeNButton
 import com.devndev.homen.ui.main.assignment.main.viewmodel.AssignmentContract
+import com.devndev.homen.ui.main.assignment.main.viewmodel.AssignmentStatus
 import com.devndev.homen.ui.theme.BackgroundGray
 import com.devndev.homen.ui.theme.ButtonGray
 import com.devndev.homen.ui.theme.HomeNTheme
@@ -46,7 +47,9 @@ import homen.composeapp.generated.resources.Res
 import homen.composeapp.generated.resources.assignment_confirm_btn
 import homen.composeapp.generated.resources.assignment_pic_msg
 import homen.composeapp.generated.resources.assignment_point_title
+import homen.composeapp.generated.resources.assignment_this_week_confirmed_msg
 import homen.composeapp.generated.resources.assignment_this_week_suggested_manager_msg
+import homen.composeapp.generated.resources.assignment_this_week_suggested_msg
 import homen.composeapp.generated.resources.assignment_this_week_title
 import homen.composeapp.generated.resources.chart_icon
 import homen.composeapp.generated.resources.chore_info_difficulty
@@ -65,6 +68,17 @@ fun AssignmentContent(
     onMemberClick: (String) -> Unit = {},
     onConfirmClick: () -> Unit
 ) {
+    val message = if (uiState.assignment?.status == AssignmentStatus.CONFIRMED.status) {
+        stringResource(Res.string.assignment_this_week_confirmed_msg)
+    } else {
+        if (uiState.isManager) {
+            stringResource(Res.string.assignment_this_week_suggested_manager_msg)
+        } else {
+            stringResource(Res.string.assignment_this_week_suggested_msg)
+
+        }
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -88,7 +102,7 @@ fun AssignmentContent(
             Text(
                 modifier = Modifier.fillMaxWidth()
                     .padding(horizontal = HomeNTheme.dimensions.horizontalPadding),
-                text = stringResource(Res.string.assignment_this_week_suggested_manager_msg),
+                text = message,
                 style = HomeNTheme.typography.suitRegular,
                 color = Color.Black,
                 fontSize = 14.sp

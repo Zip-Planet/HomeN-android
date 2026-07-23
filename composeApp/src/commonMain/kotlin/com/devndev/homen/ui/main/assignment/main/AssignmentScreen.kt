@@ -27,6 +27,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.devndev.homen.ui.component.HomeNPopup
 import com.devndev.homen.ui.component.HomeNScreen
 import com.devndev.homen.ui.component.NotificationTopBar
 import com.devndev.homen.ui.main.assignment.main.viewmodel.AssignmentContract
@@ -42,14 +43,21 @@ import homen.composeapp.generated.resources.assignment_add_chore_btn
 import homen.composeapp.generated.resources.assignment_add_chore_floating_btn
 import homen.composeapp.generated.resources.assignment_add_chore_msg
 import homen.composeapp.generated.resources.assignment_add_chore_title
+import homen.composeapp.generated.resources.assignment_confirm_popup_msg
+import homen.composeapp.generated.resources.assignment_confirm_popup_title
 import homen.composeapp.generated.resources.assignment_create_assignment_btn
 import homen.composeapp.generated.resources.assignment_create_assignment_manager_btn
 import homen.composeapp.generated.resources.assignment_create_assignment_manager_msg
 import homen.composeapp.generated.resources.assignment_create_assignment_manager_title
 import homen.composeapp.generated.resources.assignment_create_assignment_msg
 import homen.composeapp.generated.resources.assignment_create_assignment_title
+import homen.composeapp.generated.resources.assignment_regenerate_popup_btn
+import homen.composeapp.generated.resources.assignment_regenerate_popup_msg
+import homen.composeapp.generated.resources.assignment_regenerate_popup_title
+import homen.composeapp.generated.resources.cancel
 import homen.composeapp.generated.resources.chart_icon
 import homen.composeapp.generated.resources.clipboard_icon
+import homen.composeapp.generated.resources.confirm
 import homen.composeapp.generated.resources.division_plan
 import homen.composeapp.generated.resources.floating_btn_icon
 import kotlinx.coroutines.flow.collectLatest
@@ -79,6 +87,37 @@ fun AssignmentScreen(
         viewModel.setEvent(AssignmentContract.Event.OnInit)
     }
 
+    if (uiState.isShowConfirmPopup) {
+        HomeNPopup(
+            title = stringResource(Res.string.assignment_confirm_popup_title),
+            message = stringResource(Res.string.assignment_confirm_popup_msg),
+            startButtonText = stringResource(Res.string.cancel),
+            endButtonText = stringResource(Res.string.confirm),
+            onStartButtonClick = {
+                viewModel.setEvent(AssignmentContract.Event.OnDismissPopup)
+            },
+            onEndButtonClick = {
+                viewModel.setEvent(AssignmentContract.Event.OnConfirmClick)
+            },
+            isTwoButton = true,
+            onDismiss = {
+                viewModel.setEvent(AssignmentContract.Event.OnDismissPopup)
+            }
+        )
+    }
+
+    if (uiState.isShowRegeneratePopup) {
+        HomeNPopup(
+            title = stringResource(Res.string.assignment_regenerate_popup_title),
+            message = stringResource(Res.string.assignment_regenerate_popup_msg),
+            startButtonText = stringResource(Res.string.assignment_regenerate_popup_btn),
+            onStartButtonClick = {},
+            isTwoButton = false,
+            onDismiss = {}
+        )
+    }
+
+
     HomeNScreen(
         topBar = {
             NotificationTopBar(
@@ -107,65 +146,73 @@ fun AssignmentScreen(
 
                 Spacer(modifier = Modifier.height(25.dp))
 
-                when (uiState.screenType) {
-                    AssignmentScreenType.NONE -> {
+                when (uiState.selectedTab) {
+                    AssignmentTab.THIS_WEEK,
+                    AssignmentTab.NEXT_WEEK -> {
+                        when (uiState.screenType) {
+                            AssignmentScreenType.NONE -> {
 
-                    }
-
-                    AssignmentScreenType.ADD_CHORE -> {
-                        if (uiState.isManager) {
-                            NotAssignmentContent(
-                                icon = Res.drawable.clipboard_icon,
-                                title = stringResource(Res.string.assignment_add_chore_title),
-                                message = stringResource(Res.string.assignment_add_chore_msg),
-                                buttonText = stringResource(Res.string.assignment_add_chore_btn),
-                            ) {
-                                viewModel.setEvent(AssignmentContract.Event.OnAddChoreClick)
                             }
-                        } else {
-                            NotAssignmentContent(
-                                icon = Res.drawable.chart_icon,
-                                title = stringResource(Res.string.assignment_create_assignment_title),
-                                message = stringResource(Res.string.assignment_create_assignment_msg),
-                                buttonText = stringResource(Res.string.assignment_create_assignment_btn),
-                            ) {
 
+                            AssignmentScreenType.ADD_CHORE -> {
+                                if (uiState.isManager) {
+                                    NotAssignmentContent(
+                                        icon = Res.drawable.clipboard_icon,
+                                        title = stringResource(Res.string.assignment_add_chore_title),
+                                        message = stringResource(Res.string.assignment_add_chore_msg),
+                                        buttonText = stringResource(Res.string.assignment_add_chore_btn),
+                                    ) {
+                                        viewModel.setEvent(AssignmentContract.Event.OnAddChoreClick)
+                                    }
+                                } else {
+                                    NotAssignmentContent(
+                                        icon = Res.drawable.chart_icon,
+                                        title = stringResource(Res.string.assignment_create_assignment_title),
+                                        message = stringResource(Res.string.assignment_create_assignment_msg),
+                                        buttonText = stringResource(Res.string.assignment_create_assignment_btn),
+                                    ) {
+
+                                    }
+                                }
+                            }
+
+                            AssignmentScreenType.CREATE_ASSIGNMENT -> {
+                                if (uiState.isManager) {
+                                    NotAssignmentContent(
+                                        icon = Res.drawable.chart_icon,
+                                        title = stringResource(Res.string.assignment_create_assignment_manager_title),
+                                        message = stringResource(Res.string.assignment_create_assignment_manager_msg),
+                                        buttonText = stringResource(Res.string.assignment_create_assignment_manager_btn),
+                                    ) {
+                                        viewModel.setEvent(AssignmentContract.Event.OnCreateAssignmentClick)
+                                    }
+                                } else {
+                                    NotAssignmentContent(
+                                        icon = Res.drawable.chart_icon,
+                                        title = stringResource(Res.string.assignment_create_assignment_title),
+                                        message = stringResource(Res.string.assignment_create_assignment_msg),
+                                        buttonText = stringResource(Res.string.assignment_create_assignment_btn),
+                                    ) {
+
+                                    }
+                                }
+                            }
+
+                            AssignmentScreenType.ASSIGNMENT -> {
+                                AssignmentContent(
+                                    uiState = uiState,
+                                    onMemberClick = {
+                                        viewModel.setEvent(AssignmentContract.Event.OnSelectedMember(it))
+                                    },
+                                    onConfirmClick = {
+                                        viewModel.setEvent(AssignmentContract.Event.OnConfirmButtonClick)
+                                    }
+                                )
                             }
                         }
                     }
+                    AssignmentTab.HISTORY -> {
 
-                    AssignmentScreenType.CREATE_ASSIGNMENT -> {
-                        if (uiState.isManager) {
-                            NotAssignmentContent(
-                                icon = Res.drawable.chart_icon,
-                                title = stringResource(Res.string.assignment_create_assignment_manager_title),
-                                message = stringResource(Res.string.assignment_create_assignment_manager_msg),
-                                buttonText = stringResource(Res.string.assignment_create_assignment_manager_btn),
-                            ) {
-                                viewModel.setEvent(AssignmentContract.Event.OnCreateAssignmentClick)
-                            }
-                        } else {
-                            NotAssignmentContent(
-                                icon = Res.drawable.chart_icon,
-                                title = stringResource(Res.string.assignment_create_assignment_title),
-                                message = stringResource(Res.string.assignment_create_assignment_msg),
-                                buttonText = stringResource(Res.string.assignment_create_assignment_btn),
-                            ) {
-
-                            }
-                        }
-                    }
-
-                    AssignmentScreenType.ASSIGNMENT -> {
-                        AssignmentContent(
-                            uiState = uiState,
-                            onMemberClick = {
-                                viewModel.setEvent(AssignmentContract.Event.OnSelectedMember(it))
-                            },
-                            onConfirmClick = {
-
-                            }
-                        )
                     }
                 }
             }

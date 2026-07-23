@@ -3,6 +3,7 @@ package com.devndev.homen.ui.main.assignment.main.viewmodel
 import androidx.lifecycle.viewModelScope
 import com.devndev.homen.core.common.base.BaseViewModel
 import com.devndev.homen.core.domain.model.common.ApiResult
+import com.devndev.homen.core.domain.usecase.home.ConfirmAssignmentUseCase
 import com.devndev.homen.core.domain.usecase.home.CreateAssignmentUseCase
 import com.devndev.homen.core.domain.usecase.home.GetAssignmentsUseCase
 import com.devndev.homen.core.domain.usecase.home.GetChoresUseCase
@@ -14,7 +15,8 @@ class AssignmentViewModel(
     private val getChoresUseCase: GetChoresUseCase,
     private val getMyInfoUseCase: GetMyInfoUseCase,
     private val getAssignmentsUseCase: GetAssignmentsUseCase,
-    private val createAssignmentUseCase: CreateAssignmentUseCase
+    private val createAssignmentUseCase: CreateAssignmentUseCase,
+    private val confirmAssignmentUseCase: ConfirmAssignmentUseCase
 ) : BaseViewModel<AssignmentContract.Event, AssignmentContract.State, AssignmentContract.Effect>() {
     override fun setInitialState() = AssignmentContract.State()
     override fun handleEvents(event: AssignmentContract.Event) {
@@ -37,6 +39,20 @@ class AssignmentViewModel(
 
             AssignmentContract.Event.OnCreateAssignmentClick -> {
                 createAssignment()
+            }
+
+            is AssignmentContract.Event.OnConfirmButtonClick -> {
+                // TODO 집안일 업데이트 여부 확인 후 ConfirmPopup, RegeneratePopup 구분 필요
+                setState { copy(isShowConfirmPopup = true) }
+            }
+
+            AssignmentContract.Event.OnDismissPopup -> {
+                setState { copy(isShowConfirmPopup = false) }
+            }
+
+            AssignmentContract.Event.OnConfirmClick -> {
+                setState { copy(isShowConfirmPopup = false) }
+                confirmAssignment()
             }
         }
     }
@@ -117,7 +133,28 @@ class AssignmentViewModel(
                 }
             }
             setState { copy(mainIsLoading = false) }
+        }
+    }
 
+    private fun confirmAssignment() {
+        viewModelScope.launch {
+            setState { copy(mainIsLoading = true) }
+            val result = confirmAssignmentUseCase(viewState.value.assignment?.id ?: 0)
+            when (result) {
+                is ApiResult.Success -> {
+                    setState {
+                        copy(
+                            assignment = result.data,
+                            screenType = AssignmentScreenType.ASSIGNMENT,
+                        )
+                    }
+                }
+
+                else -> {
+
+                }
+            }
+            setState { copy(mainIsLoading = false) }
         }
     }
 

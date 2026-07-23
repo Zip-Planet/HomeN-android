@@ -210,6 +210,20 @@ class HomeServiceImpl(
         }.body()
     }
 
+    override suspend fun confirmAssignment(assignmentId: Int): GetAssignmentResponse {
+        val accessToken = tokenRepository.getAccessToken().first()
+        return client.post {
+            url {
+                takeFrom(Config.BASE_URL)
+                encodedPath += "${HomeService.ASSIGNMENT}$assignmentId/confirm/"
+            }
+            contentType(ContentType.Application.Json)
+            accessToken?.let {
+                header(HttpHeaders.Authorization, "Bearer $it")
+            }
+        }.body()
+    }
+
     override suspend fun getMemos(id: Int): List<GetMemoResponse> {
         val accessToken = tokenRepository.getAccessToken().first()
         return client.get {

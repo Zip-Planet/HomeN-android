@@ -163,6 +163,17 @@ class HomeRepositoryImpl(
         }
     }
 
+    override suspend fun confirmAssignment(assignmentId: Int): ApiResult<Assignment> {
+        return try {
+            val response = homeService.confirmAssignment(assignmentId)
+            ApiResult.Success(response.toDomainModel())
+        } catch (e: ResponseException) {
+            ApiResult.Error(code = e.response.status.value, message = e.message)
+        } catch (e: Exception) {
+            ApiResult.NetworkError
+        }
+    }
+
     override suspend fun getMemos(id: Int): ApiResult<List<Memo>> {
         return try {
             val response = homeService.getMemos(id)
