@@ -158,14 +158,10 @@ fun AssignmentScreen(
 
                     AssignmentScreenType.ASSIGNMENT -> {
                         AssignmentContent(
-                            memberPoints = uiState.memberPoints,
-                            assignments = uiState.selectedAssignments,
+                            uiState = uiState,
                             onMemberClick = {
                                 viewModel.setEvent(AssignmentContract.Event.OnSelectedMember(it))
                             },
-                            selectedMember = uiState.selectedMember,
-                            isManager = uiState.isManager,
-                            status = AssignmentStatus.fromValue(uiState.assignment?.status ?: ""),
                             onConfirmClick = {
 
                             }

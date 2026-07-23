@@ -32,6 +32,8 @@ class AssignmentContract {
             AssignmentScreenType.ADD_CHORE -> !isManager
             else -> false
         }
+
+        val isConfirmButtonExist = isManager && assignment?.status == AssignmentStatus.PROPOSED.status
     }
 
     sealed class Effect : ViewSideEffect {
