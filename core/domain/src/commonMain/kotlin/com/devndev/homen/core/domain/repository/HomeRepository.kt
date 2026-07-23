@@ -22,6 +22,7 @@ interface HomeRepository {
     suspend fun editChore(chore: Chore): ApiResult<Unit>
     suspend fun getAssignments(weekStart: String?): ApiResult<Assignment>
     suspend fun createAssignment(weekStart: String?): ApiResult<Assignment>
+    suspend fun confirmAssignment(assignmentId: Int): ApiResult<Assignment>
     suspend fun getMemos(id: Int): ApiResult<List<Memo>>
     suspend fun createMemos(id: Int, content: String): ApiResult<Unit>
     suspend fun editMemo(choreId: Int, memoId: Int, content: String): ApiResult<Unit>

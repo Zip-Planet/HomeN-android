@@ -23,10 +23,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.devndev.homen.ui.theme.BackgroundGray
+import com.devndev.homen.ui.theme.BottomGray
 import com.devndev.homen.ui.theme.HomeNTheme
 import homen.composeapp.generated.resources.Res
 import homen.composeapp.generated.resources.copy_icon
@@ -172,6 +174,98 @@ fun InvitePopup(
     }
 }
 
+@Composable
+fun HomeNPopup(
+    title: String,
+    message: String,
+    startButtonText: String,
+    onStartButtonClick: () -> Unit,
+    endButtonText: String = "",
+    onEndButtonClick: () -> Unit = {},
+    isTwoButton: Boolean = true,
+    onDismiss: () -> Unit
+) {
+    Dialog(onDismissRequest = onDismiss) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(BackgroundGray, RoundedCornerShape(10.dp))
+                .padding(16.dp)
+        ) {
+            Icon(
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .size(15.dp)
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null
+                    ) {
+                        onDismiss()
+                    },
+                painter = painterResource(Res.drawable.x_btn),
+                contentDescription = null,
+                tint = Color.Black
+            )
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 54.dp, bottom = 34.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = title,
+                    style = HomeNTheme.typography.suitExtraBold,
+                    fontSize = 20.sp,
+                    color = Color.Black
+                )
+
+                Spacer(modifier = Modifier.height(15.dp))
+
+                Text(
+                    text = message,
+                    style = HomeNTheme.typography.suitMedium,
+                    fontSize = 14.sp,
+                    color = Color.Black,
+                    textAlign = TextAlign.Center
+                )
+
+                Spacer(modifier = Modifier.height(44.dp))
+
+                if (isTwoButton) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 23.dp),
+                        horizontalArrangement = Arrangement.spacedBy(7.dp)
+                    ) {
+                        HomeNButton(
+                            modifier = Modifier.weight(1f),
+                            text = startButtonText,
+                            onClick = onStartButtonClick,
+                            color = BottomGray
+                        )
+
+                        HomeNButton(
+                            modifier = Modifier.weight(1f),
+                            text = endButtonText,
+                            onClick = onEndButtonClick,
+                        )
+                    }
+                } else {
+                    HomeNButton(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 23.dp),
+                        text = startButtonText,
+                        onClick = onStartButtonClick,
+                    )
+                }
+            }
+        }
+    }
+}
+
 @Preview
 @Composable
 fun InvitePopupPreview() {
@@ -183,6 +277,23 @@ fun InvitePopupPreview() {
             onCopy = {},
             onKakaoShare = {},
             onGeneralShare = {}
+        )
+    }
+}
+
+@Preview
+@Composable
+fun HomeNPopupPreview() {
+    HomeNTheme {
+        HomeNPopup(
+            title = "이번 주 집안일 이대로 확정할까요?",
+            message = "분담안이 확정되면 보드 탭에서 도움·교환\n카드로 집안일을 조율할 수 있어요",
+            startButtonText = "취소",
+            endButtonText = "확정",
+            onStartButtonClick = {},
+            onEndButtonClick = {},
+            isTwoButton = true,
+            onDismiss = {}
         )
     }
 }

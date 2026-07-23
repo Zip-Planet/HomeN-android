@@ -13,6 +13,8 @@
     <string name="save_button">저장</string>
     <string name="snackbar_cancel">실행취소</string>
     <string name="board">보드</string>
+    <string name="confirm">확정</string>
+    <string name="cancel">취소</string>
 
     <!-- Splash 화면 -->
     <string name="login_screen_msg1">집안일을 데이터로 공평하게</string>
@@ -241,22 +243,37 @@
     <string name="assignment_add_chore_title">집안일을 조금 더 추가해 볼까요?</string>
     <string name="assignment_add_chore_msg">집안일이 3개 이상이어야 분담안을 생성할 수 있어요\n집안일을 추가해보세요</string>
     <string name="assignment_add_chore_btn">집안일 추가하기</string>
-    <string name="assignment_create_assignment_manager_title">이번주 분담안을 바로 생성해 볼까요?</string>
+    <string name="assignment_create_assignment_manager_title">이번 주 분담안을 바로 생성해 볼까요?</string>
+    <string name="assignment_create_next_assignment_manager_title">다음 주 분담안을 바로 생성해 볼까요?</string>
     <string name="assignment_create_assignment_manager_msg">집안일 등록을 모두 완료하셨다면\n분담안을 생성해 보세요</string>
     <string name="assignment_create_assignment_manager_btn">분담안 생성하기</string>
-    <string name="assignment_create_assignment_title">이번주 분담안이 아직 없어요</string>
+    <string name="assignment_create_assignment_title">이번 주 분담안이 아직 없어요</string>
+    <string name="assignment_create_next_assignment_title">다음 주 분담안이 아직 없어요</string>
     <string name="assignment_create_assignment_msg">분담안은 관리자가 생성 후 확정할 수 있어요\n집안일을 추가하고 분담안 생성을 요청해보세요</string>
     <string name="assignment_create_assignment_btn">분담안 생성 요청하기</string>
     <string name="assignment_add_chore_floating_btn">집안일 추가</string>
     <string name="assignment_this_week_title">이번 주 분담안</string>
     <string name="assignment_this_week_suggested_manager_msg">포인트가 공평하게 나뉘었는지 확인하고 확정해 주세요</string>
+    <string name="assignment_this_week_suggested_msg">관리자가 이번 주 역할을 꼼꼼히 확인하고 있어요</string>
+    <string name="assignment_this_week_confirmed_msg">이번 주 역할이 정해졌어요\n조율이 필요하면 보드를 이용해 보세요</string>
     <string name="assignment_confirm_btn">분담안 확정</string>
     <string name="assignment_point_title">구성원 배정 포인트</string>
     <string name="assignment_pic_msg">담당자 | s</string>
+    <string name="assignment_next_week_title">다음 주 분담안</string>
+    <string name="assignment_next_week_suggested_msg">관리자가 다음 주 역할을 꼼꼼히 확인하고 있어요</string>
+    <string name="assignment_next_week_confirmed_msg">다음 주 역할이 정해졌어요\n조율이 필요하면 보드를 이용해 보세요</string>
 
     <!-- 초대 팝업 -->
     <string name="invite_popup_title">s 초대코드</string>
     <string name="invite_popup_msg">구성원을 초대하고 집안일을 나눠보세요</string>
+
+    <!-- 븐딤 핍업 -->
+    <string name="assignment_confirm_popup_title">이번 주 집안일 이대로 확정할까요?</string>
+    <string name="assignment_confirm_popup_msg">분담안이 확정되면 보드 탭에서 도움·교환\n카드로 집안일을 조율할 수 있어요</string>
+    <string name="assignment_confirm_next_week_popup_title">다음 주 집안일 이대로 확정할까요?</string>
+    <string name="assignment_regenerate_popup_title">추가된 집안일이 있어요</string>
+    <string name="assignment_regenerate_popup_msg">분담안 생성 후 추가·수정된 집안일이 있어요\n변경된 집안일을 반영하여 분담안을 재생성할게요</string>
+    <string name="assignment_regenerate_popup_btn">분담안 다시 생성하기</string>
 
     <!-- Toast -->
     <string name="clipboard_copy_toast">클립보드에 복사했어요</string>

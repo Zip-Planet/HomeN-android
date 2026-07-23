@@ -38,15 +38,22 @@ import com.devndev.homen.core.domain.model.home.AssignmentItem
 import com.devndev.homen.core.domain.model.home.MemberPoint
 import com.devndev.homen.ui.common.resource
 import com.devndev.homen.ui.component.HomeNButton
+import com.devndev.homen.ui.main.assignment.main.viewmodel.AssignmentContract
 import com.devndev.homen.ui.main.assignment.main.viewmodel.AssignmentStatus
+import com.devndev.homen.ui.main.assignment.main.viewmodel.AssignmentTab
 import com.devndev.homen.ui.theme.BackgroundGray
 import com.devndev.homen.ui.theme.ButtonGray
 import com.devndev.homen.ui.theme.HomeNTheme
 import homen.composeapp.generated.resources.Res
 import homen.composeapp.generated.resources.assignment_confirm_btn
+import homen.composeapp.generated.resources.assignment_next_week_confirmed_msg
+import homen.composeapp.generated.resources.assignment_next_week_suggested_msg
+import homen.composeapp.generated.resources.assignment_next_week_title
 import homen.composeapp.generated.resources.assignment_pic_msg
 import homen.composeapp.generated.resources.assignment_point_title
+import homen.composeapp.generated.resources.assignment_this_week_confirmed_msg
 import homen.composeapp.generated.resources.assignment_this_week_suggested_manager_msg
+import homen.composeapp.generated.resources.assignment_this_week_suggested_msg
 import homen.composeapp.generated.resources.assignment_this_week_title
 import homen.composeapp.generated.resources.chart_icon
 import homen.composeapp.generated.resources.chore_info_difficulty
@@ -61,14 +68,35 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun AssignmentContent(
-    memberPoints: List<MemberPoint> = emptyList(),
-    assignments: List<AssignmentItem> = emptyList(),
+    uiState: AssignmentContract.State,
     onMemberClick: (String) -> Unit = {},
-    selectedMember: String,
-    isManager: Boolean = false,
-    status: AssignmentStatus = AssignmentStatus.NONE,
     onConfirmClick: () -> Unit
 ) {
+    val title = if (uiState.selectedTab == AssignmentTab.THIS_WEEK) {
+        stringResource(Res.string.assignment_this_week_title)
+    } else {
+        stringResource(Res.string.assignment_next_week_title)
+    }
+
+    val message = if (uiState.assignment?.status == AssignmentStatus.CONFIRMED.status) {
+        if (uiState.selectedTab == AssignmentTab.THIS_WEEK) {
+            stringResource(Res.string.assignment_this_week_confirmed_msg)
+        } else {
+            stringResource(Res.string.assignment_next_week_confirmed_msg)
+        }
+
+    } else {
+        if (uiState.isManager) {
+            stringResource(Res.string.assignment_this_week_suggested_manager_msg)
+        } else {
+            if (uiState.selectedTab == AssignmentTab.THIS_WEEK) {
+                stringResource(Res.string.assignment_this_week_suggested_msg)
+            } else {
+                stringResource(Res.string.assignment_next_week_suggested_msg)
+            }
+        }
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -81,7 +109,7 @@ fun AssignmentContent(
             Text(
                 modifier = Modifier.fillMaxWidth()
                     .padding(horizontal = HomeNTheme.dimensions.horizontalPadding),
-                text = stringResource(Res.string.assignment_this_week_title),
+                text = title,
                 style = HomeNTheme.typography.suitBold,
                 color = Color.Black,
                 fontSize = 18.sp
@@ -92,7 +120,7 @@ fun AssignmentContent(
             Text(
                 modifier = Modifier.fillMaxWidth()
                     .padding(horizontal = HomeNTheme.dimensions.horizontalPadding),
-                text = stringResource(Res.string.assignment_this_week_suggested_manager_msg),
+                text = message,
                 style = HomeNTheme.typography.suitRegular,
                 color = Color.Black,
                 fontSize = 14.sp
@@ -112,7 +140,7 @@ fun AssignmentContent(
                         start = HomeNTheme.dimensions.horizontalPadding,
                         end = HomeNTheme.dimensions.horizontalPadding,
                         top = 30.dp,
-                        bottom = 80.dp
+                        bottom = if (uiState.isConfirmButtonExist) 80.dp else 40.dp
                     )
 
             ) {
@@ -137,7 +165,7 @@ fun AssignmentContent(
 
                 Spacer(modifier = Modifier.height(25.dp))
 
-                memberPoints.forEach { memberPoint ->
+                uiState.memberPoints.forEach { memberPoint ->
                     PointItem(memberPoint)
 
                     Spacer(modifier = Modifier.height(20.dp))
@@ -171,16 +199,16 @@ fun AssignmentContent(
                 ) {
                     AssignmentMemberChip(
                         member = "전체",
-                        isSelected = selectedMember == "전체",
+                        isSelected = uiState.selectedMember == "전체",
                         onMemberClick = { onMemberClick("전체") },
                         index = 0,
                         isTotal = true
                     )
 
-                    memberPoints.forEachIndexed { index, member ->
+                    uiState.memberPoints.forEachIndexed { index, member ->
                         AssignmentMemberChip(
                             member = member.name,
-                            isSelected = selectedMember == member.name,
+                            isSelected = uiState.selectedMember == member.name,
                             onMemberClick = { onMemberClick(it) },
                             index = index,
                         )
@@ -188,14 +216,14 @@ fun AssignmentContent(
                 }
                 Spacer(modifier = Modifier.height(25.dp))
 
-                assignments.forEach { assignment ->
+                uiState.selectedAssignments.forEach { assignment ->
                     AssignmentItem(assignment)
                     Spacer(modifier = Modifier.height(20.dp))
                 }
             }
         }
 
-        if (isManager && status == AssignmentStatus.PROPOSED) {
+        if (uiState.isConfirmButtonExist) {
             HomeNButton(
                 text = stringResource(Res.string.assignment_confirm_btn),
                 onClick = {
@@ -366,10 +394,8 @@ fun AssignmentItem(
 @Composable
 fun AssignmentContentPreview() {
     AssignmentContent(
-        listOf(MemberPoint("1", "투다리김치우동",560), MemberPoint("1", "치우동",330), MemberPoint("1", "우동",360) ),
-        emptyList(),
+        uiState = AssignmentContract.State(),
         onMemberClick = {},
-        selectedMember = "전체",
         onConfirmClick = {}
     )
 }

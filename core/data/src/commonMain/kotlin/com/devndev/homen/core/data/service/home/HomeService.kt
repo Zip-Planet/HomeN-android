@@ -41,6 +41,7 @@ interface HomeService {
 
     suspend fun getAssignments(weekStart: String? = null): GetAssignmentResponse
     suspend fun createAssignment(createAssignmentRequest: CreateAssignmentRequest): GetAssignmentResponse
+    suspend fun confirmAssignment(assignmentId: Int): GetAssignmentResponse
 
     suspend fun getMemos(id: Int): List<GetMemoResponse>
 
