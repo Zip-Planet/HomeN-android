@@ -32,7 +32,6 @@ import com.devndev.homen.ui.component.HomeNScreen
 import com.devndev.homen.ui.component.NotificationTopBar
 import com.devndev.homen.ui.main.assignment.main.viewmodel.AssignmentContract
 import com.devndev.homen.ui.main.assignment.main.viewmodel.AssignmentScreenType
-import com.devndev.homen.ui.main.assignment.main.viewmodel.AssignmentStatus
 import com.devndev.homen.ui.main.assignment.main.viewmodel.AssignmentTab
 import com.devndev.homen.ui.main.assignment.main.viewmodel.AssignmentViewModel
 import com.devndev.homen.ui.theme.BottomGray
@@ -43,6 +42,7 @@ import homen.composeapp.generated.resources.assignment_add_chore_btn
 import homen.composeapp.generated.resources.assignment_add_chore_floating_btn
 import homen.composeapp.generated.resources.assignment_add_chore_msg
 import homen.composeapp.generated.resources.assignment_add_chore_title
+import homen.composeapp.generated.resources.assignment_confirm_next_week_popup_title
 import homen.composeapp.generated.resources.assignment_confirm_popup_msg
 import homen.composeapp.generated.resources.assignment_confirm_popup_title
 import homen.composeapp.generated.resources.assignment_create_assignment_btn
@@ -51,6 +51,8 @@ import homen.composeapp.generated.resources.assignment_create_assignment_manager
 import homen.composeapp.generated.resources.assignment_create_assignment_manager_title
 import homen.composeapp.generated.resources.assignment_create_assignment_msg
 import homen.composeapp.generated.resources.assignment_create_assignment_title
+import homen.composeapp.generated.resources.assignment_create_next_assignment_manager_title
+import homen.composeapp.generated.resources.assignment_create_next_assignment_title
 import homen.composeapp.generated.resources.assignment_regenerate_popup_btn
 import homen.composeapp.generated.resources.assignment_regenerate_popup_msg
 import homen.composeapp.generated.resources.assignment_regenerate_popup_title
@@ -88,8 +90,13 @@ fun AssignmentScreen(
     }
 
     if (uiState.isShowConfirmPopup) {
+        val title = if (uiState.selectedTab == AssignmentTab.THIS_WEEK) {
+            stringResource(Res.string.assignment_confirm_popup_title)
+        } else {
+            stringResource(Res.string.assignment_confirm_next_week_popup_title)
+        }
         HomeNPopup(
-            title = stringResource(Res.string.assignment_confirm_popup_title),
+            title = title,
             message = stringResource(Res.string.assignment_confirm_popup_msg),
             startButtonText = stringResource(Res.string.cancel),
             endButtonText = stringResource(Res.string.confirm),
@@ -178,18 +185,31 @@ fun AssignmentScreen(
 
                             AssignmentScreenType.CREATE_ASSIGNMENT -> {
                                 if (uiState.isManager) {
+                                    val title =
+                                        if (uiState.selectedTab == AssignmentTab.THIS_WEEK) {
+                                            stringResource(Res.string.assignment_create_assignment_manager_title)
+                                        } else {
+                                            stringResource(Res.string.assignment_create_next_assignment_manager_title)
+                                        }
                                     NotAssignmentContent(
                                         icon = Res.drawable.chart_icon,
-                                        title = stringResource(Res.string.assignment_create_assignment_manager_title),
+                                        title = title,
                                         message = stringResource(Res.string.assignment_create_assignment_manager_msg),
                                         buttonText = stringResource(Res.string.assignment_create_assignment_manager_btn),
                                     ) {
                                         viewModel.setEvent(AssignmentContract.Event.OnCreateAssignmentClick)
                                     }
                                 } else {
+                                    val title =
+                                        if (uiState.selectedTab == AssignmentTab.THIS_WEEK) {
+                                            stringResource(Res.string.assignment_create_assignment_title)
+                                        } else {
+                                            stringResource(Res.string.assignment_create_next_assignment_title)
+                                        }
+
                                     NotAssignmentContent(
                                         icon = Res.drawable.chart_icon,
-                                        title = stringResource(Res.string.assignment_create_assignment_title),
+                                        title = title,
                                         message = stringResource(Res.string.assignment_create_assignment_msg),
                                         buttonText = stringResource(Res.string.assignment_create_assignment_btn),
                                     ) {
@@ -202,7 +222,11 @@ fun AssignmentScreen(
                                 AssignmentContent(
                                     uiState = uiState,
                                     onMemberClick = {
-                                        viewModel.setEvent(AssignmentContract.Event.OnSelectedMember(it))
+                                        viewModel.setEvent(
+                                            AssignmentContract.Event.OnSelectedMember(
+                                                it
+                                            )
+                                        )
                                     },
                                     onConfirmClick = {
                                         viewModel.setEvent(AssignmentContract.Event.OnConfirmButtonClick)
@@ -211,6 +235,7 @@ fun AssignmentScreen(
                             }
                         }
                     }
+
                     AssignmentTab.HISTORY -> {
 
                     }

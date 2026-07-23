@@ -22,11 +22,22 @@ class AssignmentViewModel(
     override fun handleEvents(event: AssignmentContract.Event) {
         when (event) {
             AssignmentContract.Event.OnInit -> {
-                getAssignmentData()
+                getAssignmentData(DateUtil.getThisWeekMonday())
             }
 
             is AssignmentContract.Event.OnTabSelected -> {
                 setState { copy(selectedTab = event.tab) }
+
+                when (event.tab) {
+                    AssignmentTab.THIS_WEEK,
+                    AssignmentTab.HISTORY -> {
+                        getAssignmentData(DateUtil.getThisWeekMonday())
+                    }
+                    AssignmentTab.NEXT_WEEK -> {
+                        getAssignmentData(DateUtil.getNextWeekMonday())
+                    }
+
+                }
             }
 
             is AssignmentContract.Event.OnSelectedMember -> {
@@ -38,7 +49,11 @@ class AssignmentViewModel(
             }
 
             AssignmentContract.Event.OnCreateAssignmentClick -> {
-                createAssignment()
+                when (viewState.value.selectedTab) {
+                    AssignmentTab.THIS_WEEK -> createAssignment(DateUtil.getThisWeekMonday())
+                    AssignmentTab.NEXT_WEEK -> createAssignment(DateUtil.getNextWeekMonday())
+                    AssignmentTab.HISTORY -> {}
+                }
             }
 
             is AssignmentContract.Event.OnConfirmButtonClick -> {
@@ -57,12 +72,12 @@ class AssignmentViewModel(
         }
     }
 
-    private fun getAssignmentData() {
+    private fun getAssignmentData(weekDay: String) {
         viewModelScope.launch {
             setState { copy(mainIsLoading = true) }
             val myInfoResult = getMyInfoUseCase()
             val choresResult = getChoresUseCase()
-            val assignmentsResult = getAssignmentsUseCase(DateUtil.getThisWeekMonday())
+            val assignmentsResult = getAssignmentsUseCase(weekDay)
 
             if (myInfoResult is ApiResult.Success && choresResult is ApiResult.Success) {
                 val choresNumber = choresResult.data.size
@@ -114,10 +129,10 @@ class AssignmentViewModel(
         }
     }
 
-    private fun createAssignment() {
+    private fun createAssignment(weekDay: String) {
         viewModelScope.launch {
             setState { copy(mainIsLoading = true) }
-            val result = createAssignmentUseCase(DateUtil.getThisWeekMonday())
+            val result = createAssignmentUseCase(weekDay)
             when (result) {
                 is ApiResult.Success -> {
                     setState {
