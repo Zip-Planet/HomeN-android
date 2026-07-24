@@ -35,5 +35,6 @@ data class AssignmentAssignee(
 data class MemberPoint(
     val uid: String,
     val name: String,
+    val profileImage: Int?,
     val expectedPoint: Int
 )
