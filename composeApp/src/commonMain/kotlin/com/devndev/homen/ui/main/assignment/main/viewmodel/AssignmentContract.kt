@@ -17,6 +17,7 @@ class AssignmentContract {
         data object OnConfirmButtonClick: Event()
         data object OnConfirmClick: Event()
         data object OnDismissPopup: Event()
+        data class OnWeekSelected(val weekOffset: Int): Event()
     }
 
     data class State(
@@ -30,7 +31,8 @@ class AssignmentContract {
         val selectedMember: String = "전체",
         val selectedAssignments: List<AssignmentItem> = emptyList(),
         val isShowConfirmPopup: Boolean = false,
-        val isShowRegeneratePopup: Boolean = false
+        val isShowRegeneratePopup: Boolean = false,
+        val weekOffset: Int = 1
     ) : ViewState {
         val isAddButtonExist = selectedTab == AssignmentTab.THIS_WEEK && when (screenType) {
             AssignmentScreenType.CREATE_ASSIGNMENT -> true

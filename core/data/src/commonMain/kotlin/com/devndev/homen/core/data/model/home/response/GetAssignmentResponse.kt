@@ -71,6 +71,8 @@ data class MemberPointResponse(
     val uid: String,
     @SerialName("name")
     val name: String,
+    @SerialName("profile_image")
+    val profileImage: Int?,
     @SerialName("expected_point")
     val expectedPoint: Int
 )
@@ -117,6 +119,7 @@ fun MemberPointResponse.toDomainModel(): MemberPoint {
     return MemberPoint(
         uid = uid,
         name = name,
+        profileImage = profileImage,
         expectedPoint = expectedPoint
     )
 }

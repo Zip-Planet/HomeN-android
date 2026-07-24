@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.devndev.homen.core.domain.model.chore.ChoreCategory
 import com.devndev.homen.core.domain.model.home.AssignmentItem
+import com.devndev.homen.core.domain.model.home.AvatarType
 import com.devndev.homen.core.domain.model.home.MemberPoint
 import com.devndev.homen.ui.common.resource
 import com.devndev.homen.ui.component.HomeNButton
@@ -60,7 +61,6 @@ import homen.composeapp.generated.resources.chore_info_difficulty
 import homen.composeapp.generated.resources.chore_info_point_days
 import homen.composeapp.generated.resources.diamond_icon
 import homen.composeapp.generated.resources.division_plan
-import homen.composeapp.generated.resources.farmer_avatar
 import homen.composeapp.generated.resources.home_my_info_name
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -70,6 +70,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 fun AssignmentContent(
     uiState: AssignmentContract.State,
     onMemberClick: (String) -> Unit = {},
+    onWeekSelected: (Int) -> Unit = {},
     onConfirmClick: () -> Unit
 ) {
     val title = if (uiState.selectedTab == AssignmentTab.THIS_WEEK) {
@@ -106,29 +107,29 @@ fun AssignmentContent(
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
         ) {
-            Text(
-                modifier = Modifier.fillMaxWidth()
-                    .padding(horizontal = HomeNTheme.dimensions.horizontalPadding),
-                text = title,
-                style = HomeNTheme.typography.suitBold,
-                color = Color.Black,
-                fontSize = 18.sp
-            )
+            if (uiState.selectedTab != AssignmentTab.HISTORY) {
+                Text(
+                    modifier = Modifier.fillMaxWidth()
+                        .padding(horizontal = HomeNTheme.dimensions.horizontalPadding),
+                    text = title,
+                    style = HomeNTheme.typography.suitBold,
+                    color = Color.Black,
+                    fontSize = 18.sp
+                )
 
-            Spacer(modifier = Modifier.height(15.dp))
+                Spacer(modifier = Modifier.height(15.dp))
 
-            Text(
-                modifier = Modifier.fillMaxWidth()
-                    .padding(horizontal = HomeNTheme.dimensions.horizontalPadding),
-                text = message,
-                style = HomeNTheme.typography.suitRegular,
-                color = Color.Black,
-                fontSize = 14.sp
-            )
+                Text(
+                    modifier = Modifier.fillMaxWidth()
+                        .padding(horizontal = HomeNTheme.dimensions.horizontalPadding),
+                    text = message,
+                    style = HomeNTheme.typography.suitRegular,
+                    color = Color.Black,
+                    fontSize = 14.sp
+                )
 
-
-            Spacer(modifier = Modifier.height(20.dp))
-
+                Spacer(modifier = Modifier.height(20.dp))
+            }
 
             Column(
                 modifier = Modifier
@@ -145,6 +146,7 @@ fun AssignmentContent(
 
             ) {
                 Row(
+                    modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(2.dp)
                 ) {
@@ -173,6 +175,7 @@ fun AssignmentContent(
                 Spacer(modifier = Modifier.height(15.dp))
 
                 Row(
+                    modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(2.dp)
                 ) {
@@ -189,6 +192,17 @@ fun AssignmentContent(
                         fontSize = 18.sp,
                         color = Color.Black
                     )
+
+                    Spacer(modifier = Modifier.weight(1f))
+
+                    if (uiState.selectedTab == AssignmentTab.HISTORY) {
+                        HistoryWeekSelector(
+                            weekOffset = uiState.weekOffset,
+                            onWeekSelected = {
+                                onWeekSelected(it)
+                            }
+                        )
+                    }
                 }
 
                 Spacer(modifier = Modifier.height(15.dp))
@@ -242,6 +256,7 @@ fun AssignmentContent(
 fun PointItem(
     memberPoint: MemberPoint
 ) {
+    val profileResource = AvatarType.fromId(memberPoint.profileImage!!).resource
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
@@ -254,7 +269,7 @@ fun PointItem(
             contentAlignment = Alignment.Center
         ) {
             Icon(
-                painter = painterResource(Res.drawable.farmer_avatar),
+                painter = painterResource(profileResource),
                 contentDescription = null,
                 tint = Color.Unspecified,
                 modifier = Modifier.size(26.dp)
