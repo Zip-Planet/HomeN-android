@@ -262,12 +262,14 @@
     <string name="assignment_next_week_title">다음 주 분담안</string>
     <string name="assignment_next_week_suggested_msg">관리자가 다음 주 역할을 꼼꼼히 확인하고 있어요</string>
     <string name="assignment_next_week_confirmed_msg">다음 주 역할이 정해졌어요\n조율이 필요하면 보드를 이용해 보세요</string>
+    <string name="assignment_history_not_exist_title">해당 주차의 분담안이 없어요</string>
+    <string name="assignment_history_not_exist_msg">분담안이 확정되면 히스토리에 저장돼요</string>
 
     <!-- 초대 팝업 -->
     <string name="invite_popup_title">s 초대코드</string>
     <string name="invite_popup_msg">구성원을 초대하고 집안일을 나눠보세요</string>
 
-    <!-- 븐딤 핍업 -->
+    <!-- 분담 핍업 -->
     <string name="assignment_confirm_popup_title">이번 주 집안일 이대로 확정할까요?</string>
     <string name="assignment_confirm_popup_msg">분담안이 확정되면 보드 탭에서 도움·교환\n카드로 집안일을 조율할 수 있어요</string>
     <string name="assignment_confirm_next_week_popup_title">다음 주 집안일 이대로 확정할까요?</string>

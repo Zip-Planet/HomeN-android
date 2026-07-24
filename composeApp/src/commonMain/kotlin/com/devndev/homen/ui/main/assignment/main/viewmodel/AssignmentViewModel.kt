@@ -29,11 +29,15 @@ class AssignmentViewModel(
                 setState { copy(selectedTab = event.tab) }
 
                 when (event.tab) {
-                    AssignmentTab.THIS_WEEK,
-                    AssignmentTab.HISTORY -> {
+                    AssignmentTab.THIS_WEEK -> {
+                        setState { copy(weekOffset = 1) }
                         getAssignmentData(DateUtil.getThisWeekMonday())
                     }
+                    AssignmentTab.HISTORY -> {
+                        getAssignmentData(DateUtil.getMondayOfWeek(-viewState.value.weekOffset))
+                    }
                     AssignmentTab.NEXT_WEEK -> {
+                        setState { copy(weekOffset = 1) }
                         getAssignmentData(DateUtil.getNextWeekMonday())
                     }
 
@@ -69,12 +73,22 @@ class AssignmentViewModel(
                 setState { copy(isShowConfirmPopup = false) }
                 confirmAssignment()
             }
+
+            is AssignmentContract.Event.OnWeekSelected -> {
+                setState { copy(weekOffset = event.weekOffset) }
+                getAssignmentData(DateUtil.getMondayOfWeek(-event.weekOffset), true)
+            }
         }
     }
 
-    private fun getAssignmentData(weekDay: String) {
+    private fun getAssignmentData(weekDay: String, isFromHistory: Boolean = false) {
         viewModelScope.launch {
-            setState { copy(mainIsLoading = true) }
+            if (isFromHistory) {
+                setState { copy(isLoading = true) }
+            } else {
+                setState { copy(mainIsLoading = true) }
+            }
+
             val myInfoResult = getMyInfoUseCase()
             val choresResult = getChoresUseCase()
             val assignmentsResult = getAssignmentsUseCase(weekDay)
@@ -122,10 +136,13 @@ class AssignmentViewModel(
 
                     }
                 }
-
-
             }
-            setState { copy(mainIsLoading = false) }
+            if (isFromHistory) {
+                setState { copy(isLoading = false) }
+            } else {
+                setState { copy(mainIsLoading = false) }
+            }
+
         }
     }
 

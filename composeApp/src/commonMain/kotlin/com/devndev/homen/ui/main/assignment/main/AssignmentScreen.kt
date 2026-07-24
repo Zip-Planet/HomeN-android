@@ -20,7 +20,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -53,6 +55,7 @@ import homen.composeapp.generated.resources.assignment_create_assignment_msg
 import homen.composeapp.generated.resources.assignment_create_assignment_title
 import homen.composeapp.generated.resources.assignment_create_next_assignment_manager_title
 import homen.composeapp.generated.resources.assignment_create_next_assignment_title
+import homen.composeapp.generated.resources.assignment_history_not_exist_title
 import homen.composeapp.generated.resources.assignment_regenerate_popup_btn
 import homen.composeapp.generated.resources.assignment_regenerate_popup_msg
 import homen.composeapp.generated.resources.assignment_regenerate_popup_title
@@ -237,7 +240,80 @@ fun AssignmentScreen(
                     }
 
                     AssignmentTab.HISTORY -> {
+                        when (uiState.screenType) {
+                            AssignmentScreenType.NONE -> {}
+                            AssignmentScreenType.ADD_CHORE,
+                            AssignmentScreenType.CREATE_ASSIGNMENT -> {
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth().
+                                        padding(horizontal = HomeNTheme.dimensions.horizontalPadding),
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.spacedBy(2.dp)
+                                ) {
+                                    Icon(
+                                        painter = painterResource(Res.drawable.chart_icon),
+                                        contentDescription = null,
+                                        modifier = Modifier.size(20.dp),
+                                        tint = Color.Black
+                                    )
 
+                                    Text(
+                                        text = stringResource(Res.string.assignment_history_not_exist_title),
+                                        style = HomeNTheme.typography.suitExtraBold,
+                                        fontSize = 18.sp,
+                                        color = Color.Black
+                                    )
+
+                                    Spacer(modifier = Modifier.weight(1f))
+
+
+                                    HistoryWeekSelector(
+                                        weekOffset = uiState.weekOffset,
+                                        onWeekSelected = {
+                                            viewModel.setEvent(
+                                                AssignmentContract.Event.OnWeekSelected(
+                                                    it
+                                                )
+                                            )
+                                        }
+                                    )
+
+                                }
+                                Spacer(modifier = Modifier.height(25.dp))
+
+                                Text(
+                                    modifier = Modifier.padding(horizontal = HomeNTheme.dimensions.horizontalPadding),
+                                    text = stringResource(Res.string.assignment_history_not_exist_title),
+                                    style = HomeNTheme.typography.suitRegular,
+                                    fontSize = 14.sp,
+                                    color = Color.Black
+                                )
+                            }
+
+                            AssignmentScreenType.ASSIGNMENT -> {
+                                AssignmentContent(
+                                    uiState = uiState,
+                                    onMemberClick = {
+                                        viewModel.setEvent(
+                                            AssignmentContract.Event.OnSelectedMember(
+                                                it
+                                            )
+                                        )
+                                    },
+                                    onWeekSelected = {
+                                        viewModel.setEvent(
+                                            AssignmentContract.Event.OnWeekSelected(
+                                                it
+                                            )
+                                        )
+                                    },
+                                    onConfirmClick = {
+                                        viewModel.setEvent(AssignmentContract.Event.OnConfirmButtonClick)
+                                    }
+                                )
+                            }
+                        }
                     }
                 }
             }
