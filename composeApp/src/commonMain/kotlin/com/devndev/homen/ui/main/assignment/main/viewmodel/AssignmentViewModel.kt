@@ -22,11 +22,11 @@ class AssignmentViewModel(
     override fun handleEvents(event: AssignmentContract.Event) {
         when (event) {
             AssignmentContract.Event.OnInit -> {
-                getAssignmentData(DateUtil.getThisWeekMonday())
+                getAssignmentData(DateUtil.getThisWeekMonday(), isInit = true)
             }
 
             is AssignmentContract.Event.OnTabSelected -> {
-                setState { copy(selectedTab = event.tab) }
+                setState { copy(selectedTab = event.tab, screenType = AssignmentScreenType.NONE) }
 
                 when (event.tab) {
                     AssignmentTab.THIS_WEEK -> {
@@ -76,14 +76,14 @@ class AssignmentViewModel(
 
             is AssignmentContract.Event.OnWeekSelected -> {
                 setState { copy(weekOffset = event.weekOffset) }
-                getAssignmentData(DateUtil.getMondayOfWeek(-event.weekOffset), true)
+                getAssignmentData(DateUtil.getMondayOfWeek(-event.weekOffset))
             }
         }
     }
 
-    private fun getAssignmentData(weekDay: String, isFromHistory: Boolean = false) {
+    private fun getAssignmentData(weekDay: String, isInit: Boolean = false) {
         viewModelScope.launch {
-            if (isFromHistory) {
+            if (!isInit) {
                 setState { copy(isLoading = true) }
             } else {
                 setState { copy(mainIsLoading = true) }
@@ -137,7 +137,7 @@ class AssignmentViewModel(
                     }
                 }
             }
-            if (isFromHistory) {
+            if (!isInit) {
                 setState { copy(isLoading = false) }
             } else {
                 setState { copy(mainIsLoading = false) }
