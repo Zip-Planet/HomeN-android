@@ -17,6 +17,7 @@ import com.devndev.homen.ui.main.homeintro.joindone.viewmodel.JoinDoneViewModel
 import com.devndev.homen.ui.main.homeintro.joinconfirm.viewmodel.JoinConfirmViewModel
 import com.devndev.homen.ui.main.homeintro.join.viewmodel.CodeEnterViewModel
 import com.devndev.homen.ui.main.homeintro.main.viewmodel.HomeIntroViewModel
+import com.devndev.homen.ui.main.reward.main.viewmodel.RewardViewModel
 import com.devndev.homen.ui.main.viewmodel.MainViewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
@@ -43,4 +44,5 @@ val viewModelModule = module {
     viewModelOf(::StarterPackPreviewViewModel)
     viewModelOf(::BoardViewModel)
     viewModelOf(::AssignmentViewModel)
+    viewModelOf(::RewardViewModel)
 }

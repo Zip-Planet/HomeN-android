@@ -40,7 +40,7 @@ fun MainBottomBar(navController: NavController) {
         BottomNavItem.Home,
         BottomNavItem.Board,
         BottomNavItem.Assignment,
-        BottomNavItem.Present,
+        BottomNavItem.Reward,
         BottomNavItem.MyPage
     )
 
