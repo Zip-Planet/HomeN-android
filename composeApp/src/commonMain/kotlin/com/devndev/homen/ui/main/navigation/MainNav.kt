@@ -21,6 +21,7 @@ import com.devndev.homen.ui.main.home.main.navigation.homeNav
 import com.devndev.homen.ui.main.homeintro.navigation.HomeIntroRoute
 import com.devndev.homen.ui.main.homeintro.navigation.homeIntroNav
 import com.devndev.homen.ui.main.mypage.navigation.myPageNav
+import com.devndev.homen.ui.main.reward.navigation.RewardRoute
 import com.devndev.homen.ui.main.reward.navigation.rewardNav
 import com.devndev.homen.ui.main.viewmodel.MainContract
 import com.devndev.homen.ui.main.viewmodel.MainViewModel
@@ -56,9 +57,11 @@ fun MainNav(
             currentDestination?.hasRoute<HomeIntroRoute.JoinGraph>() == true ||
             currentDestination?.hasRoute<HomeIntroRoute.CreateGraph>() == true
 
+    val isRewardNotRewardMain = currentDestination?.hasRoute<RewardRoute.EditReward>() == true
+
     Scaffold(
         bottomBar = {
-            if (hasHome && !isHomeIntroRoute && !isChoreManage) {
+            if (hasHome && !isHomeIntroRoute && !isChoreManage && !isRewardNotRewardMain) {
                 MainBottomBar(navController = mainNavController)
             }
         },
@@ -84,7 +87,7 @@ fun MainNav(
             homeNav(mainNavController)
             boardNav()
             assignmentNav(mainNavController, paddingValues)
-            rewardNav()
+            rewardNav(mainNavController)
             myPageNav()
         }
     }

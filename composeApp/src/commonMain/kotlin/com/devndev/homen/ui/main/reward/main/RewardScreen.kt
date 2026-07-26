@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -31,6 +30,7 @@ import com.devndev.homen.ui.theme.HomeNTheme
 import homen.composeapp.generated.resources.Res
 import homen.composeapp.generated.resources.present_icon
 import homen.composeapp.generated.resources.reward
+import homen.composeapp.generated.resources.reward_empty_btn
 import homen.composeapp.generated.resources.reward_empty_msg
 import homen.composeapp.generated.resources.reward_empty_title
 import kotlinx.coroutines.flow.collectLatest
@@ -41,14 +41,16 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun RewardScreen(
     viewModel: RewardViewModel = koinViewModel(),
-
-    ) {
+    onNavToEditReward: (Int?, String?, String?, Boolean) -> Unit
+) {
     val uiState by viewModel.viewState
 
     LaunchedEffect(viewModel.effect) {
         viewModel.effect.collectLatest { effect ->
             when (effect) {
-                else -> {}
+                is RewardContract.Effect.NavigateToRewardEdit -> {
+                    onNavToEditReward(effect.rewardId, effect.reward, effect.point, effect.isEdit)
+                }
             }
         }
     }
@@ -108,9 +110,9 @@ fun RewardScreen(
                 Spacer(modifier = Modifier.height(40.dp))
 
                 HomeNButton(
-                    text = stringResource(Res.string.reward_empty_title),
+                    text = stringResource(Res.string.reward_empty_btn),
                     onClick = {
-
+                        viewModel.setEvent(RewardContract.Event.OnCreateRewardClick)
                     }
                 )
             }

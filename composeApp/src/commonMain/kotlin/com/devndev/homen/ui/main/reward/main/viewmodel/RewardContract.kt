@@ -8,6 +8,7 @@ import com.devndev.homen.core.domain.model.reward.Reward
 class RewardContract {
     sealed class Event: ViewEvent {
         data object OnInit: Event()
+        data object OnCreateRewardClick: Event()
     }
 
     data class State(
@@ -23,6 +24,6 @@ class RewardContract {
     }
 
     sealed class Effect: ViewSideEffect {
-
+        data class NavigateToRewardEdit(val rewardId: Int?, val reward: String?, val point: String?, val isEdit: Boolean): Effect()
     }
 }

@@ -16,6 +16,10 @@ class RewardViewModel(
             RewardContract.Event.OnInit -> {
                 getRewards()
             }
+
+            RewardContract.Event.OnCreateRewardClick -> {
+                setEffect { RewardContract.Effect.NavigateToRewardEdit(null, null, null, false) }
+            }
         }
     }
 
