@@ -66,6 +66,9 @@ kotlin {
             implementation(libs.network.chaintech.cmptoast)
 
             implementation(libs.kotlinx.datetime)
+
+            implementation(libs.compottie)
+            implementation(libs.compottie.resources)
         }
     }
 }
