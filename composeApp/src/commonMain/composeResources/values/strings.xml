@@ -275,6 +275,15 @@
     <string name="reward_edit_name_title">이름</string>
     <string name="reward_edit_point_title">목표 포인트</string>
     <string name="reward_save_button">저장하기</string>
+    <string name="reward_my_point_label">내 리워드 포인트</string>
+    <string name="reward_my_possible_label">가능</string>
+    <string name="reward_my_progress_label">진행 중</string>
+    <string name="reward_my_complete_label">완료</string>
+    <string name="reward_complete_title">리워드 받기 완료</string>
+    <string name="reward_point_complete_badge_message">목표 포인트 sP 달성 완료</string>
+    <string name="reward_point_progress_badge_message">목표 포인트 sP</string>
+    <string name="reward_point_progress_badge_remain_message">sP 남음</string>
+
 
     <!-- 초대 팝업 -->
     <string name="invite_popup_title">s 초대코드</string>

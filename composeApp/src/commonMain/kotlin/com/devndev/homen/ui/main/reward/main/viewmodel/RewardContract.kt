@@ -18,7 +18,8 @@ class RewardContract {
         val myPoint: Int = 0,
         val claimableCount: Int = 0,
         val inProgressCount: Int = 0,
-        val claimedCount: Int = 0
+        val claimedCount: Int = 0,
+        val profileImage: Int = 0,
     ): ViewState {
         val isRewardExist = rewards.isNotEmpty()
     }

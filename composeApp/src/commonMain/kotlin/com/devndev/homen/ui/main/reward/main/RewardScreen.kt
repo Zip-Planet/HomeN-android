@@ -69,7 +69,9 @@ fun RewardScreen(
         mainIsLoading = uiState.mainIsLoading
     ) {
         if (uiState.isRewardExist) {
-
+            RewardExistScreen(
+                uiState = uiState
+            )
         } else {
             Column(
                 modifier = Modifier

@@ -12,6 +12,8 @@ val GrayCA = Color(0xFFCACACA)
 
 val GrayE7 = Color(0xFFE7EAF0)
 
+val Gray8E8E8E = Color(0xFF8E8E8E)
+
 val DarkGray = Color(0xFF474747)
 val LightGray = Color(0xFFB2B2B2)
 
@@ -31,5 +33,13 @@ val RedFF1E1E = Color(0xFFFF1E1E)
 val RedFFCACA = Color(0xFFFFCACA)
 
 val OrangeFF8431 = Color(0xFFFF8431)
-
 val Green28A049 = Color(0xFF28A049)
+
+// Heart Color
+val RedEF4452 = Color(0xFFEF4452)
+val OrangeF77F00 = Color(0xFFF77F00)
+val YellowFFC84D = Color(0xFFFFC84D)
+val Green23B169 = Color(0xFF23B169)
+val Blue1E6EF4 = Color(0xFF1E6EF4)
+val Purple786DE7 = Color(0xFF786DE7)
+
