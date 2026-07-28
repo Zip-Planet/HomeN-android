@@ -21,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -219,21 +220,91 @@ fun HomeNLongTextField(
     )
 }
 
+/**
+ * 숫자만 입력 가능한 텍스트 필드 (단위 포함)
+ */
+@Composable
+fun HomeNNumberTextField(
+    value: String,
+    onValueChange: (String) -> Unit,
+    hint: String,
+    modifier: Modifier = Modifier,
+    suffix: String = "P",
+    enabled: Boolean = true,
+    backgroundColor: Color = Color.White
+) {
+    BasicTextField(
+        value = value,
+        onValueChange = { input ->
+            // 숫자만 허용
+            if (input.all { it.isDigit() }) {
+                onValueChange(input)
+            }
+        },
+        enabled = enabled,
+        modifier = modifier
+            .fillMaxWidth()
+            .height(50.dp),
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        textStyle = HomeNTheme.typography.suitMedium.copy(
+            fontSize = 14.sp,
+            color = Color.Black
+        ),
+        decorationBox = { innerTextField ->
+            Row(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(backgroundColor, RoundedCornerShape(10.dp))
+                    .padding(horizontal = 15.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Box(modifier = Modifier.weight(1f)) {
+                    if (value.isEmpty()) {
+                        Text(
+                            text = hint,
+                            style = HomeNTheme.typography.suitRegular,
+                            color = BottomGray,
+                            fontSize = 14.sp,
+                            modifier = Modifier.align(Alignment.CenterStart)
+                        )
+                    }
+                    innerTextField()
+                }
+
+                Text(
+                    text = suffix,
+                    style = HomeNTheme.typography.suitBold,
+                    color = Color.Black,
+                    fontSize = 14.sp
+                )
+            }
+        }
+    )
+}
+
 @Preview
 @Composable
 fun PreviewHomeNTextField() {
     HomeNTheme {
-        HomeNLongTextField(
-            value = "청소(쓸기/닦기)청소(쓸기/닦기)청소(쓸기/닦기)청소(쓸기/닦기)",
-            onValueChange = {
+        Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+            HomeNLongTextField(
+                value = "",
+                onValueChange = {},
+                hint = "청소(쓸기/닦기)",
+                modifier = Modifier,
+                maxChar = 20,
+                enabled = true,
+                regex = null,
+                height = 72
+            )
 
-            },
-            hint = "청소(쓸기/닦기)",
-            modifier = Modifier,
-        maxChar = 20,
-        enabled = true,
-        regex = null,
-        height = 72
-        )
+            HomeNNumberTextField(
+                value = "",
+                onValueChange = {},
+                hint = "예 : 1,600",
+                suffix = "P"
+            )
+        }
     }
 }

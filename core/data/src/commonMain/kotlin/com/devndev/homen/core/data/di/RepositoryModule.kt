@@ -2,10 +2,12 @@ package com.devndev.homen.core.data.di
 
 import com.devndev.homen.core.data.repository.AuthRepositoryImpl
 import com.devndev.homen.core.data.repository.HomeRepositoryImpl
+import com.devndev.homen.core.data.repository.RewardRepositoryImpl
 import com.devndev.homen.core.data.repository.TokenRepositoryImpl
 import com.devndev.homen.core.data.repository.UserRepositoryImpl
 import com.devndev.homen.core.domain.repository.AuthRepository
 import com.devndev.homen.core.domain.repository.HomeRepository
+import com.devndev.homen.core.domain.repository.RewardRepository
 import com.devndev.homen.core.domain.repository.TokenRepository
 import com.devndev.homen.core.domain.repository.UserRepository
 import org.koin.core.qualifier.named
@@ -35,6 +37,11 @@ val repositoryModule = module {
     single<TokenRepository> {
         TokenRepositoryImpl(
             dataStore = get()
+        )
+    }
+    single<RewardRepository> {
+        RewardRepositoryImpl(
+            rewardService = get()
         )
     }
 }

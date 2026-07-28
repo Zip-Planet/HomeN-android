@@ -36,7 +36,7 @@ sealed class BottomNavItem {
     }
 
     @Serializable
-    data object Present : BottomNavItem() {
+    data object Reward : BottomNavItem() {
         override val title: String = "리워드"
         override val icon: DrawableResource = Res.drawable.present_icon
     }

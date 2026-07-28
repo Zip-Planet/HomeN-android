@@ -37,7 +37,7 @@ fun getTypography(): HomeNTypography {
     val baseStyle = TextStyle(
         fontFamily = suitFamily,
         lineHeight = 1.6.em,
-        letterSpacing = (-0.02).em
+        letterSpacing = (-0.022).em
     )
 
     return HomeNTypography(
