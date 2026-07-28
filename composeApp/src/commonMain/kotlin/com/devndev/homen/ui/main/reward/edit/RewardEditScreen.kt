@@ -120,6 +120,7 @@ fun RewardEditScreen(
             HomeNButton(
                 text = stringResource(Res.string.reward_save_button),
                 onClick = {
+                    viewModel.setEvent(RewardEditContract.Event.OnSaveClick(isEdit))
                 },
                 enabled = uiState.isSaveButtonEnable
             )
