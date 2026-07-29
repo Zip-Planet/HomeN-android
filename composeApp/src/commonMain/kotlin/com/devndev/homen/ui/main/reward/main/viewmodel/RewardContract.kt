@@ -9,6 +9,7 @@ class RewardContract {
     sealed class Event: ViewEvent {
         data object OnInit: Event()
         data object OnCreateRewardClick: Event()
+        data class OnEditClick(val reward: Reward): Event()
     }
 
     data class State(

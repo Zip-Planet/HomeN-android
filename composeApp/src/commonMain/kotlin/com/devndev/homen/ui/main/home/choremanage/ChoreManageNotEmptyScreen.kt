@@ -179,7 +179,7 @@ fun ChoreManageNotEmptyScreen(
             contentDescription = "add chore icon",
             modifier = Modifier
                 .align(Alignment.BottomEnd)
-                .padding(end = 36.dp, bottom = 55.dp)
+                .padding(end = 17.dp, bottom = 55.dp)
                 .size(51.dp)
                 .clickable(
                     interactionSource = remember { MutableInteractionSource() },

@@ -8,6 +8,7 @@ import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.client.request.header
+import io.ktor.client.request.patch
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
@@ -41,6 +42,21 @@ class RewardServiceImpl(
             url {
                 takeFrom(Config.BASE_URL)
                 encodedPath += RewardService.REWARDS
+            }
+            contentType(ContentType.Application.Json)
+            accessToken?.let {
+                header(HttpHeaders.Authorization, "Bearer $it")
+            }
+            setBody(rewardRequest)
+        }
+    }
+
+    override suspend fun editReward(id: Int, rewardRequest: RewardRequest) {
+        val accessToken = tokenRepository.getAccessToken().first()
+        client.patch {
+            url {
+                takeFrom(Config.BASE_URL)
+                encodedPath += "${RewardService.REWARDS}$id/"
             }
             contentType(ContentType.Application.Json)
             accessToken?.let {

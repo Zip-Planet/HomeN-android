@@ -2,6 +2,7 @@ package com.devndev.homen.ui.main.reward.navigation
 
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -11,7 +12,10 @@ import com.devndev.homen.ui.main.navigation.BottomNavItem
 import com.devndev.homen.ui.main.reward.edit.RewardEditScreen
 import com.devndev.homen.ui.main.reward.main.RewardScreen
 
-fun NavGraphBuilder.rewardNav(navController: NavController) {
+fun NavGraphBuilder.rewardNav(
+    navController: NavController,
+    paddingValues: PaddingValues
+) {
     composable<BottomNavItem.Reward>(
         enterTransition = { EnterTransition.None },
         exitTransition = { ExitTransition.None }
@@ -19,7 +23,8 @@ fun NavGraphBuilder.rewardNav(navController: NavController) {
         RewardScreen(
             onNavToEditReward = { rewardId, reward, point, isEdit ->
                 navController.navigate(RewardRoute.EditReward(rewardId, reward, point, isEdit))
-            }
+            },
+            paddingValues = paddingValues
         )
     }
 
