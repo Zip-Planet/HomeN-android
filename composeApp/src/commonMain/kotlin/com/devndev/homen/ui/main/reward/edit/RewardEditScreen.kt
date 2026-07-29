@@ -54,6 +54,13 @@ fun RewardEditScreen(
         }
     }
 
+    LaunchedEffect(Unit) {
+        if (isEdit) {
+            viewModel.setEvent(RewardEditContract.Event.OnRewardChange(reward?: ""))
+            viewModel.setEvent(RewardEditContract.Event.OnPointChange(point?: ""))
+        }
+    }
+
     val title = if (isEdit) {
         stringResource(Res.string.reward_edit_title)
     } else {
@@ -120,7 +127,7 @@ fun RewardEditScreen(
             HomeNButton(
                 text = stringResource(Res.string.reward_save_button),
                 onClick = {
-                    viewModel.setEvent(RewardEditContract.Event.OnSaveClick(isEdit))
+                    viewModel.setEvent(RewardEditContract.Event.OnSaveClick(isEdit, rewardId?: 0))
                 },
                 enabled = uiState.isSaveButtonEnable
             )

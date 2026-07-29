@@ -2,6 +2,7 @@ package com.devndev.homen.ui.main.reward.main
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -41,7 +42,8 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun RewardScreen(
     viewModel: RewardViewModel = koinViewModel(),
-    onNavToEditReward: (Int?, String?, String?, Boolean) -> Unit
+    onNavToEditReward: (Int?, String?, String?, Boolean) -> Unit,
+    paddingValues: PaddingValues
 ) {
     val uiState by viewModel.viewState
 
@@ -70,7 +72,12 @@ fun RewardScreen(
     ) {
         if (uiState.isRewardExist) {
             RewardExistScreen(
-                uiState = uiState
+                modifier = Modifier
+                    .padding(bottom = paddingValues.calculateBottomPadding()),
+                uiState = uiState,
+                onEditClick = {
+                    viewModel.setEvent(RewardContract.Event.OnEditClick(it))
+                }
             )
         } else {
             Column(

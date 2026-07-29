@@ -6,7 +6,7 @@ import com.devndev.homen.core.common.base.ViewState
 
 class RewardEditContract {
     sealed class Event: ViewEvent {
-        data class OnSaveClick(val isEdit: Boolean): Event()
+        data class OnSaveClick(val isEdit: Boolean, val id: Int): Event()
         data class OnRewardChange(val reward: String): Event()
         data class OnPointChange(val point: String): Event()
     }

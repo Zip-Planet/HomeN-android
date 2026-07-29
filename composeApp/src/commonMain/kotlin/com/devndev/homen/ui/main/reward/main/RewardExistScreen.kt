@@ -78,6 +78,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun RewardExistScreen(
+    modifier: Modifier = Modifier,
     uiState: RewardContract.State,
     onAddButtonClick: () -> Unit = {},
     onEditClick: (Reward) -> Unit = {},
@@ -253,9 +254,9 @@ fun RewardExistScreen(
         Icon(
             painter = painterResource(Res.drawable.floating_btn_icon),
             contentDescription = "add reward icon",
-            modifier = Modifier
+            modifier = modifier
                 .align(Alignment.BottomEnd)
-                .padding(end = 36.dp, bottom = 55.dp)
+                .padding(end = 17.dp)
                 .size(51.dp)
                 .clickable(
                     interactionSource = remember { MutableInteractionSource() },
@@ -444,13 +445,19 @@ fun RewardListItem(
                         painter = painterResource(Res.drawable.edit_alt_icon),
                         contentDescription = "edit reward",
                         modifier = Modifier.size(20.dp)
-                            .clickable { onEditClick() }
+                            .clickable(
+                                interactionSource = remember { MutableInteractionSource() },
+                                indication = null
+                            ) { onEditClick() }
                     )
                     Icon(
                         painter = painterResource(Res.drawable.trash_alt_icon),
                         contentDescription = "delete reward",
                         modifier = Modifier.size(20.dp)
-                            .clickable { onDeleteClick() }
+                            .clickable(
+                                interactionSource = remember { MutableInteractionSource() },
+                                indication = null
+                            ) { onDeleteClick() }
                     )
                 }
             }

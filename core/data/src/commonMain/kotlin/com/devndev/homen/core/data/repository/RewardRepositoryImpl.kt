@@ -32,4 +32,15 @@ class RewardRepositoryImpl(
             ApiResult.NetworkError
         }
     }
+
+    override suspend fun editReward(id: Int, name: String, goalPoint: Int): ApiResult<Unit> {
+        return try {
+            rewardService.editReward(id, RewardRequest(name, goalPoint))
+            ApiResult.Success(Unit)
+        } catch (e: ResponseException) {
+            ApiResult.Error(code = e.response.status.value, message = e.message)
+        } catch (e: Exception) {
+            ApiResult.NetworkError
+        }
+    }
 }
