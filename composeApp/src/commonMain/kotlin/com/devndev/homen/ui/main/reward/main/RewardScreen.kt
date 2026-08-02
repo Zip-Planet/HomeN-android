@@ -12,10 +12,15 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -31,9 +36,11 @@ import com.devndev.homen.ui.theme.HomeNTheme
 import homen.composeapp.generated.resources.Res
 import homen.composeapp.generated.resources.present_icon
 import homen.composeapp.generated.resources.reward
+import homen.composeapp.generated.resources.reward_delete_snackbar_msg
 import homen.composeapp.generated.resources.reward_empty_btn
 import homen.composeapp.generated.resources.reward_empty_msg
 import homen.composeapp.generated.resources.reward_empty_title
+import homen.composeapp.generated.resources.snackbar_cancel
 import kotlinx.coroutines.flow.collectLatest
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -46,12 +53,39 @@ fun RewardScreen(
     paddingValues: PaddingValues
 ) {
     val uiState by viewModel.viewState
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    val deleteMsg = stringResource(Res.string.reward_delete_snackbar_msg)
+    val cancelMsg = stringResource(Res.string.snackbar_cancel)
 
     LaunchedEffect(viewModel.effect) {
         viewModel.effect.collectLatest { effect ->
             when (effect) {
                 is RewardContract.Effect.NavigateToRewardEdit -> {
                     onNavToEditReward(effect.rewardId, effect.reward, effect.point, effect.isEdit)
+                }
+
+                is RewardContract.Effect.ShowDeleteSnackBar -> {
+                    val result = snackbarHostState.showSnackbar(
+                        message = deleteMsg,
+                        actionLabel = cancelMsg,
+                        duration = SnackbarDuration.Short
+                    )
+
+                    when (result) {
+                        SnackbarResult.ActionPerformed -> {
+                            viewModel.setEvent(
+                                RewardContract.Event.OnUndoDelete(
+                                    reward = effect.reward,
+                                    index = effect.index
+                                )
+                            )
+                        }
+
+                        SnackbarResult.Dismissed -> {
+                            viewModel.setEvent(RewardContract.Event.OnDeleteConfirm(effect.reward.id))
+                        }
+                    }
                 }
             }
         }
@@ -68,7 +102,13 @@ fun RewardScreen(
             )
         },
         isLoading = uiState.isLoading,
-        mainIsLoading = uiState.mainIsLoading
+        mainIsLoading = uiState.mainIsLoading,
+        snackbarHost = {
+            SnackbarHost(
+                hostState = snackbarHostState,
+                modifier = Modifier.padding(bottom = 34.dp)
+            )
+        }
     ) {
         if (uiState.isRewardExist) {
             RewardExistScreen(
@@ -77,6 +117,12 @@ fun RewardScreen(
                 uiState = uiState,
                 onEditClick = {
                     viewModel.setEvent(RewardContract.Event.OnEditClick(it))
+                },
+                onAddButtonClick = {
+                    viewModel.setEvent(RewardContract.Event.OnCreateRewardClick)
+                },
+                onDeleteClick = {
+                    viewModel.setEvent(RewardContract.Event.OnDeleteClick(it))
                 }
             )
         } else {
