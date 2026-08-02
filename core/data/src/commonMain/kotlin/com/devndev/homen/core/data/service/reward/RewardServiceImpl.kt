@@ -6,6 +6,7 @@ import com.devndev.homen.core.data.model.reward.response.RewardListResponse
 import com.devndev.homen.core.domain.repository.TokenRepository
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
+import io.ktor.client.request.delete
 import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.request.patch
@@ -63,6 +64,20 @@ class RewardServiceImpl(
                 header(HttpHeaders.Authorization, "Bearer $it")
             }
             setBody(rewardRequest)
+        }
+    }
+
+    override suspend fun deleteReward(id: Int) {
+        val accessToken = tokenRepository.getAccessToken().first()
+        client.delete {
+            url {
+                takeFrom(Config.BASE_URL)
+                encodedPath += "${RewardService.REWARDS}$id/"
+            }
+            contentType(ContentType.Application.Json)
+            accessToken?.let {
+                header(HttpHeaders.Authorization, "Bearer $it")
+            }
         }
     }
 }

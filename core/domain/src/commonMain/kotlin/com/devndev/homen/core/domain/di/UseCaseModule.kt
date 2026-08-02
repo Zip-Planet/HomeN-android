@@ -24,6 +24,7 @@ import com.devndev.homen.core.domain.usecase.home.GetJoinHomeUseCase
 import com.devndev.homen.core.domain.usecase.home.GetMemosUseCase
 import com.devndev.homen.core.domain.usecase.home.JoinHomeUseCase
 import com.devndev.homen.core.domain.usecase.reward.CreateRewardUseCase
+import com.devndev.homen.core.domain.usecase.reward.DeleteRewardUseCase
 import com.devndev.homen.core.domain.usecase.reward.EditRewardUseCase
 import com.devndev.homen.core.domain.usecase.reward.GetRewardsUseCase
 import com.devndev.homen.core.domain.usecase.splash.CheckTokenUseCase
@@ -68,6 +69,7 @@ val useCaseModule = module {
     factoryOf(::GetRewardsUseCase)
     factoryOf(::CreateRewardUseCase)
     factoryOf(::EditRewardUseCase)
+    factoryOf(::DeleteRewardUseCase)
 
     // user
     factoryOf(::UpdateProfileUseCase)

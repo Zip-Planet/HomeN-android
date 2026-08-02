@@ -283,6 +283,7 @@
     <string name="reward_point_complete_badge_message">목표 포인트 sP 달성 완료</string>
     <string name="reward_point_progress_badge_message">목표 포인트 sP</string>
     <string name="reward_point_progress_badge_remain_message">sP 남음</string>
+    <string name="reward_delete_snackbar_msg">리워드가 삭제되었어요</string>
 
 
     <!-- 초대 팝업 -->
