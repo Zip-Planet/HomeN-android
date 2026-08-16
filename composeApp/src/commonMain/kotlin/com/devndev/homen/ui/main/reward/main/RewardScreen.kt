@@ -31,6 +31,7 @@ import com.devndev.homen.ui.component.HomeNButton
 import com.devndev.homen.ui.component.HomeNScreen
 import com.devndev.homen.ui.component.NotificationTopBar
 import com.devndev.homen.ui.main.reward.main.viewmodel.RewardContract
+import com.devndev.homen.ui.main.reward.main.viewmodel.RewardContract.Event.*
 import com.devndev.homen.ui.main.reward.main.viewmodel.RewardViewModel
 import com.devndev.homen.ui.theme.HomeNTheme
 import homen.composeapp.generated.resources.Res
@@ -50,6 +51,7 @@ import org.koin.compose.viewmodel.koinViewModel
 fun RewardScreen(
     viewModel: RewardViewModel = koinViewModel(),
     onNavToEditReward: (Int?, String?, String?, Boolean) -> Unit,
+    onNavToRewardDetail: (Int) -> Unit,
     paddingValues: PaddingValues
 ) {
     val uiState by viewModel.viewState
@@ -75,7 +77,7 @@ fun RewardScreen(
                     when (result) {
                         SnackbarResult.ActionPerformed -> {
                             viewModel.setEvent(
-                                RewardContract.Event.OnUndoDelete(
+                                OnUndoDelete(
                                     reward = effect.reward,
                                     index = effect.index
                                 )
@@ -83,9 +85,13 @@ fun RewardScreen(
                         }
 
                         SnackbarResult.Dismissed -> {
-                            viewModel.setEvent(RewardContract.Event.OnDeleteConfirm(effect.reward.id))
+                            viewModel.setEvent(OnDeleteConfirm(effect.reward.id))
                         }
                     }
+                }
+
+                is RewardContract.Effect.NavigateToRewardDetail -> {
+                    onNavToRewardDetail(effect.rewardId)
                 }
             }
         }
@@ -123,6 +129,9 @@ fun RewardScreen(
                 },
                 onDeleteClick = {
                     viewModel.setEvent(RewardContract.Event.OnDeleteClick(it))
+                },
+                onRewardClick = {
+                    viewModel.setEvent(RewardContract.Event.OnRewardClick(it.id))
                 }
             )
         } else {

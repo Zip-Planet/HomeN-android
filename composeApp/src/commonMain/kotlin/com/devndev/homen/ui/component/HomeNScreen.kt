@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Scaffold
@@ -25,6 +24,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import com.devndev.homen.ui.theme.BackgroundGray
 import homen.composeapp.generated.resources.Res
+import io.github.alexzhirkevich.compottie.Compottie
 import io.github.alexzhirkevich.compottie.LottieCompositionSpec
 import io.github.alexzhirkevich.compottie.animateLottieCompositionAsState
 import io.github.alexzhirkevich.compottie.rememberLottieComposition
@@ -56,7 +56,10 @@ fun HomeNScreen(
         )
     }
 
-    val progress by animateLottieCompositionAsState(composition)
+    val progress by animateLottieCompositionAsState(
+        composition = composition,
+        iterations = Compottie.IterateForever
+    )
 
     Box(
         modifier = modifier.fillMaxSize()

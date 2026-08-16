@@ -57,7 +57,8 @@ fun MainNav(
             currentDestination?.hasRoute<HomeIntroRoute.JoinGraph>() == true ||
             currentDestination?.hasRoute<HomeIntroRoute.CreateGraph>() == true
 
-    val isRewardNotRewardMain = currentDestination?.hasRoute<RewardRoute.EditReward>() == true
+    val isRewardNotRewardMain = currentDestination?.hasRoute<RewardRoute.EditReward>() == true ||
+            currentDestination?.hasRoute<RewardRoute.RewardDetail>() == true
 
     Scaffold(
         bottomBar = {

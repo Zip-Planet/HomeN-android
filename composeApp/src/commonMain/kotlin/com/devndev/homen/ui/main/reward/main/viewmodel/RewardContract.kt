@@ -14,6 +14,7 @@ class RewardContract {
         data class OnDeleteClick(val id: Int): Event()
         data class OnUndoDelete(val reward: Reward, val index: Int): Event()
         data class OnDeleteConfirm(val id: Int): Event()
+        data class OnRewardClick(val id: Int): Event()
     }
 
     data class State(
@@ -32,5 +33,6 @@ class RewardContract {
     sealed class Effect: ViewSideEffect {
         data class NavigateToRewardEdit(val rewardId: Int?, val reward: String?, val point: String?, val isEdit: Boolean): Effect()
         data class ShowDeleteSnackBar(val reward: Reward, val index: Int): Effect()
+        data class NavigateToRewardDetail(val rewardId: Int): Effect()
     }
 }

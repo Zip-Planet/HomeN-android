@@ -1,6 +1,7 @@
 package com.devndev.homen.core.data.service.reward
 
 import com.devndev.homen.core.data.model.reward.request.RewardRequest
+import com.devndev.homen.core.data.model.reward.response.RewardDetailResponse
 import com.devndev.homen.core.data.model.reward.response.RewardListResponse
 
 interface RewardService {
@@ -12,4 +13,5 @@ interface RewardService {
     suspend fun createReward(rewardRequest: RewardRequest)
     suspend fun editReward(id: Int, rewardRequest: RewardRequest)
     suspend fun deleteReward(id: Int)
+    suspend fun getRewardDetail(id: Int): RewardDetailResponse
 }

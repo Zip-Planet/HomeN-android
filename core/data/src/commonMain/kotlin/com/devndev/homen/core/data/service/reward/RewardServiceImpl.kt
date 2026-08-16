@@ -2,6 +2,7 @@ package com.devndev.homen.core.data.service.reward
 
 import com.devndev.homen.core.common.Config
 import com.devndev.homen.core.data.model.reward.request.RewardRequest
+import com.devndev.homen.core.data.model.reward.response.RewardDetailResponse
 import com.devndev.homen.core.data.model.reward.response.RewardListResponse
 import com.devndev.homen.core.domain.repository.TokenRepository
 import io.ktor.client.HttpClient
@@ -79,5 +80,19 @@ class RewardServiceImpl(
                 header(HttpHeaders.Authorization, "Bearer $it")
             }
         }
+    }
+
+    override suspend fun getRewardDetail(id: Int): RewardDetailResponse {
+        val accessToken = tokenRepository.getAccessToken().first()
+        return client.get {
+            url {
+                takeFrom(Config.BASE_URL)
+                encodedPath += "${RewardService.REWARDS}$id/"
+            }
+            contentType(ContentType.Application.Json)
+            accessToken?.let {
+                header(HttpHeaders.Authorization, "Bearer $it")
+            }
+        }.body()
     }
 }
