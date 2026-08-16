@@ -284,7 +284,11 @@
     <string name="reward_point_progress_badge_message">목표 포인트 sP</string>
     <string name="reward_point_progress_badge_remain_message">sP 남음</string>
     <string name="reward_delete_snackbar_msg">리워드가 삭제되었어요</string>
-
+    <string name="reward_detail_title">리워드 상세</string>
+    <string name="reward_edit_btn">수정하기</string>
+    <string name="reward_get_btn">리워드 받기</string>
+    <string name="reward_claimed_btn">받기 완료된 리워드에요</string>
+    <string name="reward_goal_title">리워드 목표</string>
 
     <!-- 초대 팝업 -->
     <string name="invite_popup_title">s 초대코드</string>

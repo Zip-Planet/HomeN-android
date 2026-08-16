@@ -4,6 +4,7 @@ import com.devndev.homen.core.data.model.reward.request.RewardRequest
 import com.devndev.homen.core.data.model.reward.response.toDomainModel
 import com.devndev.homen.core.data.service.reward.RewardService
 import com.devndev.homen.core.domain.model.common.ApiResult
+import com.devndev.homen.core.domain.model.reward.RewardDetail
 import com.devndev.homen.core.domain.model.reward.RewardList
 import com.devndev.homen.core.domain.repository.RewardRepository
 import io.ktor.client.plugins.ResponseException
@@ -48,6 +49,17 @@ class RewardRepositoryImpl(
         return try {
             rewardService.deleteReward(id)
             ApiResult.Success(Unit)
+        } catch (e: ResponseException) {
+            ApiResult.Error(code = e.response.status.value, message = e.message)
+        } catch (e: Exception) {
+            ApiResult.NetworkError
+        }
+    }
+
+    override suspend fun getRewardDetail(id: Int): ApiResult<RewardDetail> {
+        return try {
+            val response = rewardService.getRewardDetail(id)
+            ApiResult.Success(response.toDomainModel())
         } catch (e: ResponseException) {
             ApiResult.Error(code = e.response.status.value, message = e.message)
         } catch (e: Exception) {

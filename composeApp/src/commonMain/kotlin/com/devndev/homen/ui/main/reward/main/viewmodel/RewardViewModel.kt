@@ -81,6 +81,10 @@ class RewardViewModel(
                 pendingDeleteJobs.remove(event.id)
                 deleteReward(event.id)
             }
+
+            is RewardContract.Event.OnRewardClick -> {
+                setEffect { RewardContract.Effect.NavigateToRewardDetail(event.id) }
+            }
         }
     }
 

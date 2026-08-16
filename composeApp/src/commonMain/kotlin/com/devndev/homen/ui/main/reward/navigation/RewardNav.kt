@@ -9,6 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.devndev.homen.ui.component.NavTransitions
 import com.devndev.homen.ui.main.navigation.BottomNavItem
+import com.devndev.homen.ui.main.reward.detail.RewardDetailScreen
 import com.devndev.homen.ui.main.reward.edit.RewardEditScreen
 import com.devndev.homen.ui.main.reward.main.RewardScreen
 
@@ -23,6 +24,10 @@ fun NavGraphBuilder.rewardNav(
         RewardScreen(
             onNavToEditReward = { rewardId, reward, point, isEdit ->
                 navController.navigate(RewardRoute.EditReward(rewardId, reward, point, isEdit))
+            },
+            onNavToRewardDetail = { rewardId ->
+                navController.navigate(RewardRoute.RewardDetail(rewardId))
+
             },
             paddingValues = paddingValues
         )
@@ -44,5 +49,24 @@ fun NavGraphBuilder.rewardNav(
                 navController.popBackStack()
             }
         )
+    }
+
+    composable<RewardRoute.RewardDetail>(
+        enterTransition = NavTransitions.enterTransition,
+        exitTransition = NavTransitions.exitTransition,
+        popEnterTransition = NavTransitions.popEnterTransition,
+        popExitTransition = NavTransitions.popExitTransition
+    ) { backStackEntry ->
+        val route: RewardRoute.RewardDetail = backStackEntry.toRoute()
+        RewardDetailScreen(
+            rewardId = route.rewardId,
+            onEditClick = { rewardId, reward, point, isEdit ->
+                navController.navigate(RewardRoute.EditReward(rewardId, reward, point, isEdit))
+            },
+            onBackClick = {
+                navController.popBackStack()
+            }
+        )
+
     }
 }
