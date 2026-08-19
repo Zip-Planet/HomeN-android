@@ -1,5 +1,6 @@
 package com.devndev.homen.core.data.repository
 
+import com.devndev.homen.core.data.model.home.request.ConfirmAssignmentRequest
 import com.devndev.homen.core.data.model.home.request.CreateAssignmentRequest
 import com.devndev.homen.core.data.model.home.request.CreateChoreRequest
 import com.devndev.homen.core.data.model.home.request.CreateHomeRequest
@@ -13,6 +14,7 @@ import com.devndev.homen.core.domain.model.common.ApiResult
 import com.devndev.homen.core.domain.model.home.Assignment
 import com.devndev.homen.core.domain.model.home.Chore
 import com.devndev.homen.core.domain.model.home.ChoreDetail
+import com.devndev.homen.core.domain.model.home.ConfirmAssignment
 import com.devndev.homen.core.domain.model.home.CreateHome
 import com.devndev.homen.core.domain.model.home.HomeResponseDomainModel
 import com.devndev.homen.core.domain.model.home.JoinHomeResponseDomainModel
@@ -163,9 +165,26 @@ class HomeRepositoryImpl(
         }
     }
 
-    override suspend fun confirmAssignment(assignmentId: Int): ApiResult<Assignment> {
+    override suspend fun confirmAssignment(
+        assignmentId: Int,
+        acknowledged: Boolean
+    ): ApiResult<ConfirmAssignment> {
         return try {
-            val response = homeService.confirmAssignment(assignmentId)
+            val response = homeService.confirmAssignment(
+                assignmentId,
+                ConfirmAssignmentRequest(acknowledged)
+            )
+            ApiResult.Success(response.toDomainModel())
+        } catch (e: ResponseException) {
+            ApiResult.Error(code = e.response.status.value, message = e.message)
+        } catch (e: Exception) {
+            ApiResult.NetworkError
+        }
+    }
+
+    override suspend fun regenerateAssignment(assignmentId: Int): ApiResult<Assignment> {
+        return try {
+            val response = homeService.regenerateAssignment(assignmentId)
             ApiResult.Success(response.toDomainModel())
         } catch (e: ResponseException) {
             ApiResult.Error(code = e.response.status.value, message = e.message)

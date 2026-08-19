@@ -12,13 +12,13 @@ data class GetAssignmentResponse(
     @SerialName("id")
     val id: Int,
     @SerialName("week_start")
-    val weekStart: String, // YYYY-MM-DD
+    val weekStart: String,
     @SerialName("status")
-    val status: String, // proposed / confirmed / expired
+    val status: String,
     @SerialName("generated_at")
-    val generatedAt: String, // ISO 8601
+    val generatedAt: String,
     @SerialName("confirmed_at")
-    val confirmedAt: String?, // ISO 8601, 미확정 시 null
+    val confirmedAt: String?,
     @SerialName("items")
     val items: List<AssignmentItemResponse>,
     @SerialName("member_points")
@@ -48,11 +48,13 @@ data class AssignmentItemResponse(
     @SerialName("point")
     val point: Int,
     @SerialName("assignee")
-    val assignee: AssignmentAssigneeResponse?, // 탈퇴 시 null
+    val assignee: AssignmentAssigneeResponse?,
     @SerialName("date")
-    val date: String, // YYYY-MM-DD
+    val date: String,
     @SerialName("is_completed")
-    val isCompleted: Boolean
+    val isCompleted: Boolean,
+    @SerialName("change_type")
+    val changeType: String? = null
 )
 
 @Serializable
@@ -103,7 +105,8 @@ fun AssignmentItemResponse.toDomainModel(): AssignmentItem {
         point = point,
         assignee = assignee?.toDomainModel(),
         date = date,
-        isCompleted = isCompleted
+        isCompleted = isCompleted,
+        changeType = changeType
     )
 }
 

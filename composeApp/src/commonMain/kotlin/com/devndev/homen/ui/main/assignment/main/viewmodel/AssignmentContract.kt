@@ -17,6 +17,7 @@ class AssignmentContract {
         data object OnConfirmButtonClick: Event()
         data object OnConfirmClick: Event()
         data object OnDismissPopup: Event()
+        data object OnRegenerateClick: Event()
         data class OnWeekSelected(val weekOffset: Int): Event()
     }
 

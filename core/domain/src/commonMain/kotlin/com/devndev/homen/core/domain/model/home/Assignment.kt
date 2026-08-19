@@ -23,7 +23,8 @@ data class AssignmentItem(
     val point: Int,
     val assignee: AssignmentAssignee?,
     val date: String,
-    val isCompleted: Boolean
+    val isCompleted: Boolean,
+    val changeType: String?
 )
 
 data class AssignmentAssignee(

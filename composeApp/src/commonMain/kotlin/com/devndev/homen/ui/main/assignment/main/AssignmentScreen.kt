@@ -121,9 +121,13 @@ fun AssignmentScreen(
             title = stringResource(Res.string.assignment_regenerate_popup_title),
             message = stringResource(Res.string.assignment_regenerate_popup_msg),
             startButtonText = stringResource(Res.string.assignment_regenerate_popup_btn),
-            onStartButtonClick = {},
+            onStartButtonClick = {
+                viewModel.setEvent(AssignmentContract.Event.OnRegenerateClick)
+            },
             isTwoButton = false,
-            onDismiss = {}
+            onDismiss = {
+                viewModel.setEvent(AssignmentContract.Event.OnDismissPopup)
+            }
         )
     }
 

@@ -23,6 +23,7 @@ import com.devndev.homen.core.domain.usecase.home.GetHomeUseCase
 import com.devndev.homen.core.domain.usecase.home.GetJoinHomeUseCase
 import com.devndev.homen.core.domain.usecase.home.GetMemosUseCase
 import com.devndev.homen.core.domain.usecase.home.JoinHomeUseCase
+import com.devndev.homen.core.domain.usecase.home.RegenerateAssignmentUseCase
 import com.devndev.homen.core.domain.usecase.reward.CreateRewardUseCase
 import com.devndev.homen.core.domain.usecase.reward.DeleteRewardUseCase
 import com.devndev.homen.core.domain.usecase.reward.EditRewardUseCase
@@ -65,6 +66,7 @@ val useCaseModule = module {
     factoryOf(::GetAssignmentsUseCase)
     factoryOf(::CreateAssignmentUseCase)
     factoryOf(::ConfirmAssignmentUseCase)
+    factoryOf(::RegenerateAssignmentUseCase)
 
     // reward
     factoryOf(::GetRewardsUseCase)
