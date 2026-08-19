@@ -43,10 +43,12 @@ import com.devndev.homen.ui.main.assignment.main.viewmodel.AssignmentContract
 import com.devndev.homen.ui.main.assignment.main.viewmodel.AssignmentStatus
 import com.devndev.homen.ui.main.assignment.main.viewmodel.AssignmentTab
 import com.devndev.homen.ui.theme.BackgroundGray
+import com.devndev.homen.ui.theme.Blue2
 import com.devndev.homen.ui.theme.ButtonGray
 import com.devndev.homen.ui.theme.HomeNTheme
 import homen.composeapp.generated.resources.Res
 import homen.composeapp.generated.resources.assignment_confirm_btn
+import homen.composeapp.generated.resources.assignment_new_badge
 import homen.composeapp.generated.resources.assignment_next_week_confirmed_msg
 import homen.composeapp.generated.resources.assignment_next_week_suggested_msg
 import homen.composeapp.generated.resources.assignment_next_week_title
@@ -56,6 +58,7 @@ import homen.composeapp.generated.resources.assignment_this_week_confirmed_msg
 import homen.composeapp.generated.resources.assignment_this_week_suggested_manager_msg
 import homen.composeapp.generated.resources.assignment_this_week_suggested_msg
 import homen.composeapp.generated.resources.assignment_this_week_title
+import homen.composeapp.generated.resources.assignment_update_badge
 import homen.composeapp.generated.resources.chart_icon
 import homen.composeapp.generated.resources.chore_info_difficulty
 import homen.composeapp.generated.resources.chore_info_point_days
@@ -231,7 +234,7 @@ fun AssignmentContent(
                 Spacer(modifier = Modifier.height(25.dp))
 
                 uiState.selectedAssignments.forEach { assignment ->
-                    AssignmentItem(assignment)
+                    AssignmentItem(assignment, !uiState.isConfirmButtonExist)
                     Spacer(modifier = Modifier.height(20.dp))
                 }
             }
@@ -337,7 +340,8 @@ fun AssignmentMemberChip(
 
 @Composable
 fun AssignmentItem(
-    assignment: AssignmentItem
+    assignment: AssignmentItem,
+    isConfirmed: Boolean
 ) {
     val choreResource = ChoreCategory.fromId(assignment.category).resource
     val infoFormat = stringResource(Res.string.chore_info_point_days)
@@ -364,28 +368,56 @@ fun AssignmentItem(
             modifier = Modifier.height(51.dp),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
-            Box(
-                modifier = Modifier
-                    .height(17.dp)
-                    .clip(RoundedCornerShape(28.dp))
-                    .background(ButtonGray)
-                    .padding(horizontal = 6.dp),
-                contentAlignment = Alignment.Center
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
             ) {
-                Text(
-                    text = buildAnnotatedString {
-                        withStyle(style = HomeNTheme.typography.suitBold.toSpanStyle()) {
-                            append(
-                                infoFormat.replace("n", assignment.point.toString())
-                                    .replace("s", assignment.weekdayLabel)
-                            )
-                        }
-                        append(diffFormat.replace("s", assignment.difficultyLabel))
-                    },
-                    fontSize = 10.sp,
-                    color = Color.Black,
-                    style = HomeNTheme.typography.suitRegular
-                )
+                if (assignment.changeType != null && !isConfirmed) {
+                    val text = if (assignment.changeType == "new") {
+                        stringResource(Res.string.assignment_new_badge)
+                    } else {
+                        stringResource(Res.string.assignment_update_badge)
+                    }
+                    Box(
+                        modifier = Modifier
+                            .height(17.dp)
+                            .clip(RoundedCornerShape(28.dp))
+                            .background(Blue2)
+                            .padding(horizontal = 6.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = text,
+                            style = HomeNTheme.typography.suitBold,
+                            fontSize = 10.sp,
+                            color = Color.White
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(5.dp))
+                }
+
+                Box(
+                    modifier = Modifier
+                        .height(17.dp)
+                        .clip(RoundedCornerShape(28.dp))
+                        .background(ButtonGray)
+                        .padding(horizontal = 6.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = buildAnnotatedString {
+                            withStyle(style = HomeNTheme.typography.suitBold.toSpanStyle()) {
+                                append(
+                                    infoFormat.replace("n", assignment.point.toString())
+                                        .replace("s", assignment.weekdayLabel)
+                                )
+                            }
+                            append(diffFormat.replace("s", assignment.difficultyLabel))
+                        },
+                        fontSize = 10.sp,
+                        color = Color.Black,
+                        style = HomeNTheme.typography.suitRegular
+                    )
+                }
             }
             Text(
                 text = assignment.choreName,

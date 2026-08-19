@@ -3,6 +3,7 @@ package com.devndev.homen.ui.main.assignment.main.viewmodel
 import androidx.lifecycle.viewModelScope
 import com.devndev.homen.core.common.base.BaseViewModel
 import com.devndev.homen.core.domain.model.common.ApiResult
+import com.devndev.homen.core.domain.model.home.Assignment
 import com.devndev.homen.core.domain.usecase.home.ConfirmAssignmentUseCase
 import com.devndev.homen.core.domain.usecase.home.CreateAssignmentUseCase
 import com.devndev.homen.core.domain.usecase.home.GetAssignmentsUseCase
@@ -102,11 +103,12 @@ class AssignmentViewModel(
                 val isManager = myInfoResult.data.homeRole == 1
                 when (assignmentsResult) {
                     is ApiResult.Success -> {
-                        val othersPoints = assignmentsResult.data.memberPoints.filter {
+                        val sortedAssignment = assignmentsResult.data.sortItems()
+                        val othersPoints = sortedAssignment.memberPoints.filter {
                             it.name != myInfoResult.data.name
                         }
 
-                        val myPoints = assignmentsResult.data.memberPoints.filter {
+                        val myPoints = sortedAssignment.memberPoints.filter {
                             it.name == myInfoResult.data.name
                         }
 
@@ -114,10 +116,10 @@ class AssignmentViewModel(
 
                         setState {
                             copy(
-                                selectedAssignments = assignmentsResult.data.items,
+                                selectedAssignments = sortedAssignment.items,
                                 isManager = isManager,
                                 screenType = AssignmentScreenType.ASSIGNMENT,
-                                assignment = assignmentsResult.data,
+                                assignment = sortedAssignment,
                                 memberPoints = memberPoints,
                             )
                         }
@@ -156,9 +158,11 @@ class AssignmentViewModel(
             val result = createAssignmentUseCase(weekDay)
             when (result) {
                 is ApiResult.Success -> {
+                    val sortedAssignment = result.data.sortItems()
                     setState {
                         copy(
-                            assignment = result.data,
+                            assignment = sortedAssignment,
+                            selectedAssignments = sortedAssignment.items,
                             screenType = AssignmentScreenType.ASSIGNMENT,
                         )
                     }
@@ -174,12 +178,11 @@ class AssignmentViewModel(
 
     private fun confirmAssignment(acknowledged: Boolean) {
         viewModelScope.launch {
-            setState { copy(mainIsLoading = true) }
             val result = confirmAssignmentUseCase(viewState.value.assignment?.id ?: 0, acknowledged)
             when (result) {
                 is ApiResult.Success -> {
                     if (acknowledged) {
-                        setState { copy(isShowConfirmPopup = false) }
+                        setState { copy(isShowConfirmPopup = false, assignment = result.data.assignment) }
                     } else {
                         if (result.data.needsRegenerate) {
                             setState { copy(isShowRegeneratePopup = true) }
@@ -187,19 +190,12 @@ class AssignmentViewModel(
                             setState { copy(isShowConfirmPopup = true) }
                         }
                     }
-                    setState {
-                        copy(
-                            assignment = result.data.assignment,
-                            screenType = AssignmentScreenType.ASSIGNMENT,
-                        )
-                    }
                 }
 
                 else -> {
 
                 }
             }
-            setState { copy(mainIsLoading = false) }
         }
     }
 
@@ -208,7 +204,14 @@ class AssignmentViewModel(
             val result = regenerateAssignmentUseCase(viewState.value.assignment?.id ?: 0)
             when (result) {
                 is ApiResult.Success -> {
-                    setState { copy(isShowRegeneratePopup = false, assignment = result.data) }
+                    val sortedAssignment = result.data.sortItems()
+                    setState {
+                        copy(
+                            isShowRegeneratePopup = false,
+                            assignment = sortedAssignment,
+                            selectedAssignments = sortedAssignment.items
+                        )
+                    }
                 }
                 else -> {
 
@@ -230,5 +233,17 @@ class AssignmentViewModel(
                 selectedAssignments = filteredAssignments ?: emptyList()
             )
         }
+    }
+
+    private fun Assignment.sortItems(): Assignment {
+        return this.copy(
+            items = this.items.sortedBy { item ->
+                when (item.changeType) {
+                    "new" -> 0
+                    "updated" -> 1
+                    else -> 2
+                }
+            }
+        )
     }
 }
