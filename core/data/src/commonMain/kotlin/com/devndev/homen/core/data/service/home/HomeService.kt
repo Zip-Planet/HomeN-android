@@ -1,5 +1,6 @@
 package com.devndev.homen.core.data.service.home
 
+import com.devndev.homen.core.data.model.home.request.ConfirmAssignmentRequest
 import com.devndev.homen.core.data.model.home.request.CreateAssignmentRequest
 import com.devndev.homen.core.data.model.home.request.CreateChoreRequest
 import com.devndev.homen.core.data.model.home.request.CreateHomeRequest
@@ -8,6 +9,7 @@ import com.devndev.homen.core.data.model.home.request.JoinHomeRequest
 import com.devndev.homen.core.data.model.home.request.MemoRequest
 import com.devndev.homen.core.data.model.home.response.ChoreDetailResponse
 import com.devndev.homen.core.data.model.home.response.ChoreResponse
+import com.devndev.homen.core.data.model.home.response.ConfirmAssignmentResponse
 import com.devndev.homen.core.data.model.home.response.CreateHomeResponse
 import com.devndev.homen.core.data.model.home.response.GetAssignmentResponse
 import com.devndev.homen.core.data.model.home.response.GetHasHomeResponse
@@ -41,7 +43,12 @@ interface HomeService {
 
     suspend fun getAssignments(weekStart: String? = null): GetAssignmentResponse
     suspend fun createAssignment(createAssignmentRequest: CreateAssignmentRequest): GetAssignmentResponse
-    suspend fun confirmAssignment(assignmentId: Int): GetAssignmentResponse
+    suspend fun confirmAssignment(
+        assignmentId: Int,
+        confirmAssignmentRequest: ConfirmAssignmentRequest
+    ): ConfirmAssignmentResponse
+
+    suspend fun regenerateAssignment(assignmentId: Int): GetAssignmentResponse
 
     suspend fun getMemos(id: Int): List<GetMemoResponse>
 

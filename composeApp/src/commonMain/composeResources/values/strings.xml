@@ -265,6 +265,8 @@
     <string name="assignment_next_week_confirmed_msg">다음 주 역할이 정해졌어요\n조율이 필요하면 보드를 이용해 보세요</string>
     <string name="assignment_history_not_exist_title">해당 주차의 분담안이 없어요</string>
     <string name="assignment_history_not_exist_msg">분담안이 확정되면 히스토리에 저장돼요</string>
+    <string name="assignment_new_badge">NEW</string>
+    <string name="assignment_update_badge">UPDATE</string>
 
     <!-- 리워드 화면 -->
     <string name="reward_empty_title">진행중인 리워드가 없어요</string>

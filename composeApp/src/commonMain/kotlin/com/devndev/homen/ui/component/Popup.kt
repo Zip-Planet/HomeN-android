@@ -220,7 +220,7 @@ fun HomeNPopup(
                     color = Color.Black
                 )
 
-                Spacer(modifier = Modifier.height(15.dp))
+                Spacer(modifier = Modifier.height(10.dp))
 
                 Text(
                     text = message,
