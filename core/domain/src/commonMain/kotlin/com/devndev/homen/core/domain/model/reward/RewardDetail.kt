@@ -15,5 +15,7 @@ data class RewardDetail(
 data class MemberProgress(
     val rank: Int,
     val point: Int,
-    val achievementRate: Int
+    val achievementRate: Int,
+    val name: String,
+    val profileImage: Int
 )

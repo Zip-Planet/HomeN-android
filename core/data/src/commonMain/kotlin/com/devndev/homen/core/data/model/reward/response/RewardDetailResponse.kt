@@ -35,7 +35,11 @@ data class MemberProgressResponse(
     @SerialName("point")
     val point: Int,
     @SerialName("achievement_rate")
-    val achievementRate: Int
+    val achievementRate: Int,
+    @SerialName("name")
+    val name: String,
+    @SerialName("profile_image")
+    val profileImage: Int
 )
 
 fun RewardDetailResponse.toDomainModel(): RewardDetail {
@@ -56,6 +60,8 @@ fun MemberProgressResponse.toDomainModel(): MemberProgress {
     return MemberProgress(
         rank = rank,
         point = point,
-        achievementRate = achievementRate
+        achievementRate = achievementRate,
+        name = name,
+        profileImage = profileImage
     )
 }
