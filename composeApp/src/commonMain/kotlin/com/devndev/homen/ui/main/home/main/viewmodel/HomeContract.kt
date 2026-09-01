@@ -10,6 +10,7 @@ class HomeContract {
         data object OnInit: Event()
         data class OnMemberSelected(val member: Member): Event()
         data object OnChoreManageClick: Event()
+        data object OnCreateAssignmentClick: Event()
     }
 
     data class State(
@@ -29,5 +30,6 @@ class HomeContract {
     sealed class Effect: ViewSideEffect {
         data object NavigateToBoard: Effect()
         data object NavigateToChoreManage: Effect()
+        data object NavigateToAssignment: Effect()
     }
 }

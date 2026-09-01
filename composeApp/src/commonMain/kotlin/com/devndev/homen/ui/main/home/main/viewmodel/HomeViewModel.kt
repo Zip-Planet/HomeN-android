@@ -26,6 +26,10 @@ class HomeViewModel(
             HomeContract.Event.OnChoreManageClick -> {
                 setEffect { HomeContract.Effect.NavigateToChoreManage }
             }
+
+            HomeContract.Event.OnCreateAssignmentClick -> {
+                setEffect { HomeContract.Effect.NavigateToAssignment }
+            }
         }
     }
 

@@ -84,7 +84,8 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel = koinViewModel(),
-    onNavToChoreManage: () -> Unit
+    onNavToChoreManage: () -> Unit,
+    onNavToAssignment: () -> Unit
 ) {
     val uiState by viewModel.viewState
     val homeIcon = HomeIconType.fromId(uiState.homeIcon).smallResource
@@ -99,6 +100,10 @@ fun HomeScreen(
                 HomeContract.Effect.NavigateToBoard -> TODO()
                 HomeContract.Effect.NavigateToChoreManage -> {
                     onNavToChoreManage()
+                }
+
+                HomeContract.Effect.NavigateToAssignment -> {
+                    onNavToAssignment()
                 }
             }
         }
@@ -182,7 +187,8 @@ fun HomeScreen(
                     HomeDivisionSection(
                         modifier = Modifier.weight(1f),
                         uiState = uiState,
-                        onMemberClick = { viewModel.setEvent(HomeContract.Event.OnMemberSelected(it)) }
+                        onMemberClick = { viewModel.setEvent(HomeContract.Event.OnMemberSelected(it)) },
+                        onCreateAssignmentClick = { viewModel.setEvent(HomeContract.Event.OnCreateAssignmentClick) }
                     )
                 }
             }
@@ -407,7 +413,8 @@ fun HomeProgressSection(
 fun HomeDivisionSection(
     modifier: Modifier,
     uiState: HomeContract.State,
-    onMemberClick: (Member) -> Unit
+    onMemberClick: (Member) -> Unit,
+    onCreateAssignmentClick: () -> Unit
 ) {
     Column(
         modifier = modifier
@@ -463,7 +470,7 @@ fun HomeDivisionSection(
         Spacer(modifier = Modifier.height(26.dp))
         HomeNButton(
             text = stringResource(Res.string.home_create_division_plan_btn),
-            onClick = { },
+            onClick = onCreateAssignmentClick,
         )
     }
 }
@@ -475,7 +482,7 @@ fun MemberChip(
     onMemberClick: (Member) -> Unit,
     index: Int
 ) {
-    val nameText = if(index == 0) {
+    val nameText = if (index == 0) {
         stringResource(Res.string.home_my_info_name)
     } else {
         member.name
@@ -572,7 +579,8 @@ fun HomeBottomSectionPreview() {
             uiState = HomeContract.State(
                 members = emptyList()
             ),
-            onMemberClick = {}
+            onMemberClick = {},
+            onCreateAssignmentClick = {}
         )
     }
 }
