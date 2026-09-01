@@ -3,6 +3,7 @@ package com.devndev.homen.ui.main.reward.detail.viewmodel
 import com.devndev.homen.core.common.base.ViewEvent
 import com.devndev.homen.core.common.base.ViewSideEffect
 import com.devndev.homen.core.common.base.ViewState
+import com.devndev.homen.core.domain.model.reward.MemberProgress
 import com.devndev.homen.core.domain.model.reward.RewardDetail
 
 class RewardDetailContract {
@@ -14,7 +15,8 @@ class RewardDetailContract {
 
     data class State(
         val mainIsLoading: Boolean = false,
-        val rewardDetail: RewardDetail? = null
+        val rewardDetail: RewardDetail? = null,
+        val myProgress: MemberProgress? = null
     ) : ViewState
 
     sealed class Effect : ViewSideEffect {

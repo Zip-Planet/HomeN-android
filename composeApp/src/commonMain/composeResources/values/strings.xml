@@ -291,6 +291,11 @@
     <string name="reward_get_btn">리워드 받기</string>
     <string name="reward_claimed_btn">받기 완료된 리워드에요</string>
     <string name="reward_goal_title">리워드 목표</string>
+    <string name="reward_detail_progress_in_progress_message">목표 달성까지 s%</string>
+    <string name="reward_detail_progress_claimable_message">목표 달성 초과 s%</string>
+    <string name="reward_member_title">구성원 현황</string>
+    <string name="reward_available_point_label">보유 포인트</string>
+    <string name="reward_achievement_rate_label">달성률</string>
 
     <!-- 초대 팝업 -->
     <string name="invite_popup_title">s 초대코드</string>
