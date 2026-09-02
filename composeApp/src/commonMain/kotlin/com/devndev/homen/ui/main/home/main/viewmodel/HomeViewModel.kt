@@ -25,6 +25,7 @@ class HomeViewModel(
             }
 
             is HomeContract.Event.OnMemberSelected -> {
+                setState { copy(selectedIndex = event.index) }
                 onMemberSelected(event.member)
             }
 

@@ -191,7 +191,9 @@ fun HomeScreen(
                     HomeDivisionSection(
                         modifier = Modifier.weight(1f),
                         uiState = uiState,
-                        onMemberClick = { viewModel.setEvent(HomeContract.Event.OnMemberSelected(it)) },
+                        onMemberClick = { member, index ->
+                            viewModel.setEvent(HomeContract.Event.OnMemberSelected(member, index))
+                        },
                         onCreateAssignmentClick = { viewModel.setEvent(HomeContract.Event.OnCreateAssignmentClick) }
                     )
                 }
@@ -379,6 +381,7 @@ fun HomeProgressSection(
                                 color = Color.Black
                             )
                         }
+
                         else -> {
                             Text(
                                 text = stringResource(Res.string.home_division_plan_status_msg2),
@@ -433,9 +436,15 @@ fun HomeProgressSection(
 fun HomeDivisionSection(
     modifier: Modifier,
     uiState: HomeContract.State,
-    onMemberClick: (Member) -> Unit,
+    onMemberClick: (Member, Int) -> Unit,
     onCreateAssignmentClick: () -> Unit
 ) {
+    val assignmentScrollState = rememberScrollState()
+
+    LaunchedEffect(uiState.selectedMember) {
+        assignmentScrollState.scrollTo(0)
+    }
+
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -475,23 +484,44 @@ fun HomeDivisionSection(
                 MemberChip(
                     member = member,
                     isSelected = isSelected,
-                    onMemberClick = { onMemberClick(it) },
+                    onMemberClick = { member, index ->
+                        onMemberClick(member, index)
+                    },
                     index = index
                 )
             }
         }
         Spacer(modifier = Modifier.height(25.dp))
-        Text(
-            text = stringResource(Res.string.home_create_division_plan_msg),
-            style = HomeNTheme.typography.suitRegular,
-            fontSize = 14.sp,
-            color = Color.Black
-        )
-        Spacer(modifier = Modifier.height(26.dp))
-        HomeNButton(
-            text = stringResource(Res.string.home_create_division_plan_btn),
-            onClick = onCreateAssignmentClick,
-        )
+
+        if (uiState.choreExist) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(assignmentScrollState)
+            ) {
+                uiState.selectedAssignments.forEach { assignment ->
+                    HomeAssignmentItem(
+                        assignment = assignment,
+                        isMine = uiState.isMine,
+                        onItemClick = {}
+                    )
+                    Spacer(modifier = Modifier.height(20.dp))
+                }
+                Spacer(modifier = Modifier.height(20.dp))
+            }
+        } else {
+            Text(
+                text = stringResource(Res.string.home_create_division_plan_msg),
+                style = HomeNTheme.typography.suitRegular,
+                fontSize = 14.sp,
+                color = Color.Black
+            )
+            Spacer(modifier = Modifier.height(26.dp))
+            HomeNButton(
+                text = stringResource(Res.string.home_create_division_plan_btn),
+                onClick = onCreateAssignmentClick,
+            )
+        }
     }
 }
 
@@ -499,7 +529,7 @@ fun HomeDivisionSection(
 fun MemberChip(
     member: Member,
     isSelected: Boolean,
-    onMemberClick: (Member) -> Unit,
+    onMemberClick: (Member, Int) -> Unit,
     index: Int
 ) {
     val nameText = if (index == 0) {
@@ -516,7 +546,7 @@ fun MemberChip(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = null
             ) {
-                onMemberClick(member)
+                onMemberClick(member, index)
             }
             .padding(horizontal = 10.dp, vertical = 7.dp),
         contentAlignment = Alignment.Center) {
@@ -599,7 +629,7 @@ fun HomeBottomSectionPreview() {
             uiState = HomeContract.State(
                 members = emptyList()
             ),
-            onMemberClick = {},
+            onMemberClick = { _, _ -> },
             onCreateAssignmentClick = {}
         )
     }

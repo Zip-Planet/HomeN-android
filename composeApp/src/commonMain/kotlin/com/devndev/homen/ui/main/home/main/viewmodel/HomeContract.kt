@@ -11,7 +11,7 @@ import com.devndev.homen.ui.main.assignment.main.viewmodel.AssignmentTab
 class HomeContract {
     sealed class Event: ViewEvent {
         data object OnInit: Event()
-        data class OnMemberSelected(val member: Member): Event()
+        data class OnMemberSelected(val member: Member, val index: Int): Event()
         data object OnChoreManageClick: Event()
         data object OnCreateAssignmentClick: Event()
         data object OnAssignmentClick: Event()
@@ -32,9 +32,11 @@ class HomeContract {
         val choreExist: Boolean = false,
         val assignmentStatus: String = "",
         val assignment: Assignment? = null,
-        val selectedAssignments: List<AssignmentItem> = emptyList()
+        val selectedAssignments: List<AssignmentItem> = emptyList(),
+        val selectedIndex: Int = 0
     ): ViewState {
         val progressRate: Int = if (totalChore > 0) (completedChore * 100) / totalChore else 0
+        val isMine: Boolean = selectedIndex == 0
     }
 
     sealed class Effect: ViewSideEffect {
