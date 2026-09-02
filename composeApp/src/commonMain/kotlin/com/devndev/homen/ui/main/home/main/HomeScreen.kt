@@ -246,7 +246,7 @@ fun HomeProgressSection(
                 Spacer(modifier = Modifier.weight(1f))
                 if (uiState.choreExist) {
                     Text(
-                        text = "50%",
+                        text = "${uiState.progressRate}%",
                         style = HomeNTheme.typography.suitRegular,
                         fontSize = 18.sp,
                         color = Color.Black
@@ -332,7 +332,7 @@ fun HomeProgressSection(
                     )
 
                     Text(
-                        text = "560P",
+                        text = "${uiState.mvpPoint}P",
                         style = HomeNTheme.typography.suitRegular,
                         fontSize = 14.sp,
                         color = Color.Black
