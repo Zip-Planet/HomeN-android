@@ -43,6 +43,7 @@ import com.devndev.homen.ui.common.smallResource
 import com.devndev.homen.ui.component.HomeNButton
 import com.devndev.homen.ui.component.HomeNScreen
 import com.devndev.homen.ui.component.NotificationTopBar
+import com.devndev.homen.ui.main.assignment.main.viewmodel.AssignmentStatus
 import com.devndev.homen.ui.main.home.main.viewmodel.HomeContract
 import com.devndev.homen.ui.main.home.main.viewmodel.HomeViewModel
 import com.devndev.homen.ui.theme.BackgroundGray
@@ -66,6 +67,7 @@ import homen.composeapp.generated.resources.home_create_division_plan_btn
 import homen.composeapp.generated.resources.home_create_division_plan_msg
 import homen.composeapp.generated.resources.home_division_plan_msg
 import homen.composeapp.generated.resources.home_division_plan_status_msg1
+import homen.composeapp.generated.resources.home_division_plan_status_msg2
 import homen.composeapp.generated.resources.home_mvp_section_title
 import homen.composeapp.generated.resources.home_my_info_name
 import homen.composeapp.generated.resources.home_progress_section_title
@@ -85,7 +87,7 @@ import org.koin.compose.viewmodel.koinViewModel
 fun HomeScreen(
     viewModel: HomeViewModel = koinViewModel(),
     onNavToChoreManage: () -> Unit,
-    onNavToAssignment: () -> Unit
+    onNavToAssignment: (Boolean) -> Unit,
 ) {
     val uiState by viewModel.viewState
     val homeIcon = HomeIconType.fromId(uiState.homeIcon).smallResource
@@ -102,9 +104,10 @@ fun HomeScreen(
                     onNavToChoreManage()
                 }
 
-                HomeContract.Effect.NavigateToAssignment -> {
-                    onNavToAssignment()
+                is HomeContract.Effect.NavigateToAssignment -> {
+                    onNavToAssignment(effect.isThisWeek)
                 }
+
             }
         }
     }
@@ -181,7 +184,8 @@ fun HomeScreen(
                     Spacer(modifier = Modifier.height(10.dp))
                     HomeProgressSection(
                         uiState = uiState,
-                        onChoreManageClick = { viewModel.setEvent(HomeContract.Event.OnChoreManageClick) }
+                        onChoreManageClick = { viewModel.setEvent(HomeContract.Event.OnChoreManageClick) },
+                        onAssignmentClick = { viewModel.setEvent(HomeContract.Event.OnAssignmentClick) }
                     )
                     Spacer(modifier = Modifier.height(26.dp))
                     HomeDivisionSection(
@@ -200,6 +204,7 @@ fun HomeScreen(
 fun HomeProgressSection(
     uiState: HomeContract.State,
     onChoreManageClick: () -> Unit = {},
+    onAssignmentClick: () -> Unit = {}
 ) {
     val progress =
         if (uiState.totalChore > 0) uiState.completedChore.toFloat() / uiState.totalChore else 0f
@@ -342,7 +347,7 @@ fun HomeProgressSection(
         ) {
             HomeManageItem(
                 modifier = Modifier.weight(1f),
-                onClick = {},
+                onClick = onAssignmentClick,
                 iconColor = Blue4736FC,
                 iconSize = 16,
                 titleText = stringResource(Res.string.division_plan),
@@ -363,12 +368,27 @@ fun HomeProgressSection(
                             .size(2.dp)
                             .background(color = Color.Black, shape = CircleShape)
                     )
-                    Text(
-                        text = stringResource(Res.string.home_division_plan_status_msg1),
-                        style = HomeNTheme.typography.suitRegular,
-                        fontSize = 12.sp,
-                        color = Color.Black
-                    )
+
+                    when (uiState.assignmentStatus) {
+                        AssignmentStatus.PROPOSED.status,
+                        AssignmentStatus.CONFIRMED.status -> {
+                            Text(
+                                text = stringResource(Res.string.home_division_plan_status_msg1),
+                                style = HomeNTheme.typography.suitRegular,
+                                fontSize = 12.sp,
+                                color = Color.Black
+                            )
+                        }
+                        else -> {
+                            Text(
+                                text = stringResource(Res.string.home_division_plan_status_msg2),
+                                style = HomeNTheme.typography.suitExtraBold,
+                                fontSize = 12.sp,
+                                color = Blue4736FC
+                            )
+                        }
+                    }
+
                 }
             }
             Spacer(modifier = Modifier.width(9.dp))

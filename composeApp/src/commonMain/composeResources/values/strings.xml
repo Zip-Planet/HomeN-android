@@ -151,8 +151,7 @@
     <string name="home_mvp_section_title">우리집 MVP</string>
     <string name="home_division_plan_msg">다음주</string>
     <string name="home_division_plan_status_msg1">제안됨</string>
-    <string name="home_division_plan_status_msg2">없음</string>
-    <string name="home_division_plan_status_msg3">생성필요</string>
+    <string name="home_division_plan_status_msg2">생성필요</string>
     <string name="home_chore_manage_msg">관리하기</string>
     <string name="home_report_status_msg1">기여도</string>
     <string name="home_report_status_msg2">지난주 기여도\n</string>

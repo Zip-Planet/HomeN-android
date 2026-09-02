@@ -39,7 +39,7 @@ fun MainBottomBar(navController: NavController) {
     val items = listOf(
         BottomNavItem.Home,
         BottomNavItem.Board,
-        BottomNavItem.Assignment,
+        BottomNavItem.Assignment(),
         BottomNavItem.Reward,
         BottomNavItem.MyPage
     )

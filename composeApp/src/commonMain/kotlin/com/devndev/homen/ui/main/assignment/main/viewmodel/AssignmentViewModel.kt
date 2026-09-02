@@ -24,8 +24,13 @@ class AssignmentViewModel(
     override fun setInitialState() = AssignmentContract.State()
     override fun handleEvents(event: AssignmentContract.Event) {
         when (event) {
-            AssignmentContract.Event.OnInit -> {
-                getAssignmentData(DateUtil.getThisWeekMonday(), isInit = true)
+            is AssignmentContract.Event.OnInit -> {
+                if (event.initialTab == AssignmentTab.THIS_WEEK) {
+                    getAssignmentData(DateUtil.getThisWeekMonday(), isInit = true)
+                } else {
+                    setState { copy(selectedTab = AssignmentTab.NEXT_WEEK) }
+                    getAssignmentData(DateUtil.getNextWeekMonday(), isInit = true)
+                }
             }
 
             is AssignmentContract.Event.OnTabSelected -> {

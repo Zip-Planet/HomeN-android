@@ -28,8 +28,8 @@ fun NavGraphBuilder.homeNav(navController: NavController) {
             onNavToChoreManage = {
                 navController.navigate(HomeRoute.ChoreManage)
             },
-            onNavToAssignment = {
-                navController.navigate(BottomNavItem.Assignment) {
+            onNavToAssignment = { isThisWeek ->
+                navController.navigate(BottomNavItem.Assignment(isThisWeek)) {
                     popUpTo(navController.graph.findStartDestination().id) {
                         saveState = true
                     }
