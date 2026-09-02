@@ -163,6 +163,7 @@
     <string name="home_my_info_name">나</string>
     <string name="home_assignment_complete_badge_label">완료</string>
     <string name="home_assignment_incomplete_badge_label">미완료</string>
+    <string name="home_assignment_complete_snackbar_label">완료! +sP</string>
 
 
     <!-- 집안일 관리-->

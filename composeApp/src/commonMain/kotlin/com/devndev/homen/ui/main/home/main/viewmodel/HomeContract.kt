@@ -45,5 +45,6 @@ class HomeContract {
         data object NavigateToBoard: Effect()
         data object NavigateToChoreManage: Effect()
         data class NavigateToAssignment(val isThisWeek: Boolean): Effect()
+        data class ShowCompleteSnackBar(val assignment: AssignmentItem): Effect()
     }
 }

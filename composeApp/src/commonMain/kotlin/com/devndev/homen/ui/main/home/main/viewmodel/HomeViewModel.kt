@@ -169,6 +169,7 @@ class HomeViewModel(
             when (result) {
                 is ApiResult.Success -> {
                     getThisWeekAssignments(viewState.value.members)
+                    setEffect { HomeContract.Effect.ShowCompleteSnackBar(assignment) }
                 }
                 else -> {
 

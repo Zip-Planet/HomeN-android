@@ -24,6 +24,10 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -62,6 +66,7 @@ import homen.composeapp.generated.resources.chart_icon
 import homen.composeapp.generated.resources.chore
 import homen.composeapp.generated.resources.clipboard_icon
 import homen.composeapp.generated.resources.division_plan
+import homen.composeapp.generated.resources.home_assignment_complete_snackbar_label
 import homen.composeapp.generated.resources.home_bottom_section_title
 import homen.composeapp.generated.resources.home_chore_manage_msg
 import homen.composeapp.generated.resources.home_create_division_plan_btn
@@ -77,6 +82,7 @@ import homen.composeapp.generated.resources.home_total_member_count
 import homen.composeapp.generated.resources.home_week_division_plan_msg
 import homen.composeapp.generated.resources.pin_black_icon
 import homen.composeapp.generated.resources.report
+import homen.composeapp.generated.resources.snackbar_cancel
 import kotlinx.coroutines.flow.collectLatest
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
@@ -91,11 +97,15 @@ fun HomeScreen(
     onNavToAssignment: (Boolean) -> Unit,
 ) {
     val uiState by viewModel.viewState
+    val snackbarHostState = remember { SnackbarHostState() }
     val homeIcon = HomeIconType.fromId(uiState.homeIcon).smallResource
 
     LaunchedEffect(Unit) {
         viewModel.setEvent(HomeContract.Event.OnInit)
     }
+
+    val message = stringResource(Res.string.home_assignment_complete_snackbar_label)
+    val cancelMsg = stringResource(Res.string.snackbar_cancel)
 
     LaunchedEffect(viewModel.effect) {
         viewModel.effect.collectLatest { effect ->
@@ -109,6 +119,20 @@ fun HomeScreen(
                     onNavToAssignment(effect.isThisWeek)
                 }
 
+                is HomeContract.Effect.ShowCompleteSnackBar -> {
+                    val result = snackbarHostState.showSnackbar(
+                        message = message.replace("s", effect.assignment.point.toString()),
+                        actionLabel = cancelMsg,
+                        duration = SnackbarDuration.Short
+                    )
+
+                    when (result) {
+                        SnackbarResult.ActionPerformed -> {
+                            viewModel.setEvent(HomeContract.Event.OnCompleteCancelClick(effect.assignment))
+                        }
+                        else -> { }
+                    }
+                }
             }
         }
     }
@@ -121,7 +145,13 @@ fun HomeScreen(
             )
         },
         isLoading = uiState.isLoading,
-        mainIsLoading = uiState.mainIsLoading
+        mainIsLoading = uiState.mainIsLoading,
+        snackbarHost = {
+            SnackbarHost(
+                hostState = snackbarHostState,
+                modifier = Modifier.padding(bottom = 34.dp)
+            )
+        }
     ) {
         BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
             val screenHeight = maxHeight
