@@ -1,6 +1,7 @@
 package com.devndev.homen.core.data.service.home
 
 import com.devndev.homen.core.common.Config
+import com.devndev.homen.core.data.model.home.request.CompleteChoreRequest
 import com.devndev.homen.core.data.model.home.request.ConfirmAssignmentRequest
 import com.devndev.homen.core.data.model.home.request.CreateAssignmentRequest
 import com.devndev.homen.core.data.model.home.request.CreateChoreRequest
@@ -300,5 +301,37 @@ class HomeServiceImpl(
                 header(HttpHeaders.Authorization, "Bearer $it")
             }
         }.body()
+    }
+
+    override suspend fun completeChore(
+        homeChoreId: Int,
+        completeChoreRequest: CompleteChoreRequest
+    ) {
+        val accessToken = tokenRepository.getAccessToken().first()
+        client.post {
+            url {
+                takeFrom(Config.BASE_URL)
+                encodedPath += "${HomeService.CHORES}$homeChoreId/completions/"
+            }
+            contentType(ContentType.Application.Json)
+            accessToken?.let {
+                header(HttpHeaders.Authorization, "Bearer $it")
+            }
+            setBody(completeChoreRequest)
+        }
+    }
+
+    override suspend fun cancelCompleteChore(homeChoreId: Int, completionDate: String) {
+        val accessToken = tokenRepository.getAccessToken().first()
+        client.delete {
+            url {
+                takeFrom(Config.BASE_URL)
+                encodedPath += "${HomeService.CHORES}$homeChoreId/completions/$completionDate/"
+            }
+            contentType(ContentType.Application.Json)
+            accessToken?.let {
+                header(HttpHeaders.Authorization, "Bearer $it")
+            }
+        }
     }
 }

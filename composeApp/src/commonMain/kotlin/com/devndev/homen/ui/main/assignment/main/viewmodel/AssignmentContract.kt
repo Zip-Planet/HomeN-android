@@ -6,10 +6,11 @@ import com.devndev.homen.core.common.base.ViewState
 import com.devndev.homen.core.domain.model.home.Assignment
 import com.devndev.homen.core.domain.model.home.AssignmentItem
 import com.devndev.homen.core.domain.model.home.MemberPoint
+import kotlinx.serialization.Serializable
 
 class AssignmentContract {
     sealed class Event : ViewEvent {
-        data object OnInit : Event()
+        data class OnInit(val initialTab: AssignmentTab? = null) : Event()
         data class OnTabSelected(val tab: AssignmentTab) : Event()
         data class OnSelectedMember(val member: String) : Event()
         data object OnAddChoreClick : Event()
@@ -50,6 +51,7 @@ class AssignmentContract {
 
 }
 
+@Serializable
 enum class AssignmentTab(val title: String) {
     THIS_WEEK("이번 주"),
     NEXT_WEEK("다음 주"),

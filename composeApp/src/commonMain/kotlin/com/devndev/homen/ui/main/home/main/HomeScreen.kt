@@ -24,6 +24,10 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -37,12 +41,14 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
+import com.devndev.homen.core.domain.model.home.AssignmentItem
 import com.devndev.homen.core.domain.model.home.HomeIconType
 import com.devndev.homen.core.domain.model.home.Member
 import com.devndev.homen.ui.common.smallResource
 import com.devndev.homen.ui.component.HomeNButton
 import com.devndev.homen.ui.component.HomeNScreen
 import com.devndev.homen.ui.component.NotificationTopBar
+import com.devndev.homen.ui.main.assignment.main.viewmodel.AssignmentStatus
 import com.devndev.homen.ui.main.home.main.viewmodel.HomeContract
 import com.devndev.homen.ui.main.home.main.viewmodel.HomeViewModel
 import com.devndev.homen.ui.theme.BackgroundGray
@@ -60,12 +66,14 @@ import homen.composeapp.generated.resources.chart_icon
 import homen.composeapp.generated.resources.chore
 import homen.composeapp.generated.resources.clipboard_icon
 import homen.composeapp.generated.resources.division_plan
+import homen.composeapp.generated.resources.home_assignment_complete_snackbar_label
 import homen.composeapp.generated.resources.home_bottom_section_title
 import homen.composeapp.generated.resources.home_chore_manage_msg
 import homen.composeapp.generated.resources.home_create_division_plan_btn
 import homen.composeapp.generated.resources.home_create_division_plan_msg
 import homen.composeapp.generated.resources.home_division_plan_msg
 import homen.composeapp.generated.resources.home_division_plan_status_msg1
+import homen.composeapp.generated.resources.home_division_plan_status_msg2
 import homen.composeapp.generated.resources.home_mvp_section_title
 import homen.composeapp.generated.resources.home_my_info_name
 import homen.composeapp.generated.resources.home_progress_section_title
@@ -74,6 +82,7 @@ import homen.composeapp.generated.resources.home_total_member_count
 import homen.composeapp.generated.resources.home_week_division_plan_msg
 import homen.composeapp.generated.resources.pin_black_icon
 import homen.composeapp.generated.resources.report
+import homen.composeapp.generated.resources.snackbar_cancel
 import kotlinx.coroutines.flow.collectLatest
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
@@ -84,14 +93,19 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel = koinViewModel(),
-    onNavToChoreManage: () -> Unit
+    onNavToChoreManage: () -> Unit,
+    onNavToAssignment: (Boolean) -> Unit,
 ) {
     val uiState by viewModel.viewState
+    val snackbarHostState = remember { SnackbarHostState() }
     val homeIcon = HomeIconType.fromId(uiState.homeIcon).smallResource
 
     LaunchedEffect(Unit) {
         viewModel.setEvent(HomeContract.Event.OnInit)
     }
+
+    val message = stringResource(Res.string.home_assignment_complete_snackbar_label)
+    val cancelMsg = stringResource(Res.string.snackbar_cancel)
 
     LaunchedEffect(viewModel.effect) {
         viewModel.effect.collectLatest { effect ->
@@ -99,6 +113,25 @@ fun HomeScreen(
                 HomeContract.Effect.NavigateToBoard -> TODO()
                 HomeContract.Effect.NavigateToChoreManage -> {
                     onNavToChoreManage()
+                }
+
+                is HomeContract.Effect.NavigateToAssignment -> {
+                    onNavToAssignment(effect.isThisWeek)
+                }
+
+                is HomeContract.Effect.ShowCompleteSnackBar -> {
+                    val result = snackbarHostState.showSnackbar(
+                        message = message.replace("s", effect.assignment.point.toString()),
+                        actionLabel = cancelMsg,
+                        duration = SnackbarDuration.Short
+                    )
+
+                    when (result) {
+                        SnackbarResult.ActionPerformed -> {
+                            viewModel.setEvent(HomeContract.Event.OnCompleteCancelClick(effect.assignment))
+                        }
+                        else -> { }
+                    }
                 }
             }
         }
@@ -112,7 +145,13 @@ fun HomeScreen(
             )
         },
         isLoading = uiState.isLoading,
-        mainIsLoading = uiState.mainIsLoading
+        mainIsLoading = uiState.mainIsLoading,
+        snackbarHost = {
+            SnackbarHost(
+                hostState = snackbarHostState,
+                modifier = Modifier.padding(bottom = 34.dp)
+            )
+        }
     ) {
         BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
             val screenHeight = maxHeight
@@ -176,13 +215,24 @@ fun HomeScreen(
                     Spacer(modifier = Modifier.height(10.dp))
                     HomeProgressSection(
                         uiState = uiState,
-                        onChoreManageClick = { viewModel.setEvent(HomeContract.Event.OnChoreManageClick) }
+                        onChoreManageClick = { viewModel.setEvent(HomeContract.Event.OnChoreManageClick) },
+                        onAssignmentClick = { viewModel.setEvent(HomeContract.Event.OnAssignmentClick) }
                     )
                     Spacer(modifier = Modifier.height(26.dp))
                     HomeDivisionSection(
                         modifier = Modifier.weight(1f),
                         uiState = uiState,
-                        onMemberClick = { viewModel.setEvent(HomeContract.Event.OnMemberSelected(it)) }
+                        onMemberClick = { member, index ->
+                            viewModel.setEvent(HomeContract.Event.OnMemberSelected(member, index))
+                        },
+                        onCreateAssignmentClick = { viewModel.setEvent(HomeContract.Event.OnCreateAssignmentClick) },
+                        onItemClick = { assignment, isComplete ->
+                            if (isComplete) {
+                                viewModel.setEvent(HomeContract.Event.OnCompleteCancelClick(assignment))
+                            } else {
+                                viewModel.setEvent(HomeContract.Event.OnCompleteClick(assignment))
+                            }
+                        }
                     )
                 }
             }
@@ -194,6 +244,7 @@ fun HomeScreen(
 fun HomeProgressSection(
     uiState: HomeContract.State,
     onChoreManageClick: () -> Unit = {},
+    onAssignmentClick: () -> Unit = {}
 ) {
     val progress =
         if (uiState.totalChore > 0) uiState.completedChore.toFloat() / uiState.totalChore else 0f
@@ -235,7 +286,7 @@ fun HomeProgressSection(
                 Spacer(modifier = Modifier.weight(1f))
                 if (uiState.choreExist) {
                     Text(
-                        text = "50%",
+                        text = "${uiState.progressRate}%",
                         style = HomeNTheme.typography.suitRegular,
                         fontSize = 18.sp,
                         color = Color.Black
@@ -321,7 +372,7 @@ fun HomeProgressSection(
                     )
 
                     Text(
-                        text = "560P",
+                        text = "${uiState.mvpPoint}P",
                         style = HomeNTheme.typography.suitRegular,
                         fontSize = 14.sp,
                         color = Color.Black
@@ -336,7 +387,7 @@ fun HomeProgressSection(
         ) {
             HomeManageItem(
                 modifier = Modifier.weight(1f),
-                onClick = {},
+                onClick = onAssignmentClick,
                 iconColor = Blue4736FC,
                 iconSize = 16,
                 titleText = stringResource(Res.string.division_plan),
@@ -357,12 +408,28 @@ fun HomeProgressSection(
                             .size(2.dp)
                             .background(color = Color.Black, shape = CircleShape)
                     )
-                    Text(
-                        text = stringResource(Res.string.home_division_plan_status_msg1),
-                        style = HomeNTheme.typography.suitRegular,
-                        fontSize = 12.sp,
-                        color = Color.Black
-                    )
+
+                    when (uiState.assignmentStatus) {
+                        AssignmentStatus.PROPOSED.status,
+                        AssignmentStatus.CONFIRMED.status -> {
+                            Text(
+                                text = stringResource(Res.string.home_division_plan_status_msg1),
+                                style = HomeNTheme.typography.suitRegular,
+                                fontSize = 12.sp,
+                                color = Color.Black
+                            )
+                        }
+
+                        else -> {
+                            Text(
+                                text = stringResource(Res.string.home_division_plan_status_msg2),
+                                style = HomeNTheme.typography.suitExtraBold,
+                                fontSize = 12.sp,
+                                color = Blue4736FC
+                            )
+                        }
+                    }
+
                 }
             }
             Spacer(modifier = Modifier.width(9.dp))
@@ -407,8 +474,16 @@ fun HomeProgressSection(
 fun HomeDivisionSection(
     modifier: Modifier,
     uiState: HomeContract.State,
-    onMemberClick: (Member) -> Unit
+    onMemberClick: (Member, Int) -> Unit,
+    onCreateAssignmentClick: () -> Unit,
+    onItemClick: (AssignmentItem, Boolean) -> Unit
 ) {
+    val assignmentScrollState = rememberScrollState()
+
+    LaunchedEffect(uiState.selectedMember) {
+        assignmentScrollState.scrollTo(0)
+    }
+
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -448,23 +523,46 @@ fun HomeDivisionSection(
                 MemberChip(
                     member = member,
                     isSelected = isSelected,
-                    onMemberClick = { onMemberClick(it) },
+                    onMemberClick = { member, index ->
+                        onMemberClick(member, index)
+                    },
                     index = index
                 )
             }
         }
         Spacer(modifier = Modifier.height(25.dp))
-        Text(
-            text = stringResource(Res.string.home_create_division_plan_msg),
-            style = HomeNTheme.typography.suitRegular,
-            fontSize = 14.sp,
-            color = Color.Black
-        )
-        Spacer(modifier = Modifier.height(26.dp))
-        HomeNButton(
-            text = stringResource(Res.string.home_create_division_plan_btn),
-            onClick = { },
-        )
+
+        if (uiState.choreExist) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(assignmentScrollState)
+            ) {
+                uiState.selectedAssignments.forEach { assignment ->
+                    HomeAssignmentItem(
+                        assignment = assignment,
+                        isMine = uiState.isMine,
+                        onItemClick = {
+                            onItemClick(assignment, it)
+                        }
+                    )
+                    Spacer(modifier = Modifier.height(20.dp))
+                }
+                Spacer(modifier = Modifier.height(20.dp))
+            }
+        } else {
+            Text(
+                text = stringResource(Res.string.home_create_division_plan_msg),
+                style = HomeNTheme.typography.suitRegular,
+                fontSize = 14.sp,
+                color = Color.Black
+            )
+            Spacer(modifier = Modifier.height(26.dp))
+            HomeNButton(
+                text = stringResource(Res.string.home_create_division_plan_btn),
+                onClick = onCreateAssignmentClick,
+            )
+        }
     }
 }
 
@@ -472,10 +570,10 @@ fun HomeDivisionSection(
 fun MemberChip(
     member: Member,
     isSelected: Boolean,
-    onMemberClick: (Member) -> Unit,
+    onMemberClick: (Member, Int) -> Unit,
     index: Int
 ) {
-    val nameText = if(index == 0) {
+    val nameText = if (index == 0) {
         stringResource(Res.string.home_my_info_name)
     } else {
         member.name
@@ -489,7 +587,7 @@ fun MemberChip(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = null
             ) {
-                onMemberClick(member)
+                onMemberClick(member, index)
             }
             .padding(horizontal = 10.dp, vertical = 7.dp),
         contentAlignment = Alignment.Center) {
@@ -572,7 +670,9 @@ fun HomeBottomSectionPreview() {
             uiState = HomeContract.State(
                 members = emptyList()
             ),
-            onMemberClick = {}
+            onMemberClick = { _, _ -> },
+            onCreateAssignmentClick = {},
+            onItemClick = { _, _ ->}
         )
     }
 }

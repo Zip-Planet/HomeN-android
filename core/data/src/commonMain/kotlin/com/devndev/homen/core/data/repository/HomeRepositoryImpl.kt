@@ -1,5 +1,6 @@
 package com.devndev.homen.core.data.repository
 
+import com.devndev.homen.core.data.model.home.request.CompleteChoreRequest
 import com.devndev.homen.core.data.model.home.request.ConfirmAssignmentRequest
 import com.devndev.homen.core.data.model.home.request.CreateAssignmentRequest
 import com.devndev.homen.core.data.model.home.request.CreateChoreRequest
@@ -246,6 +247,31 @@ class HomeRepositoryImpl(
                 choreId = choreId,
                 memoId = memoId
             )
+            ApiResult.Success(response)
+        } catch (e: ResponseException) {
+            ApiResult.Error(code = e.response.status.value, message = e.message)
+        } catch (e: Exception) {
+            ApiResult.NetworkError
+        }
+    }
+
+    override suspend fun completeChore(homeChoreId: Int, date: String?): ApiResult<Unit> {
+        return try {
+            val response = homeService.completeChore(homeChoreId, CompleteChoreRequest(date))
+            ApiResult.Success(response)
+        } catch (e: ResponseException) {
+            ApiResult.Error(code = e.response.status.value, message = e.message)
+        } catch (e: Exception) {
+            ApiResult.NetworkError
+        }
+    }
+
+    override suspend fun cancelCompleteChore(
+        homeChoreId: Int,
+        completionDate: String
+    ): ApiResult<Unit> {
+        return try {
+            val response = homeService.cancelCompleteChore(homeChoreId, completionDate)
             ApiResult.Success(response)
         } catch (e: ResponseException) {
             ApiResult.Error(code = e.response.status.value, message = e.message)

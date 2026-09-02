@@ -5,6 +5,7 @@ import androidx.compose.animation.ExitTransition
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
@@ -26,6 +27,15 @@ fun NavGraphBuilder.homeNav(navController: NavController) {
         HomeScreen(
             onNavToChoreManage = {
                 navController.navigate(HomeRoute.ChoreManage)
+            },
+            onNavToAssignment = { isThisWeek ->
+                navController.navigate(BottomNavItem.Assignment(isThisWeek)) {
+                    popUpTo(navController.graph.findStartDestination().id) {
+                        saveState = true
+                    }
+                    launchSingleTop = true
+                    restoreState = true
+                }
             }
         )
     }

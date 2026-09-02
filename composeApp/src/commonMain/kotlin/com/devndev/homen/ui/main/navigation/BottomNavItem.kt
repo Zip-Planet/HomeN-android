@@ -1,5 +1,6 @@
 package com.devndev.homen.ui.main.navigation
 
+import com.devndev.homen.ui.main.assignment.main.viewmodel.AssignmentTab
 import homen.composeapp.generated.resources.Res
 import homen.composeapp.generated.resources.chart_icon
 import homen.composeapp.generated.resources.clipboard_icon
@@ -7,6 +8,7 @@ import homen.composeapp.generated.resources.home_icon
 import homen.composeapp.generated.resources.my_icon
 import homen.composeapp.generated.resources.present_icon
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 import org.jetbrains.compose.resources.DrawableResource
 
 /**
@@ -15,6 +17,7 @@ import org.jetbrains.compose.resources.DrawableResource
 @Serializable
 sealed class BottomNavItem {
     abstract val title: String
+    @Transient
     abstract val icon: DrawableResource
 
     @Serializable
@@ -30,8 +33,9 @@ sealed class BottomNavItem {
     }
 
     @Serializable
-    data object Assignment : BottomNavItem() {
+    data class Assignment(val isThisWeek: Boolean = true) : BottomNavItem() {
         override val title: String = "분담"
+        @Transient
         override val icon: DrawableResource = Res.drawable.chart_icon
     }
 

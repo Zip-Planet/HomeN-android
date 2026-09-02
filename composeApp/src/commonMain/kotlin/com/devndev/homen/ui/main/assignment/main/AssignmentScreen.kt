@@ -73,6 +73,7 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun AssignmentScreen(
     viewModel: AssignmentViewModel = koinViewModel(),
+    initialTab: AssignmentTab,
     onNavToChoreManage: () -> Unit,
     paddingValues: PaddingValues
 ) {
@@ -89,7 +90,7 @@ fun AssignmentScreen(
     }
 
     LaunchedEffect(Unit) {
-        viewModel.setEvent(AssignmentContract.Event.OnInit)
+        viewModel.setEvent(AssignmentContract.Event.OnInit(initialTab))
     }
 
     if (uiState.isShowConfirmPopup) {
