@@ -3,18 +3,25 @@ package com.devndev.homen.ui.main.home.main.viewmodel
 import androidx.lifecycle.viewModelScope
 import com.devndev.homen.core.common.base.BaseViewModel
 import com.devndev.homen.core.domain.model.common.ApiResult
+import com.devndev.homen.core.domain.model.home.Assignment
+import com.devndev.homen.core.domain.model.home.AssignmentItem
 import com.devndev.homen.core.domain.model.home.Member
+import com.devndev.homen.core.domain.usecase.home.CancelCompleteChoreUseCase
+import com.devndev.homen.core.domain.usecase.home.CompleteChoreUseCase
 import com.devndev.homen.core.domain.usecase.home.GetAssignmentsUseCase
 import com.devndev.homen.core.domain.usecase.home.GetHomeUseCase
 import com.devndev.homen.core.domain.usecase.user.GetMyInfoUseCase
 import com.devndev.homen.ui.main.assignment.main.viewmodel.AssignmentStatus
+import com.devndev.homen.ui.main.home.main.viewmodel.HomeContract.Effect.*
 import com.devndev.homen.util.DateUtil
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
     private val getHomeUseCase: GetHomeUseCase,
     private val getMyInfoUseCase: GetMyInfoUseCase,
-    private val getAssignmentsUseCase: GetAssignmentsUseCase
+    private val getAssignmentsUseCase: GetAssignmentsUseCase,
+    private val completeChoreUseCase: CompleteChoreUseCase,
+    private val cancelCompleteChoreUseCase: CancelCompleteChoreUseCase
 ) : BaseViewModel<HomeContract.Event, HomeContract.State, HomeContract.Effect>() {
     override fun setInitialState() = HomeContract.State()
 
@@ -34,11 +41,19 @@ class HomeViewModel(
             }
 
             HomeContract.Event.OnCreateAssignmentClick -> {
-                setEffect { HomeContract.Effect.NavigateToAssignment(true) }
+                setEffect { NavigateToAssignment(true) }
             }
 
             HomeContract.Event.OnAssignmentClick -> {
-                setEffect { HomeContract.Effect.NavigateToAssignment(false) }
+                setEffect { NavigateToAssignment(false) }
+            }
+
+            is HomeContract.Event.OnCompleteClick -> {
+                completeChore(event.assignment)
+            }
+
+            is HomeContract.Event.OnCompleteCancelClick -> {
+                cancelCompleteChore(event.assignment)
             }
         }
     }
@@ -136,8 +151,44 @@ class HomeViewModel(
     }
 
     private fun onMemberSelected(selectedMember: Member?) {
-        val filteredAssignments = viewState.value.assignment?.items?.filter { it.assignee?.name == selectedMember?.name }
+        val filteredAssignments =
+            viewState.value.assignment?.items?.filter { it.assignee?.name == selectedMember?.name }
 
-        setState { copy(selectedMember = selectedMember, selectedAssignments = filteredAssignments ?: emptyList()) }
+        setState {
+            copy(
+                selectedMember = selectedMember,
+                selectedAssignments = filteredAssignments ?: emptyList()
+            )
+        }
+    }
+
+    private fun completeChore(assignment: AssignmentItem) {
+        viewModelScope.launch {
+            val result = completeChoreUseCase(assignment.homeChoreId?: 0, assignment.date)
+
+            when (result) {
+                is ApiResult.Success -> {
+                    getThisWeekAssignments(viewState.value.members)
+                }
+                else -> {
+
+                }
+            }
+        }
+    }
+
+    private fun cancelCompleteChore(assignment: AssignmentItem) {
+        viewModelScope.launch {
+            val result = cancelCompleteChoreUseCase(assignment.homeChoreId?: 0, assignment.date)
+
+            when (result) {
+                is ApiResult.Success -> {
+                    getThisWeekAssignments(viewState.value.members)
+                }
+                else -> {
+
+                }
+            }
+        }
     }
 }

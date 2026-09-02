@@ -6,6 +6,8 @@ import com.devndev.homen.core.domain.usecase.auth.KakaoLoginToServerUseCase
 import com.devndev.homen.core.domain.usecase.auth.LogoutUseCase
 import com.devndev.homen.core.domain.usecase.auth.SaveTokensUseCase
 import com.devndev.homen.core.domain.usecase.auth.SocialLoginUseCase
+import com.devndev.homen.core.domain.usecase.home.CancelCompleteChoreUseCase
+import com.devndev.homen.core.domain.usecase.home.CompleteChoreUseCase
 import com.devndev.homen.core.domain.usecase.home.ConfirmAssignmentUseCase
 import com.devndev.homen.core.domain.usecase.home.CreateAssignmentUseCase
 import com.devndev.homen.core.domain.usecase.home.CreateChoreUseCase
@@ -67,6 +69,8 @@ val useCaseModule = module {
     factoryOf(::CreateAssignmentUseCase)
     factoryOf(::ConfirmAssignmentUseCase)
     factoryOf(::RegenerateAssignmentUseCase)
+    factoryOf(::CompleteChoreUseCase)
+    factoryOf(::CancelCompleteChoreUseCase)
 
     // reward
     factoryOf(::GetRewardsUseCase)

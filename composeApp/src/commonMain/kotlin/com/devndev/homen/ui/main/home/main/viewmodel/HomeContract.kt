@@ -15,6 +15,8 @@ class HomeContract {
         data object OnChoreManageClick: Event()
         data object OnCreateAssignmentClick: Event()
         data object OnAssignmentClick: Event()
+        data class OnCompleteClick(val assignment: AssignmentItem): Event()
+        data class OnCompleteCancelClick(val assignment: AssignmentItem): Event()
     }
 
     data class State(

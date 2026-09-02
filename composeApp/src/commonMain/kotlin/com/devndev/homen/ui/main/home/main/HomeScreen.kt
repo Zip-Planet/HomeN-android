@@ -37,6 +37,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
+import com.devndev.homen.core.domain.model.home.AssignmentItem
 import com.devndev.homen.core.domain.model.home.HomeIconType
 import com.devndev.homen.core.domain.model.home.Member
 import com.devndev.homen.ui.common.smallResource
@@ -194,7 +195,14 @@ fun HomeScreen(
                         onMemberClick = { member, index ->
                             viewModel.setEvent(HomeContract.Event.OnMemberSelected(member, index))
                         },
-                        onCreateAssignmentClick = { viewModel.setEvent(HomeContract.Event.OnCreateAssignmentClick) }
+                        onCreateAssignmentClick = { viewModel.setEvent(HomeContract.Event.OnCreateAssignmentClick) },
+                        onItemClick = { assignment, isComplete ->
+                            if (isComplete) {
+                                viewModel.setEvent(HomeContract.Event.OnCompleteCancelClick(assignment))
+                            } else {
+                                viewModel.setEvent(HomeContract.Event.OnCompleteClick(assignment))
+                            }
+                        }
                     )
                 }
             }
@@ -437,7 +445,8 @@ fun HomeDivisionSection(
     modifier: Modifier,
     uiState: HomeContract.State,
     onMemberClick: (Member, Int) -> Unit,
-    onCreateAssignmentClick: () -> Unit
+    onCreateAssignmentClick: () -> Unit,
+    onItemClick: (AssignmentItem, Boolean) -> Unit
 ) {
     val assignmentScrollState = rememberScrollState()
 
@@ -503,7 +512,9 @@ fun HomeDivisionSection(
                     HomeAssignmentItem(
                         assignment = assignment,
                         isMine = uiState.isMine,
-                        onItemClick = {}
+                        onItemClick = {
+                            onItemClick(assignment, it)
+                        }
                     )
                     Spacer(modifier = Modifier.height(20.dp))
                 }
@@ -630,7 +641,8 @@ fun HomeBottomSectionPreview() {
                 members = emptyList()
             ),
             onMemberClick = { _, _ -> },
-            onCreateAssignmentClick = {}
+            onCreateAssignmentClick = {},
+            onItemClick = { _, _ ->}
         )
     }
 }

@@ -1,5 +1,6 @@
 package com.devndev.homen.core.data.service.home
 
+import com.devndev.homen.core.data.model.home.request.CompleteChoreRequest
 import com.devndev.homen.core.data.model.home.request.ConfirmAssignmentRequest
 import com.devndev.homen.core.data.model.home.request.CreateAssignmentRequest
 import com.devndev.homen.core.data.model.home.request.CreateChoreRequest
@@ -55,4 +56,7 @@ interface HomeService {
     suspend fun createMemo(id: Int, createMemoRequest: MemoRequest)
     suspend fun editMemo(choreId: Int, memoId: Int, editMemoRequest: MemoRequest)
     suspend fun deleteMemo(choreId: Int, memoId: Int)
+
+    suspend fun completeChore(homeChoreId: Int, completeChoreRequest: CompleteChoreRequest)
+    suspend fun cancelCompleteChore(homeChoreId: Int, completionDate: String)
 }

@@ -29,4 +29,7 @@ interface HomeRepository {
     suspend fun createMemos(id: Int, content: String): ApiResult<Unit>
     suspend fun editMemo(choreId: Int, memoId: Int, content: String): ApiResult<Unit>
     suspend fun deleteMemo(choreId: Int, memoId: Int): ApiResult<Unit>
+
+    suspend fun completeChore(homeChoreId: Int, date: String?): ApiResult<Unit>
+    suspend fun cancelCompleteChore(homeChoreId: Int, completionDate: String): ApiResult<Unit>
 }
