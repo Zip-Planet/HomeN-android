@@ -66,4 +66,15 @@ class RewardRepositoryImpl(
             ApiResult.NetworkError
         }
     }
+
+    override suspend fun claimReward(id: Int): ApiResult<Unit> {
+        return try {
+            rewardService.claimReward(id)
+            ApiResult.Success(Unit)
+        } catch (e: ResponseException) {
+            ApiResult.Error(code = e.response.status.value, message = e.message)
+        } catch (e: Exception) {
+            ApiResult.NetworkError
+        }
+    }
 }

@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -34,6 +35,7 @@ import com.devndev.homen.ui.theme.Blue4736FC
 import com.devndev.homen.ui.theme.ButtonGray
 import com.devndev.homen.ui.theme.Gray8E8E8E
 import com.devndev.homen.ui.theme.HomeNTheme
+import com.devndev.homen.util.DateUtil
 import homen.composeapp.generated.resources.Res
 import homen.composeapp.generated.resources.diamond_icon
 import homen.composeapp.generated.resources.fire_icon
@@ -136,7 +138,40 @@ fun RewardDetailContent(
 
             when (rewardStatus) {
                 RewardStatus.CLAIMED -> {
-                    //TODO::SHKIM 서버 response 수정 시 작업 -> 보상 수령 멤버 및 시간 필요
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Image(
+                            painter = painterResource(
+                                AvatarType.fromId(
+                                    uiState.rewardDetail.claim?.claimedBy?.profileImage ?: 1
+                                ).resource
+                            ),
+                            contentDescription = null,
+                            modifier = Modifier.size(20.dp),
+                        )
+
+                        Spacer(modifier = Modifier.width(4.dp))
+
+                        Text(
+                            text = uiState.rewardDetail.claim?.claimedBy?.name ?: "",
+                            style = HomeNTheme.typography.suitRegular,
+                            fontSize = 14.sp,
+                            color = Color.Black,
+                            modifier = Modifier.weight(1f)
+                        )
+
+                        Text(
+                            text = buildString {
+                                append(DateUtil.formatIsoDate(uiState.rewardDetail.claim?.claimedAt ?: ""))
+                                append(" 받기 완료")
+                            },
+                            style = HomeNTheme.typography.suitRegular,
+                            fontSize = 12.sp,
+                            color = Color.Black,
+                        )
+                    }
                 }
 
                 RewardStatus.CLAIMABLE,
@@ -329,7 +364,7 @@ fun RewardMemberItem(
         )
 
         Spacer(modifier = Modifier.width(4.dp))
-        
+
         Text(
             modifier = Modifier.weight(1f),
             text = member.name,
@@ -339,7 +374,9 @@ fun RewardMemberItem(
         )
 
         Column(
-            modifier = Modifier.height(24.dp),
+            modifier = Modifier
+                .height(24.dp)
+                .widthIn(min = 46.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween
         ) {
@@ -361,7 +398,9 @@ fun RewardMemberItem(
         Spacer(modifier = Modifier.width(5.dp))
 
         Column(
-            modifier = Modifier.height(24.dp),
+            modifier = Modifier
+                .height(24.dp)
+                .widthIn(min = 40.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween
         ) {

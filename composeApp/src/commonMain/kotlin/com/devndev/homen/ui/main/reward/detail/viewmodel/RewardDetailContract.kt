@@ -11,6 +11,7 @@ class RewardDetailContract {
         data class OnInit(val rewardId: Int) : Event()
         data object OnBackClick : Event()
         data class OnNavToEditClick(val rewardId: Int, val reward: String?, val point: String?, val isEdit: Boolean = true): Event()
+        data class OnClaimRewardClick(val rewardId: Int, val toastMsg: String): Event()
     }
 
     data class State(
