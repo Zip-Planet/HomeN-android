@@ -243,7 +243,8 @@ fun RewardExistScreen(
 
                 uiState.rewards.filter { it.status == RewardStatus.CLAIMED }.forEach { reward ->
                     RewardCompleteListItem(
-                        reward
+                        reward = reward,
+                        onRewardClick = { onRewardClick(reward) }
                     )
                     Spacer(modifier = Modifier.height(20.dp))
                 }
@@ -480,7 +481,8 @@ fun RewardListItem(
 
 @Composable
 fun RewardCompleteListItem(
-    reward: Reward
+    reward: Reward,
+    onRewardClick: () -> Unit
 ) {
     val heartColors = listOf(
         Color(0xFF8B73FF),  // Purple
@@ -493,6 +495,12 @@ fun RewardCompleteListItem(
     val tintColor = heartColors[reward.id % heartColors.size]
 
     Row(
+        modifier = Modifier.clickable(
+            interactionSource = remember { MutableInteractionSource() },
+            indication = null
+        ) {
+            onRewardClick()
+        },
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box(
