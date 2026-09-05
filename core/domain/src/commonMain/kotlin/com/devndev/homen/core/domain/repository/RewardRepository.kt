@@ -10,4 +10,5 @@ interface RewardRepository {
     suspend fun editReward(id: Int, name: String, goalPoint: Int): ApiResult<Unit>
     suspend fun deleteReward(id: Int): ApiResult<Unit>
     suspend fun getRewardDetail(id: Int): ApiResult<RewardDetail>
+    suspend fun claimReward(id: Int): ApiResult<Unit>
 }

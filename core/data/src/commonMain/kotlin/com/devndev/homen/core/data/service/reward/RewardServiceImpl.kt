@@ -95,4 +95,18 @@ class RewardServiceImpl(
             }
         }.body()
     }
+
+    override suspend fun claimReward(id: Int) {
+        val accessToken = tokenRepository.getAccessToken().first()
+        client.post {
+            url {
+                takeFrom(Config.BASE_URL)
+                encodedPath += "${RewardService.REWARDS}$id/claim/"
+            }
+            contentType(ContentType.Application.Json)
+            accessToken?.let {
+                header(HttpHeaders.Authorization, "Bearer $it")
+            }
+        }
+    }
 }

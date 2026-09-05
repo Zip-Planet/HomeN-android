@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -339,7 +340,10 @@ fun RewardMemberItem(
         )
 
         Column(
-            modifier = Modifier.height(24.dp),
+            modifier = Modifier
+                .height(24.dp)
+                .widthIn(min = 46.dp)
+            ,
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween
         ) {
@@ -361,7 +365,9 @@ fun RewardMemberItem(
         Spacer(modifier = Modifier.width(5.dp))
 
         Column(
-            modifier = Modifier.height(24.dp),
+            modifier = Modifier
+                .height(24.dp)
+                .widthIn(min = 40.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween
         ) {

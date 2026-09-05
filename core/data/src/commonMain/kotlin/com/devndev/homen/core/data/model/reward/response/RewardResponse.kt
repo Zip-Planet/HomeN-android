@@ -50,10 +50,12 @@ data class RewardCreatorResponse(
 
 @Serializable
 data class RewardClaimResponse(
-    @SerialName("id")
-    val id: Int,
     @SerialName("claimed_at")
-    val claimedAt: String
+    val claimedAt: String,
+    @SerialName("claimed_point")
+    val claimedPoint: Int,
+    @SerialName("claimed_by")
+    val claimedBy: RewardCreatorResponse
 )
 
 fun RewardListResponse.toDomainModel(): RewardList {
@@ -89,7 +91,8 @@ fun RewardCreatorResponse.toDomainModel(): RewardCreator {
 
 fun RewardClaimResponse.toDomainModel(): RewardClaim {
     return RewardClaim(
-        id = id,
-        claimedAt = claimedAt
+        claimedAt = claimedAt,
+        claimedPoint = claimedPoint,
+        claimedBy = claimedBy.toDomainModel()
     )
 }

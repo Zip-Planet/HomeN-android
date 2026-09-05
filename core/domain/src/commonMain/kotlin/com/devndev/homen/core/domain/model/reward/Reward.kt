@@ -31,8 +31,9 @@ data class RewardCreator(
 )
 
 data class RewardClaim(
-    val id: Int,
-    val claimedAt: String
+    val claimedAt: String,
+    val claimedPoint: Int,
+    val claimedBy: RewardCreator
 )
 
 data class RewardList(

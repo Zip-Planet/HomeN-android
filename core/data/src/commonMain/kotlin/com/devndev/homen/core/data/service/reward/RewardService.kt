@@ -14,4 +14,5 @@ interface RewardService {
     suspend fun editReward(id: Int, rewardRequest: RewardRequest)
     suspend fun deleteReward(id: Int)
     suspend fun getRewardDetail(id: Int): RewardDetailResponse
+    suspend fun claimReward(id: Int)
 }
