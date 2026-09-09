@@ -3,16 +3,16 @@ package com.devndev.homen.ui.main.home.main.viewmodel
 import androidx.lifecycle.viewModelScope
 import com.devndev.homen.core.common.base.BaseViewModel
 import com.devndev.homen.core.domain.model.common.ApiResult
-import com.devndev.homen.core.domain.model.home.Assignment
 import com.devndev.homen.core.domain.model.home.AssignmentItem
 import com.devndev.homen.core.domain.model.home.Member
 import com.devndev.homen.core.domain.usecase.home.CancelCompleteChoreUseCase
 import com.devndev.homen.core.domain.usecase.home.CompleteChoreUseCase
 import com.devndev.homen.core.domain.usecase.home.GetAssignmentsUseCase
 import com.devndev.homen.core.domain.usecase.home.GetHomeUseCase
+import com.devndev.homen.core.domain.usecase.home.GetWeeklyReportUseCase
 import com.devndev.homen.core.domain.usecase.user.GetMyInfoUseCase
 import com.devndev.homen.ui.main.assignment.main.viewmodel.AssignmentStatus
-import com.devndev.homen.ui.main.home.main.viewmodel.HomeContract.Effect.*
+import com.devndev.homen.ui.main.home.main.viewmodel.HomeContract.Effect.NavigateToAssignment
 import com.devndev.homen.util.DateUtil
 import kotlinx.coroutines.launch
 
@@ -21,7 +21,8 @@ class HomeViewModel(
     private val getMyInfoUseCase: GetMyInfoUseCase,
     private val getAssignmentsUseCase: GetAssignmentsUseCase,
     private val completeChoreUseCase: CompleteChoreUseCase,
-    private val cancelCompleteChoreUseCase: CancelCompleteChoreUseCase
+    private val cancelCompleteChoreUseCase: CancelCompleteChoreUseCase,
+    private val getWeeklyReportUseCase: GetWeeklyReportUseCase
 ) : BaseViewModel<HomeContract.Event, HomeContract.State, HomeContract.Effect>() {
     override fun setInitialState() = HomeContract.State()
 

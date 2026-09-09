@@ -24,6 +24,7 @@ import com.devndev.homen.core.domain.usecase.home.GetHasHomeUseCase
 import com.devndev.homen.core.domain.usecase.home.GetHomeUseCase
 import com.devndev.homen.core.domain.usecase.home.GetJoinHomeUseCase
 import com.devndev.homen.core.domain.usecase.home.GetMemosUseCase
+import com.devndev.homen.core.domain.usecase.home.GetWeeklyReportUseCase
 import com.devndev.homen.core.domain.usecase.home.JoinHomeUseCase
 import com.devndev.homen.core.domain.usecase.home.RegenerateAssignmentUseCase
 import com.devndev.homen.core.domain.usecase.reward.ClaimRewardUseCase
@@ -72,6 +73,7 @@ val useCaseModule = module {
     factoryOf(::RegenerateAssignmentUseCase)
     factoryOf(::CompleteChoreUseCase)
     factoryOf(::CancelCompleteChoreUseCase)
+    factoryOf(::GetWeeklyReportUseCase)
 
     // reward
     factoryOf(::GetRewardsUseCase)

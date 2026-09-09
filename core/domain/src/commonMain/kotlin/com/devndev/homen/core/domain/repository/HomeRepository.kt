@@ -9,6 +9,7 @@ import com.devndev.homen.core.domain.model.home.CreateHome
 import com.devndev.homen.core.domain.model.home.HomeResponseDomainModel
 import com.devndev.homen.core.domain.model.home.JoinHomeResponseDomainModel
 import com.devndev.homen.core.domain.model.home.Memo
+import com.devndev.homen.core.domain.model.report.WeeklyReport
 
 interface HomeRepository {
     suspend fun createHome(createHome: CreateHome): ApiResult<HomeResponseDomainModel>
@@ -32,4 +33,6 @@ interface HomeRepository {
 
     suspend fun completeChore(homeChoreId: Int, date: String?): ApiResult<Unit>
     suspend fun cancelCompleteChore(homeChoreId: Int, completionDate: String): ApiResult<Unit>
+
+    suspend fun getWeeklyReport(weekStart: String): ApiResult<WeeklyReport>
 }
