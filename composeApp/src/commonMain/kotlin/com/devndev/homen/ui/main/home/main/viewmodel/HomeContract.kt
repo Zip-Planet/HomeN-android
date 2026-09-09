@@ -6,6 +6,7 @@ import com.devndev.homen.core.common.base.ViewState
 import com.devndev.homen.core.domain.model.home.Assignment
 import com.devndev.homen.core.domain.model.home.AssignmentItem
 import com.devndev.homen.core.domain.model.home.Member
+import com.devndev.homen.core.domain.model.home.ReportStatus
 import com.devndev.homen.ui.main.assignment.main.viewmodel.AssignmentTab
 
 class HomeContract {
@@ -35,7 +36,9 @@ class HomeContract {
         val assignmentStatus: String = "",
         val assignment: Assignment? = null,
         val selectedAssignments: List<AssignmentItem> = emptyList(),
-        val selectedIndex: Int = 0
+        val selectedIndex: Int = 0,
+        val reportStatus: ReportStatus? = null,
+        val reportRate: Int = 0
     ): ViewState {
         val progressRate: Int = if (totalChore > 0) (completedChore * 100) / totalChore else 0
         val isMine: Boolean = selectedIndex == 0

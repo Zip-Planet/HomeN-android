@@ -18,6 +18,7 @@ import com.devndev.homen.core.data.model.home.response.GetHasHomeResponse
 import com.devndev.homen.core.data.model.home.response.GetHomeResponse
 import com.devndev.homen.core.data.model.home.response.GetMemoResponse
 import com.devndev.homen.core.data.model.home.response.JoinHomeResponse
+import com.devndev.homen.core.data.model.report.response.WeeklyReportResponse
 import com.devndev.homen.core.domain.repository.TokenRepository
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -333,5 +334,20 @@ class HomeServiceImpl(
                 header(HttpHeaders.Authorization, "Bearer $it")
             }
         }
+    }
+
+    override suspend fun getWeeklyReport(weekStart: String): WeeklyReportResponse {
+        val accessToken = tokenRepository.getAccessToken().first()
+        return client.get {
+            url {
+                takeFrom(Config.BASE_URL)
+                encodedPath += HomeService.WEEKLY_REPORT
+                parameter("week_start", weekStart)
+            }
+            contentType(ContentType.Application.Json)
+            accessToken?.let {
+                header(HttpHeaders.Authorization, "Bearer $it")
+            }
+        }.body()
     }
 }

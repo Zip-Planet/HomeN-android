@@ -10,8 +10,10 @@ import com.devndev.homen.core.data.model.home.request.MemoRequest
 import com.devndev.homen.core.data.model.home.request.toDataModel
 import com.devndev.homen.core.data.model.home.request.toEditDataModel
 import com.devndev.homen.core.data.model.home.response.toDomainModel
+import com.devndev.homen.core.data.model.report.response.toDomainModel
 import com.devndev.homen.core.data.service.home.HomeService
 import com.devndev.homen.core.domain.model.common.ApiResult
+import com.devndev.homen.core.domain.model.report.WeeklyReport
 import com.devndev.homen.core.domain.model.home.Assignment
 import com.devndev.homen.core.domain.model.home.Chore
 import com.devndev.homen.core.domain.model.home.ChoreDetail
@@ -273,6 +275,17 @@ class HomeRepositoryImpl(
         return try {
             val response = homeService.cancelCompleteChore(homeChoreId, completionDate)
             ApiResult.Success(response)
+        } catch (e: ResponseException) {
+            ApiResult.Error(code = e.response.status.value, message = e.message)
+        } catch (e: Exception) {
+            ApiResult.NetworkError
+        }
+    }
+
+    override suspend fun getWeeklyReport(weekStart: String): ApiResult<WeeklyReport> {
+        return try {
+            val response = homeService.getWeeklyReport(weekStart)
+            ApiResult.Success(response.toDomainModel())
         } catch (e: ResponseException) {
             ApiResult.Error(code = e.response.status.value, message = e.message)
         } catch (e: Exception) {

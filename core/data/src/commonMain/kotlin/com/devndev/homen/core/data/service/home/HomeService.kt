@@ -17,6 +17,7 @@ import com.devndev.homen.core.data.model.home.response.GetHasHomeResponse
 import com.devndev.homen.core.data.model.home.response.GetHomeResponse
 import com.devndev.homen.core.data.model.home.response.GetMemoResponse
 import com.devndev.homen.core.data.model.home.response.JoinHomeResponse
+import com.devndev.homen.core.data.model.report.response.WeeklyReportResponse
 
 interface HomeService {
     companion object {
@@ -29,6 +30,7 @@ interface HomeService {
         const val CHORES = "/homes/mine/chores/"
 
         const val ASSIGNMENT = "/homes/mine/assignments/"
+        const val WEEKLY_REPORT = "/homes/mine/reports/weekly/"
     }
 
     suspend fun createHome(createHomeRequest: CreateHomeRequest): CreateHomeResponse
@@ -59,4 +61,6 @@ interface HomeService {
 
     suspend fun completeChore(homeChoreId: Int, completeChoreRequest: CompleteChoreRequest)
     suspend fun cancelCompleteChore(homeChoreId: Int, completionDate: String)
+
+    suspend fun getWeeklyReport(weekStart: String): WeeklyReportResponse
 }
