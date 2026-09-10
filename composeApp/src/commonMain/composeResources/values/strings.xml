@@ -242,6 +242,9 @@
     <string name="board_request_exchange_reject_title">s님의 교환 요청 거절</string>
     <string name="board_request_exchange_reject_highlight_text">교환 요청 거절</string>
     <string name="board_request_exchange_reject_message">상대가 이번 교환은 진행하기 어렵다고 했어요</string>
+    <string name="board_assignment_created_card_title">다음주 분담안이 생성됐어요</string>
+    <string name="board_assignment_confirmed_card_title">다음주 분담안이 확정됐어요</string>
+    <string name="board_assignment_card_total_chore">총 s개의 집안일</string>
 
     <!-- 분담 화면 -->
     <string name="assignment_add_chore_title">집안일을 조금 더 추가해 볼까요?</string>

@@ -86,7 +86,7 @@ fun MainNav(
             )
 
             homeNav(mainNavController)
-            boardNav()
+            boardNav(mainNavController, paddingValues)
             assignmentNav(mainNavController, paddingValues)
             rewardNav(mainNavController, paddingValues)
             myPageNav()

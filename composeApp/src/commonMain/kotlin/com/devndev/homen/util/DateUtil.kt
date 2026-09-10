@@ -1,9 +1,11 @@
 package com.devndev.homen.util
 
 import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import kotlinx.datetime.minus
+import kotlinx.datetime.number
 import kotlinx.datetime.plus
 import kotlin.time.Clock
 
@@ -20,6 +22,32 @@ object DateUtil {
             "${year}년 ${month}월 ${day}일"
         } catch (e: Exception) {
             isoString // 파싱 실패 시 원본 반환
+        }
+    }
+
+    /**
+     * "YYYY-MM-DD" 형식을 "YYYY년 N월 N주차" 형식으로 변환합니다.
+     * 해당 주의 목요일(Thursday)이 속한 달을 기준으로 주차를 계산합니다. (ISO-8601 방식)
+     */
+    fun formatWeekOfMonth(dateString: String): String {
+        return try {
+            val datePart = dateString.split("T")[0]
+            val date = LocalDate.parse(datePart)
+
+            // 해당 날짜가 속한 주의 목요일을 찾습니다.
+            val dayOfWeek = date.dayOfWeek.ordinal // MONDAY(0) ~ SUNDAY(6)
+            val daysToThursday = 3 - dayOfWeek
+            val thursday = date.plus(daysToThursday, DateTimeUnit.DAY)
+
+            val year = thursday.year
+            val month = thursday.month.number
+
+            // 목요일이 해당 월의 몇 번째 주인지 계산합니다.
+            val weekOfMonth = (thursday.dayOfMonth - 1) / 7 + 1
+
+            "${year}년 ${month}월 ${weekOfMonth}주차"
+        } catch (e: Exception) {
+            dateString
         }
     }
 

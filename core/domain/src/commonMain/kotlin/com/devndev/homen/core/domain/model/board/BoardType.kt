@@ -1,7 +1,7 @@
 package com.devndev.homen.core.domain.model.board
 
-enum class BoardType {
-    BOT,
-    REQUEST_HELP,
-    REQUEST_EXCHANGE
+enum class BoardType(val type: String) {
+    BOT("bot"),
+    REQUEST_HELP("help"),
+    REQUEST_EXCHANGE("swap")
 }
