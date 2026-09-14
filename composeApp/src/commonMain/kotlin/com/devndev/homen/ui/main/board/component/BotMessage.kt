@@ -282,7 +282,7 @@ fun RewardMessage(
             Spacer(modifier = Modifier.width(3.dp))
 
             Text(
-                text = reward?.claimedBy ?: "",
+                text = reward?.claimedBy?.name ?: "",
                 style = HomeNTheme.typography.suitRegular,
                 fontSize = 14.sp,
                 color = Color.Black
@@ -294,9 +294,8 @@ fun RewardMessage(
                 dotSize = 2
             )
 
-            // TODO::SHKIM 서버 response 추가 시 포인트 수정
             Text(
-                text = "${reward?.goalPoint.toString()}P",
+                text = "${reward?.claimedByPoint.toString()}P",
                 style = HomeNTheme.typography.suitRegular,
                 fontSize = 14.sp,
                 color = Color.Black

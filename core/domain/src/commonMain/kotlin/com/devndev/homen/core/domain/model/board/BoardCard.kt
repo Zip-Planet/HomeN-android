@@ -22,9 +22,10 @@ data class BoardCard(
 
 sealed interface BoardPayload {
     data class Reward(
-        val claimedBy: String,
+        val claimedBy: BoardMember,
         val goalPoint: Int,
-        val rewardName: String
+        val rewardName: String,
+        val claimedByPoint: Int
     ) : BoardPayload
 
     data class Assignment(

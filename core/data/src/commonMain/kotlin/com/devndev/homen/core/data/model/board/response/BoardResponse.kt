@@ -50,9 +50,10 @@ data class BoardCardResponse(
 @Serializable
 data class BoardPayloadResponse(
     // Reward
-    @SerialName("claimed_by") val claimedBy: String? = null,
+    @SerialName("claimed_by") val claimedBy: BoardMemberResponse? = null,
     @SerialName("goal_point") val goalPoint: Int? = null,
     @SerialName("reward_name") val rewardName: String? = null,
+    @SerialName("claimed_by_point") val claimedByPoint: Int? = null,
 
     // Assignment
     @SerialName("week_start") val weekStart: String? = null,
@@ -125,9 +126,10 @@ fun BoardCardResponse.toDomainModel(): BoardCard {
 fun BoardPayloadResponse.toDomainModel(kind: String?): BoardPayload {
     return when (kind) {
         "reward_achieved" -> BoardPayload.Reward(
-            claimedBy = claimedBy ?: "",
+            claimedBy = claimedBy?.toDomainModel() ?: BoardMember("", "", null),
             goalPoint = goalPoint ?: 0,
-            rewardName = rewardName ?: ""
+            rewardName = rewardName ?: "",
+            claimedByPoint = claimedByPoint ?: 0
         )
         "assignment_created", "assignment_confirmed" -> BoardPayload.Assignment(
             weekStart = weekStart ?: "",

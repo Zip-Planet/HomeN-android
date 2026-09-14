@@ -35,20 +35,15 @@ class BoardViewModel(
                 is ApiResult.Success -> {
                     setState {
                         copy(
-                            mainIsLoading = false,
                             cards = result.data.sortedByDescending { it.createdAt }
                         )
                     }
                 }
+                else -> {
 
-                is ApiResult.Error -> {
-                    setState { copy(isLoading = false) }
-                }
-
-                ApiResult.NetworkError -> {
-                    setState { copy(isLoading = false) }
                 }
             }
+            setState { copy(mainIsLoading = false) }
         }
     }
 }
