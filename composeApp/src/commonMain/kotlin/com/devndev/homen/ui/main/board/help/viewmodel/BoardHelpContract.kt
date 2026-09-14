@@ -10,6 +10,7 @@ class BoardHelpContract {
         data object OnInit : Event()
         data class OnAssignmentSelected(val assignment: AssignmentItem): Event()
         data class OnHelpMessageChange(val message: String): Event()
+        data object OnRequestHelpClick: Event()
     }
 
     data class State(

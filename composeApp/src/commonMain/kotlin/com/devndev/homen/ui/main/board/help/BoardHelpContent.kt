@@ -46,7 +46,8 @@ fun BoardHelpContent(
     onAssignmentSelected: (AssignmentItem) -> Unit = {},
     isRequestable: Boolean,
     onHelpMessageChanged: (String) -> Unit = {},
-    helpMessage: String
+    helpMessage: String,
+    onRequestHelpClick: () -> Unit = {}
 ) {
     val selectorInitTitle = if (assignments.isNotEmpty()) {
         stringResource(Res.string.board_request_help_selector_title)
@@ -140,9 +141,7 @@ fun BoardHelpContent(
 
         HomeNButton(
             text = stringResource(Res.string.board_request_help_btn),
-            onClick = {
-
-            },
+            onClick = onRequestHelpClick,
             enabled = isRequestable
         )
     }

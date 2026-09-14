@@ -20,4 +20,15 @@ class BoardRepositoryImpl(
             ApiResult.NetworkError
         }
     }
+
+    override suspend fun createHelp(itemId: Int, message: String?): ApiResult<Unit> {
+        return try {
+            boardService.createHelp(itemId, message)
+            ApiResult.Success(Unit)
+        } catch (e: ResponseException) {
+            ApiResult.Error(code = e.response.status.value, message = e.message)
+        } catch (e: Exception) {
+            ApiResult.NetworkError
+        }
+    }
 }

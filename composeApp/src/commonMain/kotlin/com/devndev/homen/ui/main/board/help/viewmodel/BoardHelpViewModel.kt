@@ -3,6 +3,7 @@ package com.devndev.homen.ui.main.board.help.viewmodel
 import androidx.lifecycle.viewModelScope
 import com.devndev.homen.core.common.base.BaseViewModel
 import com.devndev.homen.core.domain.model.common.ApiResult
+import com.devndev.homen.core.domain.usecase.board.CreateHelpUseCase
 import com.devndev.homen.core.domain.usecase.home.GetAssignmentsUseCase
 import com.devndev.homen.core.domain.usecase.user.GetMyInfoUseCase
 import com.devndev.homen.util.DateUtil
@@ -11,7 +12,8 @@ import kotlin.time.Clock
 
 class BoardHelpViewModel(
     private val getMyInfoUseCase: GetMyInfoUseCase,
-    private val getAssignmentUseCase: GetAssignmentsUseCase
+    private val getAssignmentUseCase: GetAssignmentsUseCase,
+    private val createHelpUseCase: CreateHelpUseCase
 ) :
     BaseViewModel<BoardHelpContract.Event, BoardHelpContract.State, BoardHelpContract.Effect>() {
     override fun setInitialState() = BoardHelpContract.State()
@@ -27,7 +29,11 @@ class BoardHelpViewModel(
             }
 
             is BoardHelpContract.Event.OnHelpMessageChange -> {
-                setState { copy(helpMessage = event.message)}
+                setState { copy(helpMessage = event.message) }
+            }
+
+            BoardHelpContract.Event.OnRequestHelpClick -> {
+                createHelp()
             }
         }
     }
@@ -58,6 +64,25 @@ class BoardHelpViewModel(
                 }
             }
             setState { copy(mainIsLoading = false) }
+        }
+    }
+
+    private fun createHelp() {
+        viewModelScope.launch {
+            val result = createHelpUseCase(
+                itemId = viewState.value.selectedAssignment!!.id,
+                message = viewState.value.helpMessage
+            )
+            when (result) {
+                is ApiResult.Success<*> -> {
+                    setEffect { BoardHelpContract.Effect.NavigateToBack }
+                }
+
+                else -> {
+
+                }
+
+            }
         }
     }
 }

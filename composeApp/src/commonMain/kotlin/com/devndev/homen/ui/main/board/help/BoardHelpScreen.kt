@@ -53,7 +53,10 @@ fun BoardHelpScreen(
             onHelpMessageChanged = {
                 viewModel.setEvent(BoardHelpContract.Event.OnHelpMessageChange(it))
             },
-            helpMessage = uiState.helpMessage
+            helpMessage = uiState.helpMessage,
+            onRequestHelpClick = {
+                viewModel.setEvent(BoardHelpContract.Event.OnRequestHelpClick)
+            }
         )
     }
 }
