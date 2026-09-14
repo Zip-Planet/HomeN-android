@@ -24,6 +24,10 @@ class BoardViewModel(
             BoardContract.Event.OnRewardClick -> {
                 setEffect { BoardContract.Effect.NavigateToReward }
             }
+
+            BoardContract.Event.OnRequestHelpClick -> {
+                setEffect { BoardContract.Effect.NavigateToHelp }
+            }
         }
     }
 

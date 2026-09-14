@@ -7,6 +7,12 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import com.devndev.homen.ui.component.NavTransitions
+import com.devndev.homen.ui.component.NavTransitions.enterTransition
+import com.devndev.homen.ui.component.NavTransitions.exitTransition
+import com.devndev.homen.ui.component.NavTransitions.popEnterTransition
+import com.devndev.homen.ui.component.NavTransitions.popExitTransition
+import com.devndev.homen.ui.main.board.help.BoardHelpScreen
 import com.devndev.homen.ui.main.board.main.BoardScreen
 import com.devndev.homen.ui.main.navigation.BottomNavItem
 
@@ -37,6 +43,22 @@ fun NavGraphBuilder.boardNav(
                     launchSingleTop = true
                     restoreState = true
                 }
+            },
+            onNavToHelp = {
+                navController.navigate(BoardRoute.BoardHelp)
+            }
+        )
+    }
+
+    composable<BoardRoute.BoardHelp>(
+        enterTransition = NavTransitions.enterTransition,
+        exitTransition = NavTransitions.exitTransition,
+        popEnterTransition = NavTransitions.popEnterTransition,
+        popExitTransition = NavTransitions.popExitTransition
+    ) {
+        BoardHelpScreen(
+            onNavBack = {
+                navController.popBackStack()
             }
         )
     }

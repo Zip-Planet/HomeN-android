@@ -10,6 +10,7 @@ class BoardContract {
         data object OnInit: Event()
         data object OnRewardClick: Event()
         data object OnAssignmentClick: Event()
+        data object OnRequestHelpClick: Event()
     }
 
     data class State(
@@ -21,5 +22,6 @@ class BoardContract {
     sealed class Effect: ViewSideEffect {
         data object NavigateToReward: Effect()
         data object NavigateToAssignment: Effect()
+        data object NavigateToHelp: Effect()
     }
 }

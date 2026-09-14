@@ -37,6 +37,7 @@ fun BoardScreen(
     viewModel: BoardViewModel = koinViewModel(),
     onNavToReward: () -> Unit,
     onNavToAssignment: () -> Unit,
+    onNavToHelp: () -> Unit,
     paddingValues: PaddingValues
 ) {
     val uiState by viewModel.viewState
@@ -49,6 +50,10 @@ fun BoardScreen(
                 }
                 BoardContract.Effect.NavigateToReward -> {
                     onNavToReward()
+                }
+
+                BoardContract.Effect.NavigateToHelp -> {
+                    onNavToHelp()
                 }
             }
         }
@@ -136,7 +141,9 @@ fun BoardScreen(
 
             BoardFloatingActionButton(
                 onExchangeClick = {},
-                onHelpClick = {},
+                onHelpClick = {
+                    viewModel.setEvent(BoardContract.Event.OnRequestHelpClick)
+                },
                 paddingValues = paddingValues
             )
         }
