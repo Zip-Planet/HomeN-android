@@ -11,17 +11,22 @@ class BoardContract {
         data object OnRewardClick: Event()
         data object OnAssignmentClick: Event()
         data object OnRequestHelpClick: Event()
+        data class OnDeleteHelpClick(val id: Int): Event()
+        data class OnUndoDelete(val card: BoardCard, val index: Int): Event()
+        data class OnDeleteConfirm(val id: Int): Event()
     }
 
     data class State(
         val mainIsLoading: Boolean = false,
         val isLoading: Boolean = false,
-        val cards: List<BoardCard> = emptyList()
+        val cards: List<BoardCard> = emptyList(),
+        val myName: String = ""
     ): ViewState
 
     sealed class Effect: ViewSideEffect {
         data object NavigateToReward: Effect()
         data object NavigateToAssignment: Effect()
         data object NavigateToHelp: Effect()
+        data class ShowDeleteSnackBar(val card: BoardCard, val index: Int): Effect()
     }
 }

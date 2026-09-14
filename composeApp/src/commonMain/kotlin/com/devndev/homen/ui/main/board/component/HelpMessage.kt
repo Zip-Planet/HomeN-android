@@ -27,12 +27,15 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.devndev.homen.core.domain.model.board.BoardChoreItem
+import com.devndev.homen.core.domain.model.chore.ChoreDifficulty
 import com.devndev.homen.ui.component.Dot
 import com.devndev.homen.ui.component.HomeNButton
 import com.devndev.homen.ui.theme.BackgroundGray
 import com.devndev.homen.ui.theme.BlueCAEAFC
 import com.devndev.homen.ui.theme.HomeNTheme
 import com.devndev.homen.ui.theme.OrangeFF8431
+import com.devndev.homen.util.DateUtil
 import homen.composeapp.generated.resources.Res
 import homen.composeapp.generated.resources.arrow_icon
 import homen.composeapp.generated.resources.board_request_help_accept_highlight_text
@@ -54,10 +57,15 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun HelpMessage(
-    isMine: Boolean
+    isMine: Boolean,
+    name: String,
+    description: String,
+    date: String,
+    item: BoardChoreItem,
+    onClick: () -> Unit = {}
 ) {
     val backgroundColor = if (isMine) BlueCAEAFC else Color.White
-    val title = stringResource(Res.string.board_request_help_title).replace("s", "투다리김치우동")
+    val title = stringResource(Res.string.board_request_help_title).replace("s", name)
     val highlightText = stringResource(Res.string.board_request_help_highlight_text)
     val buttonColor = if (isMine) Color.Black else OrangeFF8431
     val buttonText =
@@ -94,42 +102,44 @@ fun HelpMessage(
             color = Color.Black,
         )
 
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(2.5.dp)
-        ) {
-            Icon(
-                painter = painterResource(Res.drawable.chat_icon),
-                contentDescription = null,
-                modifier = Modifier.size(14.dp)
-            )
+        if (description.isNotEmpty()) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(2.5.dp)
+            ) {
+                Icon(
+                    painter = painterResource(Res.drawable.chat_icon),
+                    contentDescription = null,
+                    modifier = Modifier.size(14.dp)
+                )
 
-            Text(
-                text = "토요일 출장이라 대신해줄 사람~",
-                style = HomeNTheme.typography.suitMedium,
-                fontSize = 12.sp,
-                color = Color.Black
-            )
+                Text(
+                    text = description,
+                    style = HomeNTheme.typography.suitMedium,
+                    fontSize = 12.sp,
+                    color = Color.Black
+                )
+            }
         }
 
         Spacer(modifier = Modifier.height(13.dp))
 
-        DateSection(date = "2026년 1월 5주차")
+        DateSection(date = DateUtil.formatWeekOfMonth(date))
 
         Spacer(modifier = Modifier.height(8.dp))
 
         ChoreExchangeCard(
-            title = "욕실청소",
-            day = "토",
-            difficulty = "중상",
-            points = "160P"
+            title = item.choreName,
+            day = item.weekdayLabel,
+            difficulty = ChoreDifficulty.fromId(item.difficulty).label,
+            points = "${item.point}P"
         )
 
         Spacer(modifier = Modifier.height(13.dp))
 
         HomeNButton(
             text = buttonText,
-            onClick = {},
+            onClick = onClick,
             color = buttonColor,
         )
     }
@@ -305,36 +315,39 @@ fun ChoreExchangeCard(
 
                 Dot(
                     width = 8,
-                    dotSize = 2
+                    dotSize = 2,
+                    height = 2
                 )
 
                 Text(
                     text = day,
-                    style = HomeNTheme.typography.suitRegular,
+                    style = HomeNTheme.typography.suitSemiBold,
                     fontSize = 14.sp,
                     color = Color.Black
                 )
 
                 Dot(
                     width = 8,
-                    dotSize = 2
+                    dotSize = 2,
+                    height = 2
                 )
 
                 Text(
                     text = "난이도 $difficulty",
-                    style = HomeNTheme.typography.suitRegular,
+                    style = HomeNTheme.typography.suitSemiBold,
                     fontSize = 14.sp,
                     color = Color.Black
                 )
 
                 Dot(
                     width = 8,
-                    dotSize = 2
+                    dotSize = 2,
+                    height = 2
                 )
 
                 Text(
                     text = points,
-                    style = HomeNTheme.typography.suitRegular,
+                    style = HomeNTheme.typography.suitSemiBold,
                     fontSize = 14.sp,
                     color = Color.Black
                 )
@@ -347,13 +360,43 @@ fun ChoreExchangeCard(
 @Preview
 @Composable
 fun HelpMessagePreview() {
-    HelpMessage(isMine = false)
+    HelpMessage(
+        isMine = false,
+        name = "투다리김치우동",
+        description = "토요일 출장이라 대신해줄 사람~",
+        date = "2026-01-01",
+        item = BoardChoreItem(
+            id = 1,
+            choreName = "욕실청소",
+            weekday = 5,
+            weekdayLabel = "토",
+            difficulty = 4,
+            point = 160,
+            date = "2026-01-01",
+            assignee = null
+        )
+    )
 }
 
 @Preview
 @Composable
 fun HelpMessageMinePreview() {
-    HelpMessage(isMine = true)
+    HelpMessage(
+        isMine = true,
+        name = "왕만두",
+        description = "야근이라 부탁드려요 ㅜㅜ",
+        date = "2026-01-01",
+        item = BoardChoreItem(
+            id = 1,
+            choreName = "주방 마감",
+            weekday = 1,
+            weekdayLabel = "월",
+            difficulty = 3,
+            point = 100,
+            date = "2026-01-01",
+            assignee = null
+        )
+    )
 }
 
 @Preview

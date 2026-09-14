@@ -5,3 +5,9 @@ enum class BoardType(val type: String) {
     REQUEST_HELP("help"),
     REQUEST_EXCHANGE("swap")
 }
+
+enum class HelpBoardType(val type: String) {
+    PENDING("pending"),
+    ACCEPTED("accepted"),
+    EXPIRED("expired")
+}

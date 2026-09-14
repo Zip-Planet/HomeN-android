@@ -26,7 +26,7 @@ import com.devndev.homen.ui.component.HomeNButton
 import com.devndev.homen.ui.component.HomeNLongTextField
 import com.devndev.homen.ui.theme.HomeNTheme
 import homen.composeapp.generated.resources.Res
-import homen.composeapp.generated.resources.board_request_help_btn
+import homen.composeapp.generated.resources.board_make_request_help_btn
 import homen.composeapp.generated.resources.board_request_help_chore_title
 import homen.composeapp.generated.resources.board_request_help_descirption_hint
 import homen.composeapp.generated.resources.board_request_help_descirption_label
@@ -37,7 +37,6 @@ import homen.composeapp.generated.resources.calendar_icon
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
-import kotlin.collections.List
 
 @Composable
 fun BoardHelpContent(
@@ -140,7 +139,7 @@ fun BoardHelpContent(
         Spacer(modifier = Modifier.weight(1f))
 
         HomeNButton(
-            text = stringResource(Res.string.board_request_help_btn),
+            text = stringResource(Res.string.board_make_request_help_btn),
             onClick = onRequestHelpClick,
             enabled = isRequestable
         )

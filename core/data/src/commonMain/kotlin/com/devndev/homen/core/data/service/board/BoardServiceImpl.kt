@@ -6,6 +6,7 @@ import com.devndev.homen.core.data.model.board.response.BoardResponse
 import com.devndev.homen.core.domain.repository.TokenRepository
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
+import io.ktor.client.request.delete
 import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.request.post
@@ -40,13 +41,27 @@ class BoardServiceImpl(
         client.post {
             url {
                 takeFrom(Config.BASE_URL)
-                encodedPath += BoardService.CREATE_HELP
+                encodedPath += BoardService.HELP
             }
             contentType(ContentType.Application.Json)
             accessToken?.let {
                 header(HttpHeaders.Authorization, "Bearer $it")
             }
             setBody(CreateHelpRequest(itemId = itemId, message = message))
+        }
+    }
+
+    override suspend fun deleteHelp(helpRequestId: Int) {
+        val accessToken = tokenRepository.getAccessToken().first()
+        client.delete {
+            url {
+                takeFrom(Config.BASE_URL)
+                encodedPath += "${BoardService.HELP}$helpRequestId/"
+            }
+            contentType(ContentType.Application.Json)
+            accessToken?.let {
+                header(HttpHeaders.Authorization, "Bearer $it")
+            }
         }
     }
 }

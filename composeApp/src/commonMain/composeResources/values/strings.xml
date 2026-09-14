@@ -253,6 +253,7 @@
     <string name="board_request_help_descirption_label">*선택</string>
     <string name="board_request_help_descirption_hint">오늘 야근이라 대신 부탁해요!</string>
     <string name="board_make_request_help_btn">도움 요청하기</string>
+    <string name="board_help_delete_snackbar_msg">도움 카드를 삭제했어요</string>
 
 
     <!-- 분담 화면 -->

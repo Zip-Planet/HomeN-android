@@ -31,4 +31,15 @@ class BoardRepositoryImpl(
             ApiResult.NetworkError
         }
     }
+
+    override suspend fun deleteHelp(helpRequestId: Int): ApiResult<Unit> {
+        return try {
+            boardService.deleteHelp(helpRequestId)
+            ApiResult.Success(Unit)
+        } catch (e: ResponseException) {
+            ApiResult.Error(code = e.response.status.value, message = e.message)
+        } catch (e: Exception) {
+            ApiResult.NetworkError
+        }
+    }
 }
