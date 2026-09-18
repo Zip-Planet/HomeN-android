@@ -3,17 +3,25 @@ package com.devndev.homen.ui.main.board.main.viewmodel
 import androidx.lifecycle.viewModelScope
 import com.devndev.homen.core.common.base.BaseViewModel
 import com.devndev.homen.core.domain.model.common.ApiResult
+import com.devndev.homen.core.domain.usecase.board.AcceptHelpUseCase
 import com.devndev.homen.core.domain.usecase.board.DeleteHelpUseCase
 import com.devndev.homen.core.domain.usecase.board.GetBoardUseCase
 import com.devndev.homen.core.domain.usecase.user.GetMyInfoUseCase
+import com.devndev.homen.core.domain.model.board.BoardMember
+import com.devndev.homen.core.domain.model.board.HelpBoardType
+import com.devndev.homen.ui.main.board.main.viewmodel.BoardContract.Effect.*
 import kotlinx.coroutines.launch
 
 class BoardViewModel(
     private val getMyInfoUseCase: GetMyInfoUseCase,
     private val getBoardUseCase: GetBoardUseCase,
-    private val deleteHelpUseCase: DeleteHelpUseCase
+    private val deleteHelpUseCase: DeleteHelpUseCase,
+    private val acceptHelpUseCase: AcceptHelpUseCase
 ) : BaseViewModel<BoardContract.Event, BoardContract.State, BoardContract.Effect>() {
     override fun setInitialState() = BoardContract.State()
+
+    private var pendingDeleteId: Int? = null
+    private var pendingAcceptId: Int? = null
 
     override fun handleEvents(event: BoardContract.Event) {
         when (event) {
@@ -36,15 +44,17 @@ class BoardViewModel(
             is BoardContract.Event.OnDeleteHelpClick -> {
                 val index = viewState.value.cards.indexOfFirst { it.id == event.id }
                 if (index != -1) {
+                    pendingDeleteId = event.id
                     val card = viewState.value.cards[index]
                     val updatedCards = viewState.value.cards.toMutableList().apply { removeAt(index) }
                     setState { copy(cards = updatedCards) }
-                    setEffect { BoardContract.Effect.ShowDeleteSnackBar(card, index) }
+                    setEffect { ShowDeleteSnackBar(card, index) }
                 }
             }
 
             is BoardContract.Event.OnUndoDelete -> {
-                val updatedCards = viewState.value.cards.toMutableList().apply { 
+                pendingDeleteId = null
+                val updatedCards = viewState.value.cards.toMutableList().apply {
                     if (event.index <= size) {
                         add(event.index, event.card)
                     } else {
@@ -55,7 +65,56 @@ class BoardViewModel(
             }
 
             is BoardContract.Event.OnDeleteConfirm -> {
+                pendingDeleteId = null
                 deleteHelp(event.id)
+            }
+
+            is BoardContract.Event.OnAcceptHelp -> {
+                val index = viewState.value.cards.indexOfFirst { it.id == event.id }
+                if (index != -1) {
+                    pendingAcceptId = event.id
+                    val card = viewState.value.cards[index]
+                    val oldStatus = card.status ?: HelpBoardType.PENDING.type
+
+                    // 낙관적 업데이트: 기존 요청 카드를 제거하고, 수락 완료 카드를 해당 위치에 추가 (교체)
+                    val acceptedCard = card.copy(
+                        status = HelpBoardType.ACCEPTED.type,
+                        acceptedBy = BoardMember(
+                            uid = "",
+                            name = viewState.value.myName,
+                            profileImage = viewState.value.myProfileImage
+                        )
+                    )
+                    val updatedCards = viewState.value.cards.toMutableList().apply {
+                        removeAt(index)
+                        add(index, acceptedCard)
+                    }
+                    setState { copy(cards = updatedCards) }
+                    setEffect { ShowAcceptSnackBar(event.id, oldStatus) }
+                }
+            }
+
+            is BoardContract.Event.OnUndoAccept -> {
+                pendingAcceptId = null
+                val index = viewState.value.cards.indexOfFirst { it.id == event.id }
+                if (index != -1) {
+                    val card = viewState.value.cards[index]
+                    val updatedCard = card.copy(status = event.oldStatus, acceptedBy = null)
+                    val updatedCards = viewState.value.cards.toMutableList().apply {
+                        set(index, updatedCard)
+                    }
+                    setState { copy(cards = updatedCards) }
+                }
+            }
+
+            is BoardContract.Event.OnAcceptConfirm -> {
+                pendingAcceptId = null
+                acceptHelp(event.id)
+            }
+
+            BoardContract.Event.OnDispose -> {
+                pendingDeleteId?.let { deleteHelp(it) }
+                pendingAcceptId?.let { acceptHelp(it) }
             }
         }
     }
@@ -69,6 +128,7 @@ class BoardViewModel(
                 setState {
                     copy(
                         myName = myInfoResult.data.name,
+                        myProfileImage = myInfoResult.data.profileImage,
                         cards = result.data.sortedByDescending { it.createdAt }
                     )
                 }
@@ -81,6 +141,12 @@ class BoardViewModel(
         viewModelScope.launch {
             deleteHelpUseCase(id)
             // 에러 처리 필요시 여기에 추가
+        }
+    }
+
+    private fun acceptHelp(id: Int) {
+        viewModelScope.launch {
+            acceptHelpUseCase(id)
         }
     }
 }

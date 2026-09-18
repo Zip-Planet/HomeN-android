@@ -14,13 +14,18 @@ class BoardContract {
         data class OnDeleteHelpClick(val id: Int): Event()
         data class OnUndoDelete(val card: BoardCard, val index: Int): Event()
         data class OnDeleteConfirm(val id: Int): Event()
+        data class OnAcceptHelp(val id: Int): Event()
+        data class OnUndoAccept(val id: Int, val oldStatus: String): Event()
+        data class OnAcceptConfirm(val id: Int): Event()
+        data object OnDispose: Event()
     }
 
     data class State(
         val mainIsLoading: Boolean = false,
         val isLoading: Boolean = false,
         val cards: List<BoardCard> = emptyList(),
-        val myName: String = ""
+        val myName: String = "",
+        val myProfileImage: Int? = null
     ): ViewState
 
     sealed class Effect: ViewSideEffect {
@@ -28,5 +33,6 @@ class BoardContract {
         data object NavigateToAssignment: Effect()
         data object NavigateToHelp: Effect()
         data class ShowDeleteSnackBar(val card: BoardCard, val index: Int): Effect()
+        data class ShowAcceptSnackBar(val id: Int, val oldStatus: String): Effect()
     }
 }

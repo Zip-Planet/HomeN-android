@@ -14,21 +14,25 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.devndev.homen.OsType
 import com.devndev.homen.core.domain.model.board.BoardPayload
 import com.devndev.homen.core.domain.model.board.BoardType
 import com.devndev.homen.core.domain.model.board.BotType
 import com.devndev.homen.core.domain.model.board.HelpBoardType
+import com.devndev.homen.getPlatform
 import com.devndev.homen.ui.component.HomeNScreen
 import com.devndev.homen.ui.component.NotificationTopBar
 import com.devndev.homen.ui.main.board.component.BoardDateSeparator
 import com.devndev.homen.ui.main.board.component.BoardFloatingActionButton
 import com.devndev.homen.ui.main.board.component.DivisionPlanMessage
+import com.devndev.homen.ui.main.board.component.HelpAcceptMessage
 import com.devndev.homen.ui.main.board.component.HelpMessage
 import com.devndev.homen.ui.main.board.component.RewardMessage
 import com.devndev.homen.ui.main.board.main.viewmodel.BoardContract
@@ -37,6 +41,7 @@ import com.devndev.homen.ui.theme.HomeNTheme
 import com.devndev.homen.util.DateUtil
 import homen.composeapp.generated.resources.Res
 import homen.composeapp.generated.resources.board
+import homen.composeapp.generated.resources.board_help_accept_snackbar_msg
 import homen.composeapp.generated.resources.board_help_delete_snackbar_msg
 import homen.composeapp.generated.resources.snackbar_cancel
 import kotlinx.coroutines.flow.collectLatest
@@ -55,6 +60,7 @@ fun BoardScreen(
     val snackbarHostState = remember { SnackbarHostState() }
 
     val deleteMsg = stringResource(Res.string.board_help_delete_snackbar_msg)
+    val acceptMsg = stringResource(Res.string.board_help_accept_snackbar_msg)
     val cancelMsg = stringResource(Res.string.snackbar_cancel)
     LaunchedEffect(viewModel.effect) {
         viewModel.effect.collectLatest { effect ->
@@ -91,12 +97,35 @@ fun BoardScreen(
                         }
                     }
                 }
+
+                is BoardContract.Effect.ShowAcceptSnackBar -> {
+                    val result = snackbarHostState.showSnackbar(
+                        message = acceptMsg,
+                        actionLabel = cancelMsg,
+                        duration = SnackbarDuration.Short
+                    )
+                    when (result) {
+                        SnackbarResult.ActionPerformed -> {
+                            viewModel.setEvent(BoardContract.Event.OnUndoAccept(effect.id, effect.oldStatus))
+                        }
+
+                        SnackbarResult.Dismissed -> {
+                            viewModel.setEvent(BoardContract.Event.OnAcceptConfirm(effect.id))
+                        }
+                    }
+                }
             }
         }
     }
 
     LaunchedEffect(Unit) {
         viewModel.setEvent(BoardContract.Event.OnInit)
+    }
+
+    DisposableEffect(Unit) {
+        onDispose {
+            viewModel.setEvent(BoardContract.Event.OnDispose)
+        }
     }
 
     HomeNScreen(
@@ -109,9 +138,11 @@ fun BoardScreen(
         isLoading = uiState.isLoading,
         mainIsLoading = uiState.mainIsLoading,
         snackbarHost = {
+            val snackbarBottomPadding = if (getPlatform() == OsType.IOS) 34 else 94
+
             SnackbarHost(
                 hostState = snackbarHostState,
-                modifier = Modifier.padding(bottom = 34.dp)
+                modifier = Modifier.padding(bottom = snackbarBottomPadding.dp)
             )
         },
     ) {
@@ -176,6 +207,8 @@ fun BoardScreen(
                                             onClick = {
                                                 if (isMine) {
                                                     viewModel.setEvent(BoardContract.Event.OnDeleteHelpClick(card.id))
+                                                } else {
+                                                    viewModel.setEvent(BoardContract.Event.OnAcceptHelp(card.id))
                                                 }
                                             }
                                         )
@@ -184,7 +217,12 @@ fun BoardScreen(
                                 }
 
                                 HelpBoardType.ACCEPTED.type -> {
-
+                                    HelpAcceptMessage(
+                                        requester = card.requester!!,
+                                        acceptedBy = card.acceptedBy!!,
+                                        date = card.createdAt,
+                                        item = card.item!!
+                                    )
                                 }
 
                                 HelpBoardType.EXPIRED.type -> {

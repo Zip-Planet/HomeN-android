@@ -6,6 +6,7 @@ import com.devndev.homen.core.domain.usecase.auth.KakaoLoginToServerUseCase
 import com.devndev.homen.core.domain.usecase.auth.LogoutUseCase
 import com.devndev.homen.core.domain.usecase.auth.SaveTokensUseCase
 import com.devndev.homen.core.domain.usecase.auth.SocialLoginUseCase
+import com.devndev.homen.core.domain.usecase.board.AcceptHelpUseCase
 import com.devndev.homen.core.domain.usecase.board.CreateHelpUseCase
 import com.devndev.homen.core.domain.usecase.board.DeleteHelpUseCase
 import com.devndev.homen.core.domain.usecase.board.GetBoardUseCase
@@ -82,6 +83,7 @@ val useCaseModule = module {
     factoryOf(::GetBoardUseCase)
     factoryOf(::CreateHelpUseCase)
     factoryOf(::DeleteHelpUseCase)
+    factoryOf(::AcceptHelpUseCase)
 
     // reward
     factoryOf(::GetRewardsUseCase)

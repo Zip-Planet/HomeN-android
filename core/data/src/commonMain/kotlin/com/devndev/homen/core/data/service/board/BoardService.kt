@@ -13,4 +13,6 @@ interface BoardService {
     suspend fun createHelp(itemId: Int, message: String?)
 
     suspend fun deleteHelp(helpRequestId: Int)
+
+    suspend fun acceptHelp(helpRequestId: Int)
 }

@@ -28,7 +28,10 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.devndev.homen.core.domain.model.board.BoardChoreItem
+import com.devndev.homen.core.domain.model.board.BoardMember
 import com.devndev.homen.core.domain.model.chore.ChoreDifficulty
+import com.devndev.homen.core.domain.model.home.AvatarType
+import com.devndev.homen.ui.common.resource
 import com.devndev.homen.ui.component.Dot
 import com.devndev.homen.ui.component.HomeNButton
 import com.devndev.homen.ui.theme.BackgroundGray
@@ -146,21 +149,31 @@ fun HelpMessage(
 }
 
 @Composable
-fun HelpAcceptMessage() {
-    val title = stringResource(Res.string.board_request_help_accept_title).replace("s", "왕만두")
+fun HelpAcceptMessage(
+    requester: BoardMember,
+    acceptedBy: BoardMember,
+    date: String,
+    item: BoardChoreItem
+) {
+    val title = stringResource(Res.string.board_request_help_accept_title).replace("s", acceptedBy.name)
     val highlightText = stringResource(Res.string.board_request_help_accept_highlight_text)
 
     val annotatedTitle = buildAnnotatedString {
         val startIndex = title.indexOf(highlightText)
 
-        append(title.take(startIndex))
-
-        withStyle(style = SpanStyle(color = OrangeFF8431)) {
-            append(highlightText)
+        if (startIndex != -1) {
+            append(title.take(startIndex))
+            withStyle(style = SpanStyle(color = OrangeFF8431)) {
+                append(highlightText)
+            }
+            append(title.substring(startIndex + highlightText.length))
+        } else {
+            append(title)
         }
-
-        append(title.substring(startIndex + highlightText.length))
     }
+
+    val requesterAvatar = AvatarType.fromId(requester.profileImage ?: 1).resource
+    val acceptedByAvatar = AvatarType.fromId(acceptedBy.profileImage ?: 1).resource
 
     Column(
         modifier = Modifier
@@ -178,7 +191,7 @@ fun HelpAcceptMessage() {
 
         Spacer(modifier = Modifier.height(13.dp))
 
-        DateSection(date = "2026년 1월 5주차")
+        DateSection(date = DateUtil.formatWeekOfMonth(date))
 
         Spacer(modifier = Modifier.height(8.dp))
 
@@ -187,13 +200,13 @@ fun HelpAcceptMessage() {
             horizontalArrangement = Arrangement.spacedBy(3.dp)
         ) {
             Image(
-                painter = painterResource(Res.drawable.farmer_avatar),
+                painter = painterResource(requesterAvatar),
                 contentDescription = null,
                 modifier = Modifier.size(16.dp)
             )
 
             Text(
-                text = "투다리김치우동",
+                text = requester.name,
                 style = HomeNTheme.typography.suitRegular,
                 fontSize = 14.sp,
                 color = Color.Black
@@ -208,24 +221,26 @@ fun HelpAcceptMessage() {
             )
 
             Image(
-                painter = painterResource(Res.drawable.chef_avatar),
+                painter = painterResource(acceptedByAvatar),
                 contentDescription = null,
                 modifier = Modifier.size(16.dp)
             )
 
             Text(
-                text = "왕만두",
+                text = acceptedBy.name,
                 style = HomeNTheme.typography.suitRegular,
                 fontSize = 14.sp,
                 color = Color.Black
             )
         }
 
+        Spacer(modifier = Modifier.height(8.dp))
+
         ChoreExchangeCard(
-            title = "욕실청소",
-            day = "토",
-            difficulty = "중상",
-            points = "160P"
+            title = item.choreName,
+            day = item.weekdayLabel,
+            difficulty = ChoreDifficulty.fromId(item.difficulty).label,
+            points = "${item.point}P"
         )
     }
 }
@@ -402,7 +417,21 @@ fun HelpMessageMinePreview() {
 @Preview
 @Composable
 fun HelpAcceptMessagePreview() {
-    HelpAcceptMessage()
+    HelpAcceptMessage(
+        requester = BoardMember(uid = "1", name = "투다리김치우동", profileImage = 6),
+        acceptedBy = BoardMember(uid = "2", name = "왕만두", profileImage = 1),
+        date = "2026-01-01",
+        item = BoardChoreItem(
+            id = 1,
+            choreName = "욕실청소",
+            weekday = 5,
+            weekdayLabel = "토",
+            difficulty = 4,
+            point = 160,
+            date = "2026-01-01",
+            assignee = null
+        )
+    )
 }
 
 @Preview

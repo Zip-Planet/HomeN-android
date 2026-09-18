@@ -7,4 +7,5 @@ interface BoardRepository {
     suspend fun getBoard(): ApiResult<List<BoardCard>>
     suspend fun createHelp(itemId: Int, message: String?): ApiResult<Unit>
     suspend fun deleteHelp(helpRequestId: Int): ApiResult<Unit>
+    suspend fun acceptHelp(helpRequestId: Int): ApiResult<Unit>
 }

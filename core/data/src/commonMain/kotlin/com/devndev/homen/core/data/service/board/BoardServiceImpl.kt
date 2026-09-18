@@ -64,4 +64,18 @@ class BoardServiceImpl(
             }
         }
     }
+
+    override suspend fun acceptHelp(helpRequestId: Int) {
+        val accessToken = tokenRepository.getAccessToken().first()
+        client.post {
+            url {
+                takeFrom(Config.BASE_URL)
+                encodedPath += "${BoardService.HELP}$helpRequestId/accept/"
+            }
+            contentType(ContentType.Application.Json)
+            accessToken?.let {
+                header(HttpHeaders.Authorization, "Bearer $it")
+            }
+        }
+    }
 }
