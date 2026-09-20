@@ -32,6 +32,7 @@ import com.devndev.homen.ui.component.HomeNScreen
 import com.devndev.homen.ui.component.NotificationTopBar
 import com.devndev.homen.ui.main.board.component.BoardDateSeparator
 import com.devndev.homen.ui.main.board.component.BoardFloatingActionButton
+import com.devndev.homen.ui.main.board.component.BoardHeader
 import com.devndev.homen.ui.main.board.component.DivisionPlanMessage
 import com.devndev.homen.ui.main.board.component.ExchangeAcceptMessage
 import com.devndev.homen.ui.main.board.component.ExchangeEndMessage
@@ -234,6 +235,11 @@ fun BoardScreen(
                 }
 
                 itemsIndexed(uiState.cards) { index, card ->
+                    val isMine = uiState.myName == card.requester?.name
+                    val currentWeek = DateUtil.formatWeekOfMonth(card.createdAt)
+                    val nextCard = uiState.cards.getOrNull(index + 1)
+                    val nextWeek = nextCard?.let { DateUtil.formatWeekOfMonth(it.createdAt) }
+
                     // 카드 표시
                     when (card.type) {
                         BoardType.BOT.type -> {
@@ -263,17 +269,16 @@ fun BoardScreen(
                         }
 
                         BoardType.REQUEST_HELP.type -> {
-                            when (card.status) {
-                                HelpBoardType.PENDING.type -> {
-                                    val isMine = uiState.myName == card.requester?.name
-                                    Box(
-                                        modifier = Modifier.fillMaxWidth(),
-                                        contentAlignment = if (isMine) Alignment.CenterEnd else Alignment.CenterStart
-                                    ) {
+                            Box(
+                                modifier = Modifier.fillMaxWidth(),
+                                contentAlignment = if (isMine) Alignment.CenterEnd else Alignment.CenterStart
+                            ) {
+                                when (card.status) {
+                                    HelpBoardType.PENDING.type -> {
                                         HelpMessage(
                                             isMine = isMine,
                                             name = card.requester?.name ?: "",
-                                            description = card.message?: "",
+                                            description = card.message ?: "",
                                             date = card.createdAt,
                                             item = card.item!!,
                                             onClick = {
@@ -286,27 +291,25 @@ fun BoardScreen(
                                         )
                                     }
 
-                                }
+                                    HelpBoardType.ACCEPTED.type -> {
+                                        HelpAcceptMessage(
+                                            requester = card.requester!!,
+                                            acceptedBy = card.acceptedBy!!,
+                                            date = card.createdAt,
+                                            item = card.item!!
+                                        )
+                                    }
 
-                                HelpBoardType.ACCEPTED.type -> {
-                                    HelpAcceptMessage(
-                                        requester = card.requester!!,
-                                        acceptedBy = card.acceptedBy!!,
-                                        date = card.createdAt,
-                                        item = card.item!!
-                                    )
-                                }
-
-                                HelpBoardType.EXPIRED.type -> {
-                                    HelpExpireMessage(
-                                        name = card.requester?.name ?: "",
-                                    )
+                                    HelpBoardType.EXPIRED.type -> {
+                                        HelpExpireMessage(
+                                            name = card.requester?.name ?: "",
+                                        )
+                                    }
                                 }
                             }
                         }
 
                         BoardType.REQUEST_EXCHANGE.type -> {
-                            val isMine = uiState.myName == card.requester?.name
                             Box(
                                 modifier = Modifier.fillMaxWidth(),
                                 contentAlignment = if (isMine) Alignment.CenterEnd else Alignment.CenterStart
@@ -338,7 +341,7 @@ fun BoardScreen(
                                     ExchangeBoardType.ACCEPTED.type -> {
                                         ExchangeAcceptMessage(
                                             requester = card.requester!!,
-                                            acceptedBy = card.respondedBy!!, // Exchange uses respondedBy? or acceptedBy?
+                                            acceptedBy = card.respondedBy!!,
                                             date = card.createdAt,
                                             requesterItem = card.requesterItem!!,
                                             targetItem = card.targetItem!!,
@@ -364,11 +367,22 @@ fun BoardScreen(
                         }
                     }
 
-                    // 주차 구분선 표시 (위로 쌓이므로 현재 카드 위에 표시됨)
-                    val currentWeek = DateUtil.formatWeekOfMonth(card.createdAt)
-                    val nextCard = uiState.cards.getOrNull(index + 1)
-                    val nextWeek = nextCard?.let { DateUtil.formatWeekOfMonth(it.createdAt) }
+                    // 보드 헤더 표시 로직
+                    if (!isMine) {
+                        val isTypeChanged = nextCard?.type != card.type
+                        val isWeekChanged = currentWeek != nextWeek
+                        val isNextMine = nextCard?.let { uiState.myName == it.requester?.name } ?: false
 
+                        if (nextCard == null || isTypeChanged || isWeekChanged || isNextMine) {
+                            val boardType = BoardType.entries.find { it.type == card.type }
+                            if (boardType != null) {
+                                Spacer(modifier = Modifier.height(8.dp))
+                                BoardHeader(boardType = boardType)
+                            }
+                        }
+                    }
+
+                    // 주차 구분선 표시 (위로 쌓이므로 현재 카드 위에 표시됨)
                     if (currentWeek != nextWeek) {
                         BoardDateSeparator(date = currentWeek)
                     } else {

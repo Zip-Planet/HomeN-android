@@ -439,7 +439,9 @@ fun HelpAcceptMessagePreview() {
 @Preview
 @Composable
 fun HelpExpireMessagePreview() {
-    HelpExpireMessage()
+    HelpExpireMessage(
+        "투다리 김치우동"
+    )
 }
 
 
