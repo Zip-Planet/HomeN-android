@@ -26,6 +26,12 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.devndev.homen.core.domain.model.board.BoardChoreItem
+import com.devndev.homen.core.domain.model.board.BoardMember
+import com.devndev.homen.core.domain.model.chore.ChoreDifficulty
+import com.devndev.homen.core.domain.model.home.AvatarType
+import com.devndev.homen.ui.common.resource
+import com.devndev.homen.ui.component.Dot
 import com.devndev.homen.ui.component.HomeN34Button
 import com.devndev.homen.ui.component.HomeNButton
 import com.devndev.homen.ui.theme.BlueCAEAFC
@@ -33,6 +39,7 @@ import com.devndev.homen.ui.theme.BottomGray
 import com.devndev.homen.ui.theme.ButtonGray
 import com.devndev.homen.ui.theme.Green28A049
 import com.devndev.homen.ui.theme.HomeNTheme
+import com.devndev.homen.util.DateUtil
 import homen.composeapp.generated.resources.Res
 import homen.composeapp.generated.resources.board_request_exchange_accept_btn
 import homen.composeapp.generated.resources.board_request_exchange_accept_highlight_text
@@ -57,29 +64,37 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun ExchangeMessage(
-    isMine: Boolean
+    isMine: Boolean,
+    name: String,
+    description: String,
+    date: String,
+    requesterItem: BoardChoreItem,
+    targetName: String,
+    targetItem: BoardChoreItem,
+    onCancelClick: () -> Unit = {},
+    onAcceptClick: () -> Unit = {},
+    onRejectClick: () -> Unit = {}
 ) {
     val backgroundColor = if (isMine) BlueCAEAFC else Color.White
-    val title = stringResource(Res.string.board_request_exchange_title).replace("s", "투다리김치우동")
+    val title = stringResource(Res.string.board_request_exchange_title).replace("s", name)
     val highlightText = stringResource(Res.string.board_request_exchange_highlight_text)
 
     val annotatedTitle = buildAnnotatedString {
         val startIndex = title.indexOf(highlightText)
         if (!isMine && startIndex != -1) {
-            // "도움 요청" 앞부분 추가
             append(title.take(startIndex))
-
-            // "도움 요청" 부분 색상 적용
             withStyle(style = SpanStyle(color = Green28A049)) {
                 append(highlightText)
             }
-
-            // "도움 요청" 뒷부분 추가
             append(title.substring(startIndex + highlightText.length))
         } else {
             append(title)
         }
     }
+
+    val requesterAvatar = AvatarType.fromId(requesterItem.assignee?.profileImage ?: 1).resource
+    val targetAvatar = AvatarType.fromId(targetItem.assignee?.profileImage ?: 1).resource
+
     Column(
         modifier = Modifier
             .width(IntrinsicSize.Max)
@@ -94,27 +109,29 @@ fun ExchangeMessage(
             color = Color.Black,
         )
 
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(2.5.dp)
-        ) {
-            Icon(
-                painter = painterResource(Res.drawable.chat_icon),
-                contentDescription = null,
-                modifier = Modifier.size(14.dp)
-            )
+        if (description.isNotEmpty()) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(2.5.dp)
+            ) {
+                Icon(
+                    painter = painterResource(Res.drawable.chat_icon),
+                    contentDescription = null,
+                    modifier = Modifier.size(14.dp)
+                )
 
-            Text(
-                text = "토요일 출장이라 대신해줄 사람~",
-                style = HomeNTheme.typography.suitMedium,
-                fontSize = 12.sp,
-                color = Color.Black
-            )
+                Text(
+                    text = description,
+                    style = HomeNTheme.typography.suitMedium,
+                    fontSize = 12.sp,
+                    color = Color.Black
+                )
+            }
         }
 
         Spacer(modifier = Modifier.height(13.dp))
 
-        DateSection(date = "2026년 1월 5주차")
+        DateSection(date = DateUtil.formatWeekOfMonth(date))
 
         Spacer(modifier = Modifier.height(8.dp))
 
@@ -123,13 +140,13 @@ fun ExchangeMessage(
             horizontalArrangement = Arrangement.spacedBy(3.dp)
         ) {
             Image(
-                painter = painterResource(Res.drawable.farmer_avatar),
+                painter = painterResource(requesterAvatar),
                 contentDescription = null,
                 modifier = Modifier.size(16.dp)
             )
 
             Text(
-                text = "투다리김치우동",
+                text = name,
                 style = HomeNTheme.typography.suitRegular,
                 fontSize = 14.sp,
                 color = Color.Black
@@ -139,10 +156,10 @@ fun ExchangeMessage(
         Spacer(modifier = Modifier.height(8.dp))
 
         ChoreExchangeCard(
-            title = "욕실청소",
-            day = "토",
-            difficulty = "중상",
-            points = "160P"
+            title = requesterItem.choreName,
+            day = requesterItem.weekdayLabel,
+            difficulty = ChoreDifficulty.fromId(requesterItem.difficulty).label,
+            points = "${requesterItem.point}P"
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -174,13 +191,13 @@ fun ExchangeMessage(
             horizontalArrangement = Arrangement.spacedBy(3.dp)
         ) {
             Image(
-                painter = painterResource(Res.drawable.chef_avatar),
+                painter = painterResource(targetAvatar),
                 contentDescription = null,
                 modifier = Modifier.size(16.dp)
             )
 
             Text(
-                text = "왕만두",
+                text = targetName,
                 style = HomeNTheme.typography.suitRegular,
                 fontSize = 14.sp,
                 color = Color.Black
@@ -191,17 +208,24 @@ fun ExchangeMessage(
 
         if (isMine) {
             ChoreExchangeCard(
-                title = "욕실청소",
-                day = "토",
-                difficulty = "중상",
-                points = "160P"
+                title = targetItem.choreName,
+                day = targetItem.weekdayLabel,
+                difficulty = ChoreDifficulty.fromId(targetItem.difficulty).label,
+                points = "${targetItem.point}P"
+            )
+
+            Spacer(modifier = Modifier.height(13.dp))
+            HomeNButton(
+                text = stringResource(Res.string.board_request_help_cancel_btn),
+                onClick = onCancelClick,
+                color = Color.Black,
             )
         } else {
             ChoreExchangeCard(
-                title = "욕실청소",
-                day = "토",
-                difficulty = "중상",
-                points = "160P"
+                title = targetItem.choreName,
+                day = targetItem.weekdayLabel,
+                difficulty = ChoreDifficulty.fromId(targetItem.difficulty).label,
+                points = "${targetItem.point}P"
             ) {
                 Spacer(modifier = Modifier.height(16.dp))
                 Row(
@@ -211,49 +235,51 @@ fun ExchangeMessage(
                     HomeN34Button(
                         modifier = Modifier.weight(0.6f),
                         text = stringResource(Res.string.board_request_exchange_next_btn),
-                        onClick = {},
+                        onClick = onRejectClick,
                         color = ButtonGray
                     )
 
                     HomeN34Button(
                         modifier = Modifier.weight(0.4f),
                         text = stringResource(Res.string.board_request_exchange_accept_btn),
-                        onClick = {},
+                        onClick = onAcceptClick,
                         color = Green28A049,
                         textColor = Color.White
                     )
                 }
             }
         }
-
-        if (isMine) {
-            Spacer(modifier = Modifier.height(13.dp))
-            HomeNButton(
-                text = stringResource(Res.string.board_request_help_cancel_btn),
-                onClick = {},
-                color = Color.Black,
-            )
-        }
     }
 }
 
 @Composable
 fun ExchangeAcceptMessage(
+    requester: BoardMember,
+    acceptedBy: BoardMember,
+    date: String,
+    requesterItem: BoardChoreItem,
+    targetItem: BoardChoreItem,
+    description: String = ""
 ) {
-    val title = stringResource(Res.string.board_request_exchange_accept_title).replace("s", "투다리김치우동")
+    val title = stringResource(Res.string.board_request_exchange_accept_title).replace("s", acceptedBy.name)
     val highlightText = stringResource(Res.string.board_request_exchange_accept_highlight_text)
 
     val annotatedTitle = buildAnnotatedString {
         val startIndex = title.indexOf(highlightText)
 
-        append(title.take(startIndex))
-
-        withStyle(style = SpanStyle(color = Green28A049)) {
-            append(highlightText)
+        if (startIndex != -1) {
+            append(title.take(startIndex))
+            withStyle(style = SpanStyle(color = Green28A049)) {
+                append(highlightText)
+            }
+            append(title.substring(startIndex + highlightText.length))
+        } else {
+            append(title)
         }
-
-        append(title.substring(startIndex + highlightText.length))
     }
+
+    val requesterAvatar = AvatarType.fromId(requester.profileImage ?: 1).resource
+    val targetAvatar = AvatarType.fromId(acceptedBy.profileImage ?: 1).resource
 
     Column(
         modifier = Modifier
@@ -269,27 +295,29 @@ fun ExchangeAcceptMessage(
             color = Color.Black,
         )
 
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(2.5.dp)
-        ) {
-            Icon(
-                painter = painterResource(Res.drawable.chat_icon),
-                contentDescription = null,
-                modifier = Modifier.size(14.dp)
-            )
+        if (description.isNotEmpty()) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(2.5.dp)
+            ) {
+                Icon(
+                    painter = painterResource(Res.drawable.chat_icon),
+                    contentDescription = null,
+                    modifier = Modifier.size(14.dp)
+                )
 
-            Text(
-                text = "토요일 출장이라 대신해줄 사람~",
-                style = HomeNTheme.typography.suitMedium,
-                fontSize = 12.sp,
-                color = Color.Black
-            )
+                Text(
+                    text = description,
+                    style = HomeNTheme.typography.suitMedium,
+                    fontSize = 12.sp,
+                    color = Color.Black
+                )
+            }
         }
 
         Spacer(modifier = Modifier.height(13.dp))
 
-        DateSection(date = "2026년 1월 5주차")
+        DateSection(date = DateUtil.formatWeekOfMonth(date))
 
         Spacer(modifier = Modifier.height(8.dp))
 
@@ -298,13 +326,13 @@ fun ExchangeAcceptMessage(
             horizontalArrangement = Arrangement.spacedBy(3.dp)
         ) {
             Image(
-                painter = painterResource(Res.drawable.farmer_avatar),
+                painter = painterResource(requesterAvatar),
                 contentDescription = null,
                 modifier = Modifier.size(16.dp)
             )
 
             Text(
-                text = "투다리김치우동",
+                text = requester.name,
                 style = HomeNTheme.typography.suitRegular,
                 fontSize = 14.sp,
                 color = Color.Black
@@ -314,10 +342,10 @@ fun ExchangeAcceptMessage(
         Spacer(modifier = Modifier.height(8.dp))
 
         ChoreExchangeCard(
-            title = "욕실청소",
-            day = "토",
-            difficulty = "중상",
-            points = "160P"
+            title = targetItem.choreName,
+            day = targetItem.weekdayLabel,
+            difficulty = ChoreDifficulty.fromId(targetItem.difficulty).label,
+            points = "${targetItem.point}P"
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -349,13 +377,13 @@ fun ExchangeAcceptMessage(
             horizontalArrangement = Arrangement.spacedBy(3.dp)
         ) {
             Image(
-                painter = painterResource(Res.drawable.chef_avatar),
+                painter = painterResource(targetAvatar),
                 contentDescription = null,
                 modifier = Modifier.size(16.dp)
             )
 
             Text(
-                text = "왕만두",
+                text = acceptedBy.name,
                 style = HomeNTheme.typography.suitRegular,
                 fontSize = 14.sp,
                 color = Color.Black
@@ -365,23 +393,24 @@ fun ExchangeAcceptMessage(
         Spacer(modifier = Modifier.height(8.dp))
 
         ChoreExchangeCard(
-            title = "욕실청소",
-            day = "토",
-            difficulty = "중상",
-            points = "160P"
+            title = requesterItem.choreName,
+            day = requesterItem.weekdayLabel,
+            difficulty = ChoreDifficulty.fromId(requesterItem.difficulty).label,
+            points = "${requesterItem.point}P"
         )
     }
 }
 
 @Composable
 fun ExchangeEndMessage(
+    name: String,
     isReject: Boolean
 ) {
 
     val title = if (isReject) {
-        stringResource(Res.string.board_request_exchange_reject_title).replace("s", "투다리김치우동")
+        stringResource(Res.string.board_request_exchange_reject_title).replace("s", name)
     } else {
-        stringResource(Res.string.board_request_exchange_expire_title).replace("s", "투다리김치우동")
+        stringResource(Res.string.board_request_exchange_expire_title).replace("s", name)
     }
     val highlightText = if (isReject) {
         stringResource(Res.string.board_request_exchange_reject_highlight_text)
@@ -398,13 +427,15 @@ fun ExchangeEndMessage(
     val annotatedTitle = buildAnnotatedString {
         val startIndex = title.indexOf(highlightText)
 
-        append(title.take(startIndex))
-
-        withStyle(style = SpanStyle(color = Green28A049)) {
-            append(highlightText)
+        if (startIndex != -1) {
+            append(title.take(startIndex))
+            withStyle(style = SpanStyle(color = Green28A049)) {
+                append(highlightText)
+            }
+            append(title.substring(startIndex + highlightText.length))
+        } else {
+            append(title)
         }
-
-        append(title.substring(startIndex + highlightText.length))
     }
     Column(
         modifier = Modifier
@@ -433,29 +464,105 @@ fun ExchangeEndMessage(
 @Preview
 @Composable
 fun ExchangeMessagePreview() {
-    ExchangeMessage(false)
+    ExchangeMessage(
+        isMine = false,
+        name = "투다리김치우동",
+        description = "토요일 출장이라 대신해줄 사람~",
+        date = "2026-01-01",
+        requesterItem = BoardChoreItem(
+            id = 1,
+            choreName = "욕실청소",
+            weekday = 5,
+            weekdayLabel = "토",
+            difficulty = 4,
+            point = 160,
+            date = "2026-01-01",
+            assignee = BoardMember(uid = "1", name = "투다리김치우동", profileImage = 6)
+        ),
+        targetName = "왕만두",
+        targetItem = BoardChoreItem(
+            id = 2,
+            choreName = "주방 마감",
+            weekday = 5,
+            weekdayLabel = "토",
+            difficulty = 3,
+            point = 100,
+            date = "2026-01-01",
+            assignee = BoardMember(uid = "2", name = "왕만두", profileImage = 1)
+        )
+    )
 }
 
 @Preview
 @Composable
 fun ExchangeMessageMinePreview() {
-    ExchangeMessage(true)
+    ExchangeMessage(
+        isMine = true,
+        name = "히히",
+        description = "바꾸자!",
+        date = "2026-01-01",
+        requesterItem = BoardChoreItem(
+            id = 1,
+            choreName = "욕실 배수구 머리카락 치우기",
+            weekday = 2,
+            weekdayLabel = "수",
+            difficulty = 3,
+            point = 120,
+            date = "2026-09-16",
+            assignee = BoardMember(uid = "1", name = "히히", profileImage = 1)
+        ),
+        targetName = "하이",
+        targetItem = BoardChoreItem(
+            id = 2,
+            choreName = "새러운집안일",
+            weekday = 0,
+            weekdayLabel = "월",
+            difficulty = 1,
+            point = 40,
+            date = "2026-09-14",
+            assignee = BoardMember(uid = "2", name = "하이", profileImage = 2)
+        )
+    )
 }
 
 @Preview
 @Composable
 fun ExchangeAcceptMessagePreview() {
-    ExchangeAcceptMessage()
+    ExchangeAcceptMessage(
+        requester = BoardMember(uid = "1", name = "투다리김치우동", profileImage = 6),
+        acceptedBy = BoardMember(uid = "2", name = "왕만두", profileImage = 1),
+        date = "2026-01-01",
+        requesterItem = BoardChoreItem(
+            id = 1,
+            choreName = "욕실청소",
+            weekday = 5,
+            weekdayLabel = "토",
+            difficulty = 4,
+            point = 160,
+            date = "2026-01-01",
+            assignee = null
+        ),
+        targetItem = BoardChoreItem(
+            id = 2,
+            choreName = "주방 마감",
+            weekday = 5,
+            weekdayLabel = "토",
+            difficulty = 3,
+            point = 100,
+            date = "2026-01-01",
+            assignee = null
+        )
+    )
 }
 
 @Preview
 @Composable
 fun ExchangeExpireMessagePreview() {
-    ExchangeEndMessage(false)
+    ExchangeEndMessage(name = "투다리김치우동", isReject = false)
 }
 
 @Preview
 @Composable
 fun ExchangeRejectMessagePreview() {
-    ExchangeEndMessage(true)
+    ExchangeEndMessage(name = "투다리김치우동", isReject = true)
 }

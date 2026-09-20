@@ -5,5 +5,8 @@ import kotlinx.serialization.Serializable
 @Serializable
 sealed interface BoardRoute {
     @Serializable
-    data object BoardHelp: BoardRoute
+    data object BoardHelp : BoardRoute
+
+    @Serializable
+    data object BoardExchange : BoardRoute
 }

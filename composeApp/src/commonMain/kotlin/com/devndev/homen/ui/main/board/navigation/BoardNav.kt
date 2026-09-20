@@ -12,6 +12,7 @@ import com.devndev.homen.ui.component.NavTransitions.enterTransition
 import com.devndev.homen.ui.component.NavTransitions.exitTransition
 import com.devndev.homen.ui.component.NavTransitions.popEnterTransition
 import com.devndev.homen.ui.component.NavTransitions.popExitTransition
+import com.devndev.homen.ui.main.board.exchange.BoardExchangeScreen
 import com.devndev.homen.ui.main.board.help.BoardHelpScreen
 import com.devndev.homen.ui.main.board.main.BoardScreen
 import com.devndev.homen.ui.main.navigation.BottomNavItem
@@ -46,17 +47,33 @@ fun NavGraphBuilder.boardNav(
             },
             onNavToHelp = {
                 navController.navigate(BoardRoute.BoardHelp)
+            },
+            onNavToExchange = {
+                navController.navigate(BoardRoute.BoardExchange)
             }
         )
     }
 
     composable<BoardRoute.BoardHelp>(
-        enterTransition = NavTransitions.enterTransition,
-        exitTransition = NavTransitions.exitTransition,
-        popEnterTransition = NavTransitions.popEnterTransition,
-        popExitTransition = NavTransitions.popExitTransition
+        enterTransition = enterTransition,
+        exitTransition = exitTransition,
+        popEnterTransition = popEnterTransition,
+        popExitTransition = popExitTransition
     ) {
         BoardHelpScreen(
+            onNavBack = {
+                navController.popBackStack()
+            }
+        )
+    }
+
+    composable<BoardRoute.BoardExchange>(
+        enterTransition = enterTransition,
+        exitTransition = exitTransition,
+        popEnterTransition = popEnterTransition,
+        popExitTransition = popExitTransition
+    ) {
+        BoardExchangeScreen(
             onNavBack = {
                 navController.popBackStack()
             }

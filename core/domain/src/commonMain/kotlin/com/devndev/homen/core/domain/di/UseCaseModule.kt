@@ -6,10 +6,14 @@ import com.devndev.homen.core.domain.usecase.auth.KakaoLoginToServerUseCase
 import com.devndev.homen.core.domain.usecase.auth.LogoutUseCase
 import com.devndev.homen.core.domain.usecase.auth.SaveTokensUseCase
 import com.devndev.homen.core.domain.usecase.auth.SocialLoginUseCase
+import com.devndev.homen.core.domain.usecase.board.AcceptExchangeUseCase
 import com.devndev.homen.core.domain.usecase.board.AcceptHelpUseCase
+import com.devndev.homen.core.domain.usecase.board.CreateExchangeUseCase
 import com.devndev.homen.core.domain.usecase.board.CreateHelpUseCase
+import com.devndev.homen.core.domain.usecase.board.DeleteExchangeUseCase
 import com.devndev.homen.core.domain.usecase.board.DeleteHelpUseCase
 import com.devndev.homen.core.domain.usecase.board.GetBoardUseCase
+import com.devndev.homen.core.domain.usecase.board.RejectExchangeUseCase
 import com.devndev.homen.core.domain.usecase.home.CancelCompleteChoreUseCase
 import com.devndev.homen.core.domain.usecase.home.CompleteChoreUseCase
 import com.devndev.homen.core.domain.usecase.home.ConfirmAssignmentUseCase
@@ -84,6 +88,10 @@ val useCaseModule = module {
     factoryOf(::CreateHelpUseCase)
     factoryOf(::DeleteHelpUseCase)
     factoryOf(::AcceptHelpUseCase)
+    factoryOf(::CreateExchangeUseCase)
+    factoryOf(::DeleteExchangeUseCase)
+    factoryOf(::AcceptExchangeUseCase)
+    factoryOf(::RejectExchangeUseCase)
 
     // reward
     factoryOf(::GetRewardsUseCase)

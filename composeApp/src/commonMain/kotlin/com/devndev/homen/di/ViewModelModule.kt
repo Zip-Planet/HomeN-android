@@ -4,6 +4,7 @@ import com.devndev.homen.ui.intro.login.viewmodel.LoginViewModel
 import com.devndev.homen.ui.intro.register.viewmodel.RegisterViewModel
 import com.devndev.homen.ui.intro.splash.viewmodel.SplashViewModel
 import com.devndev.homen.ui.main.assignment.main.viewmodel.AssignmentViewModel
+import com.devndev.homen.ui.main.board.exchange.viewmodel.BoardExchangeViewModel
 import com.devndev.homen.ui.main.board.help.viewmodel.BoardHelpViewModel
 import com.devndev.homen.ui.main.board.main.viewmodel.BoardViewModel
 import com.devndev.homen.ui.main.home.choredetail.viewmodel.ChoreDetailViewModel
@@ -47,6 +48,7 @@ val viewModelModule = module {
     viewModelOf(::StarterPackPreviewViewModel)
     viewModelOf(::BoardViewModel)
     viewModelOf(::BoardHelpViewModel)
+    viewModelOf(::BoardExchangeViewModel)
     viewModelOf(::AssignmentViewModel)
     viewModelOf(::RewardViewModel)
     viewModelOf(::RewardEditViewModel)

@@ -61,7 +61,9 @@ fun MainNav(
     val isRewardNotRewardMain = currentDestination?.hasRoute<RewardRoute.EditReward>() == true ||
             currentDestination?.hasRoute<RewardRoute.RewardDetail>() == true
 
-    val isBoardRequest = currentDestination?.hasRoute<BoardRoute.BoardHelp>() == true
+    val isBoardRequest = currentDestination?.hasRoute<BoardRoute.BoardHelp>() == true ||
+            currentDestination?.hasRoute<BoardRoute.BoardExchange>() == true
+
     Scaffold(
         bottomBar = {
             if (hasHome && !isHomeIntroRoute && !isChoreManage && !isRewardNotRewardMain && !isBoardRequest) {

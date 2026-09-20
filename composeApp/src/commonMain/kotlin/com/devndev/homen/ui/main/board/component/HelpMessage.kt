@@ -246,8 +246,10 @@ fun HelpAcceptMessage(
 }
 
 @Composable
-fun HelpExpireMessage() {
-    val title = stringResource(Res.string.board_request_help_expire_title).replace("s", "투다리김치우동")
+fun HelpExpireMessage(
+    name: String
+) {
+    val title = stringResource(Res.string.board_request_help_expire_title).replace("s", name)
     val highlightText = stringResource(Res.string.board_request_help_expire_highlight_text)
 
     val annotatedTitle = buildAnnotatedString {

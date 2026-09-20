@@ -25,6 +25,7 @@ import com.devndev.homen.OsType
 import com.devndev.homen.core.domain.model.board.BoardPayload
 import com.devndev.homen.core.domain.model.board.BoardType
 import com.devndev.homen.core.domain.model.board.BotType
+import com.devndev.homen.core.domain.model.board.ExchangeBoardType
 import com.devndev.homen.core.domain.model.board.HelpBoardType
 import com.devndev.homen.getPlatform
 import com.devndev.homen.ui.component.HomeNScreen
@@ -32,7 +33,11 @@ import com.devndev.homen.ui.component.NotificationTopBar
 import com.devndev.homen.ui.main.board.component.BoardDateSeparator
 import com.devndev.homen.ui.main.board.component.BoardFloatingActionButton
 import com.devndev.homen.ui.main.board.component.DivisionPlanMessage
+import com.devndev.homen.ui.main.board.component.ExchangeAcceptMessage
+import com.devndev.homen.ui.main.board.component.ExchangeEndMessage
+import com.devndev.homen.ui.main.board.component.ExchangeMessage
 import com.devndev.homen.ui.main.board.component.HelpAcceptMessage
+import com.devndev.homen.ui.main.board.component.HelpExpireMessage
 import com.devndev.homen.ui.main.board.component.HelpMessage
 import com.devndev.homen.ui.main.board.component.RewardMessage
 import com.devndev.homen.ui.main.board.main.viewmodel.BoardContract
@@ -41,6 +46,9 @@ import com.devndev.homen.ui.theme.HomeNTheme
 import com.devndev.homen.util.DateUtil
 import homen.composeapp.generated.resources.Res
 import homen.composeapp.generated.resources.board
+import homen.composeapp.generated.resources.board_exchange_accept_snackbar_msg
+import homen.composeapp.generated.resources.board_exchange_delete_snackbar_msg
+import homen.composeapp.generated.resources.board_exchange_reject_snackbar_msg
 import homen.composeapp.generated.resources.board_help_accept_snackbar_msg
 import homen.composeapp.generated.resources.board_help_delete_snackbar_msg
 import homen.composeapp.generated.resources.snackbar_cancel
@@ -54,13 +62,17 @@ fun BoardScreen(
     onNavToReward: () -> Unit,
     onNavToAssignment: () -> Unit,
     onNavToHelp: () -> Unit,
+    onNavToExchange: () -> Unit,
     paddingValues: PaddingValues
 ) {
     val uiState by viewModel.viewState
     val snackbarHostState = remember { SnackbarHostState() }
 
     val deleteMsg = stringResource(Res.string.board_help_delete_snackbar_msg)
+    val deleteExchangeMsg = stringResource(Res.string.board_exchange_delete_snackbar_msg)
     val acceptMsg = stringResource(Res.string.board_help_accept_snackbar_msg)
+    val exchangeAcceptMsg = stringResource(Res.string.board_exchange_accept_snackbar_msg)
+    val exchangeRejectMsg = stringResource(Res.string.board_exchange_reject_snackbar_msg)
     val cancelMsg = stringResource(Res.string.snackbar_cancel)
     LaunchedEffect(viewModel.effect) {
         viewModel.effect.collectLatest { effect ->
@@ -74,6 +86,10 @@ fun BoardScreen(
 
                 BoardContract.Effect.NavigateToHelp -> {
                     onNavToHelp()
+                }
+
+                BoardContract.Effect.NavigateToExchange -> {
+                    onNavToExchange()
                 }
 
                 is BoardContract.Effect.ShowDeleteSnackBar -> {
@@ -98,6 +114,28 @@ fun BoardScreen(
                     }
                 }
 
+                is BoardContract.Effect.ShowDeleteExchangeSnackBar -> {
+                    val result = snackbarHostState.showSnackbar(
+                        message = deleteExchangeMsg,
+                        actionLabel = cancelMsg,
+                        duration = SnackbarDuration.Short
+                    )
+                    when (result) {
+                        SnackbarResult.ActionPerformed -> {
+                            viewModel.setEvent(
+                                BoardContract.Event.OnUndoDelete(
+                                    card = effect.card,
+                                    index = effect.index
+                                )
+                            )
+                        }
+
+                        SnackbarResult.Dismissed -> {
+                            viewModel.setEvent(BoardContract.Event.OnDeleteExchangeConfirm(effect.card.id))
+                        }
+                    }
+                }
+
                 is BoardContract.Effect.ShowAcceptSnackBar -> {
                     val result = snackbarHostState.showSnackbar(
                         message = acceptMsg,
@@ -111,6 +149,40 @@ fun BoardScreen(
 
                         SnackbarResult.Dismissed -> {
                             viewModel.setEvent(BoardContract.Event.OnAcceptConfirm(effect.id))
+                        }
+                    }
+                }
+
+                is BoardContract.Effect.ShowExchangeAcceptSnackBar -> {
+                    val result = snackbarHostState.showSnackbar(
+                        message = exchangeAcceptMsg,
+                        actionLabel = cancelMsg,
+                        duration = SnackbarDuration.Short
+                    )
+                    when (result) {
+                        SnackbarResult.ActionPerformed -> {
+                            viewModel.setEvent(BoardContract.Event.OnUndoExchangeResponse(effect.id, effect.oldStatus))
+                        }
+
+                        SnackbarResult.Dismissed -> {
+                            viewModel.setEvent(BoardContract.Event.OnConfirmExchangeAccept(effect.id))
+                        }
+                    }
+                }
+
+                is BoardContract.Effect.ShowExchangeRejectSnackBar -> {
+                    val result = snackbarHostState.showSnackbar(
+                        message = exchangeRejectMsg,
+                        actionLabel = cancelMsg,
+                        duration = SnackbarDuration.Short
+                    )
+                    when (result) {
+                        SnackbarResult.ActionPerformed -> {
+                            viewModel.setEvent(BoardContract.Event.OnUndoExchangeResponse(effect.id, effect.oldStatus))
+                        }
+
+                        SnackbarResult.Dismissed -> {
+                            viewModel.setEvent(BoardContract.Event.OnConfirmExchangeReject(effect.id))
                         }
                     }
                 }
@@ -226,13 +298,69 @@ fun BoardScreen(
                                 }
 
                                 HelpBoardType.EXPIRED.type -> {
-
+                                    HelpExpireMessage(
+                                        name = card.requester?.name ?: "",
+                                    )
                                 }
                             }
                         }
 
                         BoardType.REQUEST_EXCHANGE.type -> {
-                            // TODO
+                            val isMine = uiState.myName == card.requester?.name
+                            Box(
+                                modifier = Modifier.fillMaxWidth(),
+                                contentAlignment = if (isMine) Alignment.CenterEnd else Alignment.CenterStart
+                            ) {
+                                when (card.status) {
+                                    ExchangeBoardType.PENDING.type -> {
+                                        ExchangeMessage(
+                                            isMine = isMine,
+                                            name = card.requester?.name ?: "",
+                                            description = card.message ?: "",
+                                            date = card.createdAt,
+                                            requesterItem = card.requesterItem!!,
+                                            targetName = card.targetItem?.assignee?.name ?: "",
+                                            targetItem = card.targetItem!!,
+                                            onCancelClick = {
+                                                if (isMine) {
+                                                    viewModel.setEvent(BoardContract.Event.OnDeleteExchangeClick(card.id))
+                                                }
+                                            },
+                                            onAcceptClick = {
+                                                viewModel.setEvent(BoardContract.Event.OnAcceptExchange(card.id))
+                                            },
+                                            onRejectClick = {
+                                                viewModel.setEvent(BoardContract.Event.OnRejectExchange(card.id))
+                                            }
+                                        )
+                                    }
+
+                                    ExchangeBoardType.ACCEPTED.type -> {
+                                        ExchangeAcceptMessage(
+                                            requester = card.requester!!,
+                                            acceptedBy = card.respondedBy!!, // Exchange uses respondedBy? or acceptedBy?
+                                            date = card.createdAt,
+                                            requesterItem = card.requesterItem!!,
+                                            targetItem = card.targetItem!!,
+                                            description = card.message ?: ""
+                                        )
+                                    }
+
+                                    ExchangeBoardType.REJECTED.type -> {
+                                        ExchangeEndMessage(
+                                            name = card.requester?.name ?: "",
+                                            isReject = true
+                                        )
+                                    }
+
+                                    ExchangeBoardType.EXPIRED.type -> {
+                                        ExchangeEndMessage(
+                                            name = card.requester?.name ?: "",
+                                            isReject = false
+                                        )
+                                    }
+                                }
+                            }
                         }
                     }
 
@@ -250,7 +378,9 @@ fun BoardScreen(
             }
 
             BoardFloatingActionButton(
-                onExchangeClick = {},
+                onExchangeClick = {
+                    viewModel.setEvent(BoardContract.Event.OnExchangeClick)
+                },
                 onHelpClick = {
                     viewModel.setEvent(BoardContract.Event.OnRequestHelpClick)
                 },

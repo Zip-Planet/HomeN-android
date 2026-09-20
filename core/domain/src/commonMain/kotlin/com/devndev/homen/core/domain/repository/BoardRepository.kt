@@ -8,4 +8,8 @@ interface BoardRepository {
     suspend fun createHelp(itemId: Int, message: String?): ApiResult<Unit>
     suspend fun deleteHelp(helpRequestId: Int): ApiResult<Unit>
     suspend fun acceptHelp(helpRequestId: Int): ApiResult<Unit>
+    suspend fun createExchange(requesterItemId: Int, targetItemId: Int, message: String?): ApiResult<Unit>
+    suspend fun deleteExchange(swapId: Int): ApiResult<Unit>
+    suspend fun acceptExchange(swapId: Int): ApiResult<Unit>
+    suspend fun rejectExchange(swapId: Int): ApiResult<Unit>
 }

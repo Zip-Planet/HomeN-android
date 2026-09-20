@@ -11,3 +11,10 @@ enum class HelpBoardType(val type: String) {
     ACCEPTED("accepted"),
     EXPIRED("expired")
 }
+
+enum class ExchangeBoardType(val type: String) {
+    PENDING("pending"),
+    ACCEPTED("accepted"),
+    REJECTED("rejected"),
+    EXPIRED("expired")
+}

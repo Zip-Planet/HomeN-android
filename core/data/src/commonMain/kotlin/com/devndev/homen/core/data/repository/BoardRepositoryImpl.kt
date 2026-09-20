@@ -53,4 +53,52 @@ class BoardRepositoryImpl(
             ApiResult.NetworkError
         }
     }
+
+    override suspend fun createExchange(
+        requesterItemId: Int,
+        targetItemId: Int,
+        message: String?
+    ): ApiResult<Unit> {
+        return try {
+            boardService.createExchange(requesterItemId, targetItemId, message)
+            ApiResult.Success(Unit)
+        } catch (e: ResponseException) {
+            ApiResult.Error(code = e.response.status.value, message = e.message)
+        } catch (e: Exception) {
+            ApiResult.NetworkError
+        }
+    }
+
+    override suspend fun deleteExchange(swapId: Int): ApiResult<Unit> {
+        return try {
+            boardService.deleteExchange(swapId)
+            ApiResult.Success(Unit)
+        } catch (e: ResponseException) {
+            ApiResult.Error(code = e.response.status.value, message = e.message)
+        } catch (e: Exception) {
+            ApiResult.NetworkError
+        }
+    }
+
+    override suspend fun acceptExchange(swapId: Int): ApiResult<Unit> {
+        return try {
+            boardService.acceptExchange(swapId)
+            ApiResult.Success(Unit)
+        } catch (e: ResponseException) {
+            ApiResult.Error(code = e.response.status.value, message = e.message)
+        } catch (e: Exception) {
+            ApiResult.NetworkError
+        }
+    }
+
+    override suspend fun rejectExchange(swapId: Int): ApiResult<Unit> {
+        return try {
+            boardService.rejectExchange(swapId)
+            ApiResult.Success(Unit)
+        } catch (e: ResponseException) {
+            ApiResult.Error(code = e.response.status.value, message = e.message)
+        } catch (e: Exception) {
+            ApiResult.NetworkError
+        }
+    }
 }

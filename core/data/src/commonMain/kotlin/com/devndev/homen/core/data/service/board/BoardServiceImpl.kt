@@ -1,6 +1,7 @@
 package com.devndev.homen.core.data.service.board
 
 import com.devndev.homen.core.common.Config
+import com.devndev.homen.core.data.model.board.request.CreateExchangeRequest
 import com.devndev.homen.core.data.model.board.request.CreateHelpRequest
 import com.devndev.homen.core.data.model.board.response.BoardResponse
 import com.devndev.homen.core.domain.repository.TokenRepository
@@ -71,6 +72,69 @@ class BoardServiceImpl(
             url {
                 takeFrom(Config.BASE_URL)
                 encodedPath += "${BoardService.HELP}$helpRequestId/accept/"
+            }
+            contentType(ContentType.Application.Json)
+            accessToken?.let {
+                header(HttpHeaders.Authorization, "Bearer $it")
+            }
+        }
+    }
+
+    override suspend fun createExchange(requesterItemId: Int, targetItemId: Int, message: String?) {
+        val accessToken = tokenRepository.getAccessToken().first()
+        client.post {
+            url {
+                takeFrom(Config.BASE_URL)
+                encodedPath += BoardService.SWAP
+            }
+            contentType(ContentType.Application.Json)
+            accessToken?.let {
+                header(HttpHeaders.Authorization, "Bearer $it")
+            }
+            setBody(
+                CreateExchangeRequest(
+                    requesterItemId = requesterItemId,
+                    targetItemId = targetItemId,
+                    message = message
+                )
+            )
+        }
+    }
+
+    override suspend fun deleteExchange(swapId: Int) {
+        val accessToken = tokenRepository.getAccessToken().first()
+        client.delete {
+            url {
+                takeFrom(Config.BASE_URL)
+                encodedPath += "${BoardService.SWAP}$swapId/"
+            }
+            contentType(ContentType.Application.Json)
+            accessToken?.let {
+                header(HttpHeaders.Authorization, "Bearer $it")
+            }
+        }
+    }
+
+    override suspend fun acceptExchange(swapId: Int) {
+        val accessToken = tokenRepository.getAccessToken().first()
+        client.post {
+            url {
+                takeFrom(Config.BASE_URL)
+                encodedPath += "${BoardService.SWAP}$swapId/accept/"
+            }
+            contentType(ContentType.Application.Json)
+            accessToken?.let {
+                header(HttpHeaders.Authorization, "Bearer $it")
+            }
+        }
+    }
+
+    override suspend fun rejectExchange(swapId: Int) {
+        val accessToken = tokenRepository.getAccessToken().first()
+        client.post {
+            url {
+                takeFrom(Config.BASE_URL)
+                encodedPath += "${BoardService.SWAP}$swapId/reject/"
             }
             contentType(ContentType.Application.Json)
             accessToken?.let {
