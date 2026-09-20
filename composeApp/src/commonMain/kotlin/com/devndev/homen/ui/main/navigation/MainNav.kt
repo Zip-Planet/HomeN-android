@@ -15,6 +15,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.devndev.homen.ui.component.MainBottomBar
 import com.devndev.homen.ui.main.assignment.navigation.assignmentNav
+import com.devndev.homen.ui.main.board.navigation.BoardRoute
 import com.devndev.homen.ui.main.board.navigation.boardNav
 import com.devndev.homen.ui.main.home.main.navigation.HomeRoute
 import com.devndev.homen.ui.main.home.main.navigation.homeNav
@@ -60,9 +61,12 @@ fun MainNav(
     val isRewardNotRewardMain = currentDestination?.hasRoute<RewardRoute.EditReward>() == true ||
             currentDestination?.hasRoute<RewardRoute.RewardDetail>() == true
 
+    val isBoardRequest = currentDestination?.hasRoute<BoardRoute.BoardHelp>() == true ||
+            currentDestination?.hasRoute<BoardRoute.BoardExchange>() == true
+
     Scaffold(
         bottomBar = {
-            if (hasHome && !isHomeIntroRoute && !isChoreManage && !isRewardNotRewardMain) {
+            if (hasHome && !isHomeIntroRoute && !isChoreManage && !isRewardNotRewardMain && !isBoardRequest) {
                 MainBottomBar(navController = mainNavController)
             }
         },
@@ -86,7 +90,7 @@ fun MainNav(
             )
 
             homeNav(mainNavController)
-            boardNav()
+            boardNav(mainNavController, paddingValues)
             assignmentNav(mainNavController, paddingValues)
             rewardNav(mainNavController, paddingValues)
             myPageNav()

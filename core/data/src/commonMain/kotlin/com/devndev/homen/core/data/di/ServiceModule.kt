@@ -2,6 +2,8 @@ package com.devndev.homen.core.data.di
 
 import com.devndev.homen.core.data.service.auth.AuthService
 import com.devndev.homen.core.data.service.auth.AuthServiceImpl
+import com.devndev.homen.core.data.service.board.BoardService
+import com.devndev.homen.core.data.service.board.BoardServiceImpl
 import com.devndev.homen.core.data.service.home.HomeService
 import com.devndev.homen.core.data.service.home.HomeServiceImpl
 import com.devndev.homen.core.data.service.reward.RewardService
@@ -16,4 +18,5 @@ val serviceModule = module {
     single<HomeService> { HomeServiceImpl(get(), get()) }
     single<UserService> { UserServiceImpl(get(), get()) }
     single<RewardService> { RewardServiceImpl(get(), get()) }
+    single<BoardService> { BoardServiceImpl(get(), get()) }
 }

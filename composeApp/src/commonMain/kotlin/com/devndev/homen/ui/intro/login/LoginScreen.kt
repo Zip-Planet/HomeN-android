@@ -135,7 +135,8 @@ fun LoginScreen(
 
                 Dot(
                     width = 6,
-                    dotSize = 2
+                    dotSize = 2,
+                    height = 2
                 )
 
                 Text(

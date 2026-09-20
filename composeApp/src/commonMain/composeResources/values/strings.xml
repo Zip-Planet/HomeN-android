@@ -242,6 +242,32 @@
     <string name="board_request_exchange_reject_title">s님의 교환 요청 거절</string>
     <string name="board_request_exchange_reject_highlight_text">교환 요청 거절</string>
     <string name="board_request_exchange_reject_message">상대가 이번 교환은 진행하기 어렵다고 했어요</string>
+    <string name="board_assignment_created_card_title">다음주 분담안이 생성됐어요</string>
+    <string name="board_assignment_confirmed_card_title">다음주 분담안이 확정됐어요</string>
+    <string name="board_assignment_card_total_chore">총 s개의 집안일</string>
+    <string name="board_help_title">도움 요청하기</string>
+    <string name="board_request_help_selector_title">도움받을 집안일을 선택해주세요</string>
+    <string name="board_request_help_selector_done_title">이번주 모든 집안일을 완료했어요</string>
+    <string name="board_request_help_chore_title">대상 집안일</string>
+    <string name="board_request_help_descirption_title">메세지</string>
+    <string name="board_request_help_descirption_label">*선택</string>
+    <string name="board_request_help_descirption_hint">오늘 야근이라 대신 부탁해요!</string>
+    <string name="board_make_request_help_btn">도움 요청하기</string>
+    <string name="board_exchange_title">교환 요청하기</string>
+    <string name="board_request_exchange_descirption_hint">토요일에 일정이 생겨서 청소 바꾸실래요?</string>
+    <string name="board_request_exchange_my_chore_title">내 집안일</string>
+    <string name="board_request_exchange_target_chore_title">교환하고 싶은 집안일</string>
+    <string name="board_request_exchange_my_selector_title">내가 넘길 집안일을 선택해주세요</string>
+    <string name="board_request_exchange_target_selector_title">내가 대신할 집안일을 선택해주세요</string>
+    <string name="board_request_exchange_my_selector_done_title">이번주 모든 집안일을 완료했어요</string>
+    <string name="board_request_exchange_target_selector_done_title">구성원들 모두 집안일을 완료했어요</string>
+    <string name="board_make_request_exchange_btn">교환 요청하기</string>
+    <string name="board_help_delete_snackbar_msg">도움 카드를 삭제했어요</string>
+    <string name="board_exchange_delete_snackbar_msg">교환 카드를 삭제했어요</string>
+    <string name="board_exchange_accept_snackbar_msg">교환 요청을 수락했어요</string>
+    <string name="board_exchange_reject_snackbar_msg">아쉽지만 다음에 교환해요</string>
+    <string name="board_help_accept_snackbar_msg">도움 요청을 수락했어요</string>
+
 
     <!-- 분담 화면 -->
     <string name="assignment_add_chore_title">집안일을 조금 더 추가해 볼까요?</string>

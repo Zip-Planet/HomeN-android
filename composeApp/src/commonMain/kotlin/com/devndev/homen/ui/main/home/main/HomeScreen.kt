@@ -41,9 +41,11 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
+import com.devndev.homen.OsType
 import com.devndev.homen.core.domain.model.home.AssignmentItem
 import com.devndev.homen.core.domain.model.home.HomeIconType
 import com.devndev.homen.core.domain.model.home.Member
+import com.devndev.homen.getPlatform
 import com.devndev.homen.ui.common.smallResource
 import com.devndev.homen.ui.component.HomeNButton
 import com.devndev.homen.ui.component.HomeNScreen
@@ -147,9 +149,10 @@ fun HomeScreen(
         isLoading = uiState.isLoading,
         mainIsLoading = uiState.mainIsLoading,
         snackbarHost = {
+            val snackbarBottomPadding = if (getPlatform() == OsType.IOS) 34 else 94
             SnackbarHost(
                 hostState = snackbarHostState,
-                modifier = Modifier.padding(bottom = 34.dp)
+                modifier = Modifier.padding(bottom = snackbarBottomPadding.dp)
             )
         }
     ) {
