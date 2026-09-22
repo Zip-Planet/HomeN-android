@@ -45,6 +45,7 @@ import com.devndev.homen.OsType
 import com.devndev.homen.core.domain.model.home.AssignmentItem
 import com.devndev.homen.core.domain.model.home.HomeIconType
 import com.devndev.homen.core.domain.model.home.Member
+import com.devndev.homen.core.domain.model.home.ReportStatus
 import com.devndev.homen.getPlatform
 import com.devndev.homen.ui.common.smallResource
 import com.devndev.homen.ui.component.HomeNButton
@@ -79,7 +80,9 @@ import homen.composeapp.generated.resources.home_division_plan_status_msg2
 import homen.composeapp.generated.resources.home_mvp_section_title
 import homen.composeapp.generated.resources.home_my_info_name
 import homen.composeapp.generated.resources.home_progress_section_title
+import homen.composeapp.generated.resources.home_report_status_msg1
 import homen.composeapp.generated.resources.home_report_status_msg2
+import homen.composeapp.generated.resources.home_report_status_msg3
 import homen.composeapp.generated.resources.home_total_member_count
 import homen.composeapp.generated.resources.home_week_division_plan_msg
 import homen.composeapp.generated.resources.pin_black_icon
@@ -132,7 +135,8 @@ fun HomeScreen(
                         SnackbarResult.ActionPerformed -> {
                             viewModel.setEvent(HomeContract.Event.OnCompleteCancelClick(effect.assignment))
                         }
-                        else -> { }
+
+                        else -> {}
                     }
                 }
             }
@@ -231,7 +235,11 @@ fun HomeScreen(
                         onCreateAssignmentClick = { viewModel.setEvent(HomeContract.Event.OnCreateAssignmentClick) },
                         onItemClick = { assignment, isComplete ->
                             if (isComplete) {
-                                viewModel.setEvent(HomeContract.Event.OnCompleteCancelClick(assignment))
+                                viewModel.setEvent(
+                                    HomeContract.Event.OnCompleteCancelClick(
+                                        assignment
+                                    )
+                                )
                             } else {
                                 viewModel.setEvent(HomeContract.Event.OnCompleteClick(assignment))
                             }
@@ -454,20 +462,61 @@ fun HomeProgressSection(
                 )
             }
             Spacer(modifier = Modifier.width(9.dp))
-            HomeManageItem(
-                modifier = Modifier.weight(1f),
-                onClick = {},
-                iconColor = Blue60ABFB,
-                iconSize = 16,
-                titleText = stringResource(Res.string.report),
-                icon = Res.drawable.clipboard_icon
-            ) {
-                Text(
-                    text = stringResource(Res.string.home_report_status_msg2) + "50%",
-                    style = HomeNTheme.typography.suitRegular,
-                    fontSize = 12.sp,
-                    color = Color.Black
-                )
+
+            when (uiState.reportStatus) {
+                ReportStatus.THIS_WEEK -> {
+                    HomeManageItem(
+                        modifier = Modifier.weight(1f),
+                        onClick = {},
+                        iconColor = Blue60ABFB,
+                        iconSize = 16,
+                        titleText = stringResource(Res.string.report),
+                        icon = Res.drawable.clipboard_icon
+                    ) {
+                        Text(
+                            text = stringResource(Res.string.home_report_status_msg1) + "${uiState.reportRate}%",
+                            style = HomeNTheme.typography.suitRegular,
+                            fontSize = 12.sp,
+                            color = Color.Black
+                        )
+                    }
+                }
+                ReportStatus.LAST_WEEK -> {
+                    HomeManageItem(
+                        modifier = Modifier.weight(1f),
+                        onClick = {},
+                        iconColor = Blue60ABFB,
+                        iconSize = 16,
+                        titleText = stringResource(Res.string.report),
+                        icon = Res.drawable.clipboard_icon
+                    ) {
+                        Text(
+                            text = stringResource(Res.string.home_report_status_msg2) + "${uiState.reportRate}%",
+                            style = HomeNTheme.typography.suitRegular,
+                            fontSize = 12.sp,
+                            color = Color.Black
+                        )
+                    }
+                }
+
+                else -> {
+                    HomeManageItem(
+                        isExist = false,
+                        modifier = Modifier.weight(1f),
+                        onClick = {},
+                        iconColor = Blue60ABFB,
+                        iconSize = 16,
+                        titleText = stringResource(Res.string.report),
+                        icon = Res.drawable.clipboard_icon
+                    ) {
+                        Text(
+                            text = stringResource(Res.string.home_report_status_msg3),
+                            style = HomeNTheme.typography.suitRegular,
+                            fontSize = 12.sp,
+                            color = Color.Black
+                        )
+                    }
+                }
             }
         }
     }
@@ -675,7 +724,7 @@ fun HomeBottomSectionPreview() {
             ),
             onMemberClick = { _, _ -> },
             onCreateAssignmentClick = {},
-            onItemClick = { _, _ ->}
+            onItemClick = { _, _ -> }
         )
     }
 }
