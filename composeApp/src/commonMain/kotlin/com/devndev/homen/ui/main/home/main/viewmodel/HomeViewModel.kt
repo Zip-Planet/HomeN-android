@@ -5,6 +5,7 @@ import com.devndev.homen.core.common.base.BaseViewModel
 import com.devndev.homen.core.domain.model.common.ApiResult
 import com.devndev.homen.core.domain.model.home.AssignmentItem
 import com.devndev.homen.core.domain.model.home.Member
+import com.devndev.homen.core.domain.model.home.ReportStatus
 import com.devndev.homen.core.domain.usecase.home.CancelCompleteChoreUseCase
 import com.devndev.homen.core.domain.usecase.home.CompleteChoreUseCase
 import com.devndev.homen.core.domain.usecase.home.GetAssignmentsUseCase
@@ -86,6 +87,52 @@ class HomeViewModel(
                 }
                 getThisWeekAssignments(memberList)
                 getNextWeekAssignmentStatus()
+                getReportData(myInfoResult.data.uid)
+            }
+        }
+    }
+
+    private fun getReportData(myUid: String) {
+        viewModelScope.launch {
+            // 1. 이번 주 리포트 조회
+            val thisWeekResult = getWeeklyReportUseCase(DateUtil.getThisWeekMonday())
+
+            if (thisWeekResult is ApiResult.Success) {
+                val myStat = thisWeekResult.data.memberStats.find { it.uid == myUid }
+                val rate = if (thisWeekResult.data.totalCount > 0) {
+                    ((myStat?.completedCount ?: 0) * 100) / thisWeekResult.data.totalCount
+                } else 0
+
+                setState {
+                    copy(
+                        reportStatus = ReportStatus.THIS_WEEK,
+                        reportRate = rate
+                    )
+                }
+            } else {
+                // 2. 이번 주가 없으면 지난 주 리포트 조회
+                val lastWeekResult = getWeeklyReportUseCase(DateUtil.getLastWeekMonday())
+                if (lastWeekResult is ApiResult.Success) {
+                    val myStat = lastWeekResult.data.memberStats.find { it.uid == myUid }
+                    val rate = if (lastWeekResult.data.totalCount > 0) {
+                        ((myStat?.completedCount ?: 0) * 100) / lastWeekResult.data.totalCount
+                    } else 0
+
+                    setState {
+                        copy(
+                            reportStatus = ReportStatus.LAST_WEEK,
+                            reportRate = rate
+                        )
+                    }
+                } else {
+                    // 3. 둘 다 없으면 NONE
+                    setState {
+                        copy(
+                            reportStatus = ReportStatus.NONE,
+                            reportRate = 0
+                        )
+                    }
+                }
             }
         }
     }

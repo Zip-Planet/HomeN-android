@@ -11,6 +11,8 @@ import kotlinx.serialization.Serializable
 data class WeeklyReportResponse(
     @SerialName("id")
     val id: Int,
+    @SerialName("week_start")
+    val weekStart: String,
     @SerialName("total_count")
     val totalCount: Int,
     @SerialName("completed_count")
@@ -24,7 +26,9 @@ data class WeeklyReportResponse(
     @SerialName("most_done")
     val mostDone: WeeklyReportHighlightResponse?,
     @SerialName("most_missed")
-    val mostMissed: WeeklyReportHighlightResponse?
+    val mostMissed: WeeklyReportHighlightResponse?,
+    @SerialName("generated_at")
+    val generatedAt: String
 )
 
 @Serializable
@@ -68,13 +72,15 @@ data class WeeklyReportHighlightResponse(
 fun WeeklyReportResponse.toDomainModel(): WeeklyReport {
     return WeeklyReport(
         id = id,
+        weekStart = weekStart,
         totalCount = totalCount,
         completedCount = completedCount,
         progressRate = progressRate,
         mvp = mvp?.toDomainModel(),
         memberStats = memberStats.map { it.toDomainModel() },
         mostDone = mostDone?.toDomainModel(),
-        mostMissed = mostMissed?.toDomainModel()
+        mostMissed = mostMissed?.toDomainModel(),
+        generatedAt = generatedAt
     )
 }
 
