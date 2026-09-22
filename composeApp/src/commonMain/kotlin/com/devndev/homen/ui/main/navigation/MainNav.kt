@@ -93,7 +93,7 @@ fun MainNav(
             boardNav(mainNavController, paddingValues)
             assignmentNav(mainNavController, paddingValues)
             rewardNav(mainNavController, paddingValues)
-            myPageNav()
+            myPageNav(mainNavController, paddingValues, onNavToIntro)
         }
     }
 }

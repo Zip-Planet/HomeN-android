@@ -16,6 +16,16 @@
     <string name="confirm">확정</string>
     <string name="cancel">취소</string>
     <string name="reward">리워드</string>
+    <string name="my_page">마이</string>
+    <string name="my_page_invite_code_format">초대 코드 · s</string>
+    <string name="my_page_push_alarm">푸시 알림</string>
+    <string name="my_page_push_home">집/구성원 알림</string>
+    <string name="my_page_push_assignment">분담안 알림</string>
+    <string name="my_page_push_board">보드 조율 알림</string>
+    <string name="my_page_push_reward">리워드 알림</string>
+    <string name="my_page_push_report">리포트 알림</string>
+    <string name="my_page_support">약관/도움말 및 고객 지원</string>
+    <string name="my_page_copy_toast">초대 코드를 복사했습니다.</string>
 
     <!-- Splash 화면 -->
     <string name="login_screen_msg1">집안일을 데이터로 공평하게</string>
