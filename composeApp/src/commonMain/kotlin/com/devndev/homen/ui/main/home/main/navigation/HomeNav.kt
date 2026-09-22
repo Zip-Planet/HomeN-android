@@ -34,7 +34,7 @@ fun NavGraphBuilder.homeNav(navController: NavController) {
                         saveState = true
                     }
                     launchSingleTop = true
-                    restoreState = true
+                    restoreState = false
                 }
             }
         )

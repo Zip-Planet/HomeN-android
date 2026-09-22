@@ -75,13 +75,14 @@ fun MainBottomBar(navController: NavController) {
                                 interactionSource = remember { MutableInteractionSource() },
                                 indication = null, 
                                 onClick = {
-                                    if (!isSelected) {
+                                    val isAssignment = item is BottomNavItem.Assignment
+                                    if (!isSelected || isAssignment) {
                                         navController.navigate(item) {
                                             popUpTo(navController.graph.findStartDestination().id) {
                                                 saveState = true
                                             }
                                             launchSingleTop = true
-                                            restoreState = true
+                                            restoreState = !isAssignment
                                         }
                                     }
                                 }

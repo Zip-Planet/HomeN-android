@@ -89,7 +89,7 @@ fun AssignmentScreen(
         }
     }
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(initialTab) {
         viewModel.setEvent(AssignmentContract.Event.OnInit(initialTab))
     }
 

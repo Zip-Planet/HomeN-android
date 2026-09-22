@@ -42,7 +42,7 @@ fun NavGraphBuilder.boardNav(
                         saveState = true
                     }
                     launchSingleTop = true
-                    restoreState = true
+                    restoreState = false
                 }
             },
             onNavToHelp = {
