@@ -220,15 +220,17 @@ fun HomeNPopup(
                     color = Color.Black
                 )
 
-                Spacer(modifier = Modifier.height(10.dp))
+                if (message.isNotEmpty()) {
+                    Spacer(modifier = Modifier.height(10.dp))
 
-                Text(
-                    text = message,
-                    style = HomeNTheme.typography.suitMedium,
-                    fontSize = 14.sp,
-                    color = Color.Black,
-                    textAlign = TextAlign.Center
-                )
+                    Text(
+                        text = message,
+                        style = HomeNTheme.typography.suitMedium,
+                        fontSize = 14.sp,
+                        color = Color.Black,
+                        textAlign = TextAlign.Center
+                    )
+                }
 
                 Spacer(modifier = Modifier.height(44.dp))
 

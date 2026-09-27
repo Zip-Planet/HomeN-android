@@ -26,6 +26,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.devndev.homen.core.domain.model.home.AvatarType
 import com.devndev.homen.ui.common.resource
+import com.devndev.homen.ui.component.HomeNPopup
 import com.devndev.homen.ui.component.HomeNScreen
 import com.devndev.homen.ui.component.NotificationTopBar
 import com.devndev.homen.ui.main.mypage.main.viewmodel.MyPageContract
@@ -45,12 +47,16 @@ import com.devndev.homen.ui.theme.Blue2
 import com.devndev.homen.ui.theme.ButtonGray
 import com.devndev.homen.ui.theme.HomeNTheme
 import homen.composeapp.generated.resources.Res
+import homen.composeapp.generated.resources.cancel
+import homen.composeapp.generated.resources.clipboard_copy_toast
 import homen.composeapp.generated.resources.copy_icon
 import homen.composeapp.generated.resources.logout
 import homen.composeapp.generated.resources.manager
 import homen.composeapp.generated.resources.member
 import homen.composeapp.generated.resources.my_page
 import homen.composeapp.generated.resources.my_page_invite_code_format
+import homen.composeapp.generated.resources.my_page_logout_confirm_btn
+import homen.composeapp.generated.resources.my_page_logout_popup_title
 import homen.composeapp.generated.resources.my_page_push_alarm
 import homen.composeapp.generated.resources.my_page_push_assignment
 import homen.composeapp.generated.resources.my_page_push_board
@@ -64,6 +70,9 @@ import homen.composeapp.generated.resources.share_icon
 import homen.composeapp.generated.resources.switch_off_icon
 import homen.composeapp.generated.resources.switch_on_icon
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+import multiplatform.network.cmptoast.ToastDuration
+import multiplatform.network.cmptoast.showToast
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
@@ -74,7 +83,8 @@ fun MyPageScreen(
     onNavToLogin: () -> Unit
 ) {
     val uiState by viewModel.viewState
-    val clipboardManager = LocalClipboardManager.current
+    val clipboard = LocalClipboardManager.current
+    val scope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
         viewModel.setEvent(MyPageContract.Event.OnInit)
@@ -86,22 +96,30 @@ fun MyPageScreen(
                 MyPageContract.Effect.NavigateToProfileSetting -> {}
                 MyPageContract.Effect.NavigateToHomeSetting -> {}
                 MyPageContract.Effect.NavigateToSupport -> {}
-                MyPageContract.Effect.NavigateToLogin -> {
+                MyPageContract.Effect.NavigateToSplash -> {
                     onNavToLogin()
-                }
-
-                is MyPageContract.Effect.ShowToast -> {
-                    // Show Toast logic or use clipboard success indicator
-                    if (effect.message.contains("초대 코드")) {
-                        clipboardManager.setText(AnnotatedString(uiState.inviteCode))
-                    }
-                }
-
-                is MyPageContract.Effect.ShareInviteCode -> {
-                    // Platform specific share logic
                 }
             }
         }
+    }
+
+    if (uiState.isShowLogoutPopup) {
+        HomeNPopup(
+            title = stringResource(Res.string.my_page_logout_popup_title),
+            message = "",
+            startButtonText = stringResource(Res.string.cancel),
+            onStartButtonClick = {
+                viewModel.setEvent(MyPageContract.Event.OnDismissPopup)
+            },
+            endButtonText = stringResource(Res.string.my_page_logout_confirm_btn),
+            onEndButtonClick = {
+                viewModel.setEvent(MyPageContract.Event.OnLogoutClick(true))
+
+            },
+            onDismiss = {
+                viewModel.setEvent(MyPageContract.Event.OnDismissPopup)
+            }
+        )
     }
 
     HomeNScreen(
@@ -231,7 +249,7 @@ fun MyPageScreen(
                 )
 
                 Spacer(modifier = Modifier.width(17.dp))
-
+                val toastMsg = stringResource(Res.string.clipboard_copy_toast)
                 Icon(
                     painter = painterResource(Res.drawable.copy_icon),
                     contentDescription = "Copy",
@@ -240,7 +258,18 @@ fun MyPageScreen(
                         .clickable(
                             interactionSource = remember { MutableInteractionSource() },
                             indication = null
-                        ) { viewModel.setEvent(MyPageContract.Event.OnCopyInviteCode) },
+                        ) {
+                            scope.launch {
+                                clipboard.setText(AnnotatedString(uiState.inviteCode))
+                            }
+                            showToast(
+                                message = toastMsg,
+                                backgroundColor = Color.Black.copy(alpha = 0.8f),
+                                textColor = Color.White,
+                                cornerRadius = 10,
+                                duration = ToastDuration.Short
+                            )
+                        },
                     tint = Color.Black
                 )
 
@@ -254,7 +283,9 @@ fun MyPageScreen(
                         .clickable(
                             interactionSource = remember { MutableInteractionSource() },
                             indication = null
-                        ) { viewModel.setEvent(MyPageContract.Event.OnShareInviteCode) },
+                        ) {
+                            viewModel.setEvent(MyPageContract.Event.OnShareClick)
+                        },
                     tint = Color.Black
                 )
             }
@@ -288,7 +319,7 @@ fun MyPageScreen(
 
                 MenuItem(
                     title = stringResource(Res.string.logout),
-                    onClick = { viewModel.setEvent(MyPageContract.Event.OnLogoutClick) },
+                    onClick = { viewModel.setEvent(MyPageContract.Event.OnLogoutClick(false)) },
                     showArrow = false
                 )
             }

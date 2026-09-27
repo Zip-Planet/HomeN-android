@@ -336,6 +336,10 @@
     <string name="reward_available_point_label">보유 포인트</string>
     <string name="reward_achievement_rate_label">달성률</string>
 
+    <!-- 마이 페이지 화면 -->
+    <string name="my_page_logout_popup_title">로그아웃 할까요?</string>
+    <string name="my_page_logout_confirm_btn">로그아웃</string>
+
     <!-- 초대 팝업 -->
     <string name="invite_popup_title">s 초대코드</string>
     <string name="invite_popup_msg">구성원을 초대하고 집안일을 나눠보세요</string>

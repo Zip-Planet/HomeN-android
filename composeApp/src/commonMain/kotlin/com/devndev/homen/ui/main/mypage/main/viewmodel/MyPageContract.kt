@@ -9,12 +9,13 @@ class MyPageContract {
         data object OnInit : Event()
         data object OnProfileSettingClick : Event()
         data object OnHomeSettingClick : Event()
-        data object OnCopyInviteCode : Event()
-        data object OnShareInviteCode : Event()
         data object OnPushToggle : Event()
         data class OnSubPushToggle(val type: PushType) : Event()
         data object OnSupportClick : Event()
-        data object OnLogoutClick : Event()
+        data class OnLogoutClick(val isPopupButton: Boolean) : Event()
+        data object OnShareClick: Event()
+
+        data object OnDismissPopup: Event()
     }
 
     enum class PushType {
@@ -35,15 +36,14 @@ class MyPageContract {
         val isAssignmentAlarmEnabled: Boolean = true,
         val isBoardAlarmEnabled: Boolean = true,
         val isRewardAlarmEnabled: Boolean = true,
-        val isReportAlarmEnabled: Boolean = true
+        val isReportAlarmEnabled: Boolean = true,
+        val isShowLogoutPopup: Boolean = false
     ) : ViewState
 
     sealed class Effect : ViewSideEffect {
         data object NavigateToProfileSetting : Effect()
         data object NavigateToHomeSetting : Effect()
         data object NavigateToSupport : Effect()
-        data object NavigateToLogin : Effect()
-        data class ShowToast(val message: String) : Effect()
-        data class ShareInviteCode(val code: String) : Effect()
+        data object NavigateToSplash : Effect()
     }
 }
