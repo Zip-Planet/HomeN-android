@@ -21,6 +21,7 @@ import com.devndev.homen.ui.main.homeintro.joindone.viewmodel.JoinDoneViewModel
 import com.devndev.homen.ui.main.homeintro.main.viewmodel.HomeIntroViewModel
 import com.devndev.homen.ui.main.mypage.edit.viewmodel.ProfileSettingViewModel
 import com.devndev.homen.ui.main.mypage.main.viewmodel.MyPageViewModel
+import com.devndev.homen.ui.main.mypage.setting.viewmodel.HomeSettingViewModel
 import com.devndev.homen.ui.main.reward.detail.viewmodel.RewardDetailViewModel
 import com.devndev.homen.ui.main.reward.edit.viewmodel.RewardEditViewModel
 import com.devndev.homen.ui.main.reward.main.viewmodel.RewardViewModel
@@ -57,4 +58,5 @@ val viewModelModule = module {
     viewModelOf(::RewardDetailViewModel)
     viewModelOf(::MyPageViewModel)
     viewModelOf(::ProfileSettingViewModel)
+    viewModelOf(::HomeSettingViewModel)
 }

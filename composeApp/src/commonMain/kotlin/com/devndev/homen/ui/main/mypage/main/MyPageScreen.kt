@@ -81,7 +81,8 @@ import org.koin.compose.viewmodel.koinViewModel
 fun MyPageScreen(
     viewModel: MyPageViewModel = koinViewModel(),
     onNavToLogin: () -> Unit,
-    onNavToProfileSetting: (String, Int) -> Unit = { _, _ -> }
+    onNavToProfileSetting: (String, Int) -> Unit = { _, _ -> },
+    onNavToHomeSetting: () -> Unit = {}
 ) {
     val uiState by viewModel.viewState
     val clipboard = LocalClipboardManager.current
@@ -97,7 +98,9 @@ fun MyPageScreen(
                 is MyPageContract.Effect.NavigateToProfileSetting -> {
                     onNavToProfileSetting(effect.nickname, effect.avatarId)
                 }
-                MyPageContract.Effect.NavigateToHomeSetting -> {}
+                MyPageContract.Effect.NavigateToHomeSetting -> {
+                    onNavToHomeSetting()
+                }
                 MyPageContract.Effect.NavigateToSupport -> {}
                 MyPageContract.Effect.NavigateToSplash -> {
                     onNavToLogin()

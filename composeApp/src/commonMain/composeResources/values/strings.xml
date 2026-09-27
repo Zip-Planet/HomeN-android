@@ -345,6 +345,22 @@
     <string name="avatar_label">아바타</string>
     <string name="profile_saved_toast">프로필이 저장됐어요</string>
 
+    <!-- 우리집 설정 화면 -->
+    <string name="home_setting_title">우리집 설정</string>
+    <string name="home_setting_member_count">n명의 구성원</string>
+    <string name="home_setting_member_section">구성원</string>
+    <string name="home_setting_delegate_manager">관리자 위임</string>
+    <string name="home_setting_leave_home_btn">s 에서 나가기</string>
+    <string name="home_setting_leave_popup_title">s 에서 나갈까요?</string>
+    <string name="home_setting_cannot_leave_popup_title">s 에서 나갈 수 없어요</string>
+    <string name="home_setting_cannot_leave_popup_msg">관리자는 바로 나갈 수 없어요\n다른 구성원에게 권한을 위임해 주세요</string>
+    <string name="home_setting_disband_popup_title">s 집을 해체할까요?</string>
+    <string name="home_setting_disband_popup_msg">더 이상 구성원이 남지 않아 집이 해체돼요</string>
+    <string name="home_setting_disband_bullet1">해체되면 모든 기록이 삭제돼요</string>
+    <string name="home_setting_disband_bullet2">새로운 집을 만들거나 참여할 수 있어요</string>
+    <string name="home_setting_leave_confirm">나가기</string>
+    <string name="home_setting_disband_confirm">해체하고 나가기</string>
+
     <!-- 초대 팝업 -->
     <string name="invite_popup_title">s 초대코드</string>
     <string name="invite_popup_msg">구성원을 초대하고 집안일을 나눠보세요</string>

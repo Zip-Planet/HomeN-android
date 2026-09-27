@@ -66,10 +66,11 @@ fun MainNav(
             currentDestination?.hasRoute<BoardRoute.BoardExchange>() == true
 
     val isProfileSetting = currentDestination?.hasRoute<MyPageRoute.ProfileSetting>() == true
+    val isHomeSetting = currentDestination?.hasRoute<MyPageRoute.HomeSetting>() == true
 
     Scaffold(
         bottomBar = {
-            if (hasHome && !isHomeIntroRoute && !isChoreManage && !isRewardNotRewardMain && !isBoardRequest && !isProfileSetting) {
+            if (hasHome && !isHomeIntroRoute && !isChoreManage && !isRewardNotRewardMain && !isBoardRequest && !isProfileSetting && !isHomeSetting) {
                 MainBottomBar(navController = mainNavController)
             }
         },

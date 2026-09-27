@@ -177,12 +177,13 @@ fun InvitePopup(
 @Composable
 fun HomeNPopup(
     title: String,
-    message: String,
+    message: String = "",
     startButtonText: String,
     onStartButtonClick: () -> Unit,
     endButtonText: String = "",
     onEndButtonClick: () -> Unit = {},
     isTwoButton: Boolean = true,
+    content: (@Composable () -> Unit)? = null,
     onDismiss: () -> Unit
 ) {
     Dialog(onDismissRequest = onDismiss) {
@@ -230,6 +231,11 @@ fun HomeNPopup(
                         color = Color.Black,
                         textAlign = TextAlign.Center
                     )
+                }
+
+                if (content != null) {
+                    Spacer(modifier = Modifier.height(15.dp))
+                    content()
                 }
 
                 Spacer(modifier = Modifier.height(44.dp))

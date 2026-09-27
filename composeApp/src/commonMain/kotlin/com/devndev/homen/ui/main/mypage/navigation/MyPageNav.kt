@@ -10,6 +10,7 @@ import androidx.navigation.toRoute
 import com.devndev.homen.ui.component.NavTransitions
 import com.devndev.homen.ui.main.mypage.edit.ProfileSettingScreen
 import com.devndev.homen.ui.main.mypage.main.MyPageScreen
+import com.devndev.homen.ui.main.mypage.setting.HomeSettingScreen
 import com.devndev.homen.ui.main.navigation.BottomNavItem
 
 fun NavGraphBuilder.myPageNav(
@@ -25,6 +26,9 @@ fun NavGraphBuilder.myPageNav(
             onNavToLogin = onNavToIntro,
             onNavToProfileSetting = { nickname, avatarId ->
                 navController.navigate(MyPageRoute.ProfileSetting(nickname, avatarId))
+            },
+            onNavToHomeSetting = {
+                navController.navigate(MyPageRoute.HomeSetting)
             }
         )
     }
@@ -42,6 +46,20 @@ fun NavGraphBuilder.myPageNav(
             onNavBack = {
                 navController.popBackStack()
             }
+        )
+    }
+
+    composable<MyPageRoute.HomeSetting>(
+        enterTransition = NavTransitions.enterTransition,
+        exitTransition = NavTransitions.exitTransition,
+        popEnterTransition = NavTransitions.popEnterTransition,
+        popExitTransition = NavTransitions.popExitTransition
+    ) {
+        HomeSettingScreen(
+            onNavBack = {
+                navController.popBackStack()
+            },
+            onNavToHomeIntro = onNavToIntro
         )
     }
 }

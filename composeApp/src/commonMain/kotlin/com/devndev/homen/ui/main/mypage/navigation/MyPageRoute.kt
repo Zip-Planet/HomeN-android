@@ -12,4 +12,7 @@ sealed interface MyPageRoute {
         val nickname: String,
         val avatarId: Int
     ): MyPageRoute
+
+    @Serializable
+    data object HomeSetting: MyPageRoute
 }
