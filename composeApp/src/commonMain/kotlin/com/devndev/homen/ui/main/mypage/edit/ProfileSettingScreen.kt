@@ -128,16 +128,16 @@ fun ProfileSettingScreen(
                         fontSize = 18.sp
                     )
 
-                    Spacer(modifier = Modifier.height(6.dp))
+                    Spacer(modifier = Modifier.height(15.dp))
 
                     Text(
                         text = stringResource(Res.string.nickname_edit_subtitle),
                         style = HomeNTheme.typography.suitRegular,
-                        color = BottomGray,
-                        fontSize = 12.sp
+                        color = Color.Black,
+                        fontSize = 14.sp
                     )
 
-                    Spacer(modifier = Modifier.height(15.dp))
+                    Spacer(modifier = Modifier.height(20.dp))
 
                     HomeNTextField(
                         value = uiState.nickname,
@@ -149,7 +149,7 @@ fun ProfileSettingScreen(
                     )
                 }
 
-                Spacer(modifier = Modifier.height(35.dp))
+                Spacer(modifier = Modifier.height(45.dp))
 
                 Column(modifier = Modifier.fillMaxWidth()) {
                     Text(
