@@ -21,6 +21,7 @@ import com.devndev.homen.ui.main.home.main.navigation.HomeRoute
 import com.devndev.homen.ui.main.home.main.navigation.homeNav
 import com.devndev.homen.ui.main.homeintro.navigation.HomeIntroRoute
 import com.devndev.homen.ui.main.homeintro.navigation.homeIntroNav
+import com.devndev.homen.ui.main.mypage.navigation.MyPageRoute
 import com.devndev.homen.ui.main.mypage.navigation.myPageNav
 import com.devndev.homen.ui.main.reward.navigation.RewardRoute
 import com.devndev.homen.ui.main.reward.navigation.rewardNav
@@ -64,9 +65,11 @@ fun MainNav(
     val isBoardRequest = currentDestination?.hasRoute<BoardRoute.BoardHelp>() == true ||
             currentDestination?.hasRoute<BoardRoute.BoardExchange>() == true
 
+    val isProfileSetting = currentDestination?.hasRoute<MyPageRoute.ProfileSetting>() == true
+
     Scaffold(
         bottomBar = {
-            if (hasHome && !isHomeIntroRoute && !isChoreManage && !isRewardNotRewardMain && !isBoardRequest) {
+            if (hasHome && !isHomeIntroRoute && !isChoreManage && !isRewardNotRewardMain && !isBoardRequest && !isProfileSetting) {
                 MainBottomBar(navController = mainNavController)
             }
         },

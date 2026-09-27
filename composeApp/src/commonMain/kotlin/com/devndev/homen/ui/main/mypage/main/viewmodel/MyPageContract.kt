@@ -41,7 +41,7 @@ class MyPageContract {
     ) : ViewState
 
     sealed class Effect : ViewSideEffect {
-        data object NavigateToProfileSetting : Effect()
+        data class NavigateToProfileSetting(val nickname: String, val avatarId: Int) : Effect()
         data object NavigateToHomeSetting : Effect()
         data object NavigateToSupport : Effect()
         data object NavigateToSplash : Effect()

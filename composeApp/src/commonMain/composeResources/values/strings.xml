@@ -339,6 +339,11 @@
     <!-- 마이 페이지 화면 -->
     <string name="my_page_logout_popup_title">로그아웃 할까요?</string>
     <string name="my_page_logout_confirm_btn">로그아웃</string>
+    <string name="edit_profile_title">프로필 수정</string>
+    <string name="nickname_edit_subtitle">특수문자 제외 한글, 영어만 입력 가능해요</string>
+    <string name="nickname_label">닉네임</string>
+    <string name="avatar_label">아바타</string>
+    <string name="profile_saved_toast">프로필이 저장됐어요</string>
 
     <!-- 초대 팝업 -->
     <string name="invite_popup_title">s 초대코드</string>

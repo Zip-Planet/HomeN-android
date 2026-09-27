@@ -6,4 +6,10 @@ import kotlinx.serialization.Serializable
 sealed interface MyPageRoute {
     @Serializable
     data object Setting: MyPageRoute
+
+    @Serializable
+    data class ProfileSetting(
+        val nickname: String,
+        val avatarId: Int
+    ): MyPageRoute
 }

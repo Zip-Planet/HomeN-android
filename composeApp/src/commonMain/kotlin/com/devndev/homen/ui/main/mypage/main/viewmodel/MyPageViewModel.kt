@@ -27,7 +27,9 @@ class MyPageViewModel(
             }
 
             MyPageContract.Event.OnProfileSettingClick -> {
-                setEffect { MyPageContract.Effect.NavigateToProfileSetting }
+                val nickname = viewState.value.nickname
+                val avatarId = viewState.value.avatarId ?: 1
+                setEffect { MyPageContract.Effect.NavigateToProfileSetting(nickname, avatarId) }
             }
 
             MyPageContract.Event.OnHomeSettingClick -> {
