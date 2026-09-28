@@ -25,6 +25,10 @@ data class GetHomeResponse(
 
 @Serializable
 data class HomeMemberResponse(
+    @SerialName("user_id")
+    val userId: String? = null,
+    @SerialName("uid")
+    val uid: String? = null,
     @SerialName("name")
     val name: String,
     @SerialName("profile_image")
@@ -49,6 +53,7 @@ fun GetHomeResponse.toDomainModel(): HomeResponseDomainModel {
 
 fun HomeMemberResponse.toDomainModel(): Member {
     return Member(
+        userId = this.userId ?: this.uid ?: "",
         name = this.name,
         profileImage = this.profileImage,
         role = this.role,

@@ -8,6 +8,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.devndev.homen.ui.component.NavTransitions
+import com.devndev.homen.ui.main.mypage.delegate.DelegateManagerScreen
 import com.devndev.homen.ui.main.mypage.edit.ProfileSettingScreen
 import com.devndev.homen.ui.main.mypage.main.MyPageScreen
 import com.devndev.homen.ui.main.mypage.setting.HomeSettingScreen
@@ -59,7 +60,23 @@ fun NavGraphBuilder.myPageNav(
             onNavBack = {
                 navController.popBackStack()
             },
+            onNavToDelegateManager = {
+                navController.navigate(MyPageRoute.DelegateManager)
+            },
             onNavToHomeIntro = onNavToIntro
+        )
+    }
+
+    composable<MyPageRoute.DelegateManager>(
+        enterTransition = NavTransitions.enterTransition,
+        exitTransition = NavTransitions.exitTransition,
+        popEnterTransition = NavTransitions.popEnterTransition,
+        popExitTransition = NavTransitions.popExitTransition
+    ) {
+        DelegateManagerScreen(
+            onNavBack = {
+                navController.popBackStack()
+            }
         )
     }
 }

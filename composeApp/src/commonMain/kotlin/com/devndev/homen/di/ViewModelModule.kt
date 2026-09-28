@@ -19,6 +19,7 @@ import com.devndev.homen.ui.main.homeintro.join.viewmodel.CodeEnterViewModel
 import com.devndev.homen.ui.main.homeintro.joinconfirm.viewmodel.JoinConfirmViewModel
 import com.devndev.homen.ui.main.homeintro.joindone.viewmodel.JoinDoneViewModel
 import com.devndev.homen.ui.main.homeintro.main.viewmodel.HomeIntroViewModel
+import com.devndev.homen.ui.main.mypage.delegate.viewmodel.DelegateManagerViewModel
 import com.devndev.homen.ui.main.mypage.edit.viewmodel.ProfileSettingViewModel
 import com.devndev.homen.ui.main.mypage.main.viewmodel.MyPageViewModel
 import com.devndev.homen.ui.main.mypage.setting.viewmodel.HomeSettingViewModel
@@ -59,4 +60,5 @@ val viewModelModule = module {
     viewModelOf(::MyPageViewModel)
     viewModelOf(::ProfileSettingViewModel)
     viewModelOf(::HomeSettingViewModel)
+    viewModelOf(::DelegateManagerViewModel)
 }

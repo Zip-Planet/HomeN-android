@@ -361,6 +361,17 @@
     <string name="home_setting_leave_confirm">나가기</string>
     <string name="home_setting_disband_confirm">해체하고 나가기</string>
 
+    <!-- 관리자 위임 화면 -->
+    <string name="delegate_manager_title">관리자 위임</string>
+    <string name="delegate_manager_header_title">새 관리자를 선택해주세요</string>
+    <string name="delegate_manager_header_subtitle">집 운영을 위해 새로운 관리자가 필요해요</string>
+    <string name="delegate_manager_btn">위임하기</string>
+    <string name="delegate_manager_popup_title">관리자를 위임할까요?</string>
+    <string name="delegate_manager_popup_subtitle">s님이 새 관리자가 돼요</string>
+    <string name="delegate_manager_current_label">현재 관리자 · s</string>
+    <string name="delegate_manager_new_label">새 관리자 · s</string>
+    <string name="delegate_manager_toast">관리자가 위임됐어요</string>
+
     <!-- 초대 팝업 -->
     <string name="invite_popup_title">s 초대코드</string>
     <string name="invite_popup_msg">구성원을 초대하고 집안일을 나눠보세요</string>

@@ -7,6 +7,7 @@ import com.devndev.homen.core.data.model.home.request.CreateChoreRequest
 import com.devndev.homen.core.data.model.home.request.CreateHomeRequest
 import com.devndev.homen.core.data.model.home.request.JoinHomeRequest
 import com.devndev.homen.core.data.model.home.request.MemoRequest
+import com.devndev.homen.core.data.model.home.request.TransferAdminRequest
 import com.devndev.homen.core.data.model.home.request.toDataModel
 import com.devndev.homen.core.data.model.home.request.toEditDataModel
 import com.devndev.homen.core.data.model.home.response.toDomainModel
@@ -50,6 +51,17 @@ class HomeRepositoryImpl(
         return try {
             val response = homeService.getHome()
             ApiResult.Success(response.toDomainModel())
+        } catch (e: ResponseException) {
+            ApiResult.Error(code = e.response.status.value, message = e.message)
+        } catch (e: Exception) {
+            ApiResult.NetworkError
+        }
+    }
+
+    override suspend fun deleteHome(): ApiResult<Unit> {
+        return try {
+            val response = homeService.deleteHome()
+            ApiResult.Success(response)
         } catch (e: ResponseException) {
             ApiResult.Error(code = e.response.status.value, message = e.message)
         } catch (e: Exception) {
@@ -286,6 +298,28 @@ class HomeRepositoryImpl(
         return try {
             val response = homeService.getWeeklyReport(weekStart)
             ApiResult.Success(response.toDomainModel())
+        } catch (e: ResponseException) {
+            ApiResult.Error(code = e.response.status.value, message = e.message)
+        } catch (e: Exception) {
+            ApiResult.NetworkError
+        }
+    }
+
+    override suspend fun transferAdmin(userId: String): ApiResult<Unit> {
+        return try {
+            homeService.transferAdmin(TransferAdminRequest(userId))
+            ApiResult.Success(Unit)
+        } catch (e: ResponseException) {
+            ApiResult.Error(code = e.response.status.value, message = e.message)
+        } catch (e: Exception) {
+            ApiResult.NetworkError
+        }
+    }
+
+    override suspend fun leaveHome(): ApiResult<Unit> {
+        return try {
+            homeService.leaveHome()
+            ApiResult.Success(Unit)
         } catch (e: ResponseException) {
             ApiResult.Error(code = e.response.status.value, message = e.message)
         } catch (e: Exception) {

@@ -3,13 +3,17 @@ package com.devndev.homen.ui.main.mypage.setting.viewmodel
 import androidx.lifecycle.viewModelScope
 import com.devndev.homen.core.common.base.BaseViewModel
 import com.devndev.homen.core.domain.model.common.ApiResult
+import com.devndev.homen.core.domain.usecase.home.DeleteHomeUseCase
 import com.devndev.homen.core.domain.usecase.home.GetHomeUseCase
+import com.devndev.homen.core.domain.usecase.home.LeaveHomeUseCase
 import com.devndev.homen.core.domain.usecase.user.GetMyInfoUseCase
 import kotlinx.coroutines.launch
 
 class HomeSettingViewModel(
     private val getHomeUseCase: GetHomeUseCase,
-    private val getMyInfoUseCase: GetMyInfoUseCase
+    private val getMyInfoUseCase: GetMyInfoUseCase,
+    private val leaveHomeUseCase: LeaveHomeUseCase,
+    private val deleteHomeUseCase: DeleteHomeUseCase
 ) : BaseViewModel<HomeSettingContract.Event, HomeSettingContract.State, HomeSettingContract.Effect>() {
 
     override fun setInitialState() = HomeSettingContract.State()
@@ -42,7 +46,7 @@ class HomeSettingViewModel(
             }
 
             HomeSettingContract.Event.OnConfirmDisband -> {
-                disbandHome()
+                deleteHome()
             }
 
             HomeSettingContract.Event.OnDismissPopup -> {
@@ -86,18 +90,30 @@ class HomeSettingViewModel(
     }
 
     private fun leaveHome() {
-        setState { copy(activePopup = HomeSettingContract.SettingPopupType.NONE, isLoading = true) }
+        setState { copy(activePopup = HomeSettingContract.SettingPopupType.NONE) }
         viewModelScope.launch {
-            setEffect { HomeSettingContract.Effect.NavigateToHomeIntro }
-            setState { copy(isLoading = false) }
+            when (leaveHomeUseCase()) {
+                is ApiResult.Success -> {
+                    setEffect { HomeSettingContract.Effect.NavigateToHomeIntro }
+                }
+                is ApiResult.Error, ApiResult.NetworkError -> {
+                    // Handle error if needed
+                }
+            }
         }
     }
 
-    private fun disbandHome() {
-        setState { copy(activePopup = HomeSettingContract.SettingPopupType.NONE, isLoading = true) }
+    private fun deleteHome() {
+        setState { copy(activePopup = HomeSettingContract.SettingPopupType.NONE) }
         viewModelScope.launch {
-            setEffect { HomeSettingContract.Effect.NavigateToHomeIntro }
-            setState { copy(isLoading = false) }
+            when(deleteHomeUseCase()) {
+                is ApiResult.Success -> {
+                    setEffect { HomeSettingContract.Effect.NavigateToHomeIntro }
+                }
+                is ApiResult.Error, ApiResult.NetworkError -> {
+                    // Handle error if needed
+                }
+            }
         }
     }
 }

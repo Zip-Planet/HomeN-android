@@ -31,7 +31,6 @@ import androidx.compose.ui.unit.sp
 import com.devndev.homen.core.domain.model.home.AvatarType
 import com.devndev.homen.core.domain.model.home.HomeIconType
 import com.devndev.homen.core.domain.model.home.Member
-import com.devndev.homen.ui.common.bigResource
 import com.devndev.homen.ui.common.resource
 import com.devndev.homen.ui.common.smallResource
 import com.devndev.homen.ui.component.BackHandler
@@ -44,7 +43,6 @@ import com.devndev.homen.ui.main.mypage.setting.viewmodel.HomeSettingContract
 import com.devndev.homen.ui.main.mypage.setting.viewmodel.HomeSettingViewModel
 import com.devndev.homen.ui.theme.BackgroundGray
 import com.devndev.homen.ui.theme.Blue2
-import com.devndev.homen.ui.theme.BottomGray
 import com.devndev.homen.ui.theme.ButtonGray
 import com.devndev.homen.ui.theme.HomeNTheme
 import homen.composeapp.generated.resources.Res
@@ -140,7 +138,7 @@ fun HomeSettingScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .clip(RoundedCornerShape(10.dp))
-                            .background(Color.White)
+                            .background(BackgroundGray)
                             .padding(vertical = 20.dp, horizontal = 15.dp),
                         verticalArrangement = Arrangement.spacedBy(4.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
@@ -193,7 +191,7 @@ fun HomeSettingScreen(
                 onBackClick = { viewModel.setEvent(HomeSettingContract.Event.OnBackClick) }
             )
         },
-        isLoading = uiState.isLoading
+        mainIsLoading = uiState.isLoading
     ) {
         Column(
             modifier = Modifier

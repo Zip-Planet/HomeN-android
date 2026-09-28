@@ -9,6 +9,7 @@ import com.devndev.homen.core.data.model.home.request.CreateHomeRequest
 import com.devndev.homen.core.data.model.home.request.EditChoreRequest
 import com.devndev.homen.core.data.model.home.request.JoinHomeRequest
 import com.devndev.homen.core.data.model.home.request.MemoRequest
+import com.devndev.homen.core.data.model.home.request.TransferAdminRequest
 import com.devndev.homen.core.data.model.home.response.ChoreDetailResponse
 import com.devndev.homen.core.data.model.home.response.ChoreResponse
 import com.devndev.homen.core.data.model.home.response.ConfirmAssignmentResponse
@@ -58,6 +59,20 @@ class HomeServiceImpl(
     override suspend fun getHome(): GetHomeResponse {
         val accessToken = tokenRepository.getAccessToken().first()
         return client.get {
+            url {
+                takeFrom(Config.BASE_URL)
+                encodedPath += HomeService.GET_HOME
+            }
+            contentType(ContentType.Application.Json)
+            accessToken?.let {
+                header(HttpHeaders.Authorization, "Bearer $it")
+            }
+        }.body()
+    }
+
+    override suspend fun deleteHome() {
+        val accessToken = tokenRepository.getAccessToken().first()
+        return client.delete {
             url {
                 takeFrom(Config.BASE_URL)
                 encodedPath += HomeService.GET_HOME
@@ -349,5 +364,34 @@ class HomeServiceImpl(
                 header(HttpHeaders.Authorization, "Bearer $it")
             }
         }.body()
+    }
+
+    override suspend fun transferAdmin(transferAdminRequest: TransferAdminRequest) {
+        val accessToken = tokenRepository.getAccessToken().first()
+        client.post {
+            url {
+                takeFrom(Config.BASE_URL)
+                encodedPath += HomeService.TRANSFER_ADMIN
+            }
+            contentType(ContentType.Application.Json)
+            accessToken?.let {
+                header(HttpHeaders.Authorization, "Bearer $it")
+            }
+            setBody(transferAdminRequest)
+        }
+    }
+
+    override suspend fun leaveHome() {
+        val accessToken = tokenRepository.getAccessToken().first()
+        client.post {
+            url {
+                takeFrom(Config.BASE_URL)
+                encodedPath += HomeService.LEAVE_HOME
+            }
+            contentType(ContentType.Application.Json)
+            accessToken?.let {
+                header(HttpHeaders.Authorization, "Bearer $it")
+            }
+        }
     }
 }

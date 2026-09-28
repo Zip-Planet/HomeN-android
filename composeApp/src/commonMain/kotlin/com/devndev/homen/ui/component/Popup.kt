@@ -190,7 +190,7 @@ fun HomeNPopup(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(BackgroundGray, RoundedCornerShape(10.dp))
+                .background(Color.White, RoundedCornerShape(10.dp))
                 .padding(16.dp)
         ) {
             Icon(

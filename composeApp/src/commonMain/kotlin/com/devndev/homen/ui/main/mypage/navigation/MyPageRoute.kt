@@ -15,4 +15,7 @@ sealed interface MyPageRoute {
 
     @Serializable
     data object HomeSetting: MyPageRoute
+
+    @Serializable
+    data object DelegateManager: MyPageRoute
 }
