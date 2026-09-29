@@ -6,6 +6,8 @@ import com.devndev.homen.core.domain.model.common.ApiResult
 import com.devndev.homen.core.domain.usecase.auth.ClearTokenUseCase
 import com.devndev.homen.core.domain.usecase.auth.LogoutUseCase
 import com.devndev.homen.core.domain.usecase.home.GetHomeUseCase
+import com.devndev.homen.core.domain.usecase.notification.GetNotificationSettingUseCase
+import com.devndev.homen.core.domain.usecase.notification.UpdateNotificationSettingUseCase
 import com.devndev.homen.core.domain.usecase.user.GetMyInfoUseCase
 import com.devndev.homen.util.ShareManager
 import kotlinx.coroutines.launch
@@ -15,7 +17,9 @@ class MyPageViewModel(
     private val getHomeUseCase: GetHomeUseCase,
     private val logoutUseCase: LogoutUseCase,
     private val clearTokenUseCase: ClearTokenUseCase,
-    private val shareManager: ShareManager
+    private val shareManager: ShareManager,
+    private val getNotificationSettingUseCase: GetNotificationSettingUseCase,
+    private val updateNotificationSettingUseCase: UpdateNotificationSettingUseCase
 ) : BaseViewModel<MyPageContract.Event, MyPageContract.State, MyPageContract.Effect>() {
 
     override fun setInitialState() = MyPageContract.State()
@@ -37,21 +41,85 @@ class MyPageViewModel(
             }
 
             MyPageContract.Event.OnPushToggle -> {
+                val newPushEnabled = !viewState.value.isPushEnabled
                 setState {
                     copy(
-                        isPushEnabled = !isPushEnabled,
-                        isPushDetailExpanded = !isPushEnabled
+                        isPushEnabled = newPushEnabled,
+                        isPushDetailExpanded = newPushEnabled
                     )
+                }
+                viewModelScope.launch {
+                    val result = updateNotificationSettingUseCase(pushEnabled = newPushEnabled)
+                    if (result is ApiResult.Success) {
+                        val data = result.data
+                        setState {
+                            copy(
+                                isPushEnabled = data.pushEnabled,
+                                isPushDetailExpanded = data.pushEnabled,
+                                isHomeAlarmEnabled = data.homeMember,
+                                isAssignmentAlarmEnabled = data.assignment,
+                                isBoardAlarmEnabled = data.board,
+                                isRewardAlarmEnabled = data.reward,
+                                isReportAlarmEnabled = data.report
+                            )
+                        }
+                    }
                 }
             }
 
             is MyPageContract.Event.OnSubPushToggle -> {
+                val current = viewState.value
+                var homeMember: Boolean? = null
+                var assignment: Boolean? = null
+                var board: Boolean? = null
+                var reward: Boolean? = null
+                var report: Boolean? = null
+
                 when (event.type) {
-                    MyPageContract.PushType.HOME -> setState { copy(isHomeAlarmEnabled = !isHomeAlarmEnabled) }
-                    MyPageContract.PushType.ASSIGNMENT -> setState { copy(isAssignmentAlarmEnabled = !isAssignmentAlarmEnabled) }
-                    MyPageContract.PushType.BOARD -> setState { copy(isBoardAlarmEnabled = !isBoardAlarmEnabled) }
-                    MyPageContract.PushType.REWARD -> setState { copy(isRewardAlarmEnabled = !isRewardAlarmEnabled) }
-                    MyPageContract.PushType.REPORT -> setState { copy(isReportAlarmEnabled = !isReportAlarmEnabled) }
+                    MyPageContract.PushType.HOME -> {
+                        homeMember = !current.isHomeAlarmEnabled
+                        setState { copy(isHomeAlarmEnabled = homeMember) }
+                    }
+                    MyPageContract.PushType.ASSIGNMENT -> {
+                        assignment = !current.isAssignmentAlarmEnabled
+                        setState { copy(isAssignmentAlarmEnabled = assignment) }
+                    }
+                    MyPageContract.PushType.BOARD -> {
+                        board = !current.isBoardAlarmEnabled
+                        setState { copy(isBoardAlarmEnabled = board) }
+                    }
+                    MyPageContract.PushType.REWARD -> {
+                        reward = !current.isRewardAlarmEnabled
+                        setState { copy(isRewardAlarmEnabled = reward) }
+                    }
+                    MyPageContract.PushType.REPORT -> {
+                        report = !current.isReportAlarmEnabled
+                        setState { copy(isReportAlarmEnabled = report) }
+                    }
+                }
+
+                viewModelScope.launch {
+                    val result = updateNotificationSettingUseCase(
+                        homeMember = homeMember,
+                        assignment = assignment,
+                        board = board,
+                        reward = reward,
+                        report = report
+                    )
+                    if (result is ApiResult.Success) {
+                        val data = result.data
+                        setState {
+                            copy(
+                                isPushEnabled = data.pushEnabled,
+                                isPushDetailExpanded = data.pushEnabled,
+                                isHomeAlarmEnabled = data.homeMember,
+                                isAssignmentAlarmEnabled = data.assignment,
+                                isBoardAlarmEnabled = data.board,
+                                isRewardAlarmEnabled = data.reward,
+                                isReportAlarmEnabled = data.report
+                            )
+                        }
+                    }
                 }
             }
 
@@ -86,6 +154,7 @@ class MyPageViewModel(
         viewModelScope.launch {
             val myInfoResult = getMyInfoUseCase()
             val homeResult = getHomeUseCase()
+            val notificationResult = getNotificationSettingUseCase()
 
             if (myInfoResult is ApiResult.Success) {
                 setState {
@@ -105,6 +174,22 @@ class MyPageViewModel(
                     )
                 }
             }
+
+            if (notificationResult is ApiResult.Success) {
+                val data = notificationResult.data
+                setState {
+                    copy(
+                        isPushEnabled = data.pushEnabled,
+                        isPushDetailExpanded = data.pushEnabled,
+                        isHomeAlarmEnabled = data.homeMember,
+                        isAssignmentAlarmEnabled = data.assignment,
+                        isBoardAlarmEnabled = data.board,
+                        isRewardAlarmEnabled = data.reward,
+                        isReportAlarmEnabled = data.report
+                    )
+                }
+            }
+
             setState { copy(mainIsLoading = false) }
         }
     }
