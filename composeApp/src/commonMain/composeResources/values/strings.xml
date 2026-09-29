@@ -16,6 +16,16 @@
     <string name="confirm">확정</string>
     <string name="cancel">취소</string>
     <string name="reward">리워드</string>
+    <string name="my_page">마이</string>
+    <string name="my_page_invite_code_format">초대 코드 · s</string>
+    <string name="my_page_push_alarm">푸시 알림</string>
+    <string name="my_page_push_home">집/구성원 알림</string>
+    <string name="my_page_push_assignment">분담안 알림</string>
+    <string name="my_page_push_board">보드 조율 알림</string>
+    <string name="my_page_push_reward">리워드 알림</string>
+    <string name="my_page_push_report">리포트 알림</string>
+    <string name="my_page_support">약관/도움말 및 고객 지원</string>
+    <string name="my_page_copy_toast">초대 코드를 복사했습니다.</string>
 
     <!-- Splash 화면 -->
     <string name="login_screen_msg1">집안일을 데이터로 공평하게</string>
@@ -325,6 +335,42 @@
     <string name="reward_member_title">구성원 현황</string>
     <string name="reward_available_point_label">보유 포인트</string>
     <string name="reward_achievement_rate_label">달성률</string>
+
+    <!-- 마이 페이지 화면 -->
+    <string name="my_page_logout_popup_title">로그아웃 할까요?</string>
+    <string name="my_page_logout_confirm_btn">로그아웃</string>
+    <string name="edit_profile_title">프로필 수정</string>
+    <string name="nickname_edit_subtitle">특수문자 제외 한글, 영어만 입력 가능해요</string>
+    <string name="nickname_label">닉네임</string>
+    <string name="avatar_label">아바타</string>
+    <string name="profile_saved_toast">프로필이 저장됐어요</string>
+
+    <!-- 우리집 설정 화면 -->
+    <string name="home_setting_title">우리집 설정</string>
+    <string name="home_setting_member_count">n명의 구성원</string>
+    <string name="home_setting_member_section">구성원</string>
+    <string name="home_setting_delegate_manager">관리자 위임</string>
+    <string name="home_setting_leave_home_btn">s 에서 나가기</string>
+    <string name="home_setting_leave_popup_title">s 에서 나갈까요?</string>
+    <string name="home_setting_cannot_leave_popup_title">s 에서 나갈 수 없어요</string>
+    <string name="home_setting_cannot_leave_popup_msg">관리자는 바로 나갈 수 없어요\n다른 구성원에게 권한을 위임해 주세요</string>
+    <string name="home_setting_disband_popup_title">s 집을 해체할까요?</string>
+    <string name="home_setting_disband_popup_msg">더 이상 구성원이 남지 않아 집이 해체돼요</string>
+    <string name="home_setting_disband_bullet1">해체되면 모든 기록이 삭제돼요</string>
+    <string name="home_setting_disband_bullet2">새로운 집을 만들거나 참여할 수 있어요</string>
+    <string name="home_setting_leave_confirm">나가기</string>
+    <string name="home_setting_disband_confirm">해체하고 나가기</string>
+
+    <!-- 관리자 위임 화면 -->
+    <string name="delegate_manager_title">관리자 위임</string>
+    <string name="delegate_manager_header_title">새 관리자를 선택해주세요</string>
+    <string name="delegate_manager_header_subtitle">집 운영을 위해 새로운 관리자가 필요해요</string>
+    <string name="delegate_manager_btn">위임하기</string>
+    <string name="delegate_manager_popup_title">관리자를 위임할까요?</string>
+    <string name="delegate_manager_popup_subtitle">s님이 새 관리자가 돼요</string>
+    <string name="delegate_manager_current_label">현재 관리자 · s</string>
+    <string name="delegate_manager_new_label">새 관리자 · s</string>
+    <string name="delegate_manager_toast">관리자가 위임됐어요</string>
 
     <!-- 초대 팝업 -->
     <string name="invite_popup_title">s 초대코드</string>

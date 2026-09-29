@@ -11,6 +11,7 @@ data class HomeResponseDomainModel(
 )
 
 data class Member(
+    val userId: String = "",
     val name: String,
     val profileImage: Int?,
     val role: Int, // 1=관리자, 2=구성원

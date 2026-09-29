@@ -15,6 +15,7 @@ interface HomeRepository {
     suspend fun createHome(createHome: CreateHome): ApiResult<HomeResponseDomainModel>
     suspend fun getHome(): ApiResult<HomeResponseDomainModel>
     suspend fun getHasHome(): ApiResult<Boolean>
+    suspend fun deleteHome(): ApiResult<Unit>
     suspend fun getJoinHome(code: String): ApiResult<JoinHomeResponseDomainModel>
     suspend fun joinHome(code: String): ApiResult<Unit>
     suspend fun createChore(chores: List<Chore>): ApiResult<Unit>
@@ -35,4 +36,6 @@ interface HomeRepository {
     suspend fun cancelCompleteChore(homeChoreId: Int, completionDate: String): ApiResult<Unit>
 
     suspend fun getWeeklyReport(weekStart: String): ApiResult<WeeklyReport>
+    suspend fun transferAdmin(userId: String): ApiResult<Unit>
+    suspend fun leaveHome(): ApiResult<Unit>
 }

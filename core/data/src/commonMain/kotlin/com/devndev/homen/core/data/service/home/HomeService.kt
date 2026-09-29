@@ -8,6 +8,7 @@ import com.devndev.homen.core.data.model.home.request.CreateHomeRequest
 import com.devndev.homen.core.data.model.home.request.EditChoreRequest
 import com.devndev.homen.core.data.model.home.request.JoinHomeRequest
 import com.devndev.homen.core.data.model.home.request.MemoRequest
+import com.devndev.homen.core.data.model.home.request.TransferAdminRequest
 import com.devndev.homen.core.data.model.home.response.ChoreDetailResponse
 import com.devndev.homen.core.data.model.home.response.ChoreResponse
 import com.devndev.homen.core.data.model.home.response.ConfirmAssignmentResponse
@@ -31,10 +32,13 @@ interface HomeService {
 
         const val ASSIGNMENT = "/homes/mine/assignments/"
         const val WEEKLY_REPORT = "/homes/mine/reports/weekly/"
+        const val TRANSFER_ADMIN = "/homes/mine/transfer-admin/"
+        const val LEAVE_HOME = "/homes/mine/leave/"
     }
 
     suspend fun createHome(createHomeRequest: CreateHomeRequest): CreateHomeResponse
     suspend fun getHome(): GetHomeResponse
+    suspend fun deleteHome()
     suspend fun getHasHome(): GetHasHomeResponse
     suspend fun getJoinHome(code: String): JoinHomeResponse
     suspend fun joinHome(joinHomeRequest: JoinHomeRequest)
@@ -63,4 +67,6 @@ interface HomeService {
     suspend fun cancelCompleteChore(homeChoreId: Int, completionDate: String)
 
     suspend fun getWeeklyReport(weekStart: String): WeeklyReportResponse
+    suspend fun transferAdmin(transferAdminRequest: TransferAdminRequest)
+    suspend fun leaveHome()
 }

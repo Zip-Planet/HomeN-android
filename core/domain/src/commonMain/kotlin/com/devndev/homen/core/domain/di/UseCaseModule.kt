@@ -22,6 +22,7 @@ import com.devndev.homen.core.domain.usecase.home.CreateChoreUseCase
 import com.devndev.homen.core.domain.usecase.home.CreateHomeUseCase
 import com.devndev.homen.core.domain.usecase.home.CreateMemoUseCase
 import com.devndev.homen.core.domain.usecase.home.DeleteChoreUseCase
+import com.devndev.homen.core.domain.usecase.home.DeleteHomeUseCase
 import com.devndev.homen.core.domain.usecase.home.DeleteMemoUseCase
 import com.devndev.homen.core.domain.usecase.home.EditChoreUseCase
 import com.devndev.homen.core.domain.usecase.home.EditMemoUseCase
@@ -34,7 +35,11 @@ import com.devndev.homen.core.domain.usecase.home.GetJoinHomeUseCase
 import com.devndev.homen.core.domain.usecase.home.GetMemosUseCase
 import com.devndev.homen.core.domain.usecase.home.GetWeeklyReportUseCase
 import com.devndev.homen.core.domain.usecase.home.JoinHomeUseCase
+import com.devndev.homen.core.domain.usecase.home.LeaveHomeUseCase
 import com.devndev.homen.core.domain.usecase.home.RegenerateAssignmentUseCase
+import com.devndev.homen.core.domain.usecase.home.TransferAdminUseCase
+import com.devndev.homen.core.domain.usecase.notification.GetNotificationSettingUseCase
+import com.devndev.homen.core.domain.usecase.notification.UpdateNotificationSettingUseCase
 import com.devndev.homen.core.domain.usecase.reward.ClaimRewardUseCase
 import com.devndev.homen.core.domain.usecase.reward.CreateRewardUseCase
 import com.devndev.homen.core.domain.usecase.reward.DeleteRewardUseCase
@@ -64,6 +69,7 @@ val useCaseModule = module {
     factoryOf(::CreateHomeUseCase)
     factoryOf(::GetHomeUseCase)
     factoryOf(::GetHasHomeUseCase)
+    factoryOf(::DeleteHomeUseCase)
     factoryOf(::GetJoinHomeUseCase)
     factoryOf(::JoinHomeUseCase)
     factoryOf(::CreateChoreUseCase)
@@ -82,6 +88,8 @@ val useCaseModule = module {
     factoryOf(::CompleteChoreUseCase)
     factoryOf(::CancelCompleteChoreUseCase)
     factoryOf(::GetWeeklyReportUseCase)
+    factoryOf(::TransferAdminUseCase)
+    factoryOf(::LeaveHomeUseCase)
 
     // board
     factoryOf(::GetBoardUseCase)
@@ -108,4 +116,8 @@ val useCaseModule = module {
 
     // splash
     factoryOf(::CheckTokenUseCase)
+
+    // notification
+    factoryOf(::GetNotificationSettingUseCase)
+    factoryOf(::UpdateNotificationSettingUseCase)
 }

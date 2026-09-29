@@ -177,19 +177,20 @@ fun InvitePopup(
 @Composable
 fun HomeNPopup(
     title: String,
-    message: String,
+    message: String = "",
     startButtonText: String,
     onStartButtonClick: () -> Unit,
     endButtonText: String = "",
     onEndButtonClick: () -> Unit = {},
     isTwoButton: Boolean = true,
+    content: (@Composable () -> Unit)? = null,
     onDismiss: () -> Unit
 ) {
     Dialog(onDismissRequest = onDismiss) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(BackgroundGray, RoundedCornerShape(10.dp))
+                .background(Color.White, RoundedCornerShape(10.dp))
                 .padding(16.dp)
         ) {
             Icon(
@@ -220,15 +221,22 @@ fun HomeNPopup(
                     color = Color.Black
                 )
 
-                Spacer(modifier = Modifier.height(10.dp))
+                if (message.isNotEmpty()) {
+                    Spacer(modifier = Modifier.height(10.dp))
 
-                Text(
-                    text = message,
-                    style = HomeNTheme.typography.suitMedium,
-                    fontSize = 14.sp,
-                    color = Color.Black,
-                    textAlign = TextAlign.Center
-                )
+                    Text(
+                        text = message,
+                        style = HomeNTheme.typography.suitMedium,
+                        fontSize = 14.sp,
+                        color = Color.Black,
+                        textAlign = TextAlign.Center
+                    )
+                }
+
+                if (content != null) {
+                    Spacer(modifier = Modifier.height(15.dp))
+                    content()
+                }
 
                 Spacer(modifier = Modifier.height(44.dp))
 

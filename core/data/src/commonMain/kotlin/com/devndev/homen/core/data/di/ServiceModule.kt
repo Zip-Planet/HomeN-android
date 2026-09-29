@@ -6,6 +6,8 @@ import com.devndev.homen.core.data.service.board.BoardService
 import com.devndev.homen.core.data.service.board.BoardServiceImpl
 import com.devndev.homen.core.data.service.home.HomeService
 import com.devndev.homen.core.data.service.home.HomeServiceImpl
+import com.devndev.homen.core.data.service.notification.NotificationService
+import com.devndev.homen.core.data.service.notification.NotificationServiceImpl
 import com.devndev.homen.core.data.service.reward.RewardService
 import com.devndev.homen.core.data.service.reward.RewardServiceImpl
 import com.devndev.homen.core.data.service.user.UserService
@@ -19,4 +21,5 @@ val serviceModule = module {
     single<UserService> { UserServiceImpl(get(), get()) }
     single<RewardService> { RewardServiceImpl(get(), get()) }
     single<BoardService> { BoardServiceImpl(get(), get()) }
+    single<NotificationService> { NotificationServiceImpl(get(), get()) }
 }
