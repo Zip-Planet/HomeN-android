@@ -52,7 +52,8 @@ fun RewardScreen(
     viewModel: RewardViewModel = koinViewModel(),
     onNavToEditReward: (Int?, String?, String?, Boolean) -> Unit,
     onNavToRewardDetail: (Int) -> Unit,
-    paddingValues: PaddingValues
+    paddingValues: PaddingValues,
+    onNavToNotification: () -> Unit = {}
 ) {
     val uiState by viewModel.viewState
     val snackbarHostState = remember { SnackbarHostState() }
@@ -104,7 +105,8 @@ fun RewardScreen(
     HomeNScreen(
         topBar = {
             NotificationTopBar(
-                title = stringResource(Res.string.reward)
+                title = stringResource(Res.string.reward),
+                onNotificationClick = onNavToNotification
             )
         },
         isLoading = uiState.isLoading,

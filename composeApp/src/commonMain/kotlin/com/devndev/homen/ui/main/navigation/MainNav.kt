@@ -23,6 +23,8 @@ import com.devndev.homen.ui.main.homeintro.navigation.HomeIntroRoute
 import com.devndev.homen.ui.main.homeintro.navigation.homeIntroNav
 import com.devndev.homen.ui.main.mypage.navigation.MyPageRoute
 import com.devndev.homen.ui.main.mypage.navigation.myPageNav
+import com.devndev.homen.ui.main.notification.navigation.NotificationRoute
+import com.devndev.homen.ui.main.notification.navigation.notificationNav
 import com.devndev.homen.ui.main.reward.navigation.RewardRoute
 import com.devndev.homen.ui.main.reward.navigation.rewardNav
 import com.devndev.homen.ui.main.viewmodel.MainContract
@@ -68,10 +70,11 @@ fun MainNav(
     val isProfileSetting = currentDestination?.hasRoute<MyPageRoute.ProfileSetting>() == true
     val isHomeSetting = currentDestination?.hasRoute<MyPageRoute.HomeSetting>() == true
     val isDelegateManager = currentDestination?.hasRoute<MyPageRoute.DelegateManager>() == true
+    val isNotificationInbox = currentDestination?.hasRoute<NotificationRoute.NotificationInbox>() == true
 
     Scaffold(
         bottomBar = {
-            if (hasHome && !isHomeIntroRoute && !isChoreManage && !isRewardNotRewardMain && !isBoardRequest && !isProfileSetting && !isHomeSetting && !isDelegateManager) {
+            if (hasHome && !isHomeIntroRoute && !isChoreManage && !isRewardNotRewardMain && !isBoardRequest && !isProfileSetting && !isHomeSetting && !isDelegateManager && !isNotificationInbox) {
                 MainBottomBar(navController = mainNavController)
             }
         },
@@ -99,6 +102,7 @@ fun MainNav(
             assignmentNav(mainNavController, paddingValues)
             rewardNav(mainNavController, paddingValues)
             myPageNav(mainNavController, paddingValues, onNavToIntro)
+            notificationNav(mainNavController, paddingValues)
         }
     }
 }

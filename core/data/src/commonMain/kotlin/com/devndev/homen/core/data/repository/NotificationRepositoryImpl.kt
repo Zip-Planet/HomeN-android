@@ -4,6 +4,7 @@ import com.devndev.homen.core.data.model.notification.request.UpdateNotification
 import com.devndev.homen.core.data.model.notification.response.toDomainModel
 import com.devndev.homen.core.data.service.notification.NotificationService
 import com.devndev.homen.core.domain.model.common.ApiResult
+import com.devndev.homen.core.domain.model.notification.NotificationList
 import com.devndev.homen.core.domain.model.notification.NotificationSetting
 import com.devndev.homen.core.domain.repository.NotificationRepository
 import io.ktor.client.plugins.ResponseException
@@ -42,6 +43,17 @@ class NotificationRepositoryImpl(
                     report = report
                 )
             )
+            ApiResult.Success(response.toDomainModel())
+        } catch (e: ResponseException) {
+            ApiResult.Error(code = e.response.status.value, message = e.message)
+        } catch (e: Exception) {
+            ApiResult.NetworkError
+        }
+    }
+
+    override suspend fun getNotifications(category: String?): ApiResult<NotificationList> {
+        return try {
+            val response = notificationService.getNotifications(category)
             ApiResult.Success(response.toDomainModel())
         } catch (e: ResponseException) {
             ApiResult.Error(code = e.response.status.value, message = e.message)

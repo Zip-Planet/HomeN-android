@@ -75,7 +75,8 @@ fun AssignmentScreen(
     viewModel: AssignmentViewModel = koinViewModel(),
     initialTab: AssignmentTab,
     onNavToChoreManage: () -> Unit,
-    paddingValues: PaddingValues
+    paddingValues: PaddingValues,
+    onNavToNotification: () -> Unit = {}
 ) {
     val uiState by viewModel.viewState
 
@@ -137,7 +138,7 @@ fun AssignmentScreen(
         topBar = {
             NotificationTopBar(
                 title = stringResource(Res.string.division_plan),
-                onNotificationClick = {}
+                onNotificationClick = onNavToNotification
             )
         },
         isLoading = uiState.isLoading,

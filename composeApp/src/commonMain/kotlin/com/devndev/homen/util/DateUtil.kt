@@ -1,6 +1,7 @@
 package com.devndev.homen.util
 
 import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
@@ -77,4 +78,36 @@ object DateUtil {
     fun getNextWeekMonday(): String = getMondayOfWeek(1)
     fun getLastWeekMonday(): String = getMondayOfWeek(-1)
     fun getTwoWeeksAgoMonday(): String = getMondayOfWeek(-2)
+
+    /**
+     * ISO 8601 일시 문자열(예: "2026-09-28T11:24:58.212350Z")을
+     * 현재 시간 대비 상대 시간 문자열("방금", "1분 전"~"59분 전", "1시간 전"~"23시간 전", "1일 전" 등)로 변환합니다.
+     */
+    fun formatRelativeTime(isoString: String): String {
+        if (isoString.isBlank()) return "방금"
+        return try {
+            val sanitizedIso = if (!isoString.endsWith("Z") && !isoString.contains("+")) {
+                "${isoString}Z"
+            } else {
+                isoString
+            }
+            val createdInstant = Instant.parse(sanitizedIso)
+            val nowInstant = Clock.System.now()
+            val duration = nowInstant - createdInstant
+
+            val seconds = duration.inWholeSeconds
+            val minutes = duration.inWholeMinutes
+            val hours = duration.inWholeHours
+            val days = duration.inWholeDays
+
+            when {
+                seconds < 60 -> "방금"
+                minutes < 60 -> "${minutes}분 전"
+                hours < 24 -> "${hours}시간 전"
+                else -> "${days}일 전"
+            }
+        } catch (e: Exception) {
+            "방금"
+        }
+    }
 }

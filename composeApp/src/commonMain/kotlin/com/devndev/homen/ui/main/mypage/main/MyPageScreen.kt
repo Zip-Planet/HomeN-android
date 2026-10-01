@@ -82,7 +82,8 @@ fun MyPageScreen(
     viewModel: MyPageViewModel = koinViewModel(),
     onNavToLogin: () -> Unit,
     onNavToProfileSetting: (String, Int) -> Unit = { _, _ -> },
-    onNavToHomeSetting: () -> Unit = {}
+    onNavToHomeSetting: () -> Unit = {},
+    onNavToNotification: () -> Unit = {}
 ) {
     val uiState by viewModel.viewState
     val clipboard = LocalClipboardManager.current
@@ -132,7 +133,7 @@ fun MyPageScreen(
         topBar = {
             NotificationTopBar(
                 title = stringResource(Res.string.my_page),
-                onNotificationClick = {}
+                onNotificationClick = onNavToNotification
             )
         },
         mainIsLoading = uiState.mainIsLoading,

@@ -13,6 +13,7 @@ import com.devndev.homen.ui.main.mypage.edit.ProfileSettingScreen
 import com.devndev.homen.ui.main.mypage.main.MyPageScreen
 import com.devndev.homen.ui.main.mypage.setting.HomeSettingScreen
 import com.devndev.homen.ui.main.navigation.BottomNavItem
+import com.devndev.homen.ui.main.notification.navigation.NotificationRoute
 
 fun NavGraphBuilder.myPageNav(
     navController: NavController,
@@ -30,6 +31,9 @@ fun NavGraphBuilder.myPageNav(
             },
             onNavToHomeSetting = {
                 navController.navigate(MyPageRoute.HomeSetting)
+            },
+            onNavToNotification = {
+                navController.navigate(NotificationRoute.NotificationInbox)
             }
         )
     }
