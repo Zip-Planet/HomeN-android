@@ -100,6 +100,7 @@ fun HomeScreen(
     viewModel: HomeViewModel = koinViewModel(),
     onNavToChoreManage: () -> Unit,
     onNavToAssignment: (Boolean) -> Unit,
+    onNavToNotification: () -> Unit = {}
 ) {
     val uiState by viewModel.viewState
     val snackbarHostState = remember { SnackbarHostState() }
@@ -147,7 +148,7 @@ fun HomeScreen(
         topBar = {
             NotificationTopBar(
                 title = stringResource(Res.string.app_logo),
-                onNotificationClick = {}
+                onNotificationClick = onNavToNotification
             )
         },
         isLoading = uiState.isLoading,

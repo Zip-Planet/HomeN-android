@@ -16,6 +16,7 @@ import com.devndev.homen.ui.main.board.exchange.BoardExchangeScreen
 import com.devndev.homen.ui.main.board.help.BoardHelpScreen
 import com.devndev.homen.ui.main.board.main.BoardScreen
 import com.devndev.homen.ui.main.navigation.BottomNavItem
+import com.devndev.homen.ui.main.notification.navigation.NotificationRoute
 
 fun NavGraphBuilder.boardNav(
     navController: NavController,
@@ -50,6 +51,9 @@ fun NavGraphBuilder.boardNav(
             },
             onNavToExchange = {
                 navController.navigate(BoardRoute.BoardExchange)
+            },
+            onNavToNotification = {
+                navController.navigate(NotificationRoute.NotificationInbox)
             }
         )
     }

@@ -9,6 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.devndev.homen.ui.component.NavTransitions
 import com.devndev.homen.ui.main.navigation.BottomNavItem
+import com.devndev.homen.ui.main.notification.navigation.NotificationRoute
 import com.devndev.homen.ui.main.reward.detail.RewardDetailScreen
 import com.devndev.homen.ui.main.reward.edit.RewardEditScreen
 import com.devndev.homen.ui.main.reward.main.RewardScreen
@@ -29,7 +30,10 @@ fun NavGraphBuilder.rewardNav(
                 navController.navigate(RewardRoute.RewardDetail(rewardId))
 
             },
-            paddingValues = paddingValues
+            paddingValues = paddingValues,
+            onNavToNotification = {
+                navController.navigate(NotificationRoute.NotificationInbox)
+            }
         )
     }
 

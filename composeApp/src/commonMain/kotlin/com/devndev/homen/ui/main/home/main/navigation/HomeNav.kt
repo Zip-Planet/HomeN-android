@@ -18,6 +18,7 @@ import com.devndev.homen.ui.main.home.memo.MemoScreen
 import com.devndev.homen.ui.main.home.starterpack.StarterPackScreen
 import com.devndev.homen.ui.main.home.starterpackpreview.StarterPackPreviewScreen
 import com.devndev.homen.ui.main.navigation.BottomNavItem
+import com.devndev.homen.ui.main.notification.navigation.NotificationRoute
 
 fun NavGraphBuilder.homeNav(navController: NavController) {
     composable<BottomNavItem.Home>(
@@ -36,6 +37,9 @@ fun NavGraphBuilder.homeNav(navController: NavController) {
                     launchSingleTop = true
                     restoreState = false
                 }
+            },
+            onNavToNotification = {
+                navController.navigate(NotificationRoute.NotificationInbox)
             }
         )
     }

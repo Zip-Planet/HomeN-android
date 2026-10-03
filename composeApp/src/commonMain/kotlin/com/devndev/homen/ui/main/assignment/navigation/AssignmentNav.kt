@@ -12,6 +12,7 @@ import com.devndev.homen.ui.main.assignment.main.AssignmentScreen
 import com.devndev.homen.ui.main.assignment.main.viewmodel.AssignmentTab
 import com.devndev.homen.ui.main.home.main.navigation.HomeRoute
 import com.devndev.homen.ui.main.navigation.BottomNavItem
+import com.devndev.homen.ui.main.notification.navigation.NotificationRoute
 
 fun NavGraphBuilder.assignmentNav(
     navController: NavController,
@@ -30,7 +31,10 @@ fun NavGraphBuilder.assignmentNav(
         AssignmentScreen(
             initialTab = initialTab,
             onNavToChoreManage = { navController.navigate(HomeRoute.ChoreManage)},
-            paddingValues = paddingValues
+            paddingValues = paddingValues,
+            onNavToNotification = {
+                navController.navigate(NotificationRoute.NotificationInbox)
+            }
         )
     }
 }

@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hasRoute
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -23,6 +24,8 @@ import com.devndev.homen.ui.main.homeintro.navigation.HomeIntroRoute
 import com.devndev.homen.ui.main.homeintro.navigation.homeIntroNav
 import com.devndev.homen.ui.main.mypage.navigation.MyPageRoute
 import com.devndev.homen.ui.main.mypage.navigation.myPageNav
+import com.devndev.homen.ui.main.notification.navigation.NotificationRoute
+import com.devndev.homen.ui.main.notification.navigation.notificationNav
 import com.devndev.homen.ui.main.reward.navigation.RewardRoute
 import com.devndev.homen.ui.main.reward.navigation.rewardNav
 import com.devndev.homen.ui.main.viewmodel.MainContract
@@ -68,10 +71,11 @@ fun MainNav(
     val isProfileSetting = currentDestination?.hasRoute<MyPageRoute.ProfileSetting>() == true
     val isHomeSetting = currentDestination?.hasRoute<MyPageRoute.HomeSetting>() == true
     val isDelegateManager = currentDestination?.hasRoute<MyPageRoute.DelegateManager>() == true
+    val isNotificationInbox = currentDestination?.hasRoute<NotificationRoute.NotificationInbox>() == true
 
     Scaffold(
         bottomBar = {
-            if (hasHome && !isHomeIntroRoute && !isChoreManage && !isRewardNotRewardMain && !isBoardRequest && !isProfileSetting && !isHomeSetting && !isDelegateManager) {
+            if (hasHome && !isHomeIntroRoute && !isChoreManage && !isRewardNotRewardMain && !isBoardRequest && !isProfileSetting && !isHomeSetting && !isDelegateManager && !isNotificationInbox) {
                 MainBottomBar(navController = mainNavController)
             }
         },
@@ -99,6 +103,50 @@ fun MainNav(
             assignmentNav(mainNavController, paddingValues)
             rewardNav(mainNavController, paddingValues)
             myPageNav(mainNavController, paddingValues, onNavToIntro)
+            notificationNav(
+                navController = mainNavController,
+                paddingValues = paddingValues,
+                onNavToHome = {
+                    mainNavController.popBackStack<NotificationRoute.NotificationInbox>(inclusive = true)
+                    mainNavController.navigate(BottomNavItem.Home) {
+                        popUpTo(mainNavController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                },
+                onNavToAssignment = {
+                    mainNavController.popBackStack<NotificationRoute.NotificationInbox>(inclusive = true)
+                    mainNavController.navigate(BottomNavItem.Assignment(true)) {
+                        popUpTo(mainNavController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = false
+                    }
+                },
+                onNavToBoard = {
+                    mainNavController.popBackStack<NotificationRoute.NotificationInbox>(inclusive = true)
+                    mainNavController.navigate(BottomNavItem.Board) {
+                        popUpTo(mainNavController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                },
+                onNavToReward = {
+                    mainNavController.popBackStack<NotificationRoute.NotificationInbox>(inclusive = true)
+                    mainNavController.navigate(BottomNavItem.Reward) {
+                        popUpTo(mainNavController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                }
+            )
         }
     }
 }

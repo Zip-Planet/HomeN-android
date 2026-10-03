@@ -64,7 +64,8 @@ fun BoardScreen(
     onNavToAssignment: () -> Unit,
     onNavToHelp: () -> Unit,
     onNavToExchange: () -> Unit,
-    paddingValues: PaddingValues
+    paddingValues: PaddingValues,
+    onNavToNotification: () -> Unit = {}
 ) {
     val uiState by viewModel.viewState
     val snackbarHostState = remember { SnackbarHostState() }
@@ -205,7 +206,7 @@ fun BoardScreen(
         topBar = {
             NotificationTopBar(
                 title = stringResource(Res.string.board),
-                onNotificationClick = {}
+                onNotificationClick = onNavToNotification
             )
         },
         isLoading = uiState.isLoading,
