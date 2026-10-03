@@ -35,5 +35,6 @@ class NotificationInboxContract {
     sealed class Effect : ViewSideEffect {
         data object PopBackStack : Effect()
         data class NavigateToDeepLink(val deepLink: String) : Effect()
+        data class NavigateToCategory(val category: NotificationCategory) : Effect()
     }
 }

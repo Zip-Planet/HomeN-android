@@ -11,6 +11,7 @@ import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.request.parameter
 import io.ktor.client.request.patch
+import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
@@ -68,5 +69,19 @@ class NotificationServiceImpl(
                 header(HttpHeaders.Authorization, "Bearer $it")
             }
         }.body()
+    }
+
+    override suspend fun readNotification(notificationId: Int) {
+        val accessToken = tokenRepository.getAccessToken().first()
+        client.post {
+            url {
+                takeFrom(Config.BASE_URL)
+                encodedPath += "${NotificationService.NOTIFICATIONS}$notificationId/read/"
+            }
+            contentType(ContentType.Application.Json)
+            accessToken?.let {
+                header(HttpHeaders.Authorization, "Bearer $it")
+            }
+        }
     }
 }

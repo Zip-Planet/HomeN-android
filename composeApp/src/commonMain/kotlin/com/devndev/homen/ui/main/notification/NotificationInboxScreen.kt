@@ -71,7 +71,8 @@ import org.koin.compose.viewmodel.koinViewModel
 fun NotificationInboxScreen(
     viewModel: NotificationInboxViewModel = koinViewModel(),
     onNavBack: () -> Unit,
-    onNavigateToDeepLink: (String) -> Unit = {}
+    onNavigateToDeepLink: (String) -> Unit = {},
+    onNavigateToCategory: (NotificationCategory) -> Unit = {}
 ) {
     val uiState by viewModel.viewState
 
@@ -87,6 +88,9 @@ fun NotificationInboxScreen(
                 }
                 is NotificationInboxContract.Effect.NavigateToDeepLink -> {
                     onNavigateToDeepLink(effect.deepLink)
+                }
+                is NotificationInboxContract.Effect.NavigateToCategory -> {
+                    onNavigateToCategory(effect.category)
                 }
             }
         }

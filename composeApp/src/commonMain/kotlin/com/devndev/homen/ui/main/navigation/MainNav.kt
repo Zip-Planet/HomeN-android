@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hasRoute
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -102,7 +103,50 @@ fun MainNav(
             assignmentNav(mainNavController, paddingValues)
             rewardNav(mainNavController, paddingValues)
             myPageNav(mainNavController, paddingValues, onNavToIntro)
-            notificationNav(mainNavController, paddingValues)
+            notificationNav(
+                navController = mainNavController,
+                paddingValues = paddingValues,
+                onNavToHome = {
+                    mainNavController.popBackStack<NotificationRoute.NotificationInbox>(inclusive = true)
+                    mainNavController.navigate(BottomNavItem.Home) {
+                        popUpTo(mainNavController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                },
+                onNavToAssignment = {
+                    mainNavController.popBackStack<NotificationRoute.NotificationInbox>(inclusive = true)
+                    mainNavController.navigate(BottomNavItem.Assignment(true)) {
+                        popUpTo(mainNavController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = false
+                    }
+                },
+                onNavToBoard = {
+                    mainNavController.popBackStack<NotificationRoute.NotificationInbox>(inclusive = true)
+                    mainNavController.navigate(BottomNavItem.Board) {
+                        popUpTo(mainNavController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                },
+                onNavToReward = {
+                    mainNavController.popBackStack<NotificationRoute.NotificationInbox>(inclusive = true)
+                    mainNavController.navigate(BottomNavItem.Reward) {
+                        popUpTo(mainNavController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                }
+            )
         }
     }
 }

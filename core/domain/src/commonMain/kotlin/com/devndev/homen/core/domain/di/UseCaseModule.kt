@@ -40,6 +40,7 @@ import com.devndev.homen.core.domain.usecase.home.RegenerateAssignmentUseCase
 import com.devndev.homen.core.domain.usecase.home.TransferAdminUseCase
 import com.devndev.homen.core.domain.usecase.notification.GetNotificationSettingUseCase
 import com.devndev.homen.core.domain.usecase.notification.GetNotificationsUseCase
+import com.devndev.homen.core.domain.usecase.notification.ReadNotificationUseCase
 import com.devndev.homen.core.domain.usecase.notification.UpdateNotificationSettingUseCase
 import com.devndev.homen.core.domain.usecase.reward.ClaimRewardUseCase
 import com.devndev.homen.core.domain.usecase.reward.CreateRewardUseCase
@@ -122,4 +123,5 @@ val useCaseModule = module {
     factoryOf(::GetNotificationSettingUseCase)
     factoryOf(::UpdateNotificationSettingUseCase)
     factoryOf(::GetNotificationsUseCase)
+    factoryOf(::ReadNotificationUseCase)
 }

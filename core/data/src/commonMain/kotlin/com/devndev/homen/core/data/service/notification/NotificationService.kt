@@ -13,4 +13,5 @@ interface NotificationService {
     suspend fun getNotificationSetting(): NotificationSettingResponse
     suspend fun updateNotificationSetting(request: UpdateNotificationSettingRequest): NotificationSettingResponse
     suspend fun getNotifications(category: String? = null): NotificationListResponse
+    suspend fun readNotification(notificationId: Int)
 }

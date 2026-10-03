@@ -16,4 +16,5 @@ interface NotificationRepository {
     ): ApiResult<NotificationSetting>
 
     suspend fun getNotifications(category: String? = null): ApiResult<NotificationList>
+    suspend fun readNotification(notificationId: Int): ApiResult<Unit>
 }

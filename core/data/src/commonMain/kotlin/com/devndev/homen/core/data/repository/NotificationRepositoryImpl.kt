@@ -61,4 +61,15 @@ class NotificationRepositoryImpl(
             ApiResult.NetworkError
         }
     }
+
+    override suspend fun readNotification(notificationId: Int): ApiResult<Unit> {
+        return try {
+            notificationService.readNotification(notificationId)
+            ApiResult.Success(Unit)
+        } catch (e: ResponseException) {
+            ApiResult.Error(code = e.response.status.value, message = e.message)
+        } catch (e: Exception) {
+            ApiResult.NetworkError
+        }
+    }
 }
