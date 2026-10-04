@@ -104,7 +104,8 @@ fun HomeScreen(
     onNavToChoreManage: () -> Unit,
     onNavToAssignment: (Boolean) -> Unit,
     onNavToNotification: () -> Unit = {},
-    onNavToReport: () -> Unit = {}
+    onNavToReport: () -> Unit = {},
+    onNavToHomeSetting: () -> Unit = {}
 ) {
     val uiState by viewModel.viewState
     val snackbarHostState = remember { SnackbarHostState() }
@@ -131,6 +132,10 @@ fun HomeScreen(
 
                 HomeContract.Effect.NavigateToReport -> {
                     onNavToReport()
+                }
+
+                HomeContract.Effect.NavigateToHomeSetting -> {
+                    onNavToHomeSetting()
                 }
 
                 is HomeContract.Effect.ShowCompleteSnackBar -> {
@@ -187,7 +192,12 @@ fun HomeScreen(
                             .padding(
                                 start = HomeNTheme.dimensions.horizontalPadding,
                                 end = HomeNTheme.dimensions.horizontalPadding
-                            ),
+                            ).clickable(
+                                interactionSource = remember { MutableInteractionSource() },
+                                indication = null
+                            ) {
+                                viewModel.setEvent(HomeContract.Event.OnHomeSettingClick)
+                            },
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Box(
@@ -498,6 +508,7 @@ fun HomeProgressSection(
                         )
                     }
                 }
+
                 ReportStatus.LAST_WEEK -> {
                     HomeManageItem(
                         modifier = Modifier.weight(1f),

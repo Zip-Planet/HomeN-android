@@ -21,7 +21,10 @@ import com.devndev.homen.ui.main.home.starterpackpreview.StarterPackPreviewScree
 import com.devndev.homen.ui.main.navigation.BottomNavItem
 import com.devndev.homen.ui.main.notification.navigation.NotificationRoute
 
-fun NavGraphBuilder.homeNav(navController: NavController) {
+fun NavGraphBuilder.homeNav(
+    navController: NavController,
+    onNavToHomeSetting: () -> Unit = {}
+) {
     composable<BottomNavItem.Home>(
         enterTransition = { EnterTransition.None },
         exitTransition = { ExitTransition.None }
@@ -44,7 +47,8 @@ fun NavGraphBuilder.homeNav(navController: NavController) {
             },
             onNavToReport = {
                 navController.navigate(HomeRoute.WeeklyReport)
-            }
+            },
+            onNavToHomeSetting = onNavToHomeSetting
         )
     }
     composable<HomeRoute.ChoreManage>(

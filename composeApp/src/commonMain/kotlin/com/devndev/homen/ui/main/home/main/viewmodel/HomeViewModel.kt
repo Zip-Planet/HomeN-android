@@ -54,6 +54,10 @@ class HomeViewModel(
                 setEffect { HomeContract.Effect.NavigateToReport }
             }
 
+            HomeContract.Event.OnHomeSettingClick -> {
+                setEffect { HomeContract.Effect.NavigateToHomeSetting }
+            }
+
             is HomeContract.Event.OnCompleteClick -> {
                 completeChore(event.assignment)
             }
