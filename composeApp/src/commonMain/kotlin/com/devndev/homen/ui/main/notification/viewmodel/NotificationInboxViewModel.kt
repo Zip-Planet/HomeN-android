@@ -61,10 +61,8 @@ class NotificationInboxViewModel(
             }
             setState { copy(notifications = updatedNotifications) }
 
-            // 3. Navigate to corresponding category screen (except REPORT)
-            if (item.category != NotificationCategory.REPORT) {
-                setEffect { NotificationInboxContract.Effect.NavigateToCategory(item.category) }
-            }
+            // 3. Navigate to corresponding category screen
+            setEffect { NotificationInboxContract.Effect.NavigateToCategory(item.category) }
         }
     }
 

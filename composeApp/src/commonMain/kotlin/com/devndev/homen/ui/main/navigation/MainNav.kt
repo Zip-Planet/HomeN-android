@@ -100,7 +100,12 @@ fun MainNav(
                 onNavToIntro = onNavToIntro
             )
 
-            homeNav(mainNavController)
+            homeNav(
+                navController = mainNavController,
+                onNavToHomeSetting = {
+                    mainNavController.navigate(MyPageRoute.HomeSetting)
+                }
+            )
             boardNav(mainNavController, paddingValues)
             assignmentNav(mainNavController, paddingValues)
             rewardNav(mainNavController, paddingValues)

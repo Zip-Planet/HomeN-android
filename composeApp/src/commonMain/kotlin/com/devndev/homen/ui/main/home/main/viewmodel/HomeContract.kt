@@ -17,6 +17,7 @@ class HomeContract {
         data object OnCreateAssignmentClick: Event()
         data object OnAssignmentClick: Event()
         data object OnReportClick: Event()
+        data object OnHomeSettingClick: Event()
         data class OnCompleteClick(val assignment: AssignmentItem): Event()
         data class OnCompleteCancelClick(val assignment: AssignmentItem): Event()
     }
@@ -48,6 +49,7 @@ class HomeContract {
         data object NavigateToChoreManage: Effect()
         data class NavigateToAssignment(val isThisWeek: Boolean): Effect()
         data object NavigateToReport: Effect()
+        data object NavigateToHomeSetting: Effect()
         data class ShowCompleteSnackBar(val assignment: AssignmentItem): Effect()
     }
 }
