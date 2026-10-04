@@ -157,7 +157,7 @@
 
     <!-- 홈 화면 -->
     <string name="home_total_member_count">n명의 구성원</string>
-    <string name="home_progress_section_title">이번주 진행률</string>
+    <string name="home_progress_section_title">이번 주 진행률</string>
     <string name="home_mvp_section_title">우리집 MVP</string>
     <string name="home_division_plan_msg">다음주</string>
     <string name="home_division_plan_status_msg1">제안됨</string>
@@ -206,7 +206,7 @@
 
     <!-- 집안일 상세 -->
     <string name="chore_detail_title">집안일 상세</string>
-    <string name="chore_detail_weekly_progress_title">이번주 진행 상태</string>
+    <string name="chore_detail_weekly_progress_title">이번 주 진행 상태</string>
     <string name="chore_detail_weekly_progress_completed">완료</string>
     <string name="chore_detail_weekly_progress_incompleted">미완료</string>
     <string name="chore_detail_memo_title">메모</string>
@@ -257,7 +257,7 @@
     <string name="board_assignment_card_total_chore">총 s개의 집안일</string>
     <string name="board_help_title">도움 요청하기</string>
     <string name="board_request_help_selector_title">도움받을 집안일을 선택해주세요</string>
-    <string name="board_request_help_selector_done_title">이번주 모든 집안일을 완료했어요</string>
+    <string name="board_request_help_selector_done_title">이번 주 모든 집안일을 완료했어요</string>
     <string name="board_request_help_chore_title">대상 집안일</string>
     <string name="board_request_help_descirption_title">메세지</string>
     <string name="board_request_help_descirption_label">*선택</string>
@@ -269,7 +269,7 @@
     <string name="board_request_exchange_target_chore_title">교환하고 싶은 집안일</string>
     <string name="board_request_exchange_my_selector_title">내가 넘길 집안일을 선택해주세요</string>
     <string name="board_request_exchange_target_selector_title">내가 대신할 집안일을 선택해주세요</string>
-    <string name="board_request_exchange_my_selector_done_title">이번주 모든 집안일을 완료했어요</string>
+    <string name="board_request_exchange_my_selector_done_title">이번 주 모든 집안일을 완료했어요</string>
     <string name="board_request_exchange_target_selector_done_title">구성원들 모두 집안일을 완료했어요</string>
     <string name="board_make_request_exchange_btn">교환 요청하기</string>
     <string name="board_help_delete_snackbar_msg">도움 카드를 삭제했어요</string>
@@ -391,4 +391,20 @@
     <!-- Toast -->
     <string name="clipboard_copy_toast">클립보드에 복사했어요</string>
     <string name="reward_claim_toast">리워드를 받았어요 -sP</string>
+
+    <!-- 주간 리포트 화면 -->
+    <string name="weekly_report_title">주간 리포트</string>
+    <string name="weekly_report_empty_title">집안일을 완료하면 리포트가 도착해요</string>
+    <string name="weekly_report_empty_msg">리포트는 매주 일요일 저녁 9시에 자동으로 생성돼요</string>
+    <string name="weekly_report_progress_title">이번 주 진행률</string>
+    <string name="weekly_report_mvp_title">우리집 MVP</string>
+    <string name="weekly_report_rank_title">누가 가장 많이 달성했을까요?</string>
+    <string name="weekly_report_highlight_title">이번 주 하이라이트</string>
+    <string name="weekly_report_most_done_label">가장 많이 한 집안일</string>
+    <string name="weekly_report_most_missed_label">미완료가 많은 집안일</string>
+    <string name="weekly_report_suggestion_msg">미완료가 많은 집안일은 포인트(난이도)를 더 높여보는 건 어떨까요?</string>
+    <string name="weekly_report_edit_chores_btn">집안일 수정하러 가기</string>
+    <string name="weekly_report_completed_count">완료 · s건</string>
+    <string name="weekly_report_completed_ratio">완료 · s1/s2건</string>
+    <string name="weekly_report_completed">완료</string>
 </resources>

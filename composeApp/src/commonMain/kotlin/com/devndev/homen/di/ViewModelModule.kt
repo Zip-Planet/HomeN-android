@@ -14,6 +14,7 @@ import com.devndev.homen.ui.main.home.main.viewmodel.HomeViewModel
 import com.devndev.homen.ui.main.home.memo.viewModel.MemoViewModel
 import com.devndev.homen.ui.main.home.starterpack.viewmodel.StarterPackViewModel
 import com.devndev.homen.ui.main.home.starterpackpreview.viewmodel.StarterPackPreviewViewModel
+import com.devndev.homen.ui.main.home.report.viewmodel.WeeklyReportViewModel
 import com.devndev.homen.ui.main.homeintro.create.viewmodel.CreateHomeViewModel
 import com.devndev.homen.ui.main.homeintro.join.viewmodel.CodeEnterViewModel
 import com.devndev.homen.ui.main.homeintro.joinconfirm.viewmodel.JoinConfirmViewModel
@@ -63,4 +64,5 @@ val viewModelModule = module {
     viewModelOf(::HomeSettingViewModel)
     viewModelOf(::DelegateManagerViewModel)
     viewModelOf(::NotificationInboxViewModel)
+    viewModelOf(::WeeklyReportViewModel)
 }
