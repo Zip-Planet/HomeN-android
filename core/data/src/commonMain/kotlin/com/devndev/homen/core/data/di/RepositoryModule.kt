@@ -30,7 +30,8 @@ val repositoryModule = module {
     }
     single<HomeRepository> {
         HomeRepositoryImpl(
-            homeService = get()
+            homeService = get(),
+            dataStore = get()
         )
     }
     single<UserRepository> {

@@ -9,6 +9,7 @@ import com.devndev.homen.core.data.model.home.request.CreateHomeRequest
 import com.devndev.homen.core.data.model.home.request.EditChoreRequest
 import com.devndev.homen.core.data.model.home.request.JoinHomeRequest
 import com.devndev.homen.core.data.model.home.request.MemoRequest
+import com.devndev.homen.core.data.model.home.request.NudgeAssignmentRequest
 import com.devndev.homen.core.data.model.home.request.TransferAdminRequest
 import com.devndev.homen.core.data.model.home.response.ChoreDetailResponse
 import com.devndev.homen.core.data.model.home.response.ChoreResponse
@@ -392,6 +393,21 @@ class HomeServiceImpl(
             accessToken?.let {
                 header(HttpHeaders.Authorization, "Bearer $it")
             }
+        }
+    }
+
+    override suspend fun nudgeAssignment(nudgeAssignmentRequest: NudgeAssignmentRequest) {
+        val accessToken = tokenRepository.getAccessToken().first()
+        client.post {
+            url {
+                takeFrom(Config.BASE_URL)
+                encodedPath += HomeService.NUDGE_ASSIGNMENT
+            }
+            contentType(ContentType.Application.Json)
+            accessToken?.let {
+                header(HttpHeaders.Authorization, "Bearer $it")
+            }
+            setBody(nudgeAssignmentRequest)
         }
     }
 }

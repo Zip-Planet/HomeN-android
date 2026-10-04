@@ -407,4 +407,7 @@
     <string name="weekly_report_completed_count">완료 · s건</string>
     <string name="weekly_report_completed_ratio">완료 · s1/s2건</string>
     <string name="weekly_report_completed">완료</string>
+
+    <string name="assignment_nudge_success_toast">관리자에게 분담안 생성을 요청했어요!</string>
+    <string name="assignment_nudge_already_sent_toast">이미 알림을 보냈어요! 조금만 기다려주세요</string>
 </resources>

@@ -66,6 +66,8 @@ import homen.composeapp.generated.resources.confirm
 import homen.composeapp.generated.resources.division_plan
 import homen.composeapp.generated.resources.floating_btn_icon
 import kotlinx.coroutines.flow.collectLatest
+import multiplatform.network.cmptoast.ToastDuration
+import multiplatform.network.cmptoast.showToast
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
@@ -85,6 +87,15 @@ fun AssignmentScreen(
             when (effect) {
                 AssignmentContract.Effect.NavigateToChoreManage -> {
                     onNavToChoreManage()
+                }
+                is AssignmentContract.Effect.ShowToast -> {
+                    showToast(
+                        message = effect.message,
+                        backgroundColor = Color.Black.copy(alpha = 0.8f),
+                        textColor = Color.White,
+                        cornerRadius = 10,
+                        duration = ToastDuration.Short
+                    )
                 }
             }
         }
@@ -187,7 +198,7 @@ fun AssignmentScreen(
                                         message = stringResource(Res.string.assignment_create_assignment_msg),
                                         buttonText = stringResource(Res.string.assignment_create_assignment_btn),
                                     ) {
-
+                                        viewModel.setEvent(AssignmentContract.Event.OnNudgeAssignmentClick)
                                     }
                                 }
                             }
@@ -222,7 +233,7 @@ fun AssignmentScreen(
                                         message = stringResource(Res.string.assignment_create_assignment_msg),
                                         buttonText = stringResource(Res.string.assignment_create_assignment_btn),
                                     ) {
-
+                                        viewModel.setEvent(AssignmentContract.Event.OnNudgeAssignmentClick)
                                     }
                                 }
                             }

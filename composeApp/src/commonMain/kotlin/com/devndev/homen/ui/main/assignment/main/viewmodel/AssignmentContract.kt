@@ -20,6 +20,7 @@ class AssignmentContract {
         data object OnDismissPopup: Event()
         data object OnRegenerateClick: Event()
         data class OnWeekSelected(val weekOffset: Int): Event()
+        data object OnNudgeAssignmentClick : Event()
     }
 
     data class State(
@@ -47,6 +48,7 @@ class AssignmentContract {
 
     sealed class Effect : ViewSideEffect {
         data object NavigateToChoreManage : Effect()
+        data class ShowToast(val message: String) : Effect()
     }
 
 }
