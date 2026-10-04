@@ -14,7 +14,8 @@ fun NavGraphBuilder.notificationNav(
     onNavToHome: () -> Unit = {},
     onNavToAssignment: () -> Unit = {},
     onNavToBoard: () -> Unit = {},
-    onNavToReward: () -> Unit = {}
+    onNavToReward: () -> Unit = {},
+    onNavToReport: () -> Unit = {}
 ) {
     composable<NotificationRoute.NotificationInbox>(
         enterTransition = NavTransitions.enterTransition,
@@ -33,7 +34,7 @@ fun NavGraphBuilder.notificationNav(
                     NotificationCategory.ASSIGNMENT -> onNavToAssignment()
                     NotificationCategory.BOARD -> onNavToBoard()
                     NotificationCategory.REWARD -> onNavToReward()
-                    NotificationCategory.REPORT -> {} // Report screen not ready
+                    NotificationCategory.REPORT -> onNavToReport()
                 }
             }
         )

@@ -16,6 +16,7 @@ class HomeContract {
         data object OnChoreManageClick: Event()
         data object OnCreateAssignmentClick: Event()
         data object OnAssignmentClick: Event()
+        data object OnReportClick: Event()
         data class OnCompleteClick(val assignment: AssignmentItem): Event()
         data class OnCompleteCancelClick(val assignment: AssignmentItem): Event()
     }
@@ -39,15 +40,14 @@ class HomeContract {
         val selectedIndex: Int = 0,
         val reportStatus: ReportStatus? = null,
         val reportRate: Int = 0
-    ): ViewState {
-        val progressRate: Int = if (totalChore > 0) (completedChore * 100) / totalChore else 0
-        val isMine: Boolean = selectedIndex == 0
+    ): ViewState { val isMine: Boolean = selectedIndex == 0
     }
 
     sealed class Effect: ViewSideEffect {
         data object NavigateToBoard: Effect()
         data object NavigateToChoreManage: Effect()
         data class NavigateToAssignment(val isThisWeek: Boolean): Effect()
+        data object NavigateToReport: Effect()
         data class ShowCompleteSnackBar(val assignment: AssignmentItem): Effect()
     }
 }

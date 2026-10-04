@@ -23,4 +23,7 @@ sealed interface HomeRoute {
 
     @Serializable
     data class StarterPackPreview(val starterPackType: Int): HomeRoute
+
+    @Serializable
+    data object WeeklyReport: HomeRoute
 }

@@ -71,11 +71,13 @@ fun MainNav(
     val isProfileSetting = currentDestination?.hasRoute<MyPageRoute.ProfileSetting>() == true
     val isHomeSetting = currentDestination?.hasRoute<MyPageRoute.HomeSetting>() == true
     val isDelegateManager = currentDestination?.hasRoute<MyPageRoute.DelegateManager>() == true
-    val isNotificationInbox = currentDestination?.hasRoute<NotificationRoute.NotificationInbox>() == true
+    val isNotificationInbox =
+        currentDestination?.hasRoute<NotificationRoute.NotificationInbox>() == true
+    val isReport = currentDestination?.hasRoute<HomeRoute.WeeklyReport>() == true
 
     Scaffold(
         bottomBar = {
-            if (hasHome && !isHomeIntroRoute && !isChoreManage && !isRewardNotRewardMain && !isBoardRequest && !isProfileSetting && !isHomeSetting && !isDelegateManager && !isNotificationInbox) {
+            if (hasHome && !isHomeIntroRoute && !isChoreManage && !isRewardNotRewardMain && !isBoardRequest && !isProfileSetting && !isHomeSetting && !isDelegateManager && !isNotificationInbox && !isReport) {
                 MainBottomBar(navController = mainNavController)
             }
         },
@@ -145,6 +147,10 @@ fun MainNav(
                         launchSingleTop = true
                         restoreState = true
                     }
+                },
+                onNavToReport = {
+                    mainNavController.popBackStack<NotificationRoute.NotificationInbox>(inclusive = true)
+                    mainNavController.navigate(HomeRoute.WeeklyReport)
                 }
             )
         }

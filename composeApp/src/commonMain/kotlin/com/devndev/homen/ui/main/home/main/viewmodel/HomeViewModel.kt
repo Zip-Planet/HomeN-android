@@ -50,6 +50,10 @@ class HomeViewModel(
                 setEffect { NavigateToAssignment(false) }
             }
 
+            HomeContract.Event.OnReportClick -> {
+                setEffect { HomeContract.Effect.NavigateToReport }
+            }
+
             is HomeContract.Event.OnCompleteClick -> {
                 completeChore(event.assignment)
             }
@@ -96,32 +100,29 @@ class HomeViewModel(
         viewModelScope.launch {
             // 1. 이번 주 리포트 조회
             val thisWeekResult = getWeeklyReportUseCase(DateUtil.getThisWeekMonday())
-
             if (thisWeekResult is ApiResult.Success) {
                 val myStat = thisWeekResult.data.memberStats.find { it.uid == myUid }
-                val rate = if (thisWeekResult.data.totalCount > 0) {
-                    ((myStat?.completedCount ?: 0) * 100) / thisWeekResult.data.totalCount
-                } else 0
+                val rate = thisWeekResult.data.progressRate
 
                 setState {
                     copy(
                         reportStatus = ReportStatus.THIS_WEEK,
-                        reportRate = rate
+                        reportRate = thisWeekResult.data.progressRate
                     )
                 }
             } else {
                 // 2. 이번 주가 없으면 지난 주 리포트 조회
                 val lastWeekResult = getWeeklyReportUseCase(DateUtil.getLastWeekMonday())
                 if (lastWeekResult is ApiResult.Success) {
-                    val myStat = lastWeekResult.data.memberStats.find { it.uid == myUid }
-                    val rate = if (lastWeekResult.data.totalCount > 0) {
-                        ((myStat?.completedCount ?: 0) * 100) / lastWeekResult.data.totalCount
-                    } else 0
+//                    val myStat = lastWeekResult.data.memberStats.find { it.uid == myUid }
+//                    val rate = if (lastWeekResult.data.totalCount > 0) {
+//                        ((myStat?.completedCount ?: 0) * 100) / lastWeekResult.data.totalCount
+//                    } else 0
 
                     setState {
                         copy(
                             reportStatus = ReportStatus.LAST_WEEK,
-                            reportRate = rate
+                            reportRate = lastWeekResult.data.progressRate
                         )
                     }
                 } else {

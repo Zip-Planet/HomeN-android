@@ -15,6 +15,7 @@ import com.devndev.homen.ui.main.home.choremanage.ChoreManageScreen
 import com.devndev.homen.ui.main.home.createchore.CreateChoreScreen
 import com.devndev.homen.ui.main.home.main.HomeScreen
 import com.devndev.homen.ui.main.home.memo.MemoScreen
+import com.devndev.homen.ui.main.home.report.WeeklyReportScreen
 import com.devndev.homen.ui.main.home.starterpack.StarterPackScreen
 import com.devndev.homen.ui.main.home.starterpackpreview.StarterPackPreviewScreen
 import com.devndev.homen.ui.main.navigation.BottomNavItem
@@ -40,6 +41,9 @@ fun NavGraphBuilder.homeNav(navController: NavController) {
             },
             onNavToNotification = {
                 navController.navigate(NotificationRoute.NotificationInbox)
+            },
+            onNavToReport = {
+                navController.navigate(HomeRoute.WeeklyReport)
             }
         )
     }
@@ -183,6 +187,22 @@ fun NavGraphBuilder.homeNav(navController: NavController) {
                     }
                     launchSingleTop = true
                 }
+            }
+        )
+    }
+
+    composable<HomeRoute.WeeklyReport>(
+        enterTransition = NavTransitions.enterTransition,
+        exitTransition = NavTransitions.exitTransition,
+        popEnterTransition = NavTransitions.popEnterTransition,
+        popExitTransition = NavTransitions.popExitTransition
+    ) {
+        WeeklyReportScreen(
+            onNavBack = {
+                navController.popBackStack()
+            },
+            onNavToChoreManage = {
+                navController.navigate(HomeRoute.ChoreManage)
             }
         )
     }

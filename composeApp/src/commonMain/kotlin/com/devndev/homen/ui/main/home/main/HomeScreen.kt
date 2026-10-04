@@ -38,6 +38,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
@@ -100,7 +103,8 @@ fun HomeScreen(
     viewModel: HomeViewModel = koinViewModel(),
     onNavToChoreManage: () -> Unit,
     onNavToAssignment: (Boolean) -> Unit,
-    onNavToNotification: () -> Unit = {}
+    onNavToNotification: () -> Unit = {},
+    onNavToReport: () -> Unit = {}
 ) {
     val uiState by viewModel.viewState
     val snackbarHostState = remember { SnackbarHostState() }
@@ -123,6 +127,10 @@ fun HomeScreen(
 
                 is HomeContract.Effect.NavigateToAssignment -> {
                     onNavToAssignment(effect.isThisWeek)
+                }
+
+                HomeContract.Effect.NavigateToReport -> {
+                    onNavToReport()
                 }
 
                 is HomeContract.Effect.ShowCompleteSnackBar -> {
@@ -224,7 +232,8 @@ fun HomeScreen(
                     HomeProgressSection(
                         uiState = uiState,
                         onChoreManageClick = { viewModel.setEvent(HomeContract.Event.OnChoreManageClick) },
-                        onAssignmentClick = { viewModel.setEvent(HomeContract.Event.OnAssignmentClick) }
+                        onAssignmentClick = { viewModel.setEvent(HomeContract.Event.OnAssignmentClick) },
+                        onReportClick = { viewModel.setEvent(HomeContract.Event.OnReportClick) }
                     )
                     Spacer(modifier = Modifier.height(26.dp))
                     HomeDivisionSection(
@@ -256,7 +265,8 @@ fun HomeScreen(
 fun HomeProgressSection(
     uiState: HomeContract.State,
     onChoreManageClick: () -> Unit = {},
-    onAssignmentClick: () -> Unit = {}
+    onAssignmentClick: () -> Unit = {},
+    onReportClick: () -> Unit = {}
 ) {
     val progress =
         if (uiState.totalChore > 0) uiState.completedChore.toFloat() / uiState.totalChore else 0f
@@ -298,7 +308,7 @@ fun HomeProgressSection(
                 Spacer(modifier = Modifier.weight(1f))
                 if (uiState.choreExist) {
                     Text(
-                        text = "${uiState.progressRate}%",
+                        text = "${uiState.reportRate}%",
                         style = HomeNTheme.typography.suitRegular,
                         fontSize = 18.sp,
                         color = Color.Black
@@ -328,10 +338,16 @@ fun HomeProgressSection(
                     }
                     Spacer(modifier = Modifier.width(12.dp))
                     Text(
-                        text = "${uiState.completedChore}/${uiState.totalChore}",
+                        text = buildAnnotatedString {
+                            withStyle(style = SpanStyle(color = Color.Black)) {
+                                append("${uiState.completedChore}")
+                            }
+                            withStyle(style = SpanStyle(color = BottomGray)) {
+                                append("/${uiState.totalChore}")
+                            }
+                        },
                         style = HomeNTheme.typography.suitRegular,
-                        fontSize = 14.sp,
-                        color = Color.Black
+                        fontSize = 14.sp
                     )
                 }
             } else {
@@ -468,7 +484,7 @@ fun HomeProgressSection(
                 ReportStatus.THIS_WEEK -> {
                     HomeManageItem(
                         modifier = Modifier.weight(1f),
-                        onClick = {},
+                        onClick = onReportClick,
                         iconColor = Blue60ABFB,
                         iconSize = 16,
                         titleText = stringResource(Res.string.report),
@@ -485,7 +501,7 @@ fun HomeProgressSection(
                 ReportStatus.LAST_WEEK -> {
                     HomeManageItem(
                         modifier = Modifier.weight(1f),
-                        onClick = {},
+                        onClick = onReportClick,
                         iconColor = Blue60ABFB,
                         iconSize = 16,
                         titleText = stringResource(Res.string.report),
@@ -504,7 +520,7 @@ fun HomeProgressSection(
                     HomeManageItem(
                         isExist = false,
                         modifier = Modifier.weight(1f),
-                        onClick = {},
+                        onClick = onReportClick,
                         iconColor = Blue60ABFB,
                         iconSize = 16,
                         titleText = stringResource(Res.string.report),
