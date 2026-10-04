@@ -36,6 +36,7 @@ import com.devndev.homen.core.domain.usecase.home.GetMemosUseCase
 import com.devndev.homen.core.domain.usecase.home.GetWeeklyReportUseCase
 import com.devndev.homen.core.domain.usecase.home.JoinHomeUseCase
 import com.devndev.homen.core.domain.usecase.home.LeaveHomeUseCase
+import com.devndev.homen.core.domain.usecase.home.NudgeAssignmentUseCase
 import com.devndev.homen.core.domain.usecase.home.RegenerateAssignmentUseCase
 import com.devndev.homen.core.domain.usecase.home.TransferAdminUseCase
 import com.devndev.homen.core.domain.usecase.notification.GetNotificationSettingUseCase
@@ -92,6 +93,7 @@ val useCaseModule = module {
     factoryOf(::GetWeeklyReportUseCase)
     factoryOf(::TransferAdminUseCase)
     factoryOf(::LeaveHomeUseCase)
+    factoryOf(::NudgeAssignmentUseCase)
 
     // board
     factoryOf(::GetBoardUseCase)

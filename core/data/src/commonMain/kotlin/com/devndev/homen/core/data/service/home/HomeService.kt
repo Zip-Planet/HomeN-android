@@ -8,6 +8,7 @@ import com.devndev.homen.core.data.model.home.request.CreateHomeRequest
 import com.devndev.homen.core.data.model.home.request.EditChoreRequest
 import com.devndev.homen.core.data.model.home.request.JoinHomeRequest
 import com.devndev.homen.core.data.model.home.request.MemoRequest
+import com.devndev.homen.core.data.model.home.request.NudgeAssignmentRequest
 import com.devndev.homen.core.data.model.home.request.TransferAdminRequest
 import com.devndev.homen.core.data.model.home.response.ChoreDetailResponse
 import com.devndev.homen.core.data.model.home.response.ChoreResponse
@@ -34,6 +35,7 @@ interface HomeService {
         const val WEEKLY_REPORT = "/homes/mine/reports/weekly/"
         const val TRANSFER_ADMIN = "/homes/mine/transfer-admin/"
         const val LEAVE_HOME = "/homes/mine/leave/"
+        const val NUDGE_ASSIGNMENT = "/homes/mine/assignments/nudge/"
     }
 
     suspend fun createHome(createHomeRequest: CreateHomeRequest): CreateHomeResponse
@@ -69,4 +71,5 @@ interface HomeService {
     suspend fun getWeeklyReport(weekStart: String): WeeklyReportResponse
     suspend fun transferAdmin(transferAdminRequest: TransferAdminRequest)
     suspend fun leaveHome()
+    suspend fun nudgeAssignment(nudgeAssignmentRequest: NudgeAssignmentRequest)
 }

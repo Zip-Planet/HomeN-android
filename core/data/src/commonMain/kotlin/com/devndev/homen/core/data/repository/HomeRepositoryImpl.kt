@@ -1,5 +1,6 @@
 package com.devndev.homen.core.data.repository
 
+import androidx.datastore.preferences.core.longPreferencesKey
 import com.devndev.homen.core.data.model.home.request.CompleteChoreRequest
 import com.devndev.homen.core.data.model.home.request.ConfirmAssignmentRequest
 import com.devndev.homen.core.data.model.home.request.CreateAssignmentRequest
@@ -7,6 +8,7 @@ import com.devndev.homen.core.data.model.home.request.CreateChoreRequest
 import com.devndev.homen.core.data.model.home.request.CreateHomeRequest
 import com.devndev.homen.core.data.model.home.request.JoinHomeRequest
 import com.devndev.homen.core.data.model.home.request.MemoRequest
+import com.devndev.homen.core.data.model.home.request.NudgeAssignmentRequest
 import com.devndev.homen.core.data.model.home.request.TransferAdminRequest
 import com.devndev.homen.core.data.model.home.request.toDataModel
 import com.devndev.homen.core.data.model.home.request.toEditDataModel
@@ -24,10 +26,17 @@ import com.devndev.homen.core.domain.model.home.HomeResponseDomainModel
 import com.devndev.homen.core.domain.model.home.JoinHomeResponseDomainModel
 import com.devndev.homen.core.domain.model.home.Memo
 import com.devndev.homen.core.domain.repository.HomeRepository
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.longPreferencesKey
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import io.ktor.client.plugins.ResponseException
 
 class HomeRepositoryImpl(
-    private val homeService: HomeService
+    private val homeService: HomeService,
+    private val dataStore: DataStore<Preferences>
 ) : HomeRepository {
     override suspend fun createHome(createHome: CreateHome): ApiResult<HomeResponseDomainModel> {
         return try {
@@ -324,6 +333,29 @@ class HomeRepositoryImpl(
             ApiResult.Error(code = e.response.status.value, message = e.message)
         } catch (e: Exception) {
             ApiResult.NetworkError
+        }
+    }
+
+    override suspend fun nudgeAssignment(weekStart: String?): ApiResult<Unit> {
+        return try {
+            homeService.nudgeAssignment(NudgeAssignmentRequest(weekStart))
+            ApiResult.Success(Unit)
+        } catch (e: ResponseException) {
+            ApiResult.Error(code = e.response.status.value, message = e.message)
+        } catch (e: Exception) {
+            ApiResult.NetworkError
+        }
+    }
+
+    override suspend fun getLastNudgeTime(weekStart: String): Long {
+        val key = longPreferencesKey("last_nudge_time_$weekStart")
+        return dataStore.data.map { it[key] ?: 0L }.first()
+    }
+
+    override suspend fun saveLastNudgeTime(weekStart: String, timeMillis: Long) {
+        val key = longPreferencesKey("last_nudge_time_$weekStart")
+        dataStore.edit { preferences ->
+            preferences[key] = timeMillis
         }
     }
 }

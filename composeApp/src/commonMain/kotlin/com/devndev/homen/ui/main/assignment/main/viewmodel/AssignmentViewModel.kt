@@ -8,6 +8,8 @@ import com.devndev.homen.core.domain.usecase.home.ConfirmAssignmentUseCase
 import com.devndev.homen.core.domain.usecase.home.CreateAssignmentUseCase
 import com.devndev.homen.core.domain.usecase.home.GetAssignmentsUseCase
 import com.devndev.homen.core.domain.usecase.home.GetChoresUseCase
+import com.devndev.homen.core.domain.usecase.home.NudgeAssignmentUseCase
+import com.devndev.homen.core.domain.usecase.home.NudgeResult
 import com.devndev.homen.core.domain.usecase.home.RegenerateAssignmentUseCase
 import com.devndev.homen.core.domain.usecase.user.GetMyInfoUseCase
 import com.devndev.homen.util.DateUtil
@@ -19,7 +21,8 @@ class AssignmentViewModel(
     private val getAssignmentsUseCase: GetAssignmentsUseCase,
     private val createAssignmentUseCase: CreateAssignmentUseCase,
     private val confirmAssignmentUseCase: ConfirmAssignmentUseCase,
-    private val regenerateAssignmentUseCase: RegenerateAssignmentUseCase
+    private val regenerateAssignmentUseCase: RegenerateAssignmentUseCase,
+    private val nudgeAssignmentUseCase: NudgeAssignmentUseCase
 ) : BaseViewModel<AssignmentContract.Event, AssignmentContract.State, AssignmentContract.Effect>() {
     override fun setInitialState() = AssignmentContract.State()
     override fun handleEvents(event: AssignmentContract.Event) {
@@ -87,6 +90,10 @@ class AssignmentViewModel(
 
             AssignmentContract.Event.OnRegenerateClick -> {
                 regenerateAssignment()
+            }
+
+            AssignmentContract.Event.OnNudgeAssignmentClick -> {
+                nudgeAssignment()
             }
         }
     }
@@ -250,5 +257,27 @@ class AssignmentViewModel(
                 }
             }
         )
+    }
+
+    private fun nudgeAssignment() {
+        val weekStart = if (viewState.value.selectedTab == AssignmentTab.THIS_WEEK) {
+            DateUtil.getThisWeekMonday()
+        } else {
+            DateUtil.getNextWeekMonday()
+        }
+
+        viewModelScope.launch {
+            when (nudgeAssignmentUseCase(weekStart)) {
+                NudgeResult.Success -> {
+                    setEffect { AssignmentContract.Effect.ShowToast("관리자에게 분담안 생성을 요청했어요!") }
+                }
+                NudgeResult.AlreadySent -> {
+                    setEffect { AssignmentContract.Effect.ShowToast("이미 알림을 보냈어요! 조금만 기다려주세요") }
+                }
+                is NudgeResult.Error -> {
+                    // Handle error if needed
+                }
+            }
+        }
     }
 }

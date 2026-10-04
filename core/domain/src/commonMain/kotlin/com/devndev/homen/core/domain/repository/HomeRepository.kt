@@ -38,4 +38,7 @@ interface HomeRepository {
     suspend fun getWeeklyReport(weekStart: String): ApiResult<WeeklyReport>
     suspend fun transferAdmin(userId: String): ApiResult<Unit>
     suspend fun leaveHome(): ApiResult<Unit>
+    suspend fun nudgeAssignment(weekStart: String?): ApiResult<Unit>
+    suspend fun getLastNudgeTime(weekStart: String): Long
+    suspend fun saveLastNudgeTime(weekStart: String, timeMillis: Long)
 }
