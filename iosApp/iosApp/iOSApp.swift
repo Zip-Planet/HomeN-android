@@ -4,9 +4,47 @@ import KakaoSDKCommon
 import KakaoSDKAuth
 import KakaoSDKShare
 import KakaoSDKTemplate
+import FirebaseCore
+import FirebaseMessaging
+import UserNotifications
+
+class AppDelegate: NSObject, UIApplicationDelegate, MessagingDelegate, UNUserNotificationCenterDelegate {
+    func application(
+        _ application: UIApplication,
+        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
+    ) -> Bool {
+        FirebaseApp.configure()
+        print("SHKIM_IOS: FirebaseApp configured successfully.")
+        
+        Messaging.messaging().delegate = self
+        UNUserNotificationCenter.current().delegate = self
+        
+        let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+        UNUserNotificationCenter.current().requestAuthorization(options: authOptions) { _, _ in }
+        
+        application.registerForRemoteNotifications()
+        
+        return true
+    }
+    
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        Messaging.messaging().apnsToken = deviceToken
+        print("SHKIM_IOS: APNs device token set successfully.")
+    }
+    
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        print("SHKIM_IOS: Failed to register for remote notifications: \(error.localizedDescription)")
+    }
+    
+    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
+        print("SHKIM_IOS: Messaging didReceiveRegistrationToken: \(String(describing: fcmToken))")
+    }
+}
 
 @main
 struct iOSApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+
     init() {
         // 1. Info.plist (XCConfig)에서 카카오 앱 키 읽기
         let kakaoAppKey = Bundle.main.object(forInfoDictionaryKey: "KakaoAppKey") as? String ?? ""
@@ -18,6 +56,7 @@ struct iOSApp: App {
         KoinInitializerKt.doInitKoin(
             kakaoAuthenticator: SwiftKakaoAuthenticator(),
             appleAuthenticator: SwiftAppleAuthenticator(),
+            fcmTokenProvider: SwiftFcmTokenProvider(),
             onKakaoShare: { inviteCode, homeName in
                 // TODO 앱 미설치 시 랜딩 페이지 추가, webUrl mobileWebUrl
                 let template = TextTemplate(
@@ -28,7 +67,7 @@ struct iOSApp: App {
                     buttons: [
                         Button(title: "앱으로 이동",
                                link: Link(androidExecutionParams: ["inviteCode": inviteCode],
-                                          iosExecutionParams: ["inviteCode": inviteCode]))
+                                          iosExecutionParams: ["inviteCode": notifyParamsIfNeeded(inviteCode)]))
                     ]
                 )
 
@@ -65,4 +104,8 @@ struct iOSApp: App {
                 }
         }
     }
+}
+
+private func notifyParamsIfNeeded(_ code: String) -> String {
+    return code
 }

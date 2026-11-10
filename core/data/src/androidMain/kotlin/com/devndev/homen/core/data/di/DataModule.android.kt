@@ -5,6 +5,8 @@ import com.devndev.homen.core.domain.auth.SocialAuthResult
 import com.devndev.homen.core.domain.auth.SocialAuthenticator
 import com.devndev.homen.core.domain.auth.model.AppleUser
 import com.devndev.homen.core.domain.auth.model.KakaoUser
+import com.devndev.homen.core.domain.util.FcmTokenProvider
+import com.devndev.homen.core.data.util.AndroidFcmTokenProvider
 import org.koin.core.module.Module
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -24,4 +26,6 @@ actual val dataModule: Module = module {
             override suspend fun authenticate(): SocialAuthResult<AppleUser> = SocialAuthResult.Error
         }
     }
+
+    single<FcmTokenProvider> { AndroidFcmTokenProvider() }
 }

@@ -5,6 +5,7 @@ import com.devndev.homen.core.domain.auth.SocialAuthenticator
 import com.devndev.homen.core.domain.auth.model.AppleUser
 import com.devndev.homen.core.domain.auth.model.KakaoUser
 import com.devndev.homen.core.domain.di.domainModule
+import com.devndev.homen.core.domain.util.FcmTokenProvider
 import org.koin.core.context.startKoin
 import org.koin.core.qualifier.named
 import org.koin.dsl.KoinAppDeclaration
@@ -29,11 +30,13 @@ fun initKoin(appDeclaration: KoinAppDeclaration = {}) = startKoin {
 fun doInitKoin(
     kakaoAuthenticator: SocialAuthenticator<KakaoUser>,
     appleAuthenticator: SocialAuthenticator<AppleUser>,
+    fcmTokenProvider: FcmTokenProvider,
     onKakaoShare: (String, String) -> Unit
 ) = initKoin {
     modules(module {
         single(named("kakao")) { kakaoAuthenticator }
         single(named("apple")) { appleAuthenticator }
+        single<FcmTokenProvider> { fcmTokenProvider }
         single(named("onKakaoShare")) { onKakaoShare }
     })
 }

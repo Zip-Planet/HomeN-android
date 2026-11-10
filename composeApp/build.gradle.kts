@@ -15,6 +15,7 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.kotlinSerialization) // 직렬화 플러그인 추가
+    id("com.google.gms.google-services")
 }
 
 kotlin {
@@ -42,6 +43,8 @@ kotlin {
             implementation(libs.koin.android)
             implementation(libs.kakao.user.v2)
             implementation(libs.kakao.share.v2)
+            implementation("com.google.firebase:firebase-messaging:24.1.0")
+            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.10.1")
         }
         commonMain.dependencies {
             api(project(":core:domain"))

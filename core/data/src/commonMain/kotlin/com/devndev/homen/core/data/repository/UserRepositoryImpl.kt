@@ -1,5 +1,7 @@
 package com.devndev.homen.core.data.repository
 
+import com.devndev.homen.core.data.model.user.request.RegisterDeviceRequest
+import com.devndev.homen.core.data.model.user.request.UnregisterDeviceRequest
 import com.devndev.homen.core.data.model.user.request.UpdateProfileRequest
 import com.devndev.homen.core.data.model.user.response.toDomainModel
 import com.devndev.homen.core.data.service.user.UserService
@@ -44,6 +46,33 @@ class UserRepositoryImpl(
         return try {
             val response = userService.validateNickname(nickname)
             ApiResult.Success(response.isAvailable)
+        } catch (e: ResponseException) {
+            ApiResult.Error(code = e.response.status.value, message = e.message)
+        } catch (e: Exception) {
+            ApiResult.NetworkError
+        }
+    }
+
+    override suspend fun registerDevice(
+        registrationId: String,
+        platform: String,
+        kind: String,
+        appVersion: String?
+    ): ApiResult<Unit> {
+        return try {
+            userService.registerDevice(RegisterDeviceRequest(registrationId, platform, kind, appVersion))
+            ApiResult.Success(Unit)
+        } catch (e: ResponseException) {
+            ApiResult.Error(code = e.response.status.value, message = e.message)
+        } catch (e: Exception) {
+            ApiResult.NetworkError
+        }
+    }
+
+    override suspend fun unregisterDevice(registrationId: String): ApiResult<Unit> {
+        return try {
+            userService.unregisterDevice(UnregisterDeviceRequest(registrationId))
+            ApiResult.Success(Unit)
         } catch (e: ResponseException) {
             ApiResult.Error(code = e.response.status.value, message = e.message)
         } catch (e: Exception) {
