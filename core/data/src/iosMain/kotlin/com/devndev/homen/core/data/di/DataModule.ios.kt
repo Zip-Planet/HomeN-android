@@ -9,6 +9,4 @@ import org.koin.dsl.module
 actual val dataModule: Module = module {
     // 공통 모듈 포함
     includes(commonDataModule)
-    
-    // iOS용 Authenticator는 KoinInitializer의 doInitKoin에서 주입받아 등록할 예정입니다.
 }

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "406156855597",
+    "project_id": "homen-8285f",
+    "storage_bucket": "homen-8285f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:406156855597:android:12ba936fcc50283a17eba4",
+        "android_client_info": {
+          "package_name": "com.devndev.homen"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcq2LyzkWdXE4Y8oHLDrHrLJEpCQxxXG0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -51,6 +51,8 @@ import com.devndev.homen.core.domain.usecase.reward.GetRewardDetailUseCase
 import com.devndev.homen.core.domain.usecase.reward.GetRewardsUseCase
 import com.devndev.homen.core.domain.usecase.splash.CheckTokenUseCase
 import com.devndev.homen.core.domain.usecase.user.GetMyInfoUseCase
+import com.devndev.homen.core.domain.usecase.user.RegisterDeviceUseCase
+import com.devndev.homen.core.domain.usecase.user.UnregisterDeviceUseCase
 import com.devndev.homen.core.domain.usecase.user.UpdateProfileUseCase
 import com.devndev.homen.core.domain.usecase.user.ValidateNicknameUseCase
 import org.koin.core.module.dsl.factoryOf
@@ -117,6 +119,8 @@ val useCaseModule = module {
     factoryOf(::UpdateProfileUseCase)
     factoryOf(::GetMyInfoUseCase)
     factoryOf(::ValidateNicknameUseCase)
+    factoryOf(::RegisterDeviceUseCase)
+    factoryOf(::UnregisterDeviceUseCase)
 
     // splash
     factoryOf(::CheckTokenUseCase)

@@ -9,4 +9,6 @@ interface UserRepository {
     suspend fun getMyInfo(): ApiResult<MyInfo>
     suspend fun updateProfile(updateProfile: UpdateProfile): ApiResult<User>
     suspend fun validateNickname(nickname: String): ApiResult<Boolean>
+    suspend fun registerDevice(registrationId: String, platform: String, kind: String = "token", appVersion: String? = null): ApiResult<Unit>
+    suspend fun unregisterDevice(registrationId: String): ApiResult<Unit>
 }

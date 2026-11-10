@@ -9,6 +9,8 @@ import com.devndev.homen.core.domain.usecase.home.GetHomeUseCase
 import com.devndev.homen.core.domain.usecase.notification.GetNotificationSettingUseCase
 import com.devndev.homen.core.domain.usecase.notification.UpdateNotificationSettingUseCase
 import com.devndev.homen.core.domain.usecase.user.GetMyInfoUseCase
+import com.devndev.homen.core.domain.usecase.user.UnregisterDeviceUseCase
+import com.devndev.homen.core.domain.util.FcmTokenProvider
 import com.devndev.homen.util.ShareManager
 import kotlinx.coroutines.launch
 
@@ -19,7 +21,9 @@ class MyPageViewModel(
     private val clearTokenUseCase: ClearTokenUseCase,
     private val shareManager: ShareManager,
     private val getNotificationSettingUseCase: GetNotificationSettingUseCase,
-    private val updateNotificationSettingUseCase: UpdateNotificationSettingUseCase
+    private val updateNotificationSettingUseCase: UpdateNotificationSettingUseCase,
+    private val unregisterDeviceUseCase: UnregisterDeviceUseCase,
+    private val fcmTokenProvider: FcmTokenProvider
 ) : BaseViewModel<MyPageContract.Event, MyPageContract.State, MyPageContract.Effect>() {
 
     override fun setInitialState() = MyPageContract.State()
@@ -196,6 +200,13 @@ class MyPageViewModel(
 
     private fun logout() {
         viewModelScope.launch {
+            try {
+                val token = fcmTokenProvider.getFcmToken()
+                if (!token.isNullOrEmpty()) {
+                    unregisterDeviceUseCase(token)
+                }
+            } catch (_: Exception) {
+            }
             clearTokenUseCase()
             setEffect { MyPageContract.Effect.NavigateToSplash }
         }

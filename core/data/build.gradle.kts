@@ -40,6 +40,8 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.kakao.user.v2)
             implementation(libs.ktor.client.okhttp)
+            implementation("com.google.firebase:firebase-messaging:24.1.0")
+            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.10.1")
         }
 
         iosMain.dependencies {
